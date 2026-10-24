@@ -493,7 +493,7 @@ function DashboardContent() {
   return (
     <div className="min-h-screen flex flex-col bg-[var(--bg-app)] text-[var(--text-primary)]">
       {/* 1. TOP NAVIGATION BAR */}
-      <header className="sticky top-0 z-30 w-full border-b border-[var(--border-subtle)] bg-[var(--bg-app)]/85 backdrop-blur-xl px-6 py-3.5 flex items-center justify-between">
+      <header className="sticky top-0 z-30 w-full border-b border-[var(--border-subtle)] bg-[var(--bg-app)]/85 backdrop-blur-xl px-[20px] py-3.5 flex items-center justify-between">
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400">
@@ -555,7 +555,7 @@ function DashboardContent() {
       </header>
 
       {/* MAIN CONTAINER */}
-      <div className="max-w-7xl w-full mx-auto p-6 space-y-6 flex-1">
+      <div className="w-full px-[20px] py-6 space-y-6 flex-1">
         {/* 2. FUNNEL ANALYTICS RIBBON */}
         <section className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           <div className="p-4 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] flex flex-col justify-between">

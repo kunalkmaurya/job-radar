@@ -4,9 +4,11 @@ import { verifySessionToken, isAllowedEmail, AUTH_COOKIE_NAME } from '@/lib/auth
 
 // Paths that do not require authentication
 const PUBLIC_PATHS = [
+  '/',
   '/login',
   '/api/auth',
   '/api/telegram-webhook',
+  '/icon.svg',
 ];
 
 export async function proxy(request: NextRequest) {
@@ -16,13 +18,15 @@ export async function proxy(request: NextRequest) {
   if (
     pathname.startsWith('/_next') ||
     pathname.startsWith('/favicon.ico') ||
-    pathname.startsWith('/public')
+    pathname.startsWith('/public') ||
+    pathname.startsWith('/icon.svg') ||
+    pathname.startsWith('/logo')
   ) {
     return NextResponse.next();
   }
 
   // 2. Allow public endpoints
-  if (PUBLIC_PATHS.some((path) => pathname.startsWith(path))) {
+  if (PUBLIC_PATHS.some((path) => pathname === path || (path !== '/' && pathname.startsWith(path)))) {
     // If user is already authenticated and visits /login, redirect to /dashboard
     if (pathname === '/login') {
       const token = request.cookies.get(AUTH_COOKIE_NAME)?.value;
@@ -34,11 +38,6 @@ export async function proxy(request: NextRequest) {
       }
     }
     return NextResponse.next();
-  }
-
-  // 3. Root redirect: If visiting '/', redirect to /dashboard
-  if (pathname === '/') {
-    return NextResponse.redirect(new URL('/dashboard', request.url));
   }
 
   // 4. Verify JWT token for all protected routes (/dashboard, /api/jobs, etc.)

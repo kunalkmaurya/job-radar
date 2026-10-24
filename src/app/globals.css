@@ -63,6 +63,13 @@ body {
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
+/* Enterprise Mode: Zero Border Radius Across All Elements */
+*,
+*::before,
+*::after {
+  border-radius: 0 !important;
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
@@ -75,7 +82,7 @@ body {
 
 ::-webkit-scrollbar-thumb {
   background: var(--border-subtle);
-  border-radius: 9999px;
+  border-radius: 0;
 }
 
 ::-webkit-scrollbar-thumb:hover {

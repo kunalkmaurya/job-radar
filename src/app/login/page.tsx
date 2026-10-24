@@ -38,8 +38,8 @@ export default function LoginPage() {
       {/* Top Header */}
       <header className="relative z-10 w-full max-w-5xl mx-auto flex items-center justify-between">
         <div className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400">
-            <Zap className="w-5 h-5 fill-blue-500/20" />
+          <div className="w-8 h-8 bg-blue-500/10 border border-blue-500/20 flex items-center justify-center p-1">
+            <img src="/icon.svg" alt="Job Radar" className="w-5 h-5 object-contain" />
           </div>
           <span className="font-bold text-lg tracking-tight">JOB RADAR</span>
         </div>
@@ -47,7 +47,7 @@ export default function LoginPage() {
         <button
           onClick={toggleTheme}
           aria-label="Toggle theme"
-          className="p-2 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] transition-colors text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+          className="p-2 border border-[var(--border-subtle)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] transition-colors text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
         >
           {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
         </button>
@@ -55,9 +55,9 @@ export default function LoginPage() {
 
       {/* Main Center Card */}
       <main className="relative z-10 w-full max-w-md mx-auto my-auto py-8">
-        <div className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-8 shadow-2xl backdrop-blur-xl transition-all">
+        <div className="border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-8 shadow-2xl backdrop-blur-xl transition-all">
           {/* Badge */}
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium border border-blue-500/20 bg-blue-500/10 text-blue-400 mb-6">
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium border border-blue-500/20 bg-blue-500/10 text-blue-400 mb-6">
             <Sparkles className="w-3.5 h-3.5" />
             <span>Personal Tracking Workspace</span>
           </div>
@@ -73,19 +73,19 @@ export default function LoginPage() {
           {/* Feature Highlights */}
           <div className="space-y-2.5 mb-8">
             <div className="flex items-center gap-2.5 text-xs text-[var(--text-secondary)]">
-              <div className="w-6 h-6 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-400">
+              <div className="w-6 h-6 bg-blue-500/10 flex items-center justify-center text-blue-400">
                 <Sparkles className="w-3.5 h-3.5" />
               </div>
               <span>AI Extraction across Workday, Lever & Greenhouse</span>
             </div>
             <div className="flex items-center gap-2.5 text-xs text-[var(--text-secondary)]">
-              <div className="w-6 h-6 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-400">
+              <div className="w-6 h-6 bg-amber-500/10 flex items-center justify-center text-amber-400">
                 <Send className="w-3.5 h-3.5" />
               </div>
               <span>100% Silent Telegram Ingestion (No bot spam)</span>
             </div>
             <div className="flex items-center gap-2.5 text-xs text-[var(--text-secondary)]">
-              <div className="w-6 h-6 rounded-lg bg-purple-500/10 flex items-center justify-center text-purple-400">
+              <div className="w-6 h-6 bg-purple-500/10 flex items-center justify-center text-purple-400">
                 <BarChart3 className="w-3.5 h-3.5" />
               </div>
               <span>Pipeline tracking, stale alerts & 1-click apply</span>
@@ -95,7 +95,7 @@ export default function LoginPage() {
           {/* Google OAuth Login Button */}
           <button
             onClick={handleGoogleLogin}
-            className="w-full flex items-center justify-center gap-3 py-3 px-4 rounded-xl bg-white text-slate-900 font-semibold text-sm hover:bg-slate-100 active:scale-[0.99] transition-all shadow-md"
+            className="w-full flex items-center justify-center gap-3 py-3 px-4 bg-white text-slate-900 font-semibold text-sm hover:bg-slate-100 active:scale-[0.99] transition-all shadow-md"
           >
             <svg className="w-4 h-4" viewBox="0 0 24 24">
               <path

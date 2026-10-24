@@ -127,7 +127,6 @@ function DashboardContent() {
   const [timelineFilter, setTimelineFilter] = useState<TimelineFilter>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [staleOnlyFilter, setStaleOnlyFilter] = useState(false);
-  const [selectedJobIds, setSelectedJobIds] = useState<string[]>([]);
   const [nowTime, setNowTime] = useState<number>(1729792800000); // Stable timestamp for SSR
 
   // Modals & Drawer State
@@ -352,40 +351,7 @@ function DashboardContent() {
     }
   };
 
-  // Bulk Actions
-  const handleBulkStatusChange = async (newStatus: JobStatus) => {
-    const idsToUpdate = [...selectedJobIds];
-    setJobs((prev) =>
-      prev.map((j) =>
-        idsToUpdate.includes(j.id) ? { ...j, status: newStatus, updatedAt: new Date(nowTime) } : j
-      )
-    );
-    setSelectedJobIds([]);
-    for (const id of idsToUpdate) {
-      try {
-        await fetch(`/api/jobs/${id}`, {
-          method: 'PATCH',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ status: newStatus }),
-        });
-      } catch (err) {
-        console.error('Bulk update error:', err);
-      }
-    }
-  };
 
-  const handleBulkDelete = async () => {
-    const idsToDelete = [...selectedJobIds];
-    setJobs((prev) => prev.filter((j) => !idsToDelete.includes(j.id)));
-    setSelectedJobIds([]);
-    for (const id of idsToDelete) {
-      try {
-        await fetch(`/api/jobs/${id}`, { method: 'DELETE' });
-      } catch (err) {
-        console.error('Bulk delete error:', err);
-      }
-    }
-  };
 
   // Save Notes in Drawer
   const handleSaveDrawerNotes = async () => {
@@ -494,18 +460,11 @@ function DashboardContent() {
     <div className="min-h-screen flex flex-col bg-[var(--bg-app)] text-[var(--text-primary)]">
       {/* 1. TOP NAVIGATION BAR */}
       <header className="sticky top-0 z-30 w-full border-b border-[var(--border-subtle)] bg-[var(--bg-app)]/85 backdrop-blur-xl px-[20px] py-3.5 flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400">
-              <Zap className="w-4 h-4 fill-blue-500/20" />
-            </div>
-            <span className="font-bold text-base tracking-tight">JOB RADAR</span>
+        <div className="flex items-center gap-2.5">
+          <div className="w-8 h-8 bg-blue-500/10 border border-blue-500/20 flex items-center justify-center p-1">
+            <img src="/icon.svg" alt="Job Radar" className="w-5 h-5 object-contain" />
           </div>
-
-          <div className="hidden sm:flex items-center gap-2 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            <span>Telegram Ingestion Active</span>
-          </div>
+          <span className="font-bold text-base tracking-tight">JOB RADAR</span>
         </div>
 
         <div className="flex items-center gap-2.5">
@@ -513,7 +472,7 @@ function DashboardContent() {
           <button
             onClick={toggleTheme}
             aria-label="Toggle theme"
-            className="p-2 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+            className="p-2 border border-[var(--border-subtle)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
           >
             {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
           </button>
@@ -522,7 +481,7 @@ function DashboardContent() {
           <button
             onClick={() => setIsBookmarkletModalOpen(true)}
             title="1-Click Browser Bookmarklet"
-            className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+            className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 border border-[var(--border-subtle)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
           >
             <Bookmark className="w-3.5 h-3.5" />
             <span>Bookmarklet</span>
@@ -532,7 +491,7 @@ function DashboardContent() {
           <button
             onClick={handleExportCSV}
             title="Export CSV"
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 border border-[var(--border-subtle)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
           >
             <Download className="w-3.5 h-3.5" />
             <span className="hidden md:inline">Export</span>
@@ -541,14 +500,14 @@ function DashboardContent() {
           {/* Add Job Button */}
           <button
             onClick={() => setIsAddModalOpen(true)}
-            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold shadow-lg shadow-blue-500/20 transition-all active:scale-[0.98]"
+            className="flex items-center gap-1.5 px-3.5 py-1.5 bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold shadow-lg shadow-blue-500/20 transition-all active:scale-[0.98]"
           >
             <Plus className="w-3.5 h-3.5" />
             <span>Add Job</span>
           </button>
 
           {/* Profile Dropdown */}
-          <div className="w-8 h-8 rounded-full border border-[var(--border-subtle)] bg-blue-500/20 text-blue-300 font-semibold text-xs flex items-center justify-center cursor-pointer">
+          <div className="w-8 h-8 border border-[var(--border-subtle)] bg-blue-500/20 text-blue-300 font-semibold text-xs flex items-center justify-center cursor-pointer">
             K
           </div>
         </div>
@@ -558,7 +517,7 @@ function DashboardContent() {
       <div className="w-full px-[20px] py-6 space-y-6 flex-1">
         {/* 2. FUNNEL ANALYTICS RIBBON */}
         <section className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="p-4 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] flex flex-col justify-between">
+          <div className="p-4 border border-[var(--border-subtle)] bg-[var(--bg-surface)] flex flex-col justify-between">
             <div className="flex items-center justify-between text-[var(--text-secondary)]">
               <span className="text-xs font-medium">Total Captured</span>
               <Briefcase className="w-4 h-4 text-blue-400" />
@@ -567,7 +526,7 @@ function DashboardContent() {
             <span className="text-[11px] text-[var(--text-muted)] mt-1">All-time applications tracked</span>
           </div>
 
-          <div className="p-4 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] flex flex-col justify-between">
+          <div className="p-4 border border-[var(--border-subtle)] bg-[var(--bg-surface)] flex flex-col justify-between">
             <div className="flex items-center justify-between text-[var(--text-secondary)]">
               <span className="text-xs font-medium">Applied This Week</span>
               <TrendingUp className="w-4 h-4 text-amber-400" />
@@ -578,7 +537,7 @@ function DashboardContent() {
             <span className="text-[11px] text-amber-500/80 mt-1">Active weekly momentum</span>
           </div>
 
-          <div className="p-4 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] flex flex-col justify-between">
+          <div className="p-4 border border-[var(--border-subtle)] bg-[var(--bg-surface)] flex flex-col justify-between">
             <div className="flex items-center justify-between text-[var(--text-secondary)]">
               <span className="text-xs font-medium">Active Interviews</span>
               <Users className="w-4 h-4 text-purple-400" />
@@ -589,7 +548,7 @@ function DashboardContent() {
             <span className="text-[11px] text-[var(--text-muted)] mt-1">In interview pipeline</span>
           </div>
 
-          <div className="p-4 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] flex flex-col justify-between">
+          <div className="p-4 border border-[var(--border-subtle)] bg-[var(--bg-surface)] flex flex-col justify-between">
             <div className="flex items-center justify-between text-[var(--text-secondary)]">
               <span className="text-xs font-medium">Response Rate</span>
               <Target className="w-4 h-4 text-emerald-400" />
@@ -613,7 +572,7 @@ function DashboardContent() {
                 placeholder="Search company or role... (Press '/' to focus)"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-9 pr-4 py-2 rounded-xl text-xs border border-[var(--border-subtle)] bg-[var(--bg-surface)] text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:border-blue-500 transition-colors"
+                className="w-full pl-9 pr-4 py-2 text-xs border border-[var(--border-subtle)] bg-[var(--bg-surface)] text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:border-blue-500 transition-colors"
               />
               {searchQuery && (
                 <button
@@ -629,7 +588,7 @@ function DashboardContent() {
             {staleCount > 0 && (
               <button
                 onClick={() => setStaleOnlyFilter(!staleOnlyFilter)}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium border transition-colors ${
+                className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium border transition-colors ${
                   staleOnlyFilter
                     ? 'bg-amber-500/20 border-amber-500/50 text-amber-300'
                     : 'bg-amber-500/10 border-amber-500/20 text-amber-400 hover:bg-amber-500/15'
@@ -643,12 +602,12 @@ function DashboardContent() {
 
           <div className="flex items-center gap-2.5">
             {/* Timeline Filter Segmented Tabs */}
-            <div className="flex items-center p-1 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] text-xs">
+            <div className="flex items-center p-1 border border-[var(--border-subtle)] bg-[var(--bg-surface)] text-xs">
               {(['all', 'today', 'this_week', 'past_30_days'] as TimelineFilter[]).map((tab) => (
                 <button
                   key={tab}
                   onClick={() => setTimelineFilter(tab)}
-                  className={`px-2.5 py-1 rounded-lg capitalize transition-all ${
+                  className={`px-2.5 py-1 capitalize transition-all ${
                     timelineFilter === tab
                       ? 'bg-blue-600 text-white font-medium shadow-sm'
                       : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
@@ -660,10 +619,10 @@ function DashboardContent() {
             </div>
 
             {/* View Mode Switcher */}
-            <div className="flex items-center p-1 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] text-xs">
+            <div className="flex items-center p-1 border border-[var(--border-subtle)] bg-[var(--bg-surface)] text-xs">
               <button
                 onClick={() => setViewMode('list')}
-                className={`px-2.5 py-1 rounded-lg transition-all ${
+                className={`px-2.5 py-1 transition-all ${
                   viewMode === 'list'
                     ? 'bg-blue-600 text-white font-medium'
                     : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
@@ -673,7 +632,7 @@ function DashboardContent() {
               </button>
               <button
                 onClick={() => setViewMode('kanban')}
-                className={`px-2.5 py-1 rounded-lg transition-all ${
+                className={`px-2.5 py-1 transition-all ${
                   viewMode === 'kanban'
                     ? 'bg-blue-600 text-white font-medium'
                     : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
@@ -687,21 +646,11 @@ function DashboardContent() {
 
         {/* 4. PRIMARY CONTENT AREA: LIST VIEW */}
         {viewMode === 'list' ? (
-          <section className="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] overflow-hidden shadow-sm">
+          <section className="border border-[var(--border-subtle)] bg-[var(--bg-surface)] overflow-hidden shadow-sm">
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse text-xs">
                 <thead>
                   <tr className="border-b border-[var(--border-subtle)] text-[var(--text-muted)] bg-[var(--bg-surface)]/50">
-                    <th className="py-3 px-4 w-10">
-                      <input
-                        type="checkbox"
-                        checked={selectedJobIds.length === filteredJobs.length && filteredJobs.length > 0}
-                        onChange={(e) =>
-                          setSelectedJobIds(e.target.checked ? filteredJobs.map((j) => j.id) : [])
-                        }
-                        className="rounded border-[var(--border-subtle)] text-blue-600 focus:ring-0 cursor-pointer"
-                      />
-                    </th>
                     <th className="py-3 px-4 font-semibold uppercase tracking-wider">Company</th>
                     <th className="py-3 px-4 font-semibold uppercase tracking-wider">Role</th>
                     <th className="py-3 px-4 font-semibold uppercase tracking-wider">Status</th>
@@ -712,42 +661,24 @@ function DashboardContent() {
                 <tbody className="divide-y divide-[var(--border-subtle)]">
                   {filteredJobs.length === 0 ? (
                     <tr>
-                      <td colSpan={6} className="py-12 text-center text-[var(--text-muted)]">
+                      <td colSpan={5} className="py-12 text-center text-[var(--text-muted)]">
                         No job applications match your filters.
                       </td>
                     </tr>
                   ) : (
                     filteredJobs.map((job) => {
                       const stale = isJobStale(job);
-                      const isSelected = selectedJobIds.includes(job.id);
                       return (
                         <tr
                           key={job.id}
                           onClick={() => setSelectedDrawerJob(job)}
-                          className={`hover:bg-[var(--bg-surface-hover)] cursor-pointer transition-colors ${
-                            isSelected ? 'bg-blue-500/5' : ''
-                          }`}
+                          className="hover:bg-[var(--bg-surface-hover)] cursor-pointer transition-colors"
                         >
-                          {/* Checkbox */}
-                          <td className="py-3.5 px-4" onClick={(e) => e.stopPropagation()}>
-                            <input
-                              type="checkbox"
-                              checked={isSelected}
-                              onChange={(e) => {
-                                if (e.target.checked) {
-                                  setSelectedJobIds([...selectedJobIds, job.id]);
-                                } else {
-                                  setSelectedJobIds(selectedJobIds.filter((id) => id !== job.id));
-                                }
-                              }}
-                              className="rounded border-[var(--border-subtle)] text-blue-600 focus:ring-0 cursor-pointer"
-                            />
-                          </td>
 
                           {/* Company */}
                           <td className="py-3.5 px-4">
                             <div className="flex items-center gap-2.5">
-                              <div className="w-7 h-7 rounded-lg bg-blue-500/10 border border-blue-500/20 text-blue-400 font-bold text-xs flex items-center justify-center">
+                              <div className="w-7 h-7 bg-blue-500/10 border border-blue-500/20 text-blue-400 font-bold text-xs flex items-center justify-center">
                                 {job.company.charAt(0)}
                               </div>
                               <span className="font-semibold text-sm text-[var(--text-primary)]">
@@ -760,7 +691,7 @@ function DashboardContent() {
                           <td className="py-3.5 px-4 text-[var(--text-secondary)]">
                             <div className="flex items-center gap-2">
                               <span>{job.role}</span>
-                              <span className="text-[10px] px-1.5 py-0.5 rounded bg-[var(--border-subtle)] text-[var(--text-muted)]">
+                              <span className="text-[10px] px-1.5 py-0.5 bg-[var(--border-subtle)] text-[var(--text-muted)]">
                                 {job.location}
                               </span>
                             </div>
@@ -771,7 +702,7 @@ function DashboardContent() {
                             <select
                               value={job.status}
                               onChange={(e) => handleStatusChange(job.id, e.target.value as JobStatus)}
-                              className="px-2.5 py-1 rounded-full text-xs font-medium border border-transparent cursor-pointer focus:outline-none"
+                              className="px-2.5 py-1 text-xs font-medium border border-transparent cursor-pointer focus:outline-none"
                               style={{
                                 color: `var(--status-${job.status.toLowerCase()}-text, #60A5FA)`,
                                 backgroundColor: `var(--status-${job.status.toLowerCase()}-bg, rgba(59,130,246,0.15))`,
@@ -809,7 +740,7 @@ function DashboardContent() {
                               {job.status === 'Saved' && (
                                 <button
                                   onClick={(e) => handleApplyAndAdvance(job, e)}
-                                  className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-blue-600/10 border border-blue-500/30 text-blue-400 hover:bg-blue-600 hover:text-white transition-all text-xs font-medium"
+                                  className="flex items-center gap-1 px-2.5 py-1 bg-blue-600/10 border border-blue-500/30 text-blue-400 hover:bg-blue-600 hover:text-white transition-all text-xs font-medium"
                                 >
                                   <span>Apply</span>
                                   <ArrowUpRight className="w-3 h-3" />
@@ -819,7 +750,7 @@ function DashboardContent() {
                               <button
                                 onClick={() => setSelectedDrawerJob(job)}
                                 title="Open Notes"
-                                className="p-1.5 rounded-lg hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+                                className="p-1.5 hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
                               >
                                 <FileText className="w-4 h-4" />
                               </button>
@@ -829,7 +760,7 @@ function DashboardContent() {
                                 target="_blank"
                                 rel="noreferrer"
                                 title="Open Link"
-                                className="p-1.5 rounded-lg hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+                                className="p-1.5 hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
                               >
                                 <ExternalLink className="w-4 h-4" />
                               </a>
@@ -837,7 +768,7 @@ function DashboardContent() {
                               <button
                                 onClick={(e) => handleDeleteJob(job.id, e)}
                                 title="Delete"
-                                className="p-1.5 rounded-lg hover:bg-red-500/10 text-[var(--text-muted)] hover:text-red-400"
+                                className="p-1.5 hover:bg-red-500/10 text-[var(--text-muted)] hover:text-red-400"
                               >
                                 <Trash2 className="w-4 h-4" />
                               </button>
@@ -859,11 +790,11 @@ function DashboardContent() {
               return (
                 <div
                   key={colStatus}
-                  className="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)]/60 p-3 flex flex-col space-y-3 min-h-[500px]"
+                  className="border border-[var(--border-subtle)] bg-[var(--bg-surface)]/60 p-3 flex flex-col space-y-3 min-h-[500px]"
                 >
                   <div className="flex items-center justify-between pb-2 border-b border-[var(--border-subtle)]">
                     <span className="text-xs font-semibold uppercase tracking-wider">{colStatus}</span>
-                    <span className="text-xs px-2 py-0.5 rounded-full bg-[var(--border-subtle)] text-[var(--text-secondary)]">
+                    <span className="text-xs px-2 py-0.5 bg-[var(--border-subtle)] text-[var(--text-secondary)]">
                       {columnJobs.length}
                     </span>
                   </div>
@@ -873,7 +804,7 @@ function DashboardContent() {
                       <div
                         key={job.id}
                         onClick={() => setSelectedDrawerJob(job)}
-                        className="p-3.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-surface)] hover:border-blue-500/40 cursor-pointer transition-all shadow-sm space-y-2"
+                        className="p-3.5 border border-[var(--border-subtle)] bg-[var(--bg-surface)] hover:border-blue-500/40 cursor-pointer transition-all shadow-sm space-y-2"
                       >
                         <div className="flex items-center justify-between">
                           <span className="font-bold text-sm">{job.company}</span>
@@ -911,39 +842,7 @@ function DashboardContent() {
         )}
       </div>
 
-      {/* 6. FLOATING BULK ACTIONS BAR */}
-      {selectedJobIds.length > 0 && (
-        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 px-5 py-3 rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] shadow-2xl backdrop-blur-xl flex items-center gap-4 text-xs animate-in fade-in slide-in-from-bottom-4">
-          <span className="font-medium text-[var(--text-primary)]">
-            {selectedJobIds.length} {selectedJobIds.length === 1 ? 'job' : 'jobs'} selected
-          </span>
-          <div className="h-4 w-[1px] bg-[var(--border-subtle)]" />
-          <button
-            onClick={() => handleBulkStatusChange('Applied')}
-            className="px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-medium"
-          >
-            Mark Applied
-          </button>
-          <button
-            onClick={() => handleBulkStatusChange('Archived')}
-            className="px-3 py-1.5 rounded-lg border border-[var(--border-subtle)] hover:bg-[var(--bg-surface-hover)]"
-          >
-            Archive
-          </button>
-          <button
-            onClick={handleBulkDelete}
-            className="px-3 py-1.5 rounded-lg text-red-400 hover:bg-red-500/10"
-          >
-            Delete
-          </button>
-          <button
-            onClick={() => setSelectedJobIds([])}
-            className="text-[var(--text-muted)] hover:text-[var(--text-primary)]"
-          >
-            Cancel
-          </button>
-        </div>
-      )}
+
 
       {/* 7. SLIDE-OVER NOTES DRAWER */}
       {selectedDrawerJob && (
@@ -963,7 +862,7 @@ function DashboardContent() {
                 </div>
                 <button
                   onClick={() => setSelectedDrawerJob(null)}
-                  className="p-1 rounded-lg text-[var(--text-muted)] hover:text-[var(--text-primary)]"
+                  className="p-1 text-[var(--text-muted)] hover:text-[var(--text-primary)]"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -974,7 +873,7 @@ function DashboardContent() {
                 <select
                   value={selectedDrawerJob.status}
                   onChange={(e) => handleStatusChange(selectedDrawerJob.id, e.target.value as JobStatus)}
-                  className="px-3 py-1.5 rounded-xl text-xs font-semibold border border-[var(--border-subtle)] bg-[var(--bg-app)] text-[var(--text-primary)] focus:outline-none"
+                  className="px-3 py-1.5 text-xs font-semibold border border-[var(--border-subtle)] bg-[var(--bg-app)] text-[var(--text-primary)] focus:outline-none"
                 >
                   {JOB_STATUSES.map((status) => (
                     <option key={status} value={status}>
@@ -987,7 +886,7 @@ function DashboardContent() {
                   href={selectedDrawerJob.link}
                   target="_blank"
                   rel="noreferrer"
-                  className="flex items-center gap-1.5 text-xs text-blue-400 hover:underline px-3 py-1.5 rounded-xl border border-blue-500/20 bg-blue-500/10"
+                  className="flex items-center gap-1.5 text-xs text-blue-400 hover:underline px-3 py-1.5 border border-blue-500/20 bg-blue-500/10"
                 >
                   <span>Open Career Link</span>
                   <ArrowUpRight className="w-3.5 h-3.5" />
@@ -1008,14 +907,14 @@ function DashboardContent() {
                       setDrawerFollowUp(e.target.value);
                       handleSaveDrawerNotes();
                     }}
-                    className="flex-1 px-3 py-1.5 rounded-xl text-xs border border-[var(--border-subtle)] bg-[var(--bg-app)] text-[var(--text-primary)] focus:outline-none focus:border-blue-500"
+                    className="flex-1 px-3 py-1.5 text-xs border border-[var(--border-subtle)] bg-[var(--bg-app)] text-[var(--text-primary)] focus:outline-none focus:border-blue-500"
                   />
                   <button
                     onClick={() => {
                       const d = new Date(nowTime + 1000 * 60 * 60 * 24 * 3).toISOString().split('T')[0];
                       setDrawerFollowUp(d);
                     }}
-                    className="px-2 py-1.5 rounded-lg border border-[var(--border-subtle)] text-[11px] hover:bg-[var(--bg-surface-hover)]"
+                    className="px-2 py-1.5 border border-[var(--border-subtle)] text-[11px] hover:bg-[var(--bg-surface-hover)]"
                   >
                     +3d
                   </button>
@@ -1024,7 +923,7 @@ function DashboardContent() {
                       const d = new Date(nowTime + 1000 * 60 * 60 * 24 * 7).toISOString().split('T')[0];
                       setDrawerFollowUp(d);
                     }}
-                    className="px-2 py-1.5 rounded-lg border border-[var(--border-subtle)] text-[11px] hover:bg-[var(--bg-surface-hover)]"
+                    className="px-2 py-1.5 border border-[var(--border-subtle)] text-[11px] hover:bg-[var(--bg-surface-hover)]"
                   >
                     +1w
                   </button>
@@ -1046,12 +945,12 @@ function DashboardContent() {
                   onChange={(e) => setDrawerNotes(e.target.value)}
                   onBlur={handleSaveDrawerNotes}
                   placeholder="Jot down referral contacts, phone screen discussion points, recruiter email, or expected compensation..."
-                  className="w-full p-3 rounded-xl text-xs border border-[var(--border-subtle)] bg-[var(--bg-app)] text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:border-blue-500 leading-relaxed"
+                  className="w-full p-3 text-xs border border-[var(--border-subtle)] bg-[var(--bg-app)] text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:border-blue-500 leading-relaxed"
                 />
               </div>
 
               {/* Activity Info */}
-              <div className="p-3 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-app)] space-y-1 text-[11px] text-[var(--text-muted)]">
+              <div className="p-3 border border-[var(--border-subtle)] bg-[var(--bg-app)] space-y-1 text-[11px] text-[var(--text-muted)]">
                 <div>Captured: {formatDate(selectedDrawerJob.createdAt)}</div>
                 {selectedDrawerJob.appliedAt && (
                   <div>Applied: {formatDate(selectedDrawerJob.appliedAt)}</div>
@@ -1071,7 +970,7 @@ function DashboardContent() {
               </button>
               <button
                 onClick={handleSaveDrawerNotes}
-                className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-medium text-xs"
+                className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white font-medium text-xs"
               >
                 Save Notes
               </button>
@@ -1085,7 +984,7 @@ function DashboardContent() {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setIsAddModalOpen(false)} />
 
-          <div className="relative w-full max-w-md rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-6 shadow-2xl z-10 space-y-5 animate-in zoom-in-95 duration-150">
+          <div className="relative w-full max-w-md border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-6 shadow-2xl z-10 space-y-5 animate-in zoom-in-95 duration-150">
             <div className="flex items-center justify-between">
               <h3 className="font-bold text-base">Add New Job Opening</h3>
               <button onClick={() => setIsAddModalOpen(false)} className="text-[var(--text-muted)] hover:text-white">
@@ -1094,10 +993,10 @@ function DashboardContent() {
             </div>
 
             {/* Tab Switcher */}
-            <div className="flex p-1 rounded-xl bg-[var(--bg-app)] border border-[var(--border-subtle)] text-xs">
+            <div className="flex p-1 bg-[var(--bg-app)] border border-[var(--border-subtle)] text-xs">
               <button
                 onClick={() => setAddTab('fetch')}
-                className={`flex-1 py-1.5 rounded-lg font-medium transition-all ${
+                className={`flex-1 py-1.5 font-medium transition-all ${
                   addTab === 'fetch' ? 'bg-blue-600 text-white shadow-sm' : 'text-[var(--text-secondary)]'
                 }`}
               >
@@ -1105,7 +1004,7 @@ function DashboardContent() {
               </button>
               <button
                 onClick={() => setAddTab('manual')}
-                className={`flex-1 py-1.5 rounded-lg font-medium transition-all ${
+                className={`flex-1 py-1.5 font-medium transition-all ${
                   addTab === 'manual' ? 'bg-blue-600 text-white shadow-sm' : 'text-[var(--text-secondary)]'
                 }`}
               >
@@ -1123,12 +1022,12 @@ function DashboardContent() {
                   placeholder="https://..."
                   value={fetchUrl}
                   onChange={(e) => setFetchUrl(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl text-xs border border-[var(--border-subtle)] bg-[var(--bg-app)] text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:border-blue-500"
+                  className="w-full px-3.5 py-2.5 text-xs border border-[var(--border-subtle)] bg-[var(--bg-app)] text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:border-blue-500"
                 />
                 <button
                   onClick={handleAutoFetch}
                   disabled={!fetchUrl || isScraping}
-                  className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white text-xs font-semibold transition-all shadow-md"
+                  className="w-full flex items-center justify-center gap-2 py-2.5 bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white text-xs font-semibold transition-all shadow-md"
                 >
                   {isScraping ? (
                     <>
@@ -1153,7 +1052,7 @@ function DashboardContent() {
                     placeholder="e.g. Stripe"
                     value={manualForm.company}
                     onChange={(e) => setManualForm({ ...manualForm, company: e.target.value })}
-                    className="w-full px-3.5 py-2 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-app)] text-[var(--text-primary)] focus:outline-none focus:border-blue-500"
+                    className="w-full px-3.5 py-2 border border-[var(--border-subtle)] bg-[var(--bg-app)] text-[var(--text-primary)] focus:outline-none focus:border-blue-500"
                   />
                 </div>
                 <div>
@@ -1164,7 +1063,7 @@ function DashboardContent() {
                     placeholder="e.g. Staff Infrastructure Engineer"
                     value={manualForm.role}
                     onChange={(e) => setManualForm({ ...manualForm, role: e.target.value })}
-                    className="w-full px-3.5 py-2 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-app)] text-[var(--text-primary)] focus:outline-none focus:border-blue-500"
+                    className="w-full px-3.5 py-2 border border-[var(--border-subtle)] bg-[var(--bg-app)] text-[var(--text-primary)] focus:outline-none focus:border-blue-500"
                   />
                 </div>
                 <div>
@@ -1175,7 +1074,7 @@ function DashboardContent() {
                     placeholder="https://..."
                     value={manualForm.link}
                     onChange={(e) => setManualForm({ ...manualForm, link: e.target.value })}
-                    className="w-full px-3.5 py-2 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-app)] text-[var(--text-primary)] focus:outline-none focus:border-blue-500"
+                    className="w-full px-3.5 py-2 border border-[var(--border-subtle)] bg-[var(--bg-app)] text-[var(--text-primary)] focus:outline-none focus:border-blue-500"
                   />
                 </div>
                 <div>
@@ -1183,7 +1082,7 @@ function DashboardContent() {
                   <select
                     value={manualForm.status}
                     onChange={(e) => setManualForm({ ...manualForm, status: e.target.value as JobStatus })}
-                    className="w-full px-3.5 py-2 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-app)] text-[var(--text-primary)] focus:outline-none"
+                    className="w-full px-3.5 py-2 border border-[var(--border-subtle)] bg-[var(--bg-app)] text-[var(--text-primary)] focus:outline-none"
                   >
                     {JOB_STATUSES.map((status) => (
                       <option key={status} value={status}>
@@ -1194,7 +1093,7 @@ function DashboardContent() {
                 </div>
                 <button
                   type="submit"
-                  className="w-full py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold transition-all shadow-md mt-2"
+                  className="w-full py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-semibold transition-all shadow-md mt-2"
                 >
                   Save Job to Board
                 </button>
@@ -1209,7 +1108,7 @@ function DashboardContent() {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setIsBookmarkletModalOpen(false)} />
 
-          <div className="relative w-full max-w-md rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-6 shadow-2xl z-10 space-y-4 text-xs">
+          <div className="relative w-full max-w-md border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-6 shadow-2xl z-10 space-y-4 text-xs">
             <div className="flex items-center justify-between">
               <h3 className="font-bold text-base flex items-center gap-2">
                 <Bookmark className="w-4 h-4 text-blue-400" />
@@ -1224,11 +1123,11 @@ function DashboardContent() {
               Drag this button to your browser bookmarks bar. When viewing any job on LinkedIn or Workday, click it to save instantly:
             </p>
 
-            <div className="p-4 rounded-xl border border-dashed border-blue-500/40 bg-blue-500/10 text-center">
+            <div className="p-4 border border-dashed border-blue-500/40 bg-blue-500/10 text-center">
               <a
                 href="javascript:(function(){const url=encodeURIComponent(window.location.href);alert('Job link captured for Job Radar: ' + window.location.href);})();"
                 onClick={(e) => e.preventDefault()}
-                className="inline-block px-4 py-2 rounded-lg bg-blue-600 text-white font-semibold shadow cursor-grab active:cursor-grabbing"
+                className="inline-block px-4 py-2 bg-blue-600 text-white font-semibold shadow cursor-grab active:cursor-grabbing"
               >
                 + Add to Job Radar
               </a>

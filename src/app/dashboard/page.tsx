@@ -23,6 +23,8 @@ import {
   Users,
   Target,
   ArrowUpRight,
+  LogOut,
+  Shield,
 } from 'lucide-react';
 import { Job, JOB_STATUSES, JobStatus, TimelineFilter } from '@/types';
 
@@ -133,6 +135,8 @@ function DashboardContent() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isBookmarkletModalOpen, setIsBookmarkletModalOpen] = useState(false);
   const [selectedDrawerJob, setSelectedDrawerJob] = useState<Job | null>(null);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [currentUser, setCurrentUser] = useState<{ email?: string; name?: string; role?: string } | null>(null);
 
   // Add Job Form State
   const [addTab, setAddTab] = useState<'fetch' | 'manual'>('fetch');
@@ -176,6 +180,16 @@ function DashboardContent() {
 
     // Initial fetch from Neon DB
     fetchJobs();
+
+    // Fetch authenticated user profile
+    fetch('/api/auth/me')
+      .then((res) => res.json())
+      .then((json) => {
+        if (json.success && json.data) {
+          setCurrentUser(json.data);
+        }
+      })
+      .catch((err) => console.error('Failed to fetch user:', err));
 
     // Auto-refresh every 5 seconds to show newly ingested jobs from Telegram!
     const interval = setInterval(fetchJobs, 5000);
@@ -506,9 +520,75 @@ function DashboardContent() {
             <span>Add Job</span>
           </button>
 
-          {/* Profile Dropdown */}
-          <div className="w-8 h-8 border border-[var(--border-subtle)] bg-blue-500/20 text-blue-300 font-semibold text-xs flex items-center justify-center cursor-pointer">
-            K
+          {/* Profile Dropdown Popover */}
+          <div className="relative">
+            <button
+              id="profile-avatar-button"
+              onClick={() => setIsProfileOpen(!isProfileOpen)}
+              title="User Account & Profile"
+              className="w-8 h-8 border border-[var(--border-subtle)] bg-blue-500/20 hover:bg-blue-500/30 text-blue-300 font-semibold text-xs flex items-center justify-center cursor-pointer transition-colors"
+            >
+              {currentUser?.email ? currentUser.email.charAt(0).toUpperCase() : 'K'}
+            </button>
+
+            {isProfileOpen && (
+              <>
+                <div
+                  className="fixed inset-0 z-40"
+                  onClick={() => setIsProfileOpen(false)}
+                />
+                <div className="absolute right-0 top-full mt-2 w-72 z-50 border border-[var(--border-subtle)] bg-[var(--bg-surface)] shadow-2xl p-4 text-xs space-y-3 animate-in fade-in zoom-in-95 duration-100">
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 border border-blue-500/30 bg-blue-500/20 text-blue-300 font-bold text-sm flex items-center justify-center">
+                      {currentUser?.email ? currentUser.email.charAt(0).toUpperCase() : 'K'}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="font-semibold text-sm text-[var(--text-primary)] truncate">
+                        {currentUser?.name || (currentUser?.email ? currentUser.email.split('@')[0] : 'Workspace Owner')}
+                      </div>
+                      <div className="text-[11px] text-[var(--text-muted)] truncate">
+                        {currentUser?.email || 'kunalkrraj@gmail.com'}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="inline-flex items-center gap-1.5 px-2 py-0.5 text-[10px] font-semibold bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">
+                    <Shield className="w-3 h-3" />
+                    <span>Authorized Owner</span>
+                  </div>
+
+                  <div className="pt-2 border-t border-[var(--border-subtle)] space-y-1.5 text-[11px] text-[var(--text-muted)]">
+                    <div className="flex items-center justify-between">
+                      <span>Access Level</span>
+                      <span className="text-[var(--text-secondary)] font-medium">Single-User Personal</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span>Auth Provider</span>
+                      <span className="text-[var(--text-secondary)] font-medium">Google OAuth 2.0</span>
+                    </div>
+                  </div>
+
+                  <div className="pt-2 border-t border-[var(--border-subtle)]">
+                    <button
+                      id="logout-button"
+                      onClick={async () => {
+                        try {
+                          await fetch('/api/auth/logout', { method: 'POST' });
+                        } catch (err) {
+                          console.error('Logout failed:', err);
+                        } finally {
+                          window.location.href = '/login';
+                        }
+                      }}
+                      className="w-full flex items-center gap-2 px-2.5 py-2 text-xs font-semibold text-red-400 hover:text-white hover:bg-red-500/20 border border-transparent hover:border-red-500/30 transition-all text-left cursor-pointer"
+                    >
+                      <LogOut className="w-3.5 h-3.5" />
+                      <span>Log Out of Job Radar</span>
+                    </button>
+                  </div>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </header>

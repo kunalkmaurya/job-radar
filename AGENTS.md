@@ -6,4 +6,16 @@ This version has breaking changes — APIs, conventions, and file structure may 
 
 This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
 
+
+
+## Development & Component Architecture Rules
+
+### 1. Component Size Limit
+- **Maximum 150 Lines per Component**: No UI component file should ever exceed 150 lines of code.
+- If a component grows near or exceeds 150 lines, it must be decomposed into modular sub-components, separated data/mock files, custom hooks, or dedicated view components.
+- Group related sub-components into feature folders (e.g. `src/components/landing/specimen/`).
+
+### 2. Git Commit & Push Rule
+- **No unprompted git commits or pushes**: Never commit or push to git without explicit instruction from the user.
+
 <!-- END:nextjs-agent-rules -->

@@ -1,15 +1,22 @@
 'use client';
 
 import { useState, useEffect, useMemo, useCallback } from 'react';
-import { Job, JobStatus, TimelineFilter } from '@/types';
+import { Job, JobStatus, TimelineFilter, CustomDateRange } from '@/types';
 import { INITIAL_MOCK_JOBS } from '../data';
-import { isJobStale, computeMetrics, filterJobs, exportJobsToCSV } from '../helpers';
+import {
+  isJobStale,
+  filterJobsByTimeline,
+  computeMetrics,
+  filterJobs,
+  exportJobsToCSV,
+} from '../helpers';
 
 export function useDashboardJobs() {
   const [jobs, setJobs] = useState<Job[]>(INITIAL_MOCK_JOBS);
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
   const [viewMode, setViewMode] = useState<'list' | 'kanban'>('list');
   const [timelineFilter, setTimelineFilter] = useState<TimelineFilter>('all');
+  const [customRange, setCustomRange] = useState<CustomDateRange>({ startDate: '', endDate: '' });
   const [searchQuery, setSearchQuery] = useState('');
   const [staleOnlyFilter, setStaleOnlyFilter] = useState(false);
   const [nowTime, setNowTime] = useState<number>(1729792800000);
@@ -54,11 +61,28 @@ export function useDashboardJobs() {
     document.documentElement.setAttribute('data-theme', nextTheme);
   };
 
-  const staleCount = useMemo(() => jobs.filter((j) => isJobStale(j, nowTime)).length, [jobs, nowTime]);
-  const metrics = useMemo(() => computeMetrics(jobs, nowTime), [jobs, nowTime]);
+  // 1. Scoped jobs for the chosen timeline filter & optional custom range
+  const timelineScopedJobs = useMemo(
+    () => filterJobsByTimeline(jobs, timelineFilter, nowTime, customRange),
+    [jobs, timelineFilter, nowTime, customRange]
+  );
+
+  // 2. Metrics computed strictly over the timeline-scoped jobs
+  const metrics = useMemo(
+    () => computeMetrics(timelineScopedJobs, timelineFilter, nowTime, customRange),
+    [timelineScopedJobs, timelineFilter, nowTime, customRange]
+  );
+
+  // 3. Stale jobs in current scope
+  const staleCount = useMemo(
+    () => timelineScopedJobs.filter((j) => isJobStale(j, nowTime)).length,
+    [timelineScopedJobs, nowTime]
+  );
+
+  // 4. Filtered jobs for list and board views (search + stale)
   const filteredJobs = useMemo(
-    () => filterJobs(jobs, searchQuery, staleOnlyFilter, timelineFilter, nowTime),
-    [jobs, searchQuery, staleOnlyFilter, timelineFilter, nowTime]
+    () => filterJobs(timelineScopedJobs, searchQuery, staleOnlyFilter, nowTime),
+    [timelineScopedJobs, searchQuery, staleOnlyFilter, nowTime]
   );
 
   const handleApplyAndAdvance = async (job: Job, e?: React.MouseEvent) => {
@@ -105,9 +129,12 @@ export function useDashboardJobs() {
   };
 
   return {
-    jobs, setJobs, theme, toggleTheme, viewMode, setViewMode, timelineFilter, setTimelineFilter,
-    searchQuery, setSearchQuery, staleOnlyFilter, setStaleOnlyFilter, nowTime, currentUser,
-    staleCount, metrics, filteredJobs, handleApplyAndAdvance, handleStatusChange,
-    handleDeleteJob, handleExportCSV: () => exportJobsToCSV(jobs), fetchJobs,
+    jobs, setJobs, theme, toggleTheme, viewMode, setViewMode,
+    timelineFilter, setTimelineFilter, customRange, setCustomRange,
+    searchQuery, setSearchQuery, staleOnlyFilter, setStaleOnlyFilter,
+    nowTime, currentUser, staleCount, metrics, filteredJobs,
+    timelineScopedJobs, handleApplyAndAdvance, handleStatusChange,
+    handleDeleteJob, handleExportCSV: () => exportJobsToCSV(timelineScopedJobs),
+    fetchJobs,
   };
 }

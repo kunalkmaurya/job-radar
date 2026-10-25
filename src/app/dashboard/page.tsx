@@ -475,7 +475,7 @@ function DashboardContent() {
       {/* 1. TOP NAVIGATION BAR */}
       <header className="sticky top-0 z-30 w-full border-b border-[var(--border-subtle)] bg-[var(--bg-app)]/85 backdrop-blur-xl px-[20px] py-3.5 flex items-center justify-between">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 bg-blue-500/10 border border-blue-500/20 flex items-center justify-center p-1">
+          <div className="w-8 h-8 bg-[var(--accent-primary-bg)] border border-[var(--border-subtle)] flex items-center justify-center p-1">
             <img src="/icon.svg" alt="Job Radar" className="w-5 h-5 object-contain" />
           </div>
           <span className="font-bold text-base tracking-tight">JOB RADAR</span>
@@ -514,7 +514,7 @@ function DashboardContent() {
           {/* Add Job Button */}
           <button
             onClick={() => setIsAddModalOpen(true)}
-            className="flex items-center gap-1.5 px-3.5 py-1.5 bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold shadow-lg shadow-blue-500/20 transition-all active:scale-[0.98]"
+            className="flex items-center gap-1.5 px-3.5 py-1.5 bg-[var(--accent-primary)] hover:bg-[var(--accent-primary-hover)] text-white text-xs font-semibold shadow-sm transition-all active:scale-[0.98]"
           >
             <Plus className="w-3.5 h-3.5" />
             <span>Add Job</span>
@@ -526,7 +526,7 @@ function DashboardContent() {
               id="profile-avatar-button"
               onClick={() => setIsProfileOpen(!isProfileOpen)}
               title="User Account & Profile"
-              className="w-8 h-8 border border-[var(--border-subtle)] bg-blue-500/20 hover:bg-blue-500/30 text-blue-300 font-semibold text-xs flex items-center justify-center cursor-pointer transition-colors"
+              className="w-8 h-8 border border-[var(--border-subtle)] bg-[var(--accent-primary-bg)] hover:border-[var(--accent-primary)] text-[var(--accent-primary)] font-semibold text-xs flex items-center justify-center cursor-pointer transition-colors"
             >
               {currentUser?.email ? currentUser.email.charAt(0).toUpperCase() : 'K'}
             </button>
@@ -539,7 +539,7 @@ function DashboardContent() {
                 />
                 <div className="absolute right-0 top-full mt-2 w-72 z-50 border border-[var(--border-subtle)] bg-[var(--bg-surface)] shadow-2xl p-4 text-xs space-y-3 animate-in fade-in zoom-in-95 duration-100">
                   <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 border border-blue-500/30 bg-blue-500/20 text-blue-300 font-bold text-sm flex items-center justify-center">
+                    <div className="w-9 h-9 border border-[var(--border-subtle)] bg-[var(--accent-primary-bg)] text-[var(--accent-primary)] font-bold text-sm flex items-center justify-center">
                       {currentUser?.email ? currentUser.email.charAt(0).toUpperCase() : 'K'}
                     </div>
                     <div className="flex-1 min-w-0">
@@ -600,7 +600,7 @@ function DashboardContent() {
           <div className="p-4 border border-[var(--border-subtle)] bg-[var(--bg-surface)] flex flex-col justify-between">
             <div className="flex items-center justify-between text-[var(--text-secondary)]">
               <span className="text-xs font-medium">Total Captured</span>
-              <Briefcase className="w-4 h-4 text-blue-400" />
+              <Briefcase className="w-4 h-4 text-[var(--accent-primary)]" />
             </div>
             <div className="mt-2 text-2xl font-bold tracking-tight">{metrics.totalJobs}</div>
             <span className="text-[11px] text-[var(--text-muted)] mt-1">All-time applications tracked</span>
@@ -652,7 +652,7 @@ function DashboardContent() {
                 placeholder="Search company or role... (Press '/' to focus)"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-9 pr-4 py-2 text-xs border border-[var(--border-subtle)] bg-[var(--bg-surface)] text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:border-blue-500 transition-colors"
+                className="w-full pl-9 pr-4 py-2 text-xs border border-[var(--border-subtle)] bg-[var(--bg-surface)] text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:border-[var(--border-focus)] transition-colors"
               />
               {searchQuery && (
                 <button
@@ -689,7 +689,7 @@ function DashboardContent() {
                   onClick={() => setTimelineFilter(tab)}
                   className={`px-2.5 py-1 capitalize transition-all ${
                     timelineFilter === tab
-                      ? 'bg-blue-600 text-white font-medium shadow-sm'
+                      ? 'bg-[var(--accent-primary)] text-white font-medium shadow-sm'
                       : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
                   }`}
                 >
@@ -704,7 +704,7 @@ function DashboardContent() {
                 onClick={() => setViewMode('list')}
                 className={`px-2.5 py-1 transition-all ${
                   viewMode === 'list'
-                    ? 'bg-blue-600 text-white font-medium'
+                    ? 'bg-[var(--accent-primary)] text-white font-medium shadow-sm'
                     : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
                 }`}
               >
@@ -714,7 +714,7 @@ function DashboardContent() {
                 onClick={() => setViewMode('kanban')}
                 className={`px-2.5 py-1 transition-all ${
                   viewMode === 'kanban'
-                    ? 'bg-blue-600 text-white font-medium'
+                    ? 'bg-[var(--accent-primary)] text-white font-medium shadow-sm'
                     : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
                 }`}
               >
@@ -758,7 +758,7 @@ function DashboardContent() {
                           {/* Company */}
                           <td className="py-3.5 px-4">
                             <div className="flex items-center gap-2.5">
-                              <div className="w-7 h-7 bg-blue-500/10 border border-blue-500/20 text-blue-400 font-bold text-xs flex items-center justify-center">
+                              <div className="w-7 h-7 bg-[var(--accent-primary-bg)] border border-[var(--border-subtle)] text-[var(--accent-primary)] font-bold text-xs flex items-center justify-center">
                                 {job.company.charAt(0)}
                               </div>
                               <span className="font-semibold text-sm text-[var(--text-primary)]">
@@ -820,7 +820,7 @@ function DashboardContent() {
                               {job.status === 'Saved' && (
                                 <button
                                   onClick={(e) => handleApplyAndAdvance(job, e)}
-                                  className="flex items-center gap-1 px-2.5 py-1 bg-blue-600/10 border border-blue-500/30 text-blue-400 hover:bg-blue-600 hover:text-white transition-all text-xs font-medium"
+                                  className="flex items-center gap-1 px-2.5 py-1 bg-[var(--accent-primary-bg)] border border-[var(--border-subtle)] text-[var(--accent-primary)] hover:bg-[var(--accent-primary)] hover:text-white transition-all text-xs font-medium"
                                 >
                                   <span>Apply</span>
                                   <ArrowUpRight className="w-3 h-3" />
@@ -884,7 +884,7 @@ function DashboardContent() {
                       <div
                         key={job.id}
                         onClick={() => setSelectedDrawerJob(job)}
-                        className="p-3.5 border border-[var(--border-subtle)] bg-[var(--bg-surface)] hover:border-blue-500/40 cursor-pointer transition-all shadow-sm space-y-2"
+                        className="p-3.5 border border-[var(--border-subtle)] bg-[var(--bg-surface)] hover:border-[var(--accent-primary)] cursor-pointer transition-all shadow-sm space-y-2"
                       >
                         <div className="flex items-center justify-between">
                           <span className="font-bold text-sm">{job.company}</span>
@@ -904,7 +904,7 @@ function DashboardContent() {
                           {job.status === 'Saved' ? (
                             <button
                               onClick={(e) => handleApplyAndAdvance(job, e)}
-                              className="text-blue-400 hover:underline flex items-center gap-0.5"
+                              className="text-[var(--accent-primary)] hover:underline flex items-center gap-0.5"
                             >
                               Apply ↗
                             </button>
@@ -966,7 +966,7 @@ function DashboardContent() {
                   href={selectedDrawerJob.link}
                   target="_blank"
                   rel="noreferrer"
-                  className="flex items-center gap-1.5 text-xs text-blue-400 hover:underline px-3 py-1.5 border border-blue-500/20 bg-blue-500/10"
+                  className="flex items-center gap-1.5 text-xs text-[var(--accent-primary)] hover:underline px-3 py-1.5 border border-[var(--border-subtle)] bg-[var(--accent-primary-bg)]"
                 >
                   <span>Open Career Link</span>
                   <ArrowUpRight className="w-3.5 h-3.5" />
@@ -987,7 +987,7 @@ function DashboardContent() {
                       setDrawerFollowUp(e.target.value);
                       handleSaveDrawerNotes();
                     }}
-                    className="flex-1 px-3 py-1.5 text-xs border border-[var(--border-subtle)] bg-[var(--bg-app)] text-[var(--text-primary)] focus:outline-none focus:border-blue-500"
+                    className="flex-1 px-3 py-1.5 text-xs border border-[var(--border-subtle)] bg-[var(--bg-app)] text-[var(--text-primary)] focus:outline-none focus:border-[var(--border-focus)]"
                   />
                   <button
                     onClick={() => {
@@ -1017,7 +1017,7 @@ function DashboardContent() {
                     <FileText className="w-3.5 h-3.5" />
                     <span>Personal Notes & Scratchpad</span>
                   </label>
-                  {isSavingNotes && <span className="text-[10px] text-blue-400">Saving...</span>}
+                  {isSavingNotes && <span className="text-[10px] text-[var(--accent-primary)]">Saving...</span>}
                 </div>
                 <textarea
                   rows={8}
@@ -1025,7 +1025,7 @@ function DashboardContent() {
                   onChange={(e) => setDrawerNotes(e.target.value)}
                   onBlur={handleSaveDrawerNotes}
                   placeholder="Jot down referral contacts, phone screen discussion points, recruiter email, or expected compensation..."
-                  className="w-full p-3 text-xs border border-[var(--border-subtle)] bg-[var(--bg-app)] text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:border-blue-500 leading-relaxed"
+                  className="w-full p-3 text-xs border border-[var(--border-subtle)] bg-[var(--bg-app)] text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:border-[var(--border-focus)] leading-relaxed"
                 />
               </div>
 
@@ -1050,7 +1050,7 @@ function DashboardContent() {
               </button>
               <button
                 onClick={handleSaveDrawerNotes}
-                className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white font-medium text-xs"
+                className="px-4 py-2 bg-[var(--accent-primary)] hover:bg-[var(--accent-primary-hover)] text-white font-medium text-xs shadow-sm"
               >
                 Save Notes
               </button>
@@ -1077,7 +1077,7 @@ function DashboardContent() {
               <button
                 onClick={() => setAddTab('fetch')}
                 className={`flex-1 py-1.5 font-medium transition-all ${
-                  addTab === 'fetch' ? 'bg-blue-600 text-white shadow-sm' : 'text-[var(--text-secondary)]'
+                  addTab === 'fetch' ? 'bg-[var(--accent-primary)] text-white shadow-sm' : 'text-[var(--text-secondary)]'
                 }`}
               >
                 Auto-Fetch Link
@@ -1085,7 +1085,7 @@ function DashboardContent() {
               <button
                 onClick={() => setAddTab('manual')}
                 className={`flex-1 py-1.5 font-medium transition-all ${
-                  addTab === 'manual' ? 'bg-blue-600 text-white shadow-sm' : 'text-[var(--text-secondary)]'
+                  addTab === 'manual' ? 'bg-[var(--accent-primary)] text-white shadow-sm' : 'text-[var(--text-secondary)]'
                 }`}
               >
                 Manual Entry
@@ -1102,12 +1102,12 @@ function DashboardContent() {
                   placeholder="https://..."
                   value={fetchUrl}
                   onChange={(e) => setFetchUrl(e.target.value)}
-                  className="w-full px-3.5 py-2.5 text-xs border border-[var(--border-subtle)] bg-[var(--bg-app)] text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:border-blue-500"
+                  className="w-full px-3.5 py-2.5 text-xs border border-[var(--border-subtle)] bg-[var(--bg-app)] text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:border-[var(--border-focus)]"
                 />
                 <button
                   onClick={handleAutoFetch}
                   disabled={!fetchUrl || isScraping}
-                  className="w-full flex items-center justify-center gap-2 py-2.5 bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white text-xs font-semibold transition-all shadow-md"
+                  className="w-full flex items-center justify-center gap-2 py-2.5 bg-[var(--accent-primary)] hover:bg-[var(--accent-primary-hover)] disabled:opacity-50 text-white text-xs font-semibold transition-all shadow-sm"
                 >
                   {isScraping ? (
                     <>
@@ -1132,7 +1132,7 @@ function DashboardContent() {
                     placeholder="e.g. Stripe"
                     value={manualForm.company}
                     onChange={(e) => setManualForm({ ...manualForm, company: e.target.value })}
-                    className="w-full px-3.5 py-2 border border-[var(--border-subtle)] bg-[var(--bg-app)] text-[var(--text-primary)] focus:outline-none focus:border-blue-500"
+                    className="w-full px-3.5 py-2 border border-[var(--border-subtle)] bg-[var(--bg-app)] text-[var(--text-primary)] focus:outline-none focus:border-[var(--border-focus)]"
                   />
                 </div>
                 <div>
@@ -1143,7 +1143,7 @@ function DashboardContent() {
                     placeholder="e.g. Staff Infrastructure Engineer"
                     value={manualForm.role}
                     onChange={(e) => setManualForm({ ...manualForm, role: e.target.value })}
-                    className="w-full px-3.5 py-2 border border-[var(--border-subtle)] bg-[var(--bg-app)] text-[var(--text-primary)] focus:outline-none focus:border-blue-500"
+                    className="w-full px-3.5 py-2 border border-[var(--border-subtle)] bg-[var(--bg-app)] text-[var(--text-primary)] focus:outline-none focus:border-[var(--border-focus)]"
                   />
                 </div>
                 <div>
@@ -1154,7 +1154,7 @@ function DashboardContent() {
                     placeholder="https://..."
                     value={manualForm.link}
                     onChange={(e) => setManualForm({ ...manualForm, link: e.target.value })}
-                    className="w-full px-3.5 py-2 border border-[var(--border-subtle)] bg-[var(--bg-app)] text-[var(--text-primary)] focus:outline-none focus:border-blue-500"
+                    className="w-full px-3.5 py-2 border border-[var(--border-subtle)] bg-[var(--bg-app)] text-[var(--text-primary)] focus:outline-none focus:border-[var(--border-focus)]"
                   />
                 </div>
                 <div>
@@ -1173,7 +1173,7 @@ function DashboardContent() {
                 </div>
                 <button
                   type="submit"
-                  className="w-full py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-semibold transition-all shadow-md mt-2"
+                  className="w-full py-2.5 bg-[var(--accent-primary)] hover:bg-[var(--accent-primary-hover)] text-white font-semibold transition-all shadow-sm mt-2"
                 >
                   Save Job to Board
                 </button>
@@ -1191,7 +1191,7 @@ function DashboardContent() {
           <div className="relative w-full max-w-md border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-6 shadow-2xl z-10 space-y-4 text-xs">
             <div className="flex items-center justify-between">
               <h3 className="font-bold text-base flex items-center gap-2">
-                <Bookmark className="w-4 h-4 text-blue-400" />
+                <Bookmark className="w-4 h-4 text-[var(--accent-primary)]" />
                 <span>1-Click Browser Bookmarklet</span>
               </h3>
               <button onClick={() => setIsBookmarkletModalOpen(false)} className="text-[var(--text-muted)] hover:text-white">
@@ -1203,11 +1203,11 @@ function DashboardContent() {
               Drag this button to your browser bookmarks bar. When viewing any job on LinkedIn or Workday, click it to save instantly:
             </p>
 
-            <div className="p-4 border border-dashed border-blue-500/40 bg-blue-500/10 text-center">
+            <div className="p-4 border border-dashed border-[var(--accent-primary)]/40 bg-[var(--accent-primary-bg)] text-center">
               <a
                 href="javascript:(function(){const url=encodeURIComponent(window.location.href);alert('Job link captured for Job Radar: ' + window.location.href);})();"
                 onClick={(e) => e.preventDefault()}
-                className="inline-block px-4 py-2 bg-blue-600 text-white font-semibold shadow cursor-grab active:cursor-grabbing"
+                className="inline-block px-4 py-2 bg-[var(--accent-primary)] hover:bg-[var(--accent-primary-hover)] text-white font-semibold shadow-sm cursor-grab active:cursor-grabbing"
               >
                 + Add to Job Radar
               </a>

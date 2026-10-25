@@ -53,3 +53,20 @@ export function isAllowedEmail(email: string): boolean {
   }
   return email.toLowerCase() === allowed.toLowerCase();
 }
+
+/**
+ * Verifies email and password credentials for direct login
+ */
+export function verifyCredentials(email: string, password: string): { valid: boolean; reason?: string } {
+  if (!isAllowedEmail(email)) {
+    return { valid: false, reason: 'This email is not authorized on this private workspace.' };
+  }
+
+  const expectedPassword = process.env.AUTH_PASSWORD || process.env.ADMIN_PASSWORD || 'radar@2026';
+  if (password !== expectedPassword) {
+    return { valid: false, reason: 'Incorrect password. Please try again.' };
+  }
+
+  return { valid: true };
+}
+

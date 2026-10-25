@@ -20,8 +20,13 @@ export function DrawerFollowUp({ value, nowTime, onChange }: DrawerFollowUpProps
         <input
           type="date"
           value={value}
+          onClick={(e) => {
+            try {
+              e.currentTarget.showPicker?.();
+            } catch {}
+          }}
           onChange={(e) => onChange(e.target.value)}
-          className="flex-1 px-3 py-1.5 text-xs border border-[var(--border-subtle)] bg-[var(--bg-app)] text-[var(--text-primary)] focus:outline-none focus:border-[var(--border-focus)]"
+          className="flex-1 px-3 py-1.5 text-xs border border-[var(--border-subtle)] bg-[var(--bg-app)] text-[var(--text-primary)] focus:outline-none focus:border-[var(--border-focus)] cursor-pointer"
         />
         <button
           onClick={() => {

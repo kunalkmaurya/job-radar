@@ -17,9 +17,15 @@ export const TIMELINE_FILTERS = [
   'today',
   'this_week',
   'past_30_days',
+  'custom',
 ] as const;
 
 export type TimelineFilter = typeof TIMELINE_FILTERS[number];
+
+export interface CustomDateRange {
+  startDate: string;
+  endDate: string;
+}
 
 // AI Extracted Job Schema
 export const ExtractedJobSchema = z.object({

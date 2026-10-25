@@ -2,7 +2,6 @@
 
 import React, { useEffect } from 'react';
 import { Search, X, AlertTriangle } from 'lucide-react';
-import { TimelineFilter } from '@/types';
 
 interface ControlBarProps {
   searchQuery: string;
@@ -10,8 +9,6 @@ interface ControlBarProps {
   staleCount: number;
   staleOnlyFilter: boolean;
   onToggleStaleFilter: () => void;
-  timelineFilter: TimelineFilter;
-  onSelectTimeline: (filter: TimelineFilter) => void;
   viewMode: 'list' | 'kanban';
   onSelectViewMode: (mode: 'list' | 'kanban') => void;
 }
@@ -22,8 +19,6 @@ export function ControlBar({
   staleCount,
   staleOnlyFilter,
   onToggleStaleFilter,
-  timelineFilter,
-  onSelectTimeline,
   viewMode,
   onSelectViewMode,
 }: ControlBarProps) {
@@ -83,28 +78,11 @@ export function ControlBar({
       </div>
 
       <div className="flex items-center gap-2.5">
-        {/* Timeline Filter Segmented Tabs */}
-        <div className="flex items-center p-1 border border-[var(--border-subtle)] bg-[var(--bg-surface)] text-xs">
-          {(['all', 'today', 'this_week', 'past_30_days'] as TimelineFilter[]).map((tab) => (
-            <button
-              key={tab}
-              onClick={() => onSelectTimeline(tab)}
-              className={`px-2.5 py-1 capitalize transition-all cursor-pointer ${
-                timelineFilter === tab
-                  ? 'bg-[var(--accent-primary)] text-white font-medium shadow-sm'
-                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
-              }`}
-            >
-              {tab.replace('_', ' ')}
-            </button>
-          ))}
-        </div>
-
         {/* View Mode Switcher */}
         <div className="flex items-center p-1 border border-[var(--border-subtle)] bg-[var(--bg-surface)] text-xs">
           <button
             onClick={() => onSelectViewMode('list')}
-            className={`px-2.5 py-1 transition-all cursor-pointer ${
+            className={`px-3 py-1 transition-all cursor-pointer ${
               viewMode === 'list'
                 ? 'bg-[var(--accent-primary)] text-white font-medium shadow-sm'
                 : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
@@ -114,7 +92,7 @@ export function ControlBar({
           </button>
           <button
             onClick={() => onSelectViewMode('kanban')}
-            className={`px-2.5 py-1 transition-all cursor-pointer ${
+            className={`px-3 py-1 transition-all cursor-pointer ${
               viewMode === 'kanban'
                 ? 'bg-[var(--accent-primary)] text-white font-medium shadow-sm'
                 : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'

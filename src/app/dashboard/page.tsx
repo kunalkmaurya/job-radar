@@ -1,14 +1,15 @@
 'use client';
 
 import React, { useState, Suspense } from 'react';
-import { Job, JobStatus } from '@/types';
 import {
   useDashboardJobs,
+  useJobDrawer,
   DashboardHeader,
-  AnalyticsRibbon,
-  ControlBar,
-  JobListView,
-  JobKanbanView,
+  DashboardNavTabs,
+  DashboardTab,
+  PipelineView,
+  AnalyticsView,
+  SettingsView,
   NotesDrawer,
   AddJobModal,
   BookmarkletModal,
@@ -17,39 +18,23 @@ import {
 function DashboardContent() {
   const {
     jobs, setJobs, theme, toggleTheme, viewMode, setViewMode,
-    timelineFilter, setTimelineFilter, searchQuery, setSearchQuery,
-    staleOnlyFilter, setStaleOnlyFilter, nowTime, currentUser,
-    staleCount, metrics, filteredJobs, handleApplyAndAdvance,
-    handleStatusChange, handleDeleteJob, handleExportCSV, fetchJobs,
+    timelineFilter, setTimelineFilter, customRange, setCustomRange,
+    searchQuery, setSearchQuery, staleOnlyFilter, setStaleOnlyFilter,
+    nowTime, currentUser, staleCount, metrics, filteredJobs,
+    timelineScopedJobs, handleApplyAndAdvance, handleStatusChange,
+    handleDeleteJob, handleExportCSV, fetchJobs,
   } = useDashboardJobs();
 
+  const [activeNavTab, setActiveNavTab] = useState<DashboardTab>('dashboard');
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [isBookmarkletOpen, setIsBookmarkletOpen] = useState(false);
-  const [drawerJob, setDrawerJob] = useState<Job | null>(null);
 
-  const handleSaveNotes = async (jobId: string, notes: string, followUpDate: string | null) => {
-    try {
-      await fetch(`/api/jobs/${jobId}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ notes, followUpDate }),
-      });
-      setJobs((prev) => prev.map((j) => (j.id === jobId ? { ...j, notes, followUpDate, updatedAt: new Date(nowTime) } : j)));
-      if (drawerJob?.id === jobId) setDrawerJob((prev) => (prev ? { ...prev, notes, followUpDate } : null));
-    } catch (err) {
-      console.error('Failed to save notes:', err);
-    }
-  };
-
-  const onJobStatusChange = (jobId: string, status: JobStatus) => {
-    handleStatusChange(jobId, status);
-    if (drawerJob?.id === jobId) setDrawerJob((prev) => (prev ? { ...prev, status } : null));
-  };
-
-  const onJobDelete = (jobId: string) => {
-    handleDeleteJob(jobId);
-    if (drawerJob?.id === jobId) setDrawerJob(null);
-  };
+  const { drawerJob, setDrawerJob, handleSaveNotes, onJobStatusChange, onJobDelete } = useJobDrawer({
+    nowTime,
+    setJobs,
+    handleStatusChange,
+    handleDeleteJob,
+  });
 
   return (
     <div className="min-h-screen flex flex-col bg-[var(--bg-app)] text-[var(--text-primary)]">
@@ -62,36 +47,57 @@ function DashboardContent() {
         currentUser={currentUser}
       />
 
+      <DashboardNavTabs
+        activeTab={activeNavTab}
+        onTabChange={setActiveNavTab}
+        jobCount={jobs.length}
+      />
+
       <div className="w-full px-[20px] py-6 space-y-6 flex-1">
-        <AnalyticsRibbon metrics={metrics} />
-
-        <ControlBar
-          searchQuery={searchQuery}
-          onSearchChange={setSearchQuery}
-          staleCount={staleCount}
-          staleOnlyFilter={staleOnlyFilter}
-          onToggleStaleFilter={() => setStaleOnlyFilter(!staleOnlyFilter)}
-          timelineFilter={timelineFilter}
-          onSelectTimeline={setTimelineFilter}
-          viewMode={viewMode}
-          onSelectViewMode={setViewMode}
-        />
-
-        {viewMode === 'list' ? (
-          <JobListView
-            jobs={filteredJobs}
+        {activeNavTab === 'dashboard' && (
+          <PipelineView
+            timelineFilter={timelineFilter}
+            onSelectTimeline={setTimelineFilter}
+            customRange={customRange}
+            onCustomRangeChange={setCustomRange}
+            timelineScopedJobs={timelineScopedJobs}
+            totalJobsCount={jobs.length}
+            metrics={metrics}
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
+            staleCount={staleCount}
+            staleOnlyFilter={staleOnlyFilter}
+            onToggleStaleFilter={() => setStaleOnlyFilter(!staleOnlyFilter)}
+            viewMode={viewMode}
+            onSelectViewMode={setViewMode}
+            filteredJobs={filteredJobs}
             nowTime={nowTime}
             onSelectJob={setDrawerJob}
-            onStatusChange={handleStatusChange}
+            onStatusChange={onJobStatusChange}
             onApplyAndAdvance={handleApplyAndAdvance}
             onDeleteJob={onJobDelete}
           />
-        ) : (
-          <JobKanbanView
-            jobs={filteredJobs}
-            nowTime={nowTime}
-            onSelectJob={setDrawerJob}
-            onApplyAndAdvance={handleApplyAndAdvance}
+        )}
+
+        {activeNavTab === 'analytics' && (
+          <AnalyticsView
+            timelineFilter={timelineFilter}
+            onSelectTimeline={setTimelineFilter}
+            customRange={customRange}
+            onCustomRangeChange={setCustomRange}
+            timelineScopedJobs={timelineScopedJobs}
+            totalJobsCount={jobs.length}
+            metrics={metrics}
+          />
+        )}
+
+        {activeNavTab === 'settings' && (
+          <SettingsView
+            currentUser={currentUser}
+            onExportCSV={handleExportCSV}
+            totalJobs={jobs.length}
+            theme={theme}
+            onToggleTheme={toggleTheme}
           />
         )}
       </div>

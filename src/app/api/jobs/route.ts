@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { db } from '@/db';
 import { jobs } from '@/db/schema';
-import { desc, eq, and, gte } from 'drizzle-orm';
+import { desc, eq, and, gte, max, count } from 'drizzle-orm';
 import { processJobLink } from '@/lib/ingestion';
 
 export async function GET(request: Request) {
@@ -30,14 +30,42 @@ export async function GET(request: Request) {
       conditions.push(gte(jobs.createdAt, thirtyDaysAgo));
     }
 
+    // Fast metadata check for HTTP 304 (ETag / If-None-Match)
+    const [meta] = conditions.length > 0
+      ? await db.select({ lastUpdated: max(jobs.updatedAt), total: count() }).from(jobs).where(and(...conditions))
+      : await db.select({ lastUpdated: max(jobs.updatedAt), total: count() }).from(jobs);
+
+    const lastUpdatedTs = meta?.lastUpdated ? new Date(meta.lastUpdated).getTime() : 0;
+    const totalCount = meta?.total ?? 0;
+    const etag = `W/"${totalCount}-${lastUpdatedTs}"`;
+
+    const clientEtag = request.headers.get('if-none-match');
+    if (clientEtag && clientEtag === etag) {
+      return new NextResponse(null, {
+        status: 304,
+        headers: {
+          'ETag': etag,
+          'Cache-Control': 'private, no-cache',
+        },
+      });
+    }
+
     const result = conditions.length > 0
       ? await db.select().from(jobs).where(and(...conditions)).orderBy(desc(jobs.createdAt))
       : await db.select().from(jobs).orderBy(desc(jobs.createdAt));
 
-    return NextResponse.json({
-      success: true,
-      data: { jobs: result, total: result.length },
-    });
+    return NextResponse.json(
+      {
+        success: true,
+        data: { jobs: result, total: result.length },
+      },
+      {
+        headers: {
+          'ETag': etag,
+          'Cache-Control': 'private, no-cache',
+        },
+      }
+    );
   } catch (error) {
     console.error('[API /api/jobs GET Error]:', error);
     return NextResponse.json(

@@ -11,6 +11,8 @@ import {
 } from '../helpers';
 import { patchJob, deleteJobApi } from './jobApi';
 
+import { useSmartJobSync } from './useSmartJobSync';
+
 export function useDashboardJobs() {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -24,19 +26,10 @@ export function useDashboardJobs() {
   const [nowTime, setNowTime] = useState<number>(1729792800000);
   const [currentUser, setCurrentUser] = useState<{ email?: string; name?: string; role?: string } | null>(null);
 
-  const fetchJobs = useCallback(async () => {
-    try {
-      const res = await fetch('/api/jobs');
-      const json = await res.json();
-      if (json.success && Array.isArray(json.data?.jobs)) {
-        setJobs(json.data.jobs);
-      }
-    } catch (err) {
-      console.error('Failed to fetch jobs from Neon DB:', err);
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
+  const { fetchJobs, isSyncing, lastSyncedAt, revalidate } = useSmartJobSync({
+    setJobs,
+    setIsLoading,
+  });
 
   useEffect(() => {
     setNowTime(Date.now());
@@ -45,7 +38,6 @@ export function useDashboardJobs() {
       setTheme(savedTheme);
       document.documentElement.setAttribute('data-theme', savedTheme);
     }
-    fetchJobs();
 
     fetch('/api/auth/me')
       .then((res) => res.json())
@@ -53,10 +45,7 @@ export function useDashboardJobs() {
         if (json.success && json.data) setCurrentUser(json.data);
       })
       .catch((err) => console.error('Failed to fetch user:', err));
-
-    const interval = setInterval(fetchJobs, 5000);
-    return () => clearInterval(interval);
-  }, [fetchJobs]);
+  }, []);
 
   const toggleTheme = () => {
     const nextTheme = theme === 'dark' ? 'light' : 'dark';
@@ -123,7 +112,7 @@ export function useDashboardJobs() {
   };
 
   return {
-    jobs, setJobs, isLoading, theme, toggleTheme, viewMode, setViewMode,
+    jobs, setJobs, isLoading, isSyncing, lastSyncedAt, revalidate, theme, toggleTheme, viewMode, setViewMode,
     timelineFilter, setTimelineFilter, customRange, setCustomRange,
     searchQuery, setSearchQuery, staleOnlyFilter, setStaleOnlyFilter,
     statusFilter, setStatusFilter,

@@ -23,7 +23,7 @@ function DashboardContent() {
   const [isBookmarkletOpen, setIsBookmarkletOpen] = useState(false);
 
   const {
-    jobs, setJobs, isLoading, theme, toggleTheme, viewMode, setViewMode,
+    jobs, setJobs, isLoading, isSyncing, revalidate, theme, toggleTheme, viewMode, setViewMode,
     timelineFilter, setTimelineFilter, customRange, setCustomRange,
     searchQuery, setSearchQuery, staleOnlyFilter, setStaleOnlyFilter,
     statusFilter, setStatusFilter,
@@ -53,6 +53,8 @@ function DashboardContent() {
         onOpenAddJob={() => setIsAddOpen(true)}
         onOpenProfile={() => setActiveNavTab('profile')}
         currentUser={currentUser}
+        isSyncing={isSyncing}
+        onSync={revalidate}
       />
 
       <DashboardNavTabs

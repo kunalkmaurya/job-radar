@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Sun, Moon, Bookmark, Download, Plus } from 'lucide-react';
+import { Sun, Moon, Bookmark, Download, Plus, RefreshCw } from 'lucide-react';
 import { ProfilePopover } from './ProfilePopover';
 
 interface DashboardHeaderProps {
@@ -12,6 +12,8 @@ interface DashboardHeaderProps {
   onOpenAddJob: () => void;
   onOpenProfile?: () => void;
   currentUser: { email?: string; name?: string; role?: string } | null;
+  isSyncing?: boolean;
+  onSync?: () => void;
 }
 
 export function DashboardHeader({
@@ -22,6 +24,8 @@ export function DashboardHeader({
   onOpenAddJob,
   onOpenProfile,
   currentUser,
+  isSyncing,
+  onSync,
 }: DashboardHeaderProps) {
   return (
     <header className="sticky top-0 z-30 w-full border-b border-[var(--border-subtle)] bg-[var(--bg-app)]/85 backdrop-blur-xl px-[20px] py-3.5 flex items-center justify-between">
@@ -41,6 +45,19 @@ export function DashboardHeader({
         >
           {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
         </button>
+
+        {/* Cloud Sync Button */}
+        {onSync && (
+          <button
+            onClick={onSync}
+            disabled={isSyncing}
+            title={isSyncing ? 'Syncing...' : 'Sync pipeline (checks for Telegram updates)'}
+            aria-label="Sync jobs pipeline"
+            className="h-8 w-8 flex items-center justify-center border border-[var(--border-subtle)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors cursor-pointer shrink-0 disabled:opacity-50"
+          >
+            <RefreshCw className={`w-3.5 h-3.5 ${isSyncing ? 'animate-spin text-[var(--accent-primary)]' : ''}`} />
+          </button>
+        )}
 
         {/* Bookmarklet Helper */}
         <button

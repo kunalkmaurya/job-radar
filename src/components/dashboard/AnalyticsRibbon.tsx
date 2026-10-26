@@ -2,8 +2,10 @@
 
 import React from 'react';
 import { Briefcase, TrendingUp, Users, Target } from 'lucide-react';
+import { AnalyticsRibbonShimmer } from './shimmer/AnalyticsRibbonShimmer';
 
 interface AnalyticsRibbonProps {
+  isLoading?: boolean;
   metrics: {
     totalJobs: number;
     appliedCount: number;
@@ -15,7 +17,11 @@ interface AnalyticsRibbonProps {
   };
 }
 
-export function AnalyticsRibbon({ metrics }: AnalyticsRibbonProps) {
+export function AnalyticsRibbon({ metrics, isLoading = false }: AnalyticsRibbonProps) {
+  if (isLoading) {
+    return <AnalyticsRibbonShimmer />;
+  }
+
   return (
     <section className="grid grid-cols-2 lg:grid-cols-4 gap-4">
       <div className="p-4 border border-[var(--border-subtle)] bg-[var(--bg-surface)] flex flex-col justify-between">

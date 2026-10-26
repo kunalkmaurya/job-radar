@@ -4,6 +4,7 @@ import React from 'react';
 import { Calendar, SlidersHorizontal } from 'lucide-react';
 import { TimelineFilter, TIMELINE_FILTERS, CustomDateRange } from '@/types';
 import { CustomDateInputs } from './timeline/CustomDateInputs';
+import { TimelineBarShimmer } from './shimmer/TimelineBarShimmer';
 
 interface TimelineBarProps {
   timelineFilter: TimelineFilter;
@@ -12,6 +13,7 @@ interface TimelineBarProps {
   onCustomRangeChange: (range: CustomDateRange) => void;
   scopedCount: number;
   totalCount: number;
+  isLoading?: boolean;
 }
 
 export function TimelineBar({
@@ -21,7 +23,12 @@ export function TimelineBar({
   onCustomRangeChange,
   scopedCount,
   totalCount,
+  isLoading = false,
 }: TimelineBarProps) {
+  if (isLoading) {
+    return <TimelineBarShimmer />;
+  }
+
   const getFilterLabel = (f: TimelineFilter) => {
     switch (f) {
       case 'all': return 'All Time';

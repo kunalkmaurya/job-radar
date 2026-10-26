@@ -86,10 +86,8 @@ export function NotesDrawer({
         <div className="pt-4 border-t border-[var(--border-subtle)] flex items-center justify-between text-xs text-[var(--text-muted)]">
           <span>Added via {job.source}</span>
           <button
-            onClick={() => {
-              onDeleteJob(job.id);
-              onClose();
-            }}
+            type="button"
+            onClick={() => onDeleteJob(job.id)}
             className="flex items-center gap-1.5 text-red-400 hover:text-red-300 transition-colors cursor-pointer"
           >
             <Trash2 className="w-3.5 h-3.5" />

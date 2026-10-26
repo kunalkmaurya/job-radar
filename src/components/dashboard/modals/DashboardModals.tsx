@@ -5,6 +5,7 @@ import { Job, JobStatus } from '@/types';
 import { NotesDrawer } from '../NotesDrawer';
 import { AddJobModal } from '../AddJobModal';
 import { BookmarkletModal } from '../BookmarkletModal';
+import { DeleteJobModal } from './DeleteJobModal';
 
 interface DashboardModalsProps {
   drawerJob: Job | null;
@@ -15,6 +16,9 @@ interface DashboardModalsProps {
   onDeleteJob: (jobId: string) => void;
   onSaveNotes: (jobId: string, notes: string, followUpDate: string | null) => Promise<void>;
   onUpdateReferral?: (jobId: string, data: any) => Promise<void>;
+  jobToDelete?: Job | null;
+  onConfirmDelete?: () => void;
+  onCancelDelete?: () => void;
   isAddOpen: boolean;
   onCloseAdd: () => void;
   onJobAdded: (job: Job) => void;
@@ -32,6 +36,9 @@ export function DashboardModals({
   onDeleteJob,
   onSaveNotes,
   onUpdateReferral,
+  jobToDelete,
+  onConfirmDelete,
+  onCancelDelete,
   isAddOpen,
   onCloseAdd,
   onJobAdded,
@@ -60,6 +67,13 @@ export function DashboardModals({
       />
 
       <BookmarkletModal isOpen={isBookmarkletOpen} onClose={onCloseBookmarklet} />
+
+      <DeleteJobModal
+        job={jobToDelete ?? null}
+        isOpen={Boolean(jobToDelete)}
+        onConfirm={onConfirmDelete ?? (() => {})}
+        onCancel={onCancelDelete ?? (() => {})}
+      />
     </>
   );
 }

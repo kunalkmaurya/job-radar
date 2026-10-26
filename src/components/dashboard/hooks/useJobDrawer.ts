@@ -9,6 +9,7 @@ interface UseJobDrawerProps {
   handleStatusChange: (jobId: string, status: JobStatus) => void;
   handleToggleImportant?: (jobId: string) => void;
   handleDeleteJob: (jobId: string) => void;
+  jobs?: Job[];
 }
 
 export function useJobDrawer({
@@ -17,8 +18,10 @@ export function useJobDrawer({
   handleStatusChange,
   handleToggleImportant,
   handleDeleteJob,
+  jobs,
 }: UseJobDrawerProps) {
   const [drawerJob, setDrawerJob] = useState<Job | null>(null);
+  const [jobToDelete, setJobToDelete] = useState<Job | null>(null);
 
   const handleSaveNotes = async (jobId: string, notes: string, followUpDate: string | null) => {
     try {
@@ -77,9 +80,37 @@ export function useJobDrawer({
   };
 
   const onJobDelete = (jobId: string) => {
-    handleDeleteJob(jobId);
-    if (drawerJob?.id === jobId) setDrawerJob(null);
+    const target = jobs?.find((j) => j.id === jobId) || (drawerJob?.id === jobId ? drawerJob : null);
+    if (target) {
+      setJobToDelete(target);
+    } else {
+      handleDeleteJob(jobId);
+      if (drawerJob?.id === jobId) setDrawerJob(null);
+    }
   };
 
-  return { drawerJob, setDrawerJob, handleSaveNotes, handleUpdateReferral, onJobStatusChange, onJobToggleImportant, onJobDelete };
+  const confirmDeleteJob = () => {
+    if (!jobToDelete) return;
+    const id = jobToDelete.id;
+    handleDeleteJob(id);
+    if (drawerJob?.id === id) setDrawerJob(null);
+    setJobToDelete(null);
+  };
+
+  const cancelDeleteJob = () => {
+    setJobToDelete(null);
+  };
+
+  return {
+    drawerJob,
+    setDrawerJob,
+    handleSaveNotes,
+    handleUpdateReferral,
+    onJobStatusChange,
+    onJobToggleImportant,
+    onJobDelete,
+    jobToDelete,
+    confirmDeleteJob,
+    cancelDeleteJob,
+  };
 }

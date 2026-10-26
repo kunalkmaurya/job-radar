@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react';
+import { CustomSelect } from '../common/CustomSelect';
 
 interface PaginationBarProps {
   currentPage: number;
@@ -53,22 +54,16 @@ export function PaginationBar({
         </span>
 
         <div className="flex items-center gap-2">
-          <label htmlFor="page-size-select" className="text-[var(--text-muted)] whitespace-nowrap">
+          <span className="text-[var(--text-muted)] whitespace-nowrap">
             Jobs per page:
-          </label>
-          <select
-            id="page-size-select"
-            aria-label="Jobs per page"
+          </span>
+          <CustomSelect
             value={pageSize}
-            onChange={(e) => onPageSizeChange(Number(e.target.value))}
-            className="py-1 px-2.5 bg-[var(--bg-app)] border border-[var(--border-subtle)] text-[var(--text-primary)] font-medium focus:outline-none focus:border-[var(--border-focus)] transition-colors cursor-pointer"
-          >
-            {pageSizeOptions.map((opt) => (
-              <option key={opt} value={opt} className="bg-[var(--bg-surface)] text-[var(--text-primary)]">
-                {opt}
-              </option>
-            ))}
-          </select>
+            options={pageSizeOptions.map((opt) => ({ value: opt, label: `${opt}` }))}
+            onChange={onPageSizeChange}
+            ariaLabel="Jobs per page"
+            direction="up"
+          />
         </div>
       </div>
 

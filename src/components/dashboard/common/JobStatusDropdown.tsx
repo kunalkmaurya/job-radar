@@ -78,7 +78,9 @@ export function JobStatusDropdown({ status, onChange, className = '' }: JobStatu
       </button>
 
       {isOpen && (
-        <div className="absolute left-0 top-full mt-1.5 z-50 min-w-[145px] py-1 border border-[var(--border-subtle)] bg-[var(--bg-surface)] backdrop-blur-xl shadow-2xl animate-in fade-in zoom-in-95 duration-100">
+        <>
+          <div className="fixed inset-0 z-40" onClick={() => setIsOpen(false)} />
+          <div className="absolute left-0 top-full mt-1.5 z-50 min-w-[145px] py-1 border border-[var(--border-subtle)] bg-[var(--bg-surface)] backdrop-blur-xl shadow-2xl animate-in fade-in zoom-in-95 duration-100">
           {JOB_STATUSES.map((s) => {
             const conf = STATUS_CONFIG[s];
             const isSelected = s === status;
@@ -107,6 +109,7 @@ export function JobStatusDropdown({ status, onChange, className = '' }: JobStatu
             );
           })}
         </div>
+      </>
       )}
     </div>
   );

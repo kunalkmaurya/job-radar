@@ -23,7 +23,7 @@ export function JobKanbanView({
   onToggleImportant,
   onApplyAndAdvance,
 }: JobKanbanViewProps) {
-  const [cardsPerColumn, setCardsPerColumn] = useState<number | 'all'>(5);
+  const [cardsPerColumn, setCardsPerColumn] = useState<number | 'all'>(3);
   const visibleStatuses = JOB_STATUSES.filter((s) => s !== 'Archived');
 
   if (isLoading) {

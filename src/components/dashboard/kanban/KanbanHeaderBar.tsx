@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { LayoutGrid } from 'lucide-react';
+import { CustomSelect } from '../common/CustomSelect';
 
 interface KanbanHeaderBarProps {
   totalJobs: number;
@@ -10,14 +11,19 @@ interface KanbanHeaderBarProps {
   onCardsPerColumnChange: (val: number | 'all') => void;
 }
 
+const SELECT_OPTIONS: { value: number | 'all'; label: string }[] = [
+  { value: 3, label: '3 cards' },
+  { value: 5, label: '5 cards' },
+  { value: 10, label: '10 cards' },
+  { value: 'all', label: 'All (no limit)' },
+];
+
 export function KanbanHeaderBar({
   totalJobs,
   columnCount,
   cardsPerColumn,
   onCardsPerColumnChange,
 }: KanbanHeaderBarProps) {
-  const options: (number | 'all')[] = [3, 5, 10, 'all'];
-
   return (
     <div className="flex flex-col sm:flex-row items-center justify-between gap-3 p-3 bg-[var(--bg-surface)] border border-[var(--border-subtle)] text-xs text-[var(--text-secondary)]">
       <div className="flex items-center gap-2">
@@ -29,25 +35,15 @@ export function KanbanHeaderBar({
       </div>
 
       <div className="flex items-center gap-2">
-        <label htmlFor="kanban-cards-per-col" className="text-[var(--text-muted)] whitespace-nowrap">
+        <span className="text-[var(--text-muted)] whitespace-nowrap">
           Cards per column:
-        </label>
-        <select
-          id="kanban-cards-per-col"
-          aria-label="Cards per column in Kanban board"
+        </span>
+        <CustomSelect
           value={cardsPerColumn}
-          onChange={(e) => {
-            const val = e.target.value;
-            onCardsPerColumnChange(val === 'all' ? 'all' : Number(val));
-          }}
-          className="py-1 px-2.5 bg-[var(--bg-app)] border border-[var(--border-subtle)] text-[var(--text-primary)] font-medium focus:outline-none focus:border-[var(--border-focus)] transition-colors cursor-pointer"
-        >
-          {options.map((opt) => (
-            <option key={opt} value={opt} className="bg-[var(--bg-surface)] text-[var(--text-primary)]">
-              {opt === 'all' ? 'All (no limit)' : `${opt} cards`}
-            </option>
-          ))}
-        </select>
+          options={SELECT_OPTIONS}
+          onChange={onCardsPerColumnChange}
+          ariaLabel="Cards per column in Kanban board"
+        />
       </div>
     </div>
   );

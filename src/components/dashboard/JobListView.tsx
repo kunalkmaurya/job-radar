@@ -42,7 +42,7 @@ export function JobListView({
   );
 
   return (
-    <section className="border border-[var(--border-subtle)] bg-[var(--bg-surface)] overflow-hidden shadow-sm flex flex-col">
+    <section className="border border-[var(--border-subtle)] bg-[var(--bg-surface)] shadow-sm flex flex-col">
       <div className="overflow-x-auto flex-1">
         <table className="w-full text-left border-collapse text-xs">
           <JobTableHeader />

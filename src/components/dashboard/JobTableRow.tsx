@@ -1,16 +1,18 @@
 'use client';
 
 import React from 'react';
-import { ExternalLink, AlertTriangle, FileText, Trash2, ArrowUpRight } from 'lucide-react';
+import { AlertTriangle, Star } from 'lucide-react';
 import { Job, JOB_STATUSES, JobStatus } from '@/types';
 import { formatDate } from './data';
 import { isJobStale } from './helpers';
+import { JobRowActions } from './table/JobRowActions';
 
 interface JobTableRowProps {
   job: Job;
   nowTime: number;
   onSelectJob: (job: Job) => void;
   onStatusChange: (jobId: string, status: JobStatus, e?: React.MouseEvent) => void;
+  onToggleImportant?: (jobId: string, e?: React.MouseEvent) => void;
   onApplyAndAdvance: (job: Job, e?: React.MouseEvent) => void;
   onDeleteJob: (jobId: string, e?: React.MouseEvent) => void;
 }
@@ -20,16 +22,47 @@ export function JobTableRow({
   nowTime,
   onSelectJob,
   onStatusChange,
+  onToggleImportant,
   onApplyAndAdvance,
   onDeleteJob,
 }: JobTableRowProps) {
   const stale = isJobStale(job, nowTime);
+  const isImportant = Boolean(job.isImportant);
 
   return (
     <tr
       onClick={() => onSelectJob(job)}
       className="hover:bg-[var(--bg-surface-hover)] cursor-pointer transition-colors"
     >
+      {/* Important / Star Toggle */}
+      <td
+        className="py-3.5 pl-3 pr-1 w-8 text-center"
+        onClick={(e) => {
+          e.stopPropagation();
+          onToggleImportant?.(job.id, e);
+        }}
+      >
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            onToggleImportant?.(job.id, e);
+          }}
+          title={isImportant ? 'Marked as Important (Click to unmark)' : 'Mark as Important'}
+          aria-label={isImportant ? `Unmark ${job.role} at ${job.company} as important` : `Mark ${job.role} at ${job.company} as important`}
+          className="p-1 text-[var(--text-muted)] hover:text-amber-400 transition-colors cursor-pointer group inline-flex items-center justify-center"
+        >
+          <Star
+            className={`w-4 h-4 transition-transform group-hover:scale-110 active:scale-95 ${
+              isImportant
+                ? 'text-amber-400 drop-shadow-[0_0_6px_rgba(251,191,36,0.5)]'
+                : 'text-[var(--text-muted)] hover:text-amber-400'
+            }`}
+            fill={isImportant ? 'currentColor' : 'none'}
+          />
+        </button>
+      </td>
+
       {/* Company */}
       <td className="py-3.5 px-4">
         <div className="flex items-center gap-2.5">
@@ -84,44 +117,13 @@ export function JobTableRow({
       </td>
 
       {/* Quick Actions */}
-      <td className="py-3.5 px-4 text-right" onClick={(e) => e.stopPropagation()}>
-        <div className="flex items-center justify-end gap-1.5">
-          {job.status === 'Saved' && (
-            <button
-              onClick={(e) => onApplyAndAdvance(job, e)}
-              className="flex items-center gap-1 px-2.5 py-1 bg-[var(--accent-primary-bg)] border border-[var(--border-subtle)] text-[var(--accent-primary)] hover:bg-[var(--accent-primary)] hover:text-white transition-all text-xs font-medium cursor-pointer"
-            >
-              <span>Apply</span>
-              <ArrowUpRight className="w-3 h-3" />
-            </button>
-          )}
-
-          <button
-            onClick={() => onSelectJob(job)}
-            title="Open Notes"
-            className="p-1.5 hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] cursor-pointer"
-          >
-            <FileText className="w-4 h-4" />
-          </button>
-
-          <a
-            href={job.link}
-            target="_blank"
-            rel="noreferrer"
-            title="Open Link"
-            className="p-1.5 hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
-          >
-            <ExternalLink className="w-4 h-4" />
-          </a>
-
-          <button
-            onClick={(e) => onDeleteJob(job.id, e)}
-            title="Delete"
-            className="p-1.5 hover:bg-red-500/10 text-[var(--text-muted)] hover:text-red-400 cursor-pointer"
-          >
-            <Trash2 className="w-4 h-4" />
-          </button>
-        </div>
+      <td className="py-3.5 px-4 text-right">
+        <JobRowActions
+          job={job}
+          onSelectJob={onSelectJob}
+          onApplyAndAdvance={onApplyAndAdvance}
+          onDeleteJob={onDeleteJob}
+        />
       </td>
     </tr>
   );

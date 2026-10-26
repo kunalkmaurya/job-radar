@@ -17,22 +17,24 @@ import {
 
 function DashboardContent() {
   const {
-    jobs, setJobs, theme, toggleTheme, viewMode, setViewMode,
+    jobs, setJobs, isLoading, theme, toggleTheme, viewMode, setViewMode,
     timelineFilter, setTimelineFilter, customRange, setCustomRange,
     searchQuery, setSearchQuery, staleOnlyFilter, setStaleOnlyFilter,
+    statusFilter, setStatusFilter,
     nowTime, currentUser, staleCount, metrics, filteredJobs,
     timelineScopedJobs, handleApplyAndAdvance, handleStatusChange,
-    handleDeleteJob, handleExportCSV, fetchJobs,
+    handleToggleImportant, handleDeleteJob, handleExportCSV, fetchJobs,
   } = useDashboardJobs();
 
   const [activeNavTab, setActiveNavTab] = useState<DashboardTab>('dashboard');
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [isBookmarkletOpen, setIsBookmarkletOpen] = useState(false);
 
-  const { drawerJob, setDrawerJob, handleSaveNotes, onJobStatusChange, onJobDelete } = useJobDrawer({
+  const { drawerJob, setDrawerJob, handleSaveNotes, onJobStatusChange, onJobToggleImportant, onJobDelete } = useJobDrawer({
     nowTime,
     setJobs,
     handleStatusChange,
+    handleToggleImportant,
     handleDeleteJob,
   });
 
@@ -62,6 +64,7 @@ function DashboardContent() {
             onCustomRangeChange={setCustomRange}
             timelineScopedJobs={timelineScopedJobs}
             totalJobsCount={jobs.length}
+            isLoading={isLoading}
             metrics={metrics}
             searchQuery={searchQuery}
             onSearchChange={setSearchQuery}
@@ -71,9 +74,12 @@ function DashboardContent() {
             viewMode={viewMode}
             onSelectViewMode={setViewMode}
             filteredJobs={filteredJobs}
+            statusFilter={statusFilter}
+            onSelectStatus={setStatusFilter}
             nowTime={nowTime}
             onSelectJob={setDrawerJob}
             onStatusChange={onJobStatusChange}
+            onToggleImportant={handleToggleImportant}
             onApplyAndAdvance={handleApplyAndAdvance}
             onDeleteJob={onJobDelete}
           />
@@ -107,6 +113,7 @@ function DashboardContent() {
         nowTime={nowTime}
         onClose={() => setDrawerJob(null)}
         onStatusChange={onJobStatusChange}
+        onToggleImportant={onJobToggleImportant}
         onDeleteJob={onJobDelete}
         onSaveNotes={handleSaveNotes}
       />

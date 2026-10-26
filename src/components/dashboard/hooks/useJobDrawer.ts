@@ -7,10 +7,17 @@ interface UseJobDrawerProps {
   nowTime: number;
   setJobs: React.Dispatch<React.SetStateAction<Job[]>>;
   handleStatusChange: (jobId: string, status: JobStatus) => void;
+  handleToggleImportant?: (jobId: string) => void;
   handleDeleteJob: (jobId: string) => void;
 }
 
-export function useJobDrawer({ nowTime, setJobs, handleStatusChange, handleDeleteJob }: UseJobDrawerProps) {
+export function useJobDrawer({
+  nowTime,
+  setJobs,
+  handleStatusChange,
+  handleToggleImportant,
+  handleDeleteJob,
+}: UseJobDrawerProps) {
   const [drawerJob, setDrawerJob] = useState<Job | null>(null);
 
   const handleSaveNotes = async (jobId: string, notes: string, followUpDate: string | null) => {
@@ -36,10 +43,17 @@ export function useJobDrawer({ nowTime, setJobs, handleStatusChange, handleDelet
     if (drawerJob?.id === jobId) setDrawerJob((prev) => (prev ? { ...prev, status } : null));
   };
 
+  const onJobToggleImportant = (jobId: string) => {
+    handleToggleImportant?.(jobId);
+    if (drawerJob?.id === jobId) {
+      setDrawerJob((prev) => (prev ? { ...prev, isImportant: !prev.isImportant } : null));
+    }
+  };
+
   const onJobDelete = (jobId: string) => {
     handleDeleteJob(jobId);
     if (drawerJob?.id === jobId) setDrawerJob(null);
   };
 
-  return { drawerJob, setDrawerJob, handleSaveNotes, onJobStatusChange, onJobDelete };
+  return { drawerJob, setDrawerJob, handleSaveNotes, onJobStatusChange, onJobToggleImportant, onJobDelete };
 }

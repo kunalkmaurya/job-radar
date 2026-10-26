@@ -12,6 +12,7 @@ interface NotesDrawerProps {
   nowTime: number;
   onClose: () => void;
   onStatusChange: (jobId: string, status: JobStatus) => void;
+  onToggleImportant?: (jobId: string) => void;
   onDeleteJob: (jobId: string) => void;
   onSaveNotes: (jobId: string, notes: string, followUpDate: string | null) => Promise<void>;
 }
@@ -21,6 +22,7 @@ export function NotesDrawer({
   nowTime,
   onClose,
   onStatusChange,
+  onToggleImportant,
   onDeleteJob,
   onSaveNotes,
 }: NotesDrawerProps) {
@@ -49,7 +51,12 @@ export function NotesDrawer({
 
       <div className="relative w-full max-w-md bg-[var(--bg-surface)] border-l border-[var(--border-subtle)] p-6 shadow-2xl flex flex-col justify-between z-10 animate-in slide-in-from-right duration-200">
         <div className="space-y-6">
-          <DrawerHeader job={job} onClose={onClose} onStatusChange={onStatusChange} />
+          <DrawerHeader
+            job={job}
+            onClose={onClose}
+            onStatusChange={onStatusChange}
+            onToggleImportant={onToggleImportant}
+          />
 
           <DrawerFollowUp
             value={drawerFollowUp}
@@ -65,23 +72,21 @@ export function NotesDrawer({
             notes={drawerNotes}
             isSaving={isSaving}
             onNotesChange={setDrawerNotes}
-            onSave={() => handleSave()}
+            onSave={() => handleSave(drawerNotes, drawerFollowUp)}
           />
         </div>
 
-        <div className="pt-4 border-t border-[var(--border-subtle)] flex items-center justify-between">
+        <div className="pt-4 border-t border-[var(--border-subtle)] flex items-center justify-between text-xs text-[var(--text-muted)]">
+          <span>Added via {job.source}</span>
           <button
-            onClick={() => onDeleteJob(job.id)}
-            className="flex items-center gap-1 text-xs text-red-400 hover:text-red-300 cursor-pointer"
+            onClick={() => {
+              onDeleteJob(job.id);
+              onClose();
+            }}
+            className="flex items-center gap-1.5 text-red-400 hover:text-red-300 transition-colors cursor-pointer"
           >
             <Trash2 className="w-3.5 h-3.5" />
-            <span>Delete Job</span>
-          </button>
-          <button
-            onClick={() => handleSave()}
-            className="px-4 py-2 bg-[var(--accent-primary)] hover:bg-[var(--accent-primary-hover)] text-white font-medium text-xs shadow-sm cursor-pointer"
-          >
-            Save Notes
+            <span>Delete job</span>
           </button>
         </div>
       </div>

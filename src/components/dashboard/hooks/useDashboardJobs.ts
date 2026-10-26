@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { Job, JobStatus, TimelineFilter, CustomDateRange } from '@/types';
-import { INITIAL_MOCK_JOBS } from '../data';
 import {
   isJobStale,
   filterJobsByTimeline,
@@ -10,15 +9,18 @@ import {
   filterJobs,
   exportJobsToCSV,
 } from '../helpers';
+import { patchJob, deleteJobApi } from './jobApi';
 
 export function useDashboardJobs() {
-  const [jobs, setJobs] = useState<Job[]>(INITIAL_MOCK_JOBS);
+  const [jobs, setJobs] = useState<Job[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
   const [viewMode, setViewMode] = useState<'list' | 'kanban'>('list');
   const [timelineFilter, setTimelineFilter] = useState<TimelineFilter>('all');
   const [customRange, setCustomRange] = useState<CustomDateRange>({ startDate: '', endDate: '' });
   const [searchQuery, setSearchQuery] = useState('');
   const [staleOnlyFilter, setStaleOnlyFilter] = useState(false);
+  const [statusFilter, setStatusFilter] = useState<JobStatus | 'all'>('all');
   const [nowTime, setNowTime] = useState<number>(1729792800000);
   const [currentUser, setCurrentUser] = useState<{ email?: string; name?: string; role?: string } | null>(null);
 
@@ -26,11 +28,13 @@ export function useDashboardJobs() {
     try {
       const res = await fetch('/api/jobs');
       const json = await res.json();
-      if (json.success && json.data?.jobs?.length > 0) {
+      if (json.success && Array.isArray(json.data?.jobs)) {
         setJobs(json.data.jobs);
       }
     } catch (err) {
       console.error('Failed to fetch jobs from Neon DB:', err);
+    } finally {
+      setIsLoading(false);
     }
   }, []);
 
@@ -61,25 +65,21 @@ export function useDashboardJobs() {
     document.documentElement.setAttribute('data-theme', nextTheme);
   };
 
-  // 1. Scoped jobs for the chosen timeline filter & optional custom range
   const timelineScopedJobs = useMemo(
     () => filterJobsByTimeline(jobs, timelineFilter, nowTime, customRange),
     [jobs, timelineFilter, nowTime, customRange]
   );
 
-  // 2. Metrics computed strictly over the timeline-scoped jobs
   const metrics = useMemo(
     () => computeMetrics(timelineScopedJobs, timelineFilter, nowTime, customRange),
     [timelineScopedJobs, timelineFilter, nowTime, customRange]
   );
 
-  // 3. Stale jobs in current scope
   const staleCount = useMemo(
     () => timelineScopedJobs.filter((j) => isJobStale(j, nowTime)).length,
     [timelineScopedJobs, nowTime]
   );
 
-  // 4. Filtered jobs for list and board views (search + stale)
   const filteredJobs = useMemo(
     () => filterJobs(timelineScopedJobs, searchQuery, staleOnlyFilter, nowTime),
     [timelineScopedJobs, searchQuery, staleOnlyFilter, nowTime]
@@ -90,15 +90,8 @@ export function useDashboardJobs() {
     window.open(job.link, '_blank');
     const appliedAt = new Date(nowTime);
     setJobs((prev) => prev.map((j) => (j.id === job.id ? { ...j, status: 'Applied' as JobStatus, appliedAt, updatedAt: appliedAt } : j)));
-    try {
-      await fetch(`/api/jobs/${job.id}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status: 'Applied', appliedAt: appliedAt.toISOString() }),
-      });
-    } catch (err) {
-      console.error('Failed to sync apply status:', err);
-    }
+    setStatusFilter('Applied');
+    await patchJob(job.id, { status: 'Applied', appliedAt: appliedAt.toISOString() });
   };
 
   const handleStatusChange = async (jobId: string, newStatus: JobStatus, e?: React.MouseEvent) => {
@@ -107,34 +100,37 @@ export function useDashboardJobs() {
     setJobs((prev) =>
       prev.map((j) => (j.id === jobId ? { ...j, status: newStatus, appliedAt: appliedAt || j.appliedAt, updatedAt: new Date(nowTime) } : j))
     );
-    try {
-      await fetch(`/api/jobs/${jobId}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status: newStatus, ...(appliedAt ? { appliedAt: appliedAt.toISOString() } : {}) }),
-      });
-    } catch (err) {
-      console.error('Failed to sync status:', err);
+    setStatusFilter(newStatus);
+    await patchJob(jobId, { status: newStatus, ...(appliedAt ? { appliedAt: appliedAt.toISOString() } : {}) });
+  };
+
+  const handleToggleImportant = async (jobId: string, e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    const currentJob = jobs.find((j) => j.id === jobId);
+    const nextVal = currentJob ? !Boolean(currentJob.isImportant) : true;
+    setJobs((prev) => prev.map((j) => (j.id === jobId ? { ...j, isImportant: nextVal, updatedAt: new Date(nowTime) } : j)));
+
+    const res = await patchJob(jobId, { isImportant: nextVal });
+    if (!res?.success) {
+      setJobs((prev) => prev.map((j) => (j.id === jobId ? { ...j, isImportant: !nextVal } : j)));
     }
   };
 
   const handleDeleteJob = async (jobId: string, e?: React.MouseEvent) => {
     if (e) e.stopPropagation();
     setJobs((prev) => prev.filter((j) => j.id !== jobId));
-    try {
-      await fetch(`/api/jobs/${jobId}`, { method: 'DELETE' });
-    } catch (err) {
-      console.error('Failed to delete job:', err);
-    }
+    await deleteJobApi(jobId);
   };
 
   return {
-    jobs, setJobs, theme, toggleTheme, viewMode, setViewMode,
+    jobs, setJobs, isLoading, theme, toggleTheme, viewMode, setViewMode,
     timelineFilter, setTimelineFilter, customRange, setCustomRange,
     searchQuery, setSearchQuery, staleOnlyFilter, setStaleOnlyFilter,
+    statusFilter, setStatusFilter,
     nowTime, currentUser, staleCount, metrics, filteredJobs,
     timelineScopedJobs, handleApplyAndAdvance, handleStatusChange,
-    handleDeleteJob, handleExportCSV: () => exportJobsToCSV(timelineScopedJobs),
+    handleToggleImportant, handleDeleteJob,
+    handleExportCSV: () => exportJobsToCSV(timelineScopedJobs),
     fetchJobs,
   };
 }

@@ -95,9 +95,9 @@ export function AddJobManualTab({ onJobAdded, onClose }: AddJobManualTabProps) {
             className="w-full px-3 py-2 border border-[var(--border-subtle)] bg-[var(--bg-app)] text-[var(--text-primary)] focus:outline-none cursor-pointer text-xs"
           >
             <option value="none">No Referral</option>
-            <option value="asked">🤝 Asked</option>
-            <option value="received">✅ Received</option>
-            <option value="declined">❌ Declined</option>
+            <option value="asked">Asked</option>
+            <option value="received">Received</option>
+            <option value="declined">Declined</option>
           </select>
         </div>
       </div>

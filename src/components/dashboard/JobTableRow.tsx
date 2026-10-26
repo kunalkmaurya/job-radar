@@ -2,10 +2,11 @@
 
 import React from 'react';
 import { AlertTriangle, Star } from 'lucide-react';
-import { Job, JOB_STATUSES, JobStatus } from '@/types';
+import { Job, JobStatus } from '@/types';
 import { formatDate } from './data';
 import { isJobStale } from './helpers';
 import { JobRowActions } from './table/JobRowActions';
+import { JobStatusDropdown } from './common/JobStatusDropdown';
 
 interface JobTableRowProps {
   job: Job;
@@ -79,9 +80,6 @@ export function JobTableRow({
       <td className="py-3.5 px-4 text-[var(--text-secondary)]">
         <div className="flex items-center gap-2 flex-wrap">
           <span>{job.role}</span>
-          <span className="text-[10px] px-1.5 py-0.5 bg-[var(--border-subtle)] text-[var(--text-muted)]">
-            {job.location}
-          </span>
           {job.referralStatus && job.referralStatus !== 'none' && (
             <span
               title={job.referrerName ? `Referrer: ${job.referrerName}` : 'Referral active'}
@@ -93,7 +91,7 @@ export function JobTableRow({
                   : 'bg-red-500/15 border-red-500/30 text-red-400'
               }`}
             >
-              🤝 {job.referralStatus === 'received' ? (job.referrerName ? `Referred (${job.referrerName.split(' ')[0]})` : 'Referred') : job.referralStatus}
+              {job.referralStatus === 'received' ? (job.referrerName ? `Referred (${job.referrerName.split(' ')[0]})` : 'Referred') : `Referral: ${job.referralStatus}`}
             </span>
           )}
         </div>
@@ -101,21 +99,10 @@ export function JobTableRow({
 
       {/* Status Dropdown */}
       <td className="py-3.5 px-4" onClick={(e) => e.stopPropagation()}>
-        <select
-          value={job.status}
-          onChange={(e) => onStatusChange(job.id, e.target.value as JobStatus)}
-          className="px-2.5 py-1 text-xs font-medium border border-transparent cursor-pointer focus:outline-none"
-          style={{
-            color: `var(--status-${job.status.toLowerCase()}-text, #60A5FA)`,
-            backgroundColor: `var(--status-${job.status.toLowerCase()}-bg, rgba(59,130,246,0.15))`,
-          }}
-        >
-          {JOB_STATUSES.map((status) => (
-            <option key={status} value={status} className="bg-[var(--bg-surface)] text-[var(--text-primary)]">
-              {status}
-            </option>
-          ))}
-        </select>
+        <JobStatusDropdown
+          status={job.status}
+          onChange={(newStatus) => onStatusChange(job.id, newStatus)}
+        />
       </td>
 
       {/* Timeline / Age */}

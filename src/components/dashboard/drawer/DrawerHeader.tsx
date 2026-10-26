@@ -2,7 +2,8 @@
 
 import React from 'react';
 import { X, ArrowUpRight, Star } from 'lucide-react';
-import { Job, JOB_STATUSES, JobStatus } from '@/types';
+import { Job, JobStatus } from '@/types';
+import { JobStatusDropdown } from '../common/JobStatusDropdown';
 
 interface DrawerHeaderProps {
   job: Job;
@@ -34,15 +35,10 @@ export function DrawerHeader({ job, onClose, onStatusChange, onToggleImportant }
       </div>
 
       <div className="flex flex-wrap items-center gap-2.5">
-        <select
-          value={job.status}
-          onChange={(e) => onStatusChange(job.id, e.target.value as JobStatus)}
-          className="px-3 py-1.5 text-xs font-semibold border border-[var(--border-subtle)] bg-[var(--bg-app)] text-[var(--text-primary)] focus:outline-none cursor-pointer"
-        >
-          {JOB_STATUSES.map((status) => (
-            <option key={status} value={status}>{status}</option>
-          ))}
-        </select>
+        <JobStatusDropdown
+          status={job.status}
+          onChange={(newStatus) => onStatusChange(job.id, newStatus)}
+        />
 
         <button
           type="button"

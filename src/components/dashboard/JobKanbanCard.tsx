@@ -89,7 +89,7 @@ export function JobKanbanCard({
                 : 'bg-red-500/15 border-red-500/30 text-red-400'
             }`}
           >
-            🤝 {job.referralStatus === 'received' ? (job.referrerName ? `Referred (${job.referrerName.split(' ')[0]})` : 'Referred') : job.referralStatus}
+            {job.referralStatus === 'received' ? (job.referrerName ? `Referred (${job.referrerName.split(' ')[0]})` : 'Referred') : `Referral: ${job.referralStatus}`}
           </span>
         </div>
       )}

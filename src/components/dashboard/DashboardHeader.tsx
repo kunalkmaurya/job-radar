@@ -35,7 +35,7 @@ export function DashboardHeader({
         <button
           onClick={onToggleTheme}
           aria-label="Toggle theme"
-          className="p-2 border border-[var(--border-subtle)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors cursor-pointer"
+          className="h-8 w-8 flex items-center justify-center border border-[var(--border-subtle)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors cursor-pointer shrink-0"
         >
           {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
         </button>
@@ -44,7 +44,7 @@ export function DashboardHeader({
         <button
           onClick={onOpenBookmarklet}
           title="1-Click Browser Bookmarklet"
-          className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 border border-[var(--border-subtle)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors cursor-pointer"
+          className="hidden sm:inline-flex items-center gap-1.5 h-8 px-3 border border-[var(--border-subtle)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors cursor-pointer shrink-0"
         >
           <Bookmark className="w-3.5 h-3.5" />
           <span>Bookmarklet</span>
@@ -54,7 +54,7 @@ export function DashboardHeader({
         <button
           onClick={onExportCSV}
           title="Export CSV"
-          className="flex items-center gap-1.5 px-3 py-1.5 border border-[var(--border-subtle)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors cursor-pointer"
+          className="inline-flex items-center gap-1.5 h-8 px-3 border border-[var(--border-subtle)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors cursor-pointer shrink-0"
         >
           <Download className="w-3.5 h-3.5" />
           <span className="hidden md:inline">Export</span>
@@ -63,7 +63,7 @@ export function DashboardHeader({
         {/* Add Job Button */}
         <button
           onClick={onOpenAddJob}
-          className="flex items-center gap-1.5 px-3.5 py-1.5 bg-[var(--accent-primary)] hover:bg-[var(--accent-primary-hover)] text-white text-xs font-semibold shadow-sm transition-all active:scale-[0.98] cursor-pointer"
+          className="inline-flex items-center gap-1.5 h-8 px-3.5 bg-[var(--accent-primary)] hover:bg-[var(--accent-primary-hover)] text-white text-xs font-semibold shadow-sm transition-all active:scale-[0.98] cursor-pointer shrink-0"
         >
           <Plus className="w-3.5 h-3.5" />
           <span>Add Job</span>

@@ -25,12 +25,12 @@ export function ProfilePopover({ currentUser }: ProfilePopoverProps) {
   const displayEmail = currentUser?.email || 'kunalkrraj@gmail.com';
 
   return (
-    <div className="relative">
+    <div className="relative flex items-center">
       <button
         id="profile-avatar-button"
         onClick={() => setIsOpen(!isOpen)}
         title="User Account & Profile"
-        className="w-8 h-8 border border-[var(--border-subtle)] bg-[var(--accent-primary-bg)] hover:border-[var(--accent-primary)] text-[var(--accent-primary)] font-semibold text-xs flex items-center justify-center cursor-pointer transition-colors"
+        className="h-8 w-8 shrink-0 border border-[var(--border-subtle)] bg-[var(--accent-primary-bg)] hover:border-[var(--accent-primary)] text-[var(--accent-primary)] font-semibold text-xs flex items-center justify-center cursor-pointer transition-colors"
       >
         {initial}
       </button>

@@ -14,6 +14,7 @@ interface DashboardModalsProps {
   onToggleImportant: (jobId: string) => void;
   onDeleteJob: (jobId: string) => void;
   onSaveNotes: (jobId: string, notes: string, followUpDate: string | null) => Promise<void>;
+  onUpdateReferral?: (jobId: string, data: any) => Promise<void>;
   isAddOpen: boolean;
   onCloseAdd: () => void;
   onJobAdded: (job: Job) => void;
@@ -30,6 +31,7 @@ export function DashboardModals({
   onToggleImportant,
   onDeleteJob,
   onSaveNotes,
+  onUpdateReferral,
   isAddOpen,
   onCloseAdd,
   onJobAdded,
@@ -47,6 +49,7 @@ export function DashboardModals({
         onToggleImportant={onToggleImportant}
         onDeleteJob={onDeleteJob}
         onSaveNotes={onSaveNotes}
+        onUpdateReferral={onUpdateReferral}
       />
 
       <AddJobModal

@@ -27,6 +27,9 @@ export interface CustomDateRange {
   endDate: string;
 }
 
+export const REFERRAL_STATUSES = ['none', 'asked', 'received', 'declined'] as const;
+export type ReferralStatus = typeof REFERRAL_STATUSES[number];
+
 // AI Extracted Job Schema
 export const ExtractedJobSchema = z.object({
   company: z.string().min(1, 'Company name is required'),
@@ -47,6 +50,10 @@ export const CreateJobSchema = z.object({
   notes: z.string().default(''),
   followUpDate: z.string().nullable().optional(),
   isImportant: z.boolean().optional(),
+  referralStatus: z.enum(REFERRAL_STATUSES).default('none'),
+  referrerName: z.string().optional(),
+  referrerContact: z.string().optional(),
+  referralNotes: z.string().default(''),
   source: z.enum(['telegram', 'manual', 'bookmarklet']).default('manual'),
 });
 
@@ -62,6 +69,10 @@ export const UpdateJobSchema = z.object({
   followUpDate: z.string().nullable().optional(),
   appliedAt: z.string().nullable().optional(),
   isImportant: z.boolean().optional(),
+  referralStatus: z.enum(REFERRAL_STATUSES).optional(),
+  referrerName: z.string().optional(),
+  referrerContact: z.string().optional(),
+  referralNotes: z.string().optional(),
 });
 
 export type UpdateJobPayload = z.infer<typeof UpdateJobSchema>;

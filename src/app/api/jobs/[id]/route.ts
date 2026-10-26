@@ -22,6 +22,10 @@ export async function PATCH(
     if (body.company !== undefined) updateData.company = body.company;
     if (body.role !== undefined) updateData.role = body.role;
     if (body.isImportant !== undefined) updateData.isImportant = Boolean(body.isImportant);
+    if (body.referralStatus !== undefined) updateData.referralStatus = body.referralStatus;
+    if (body.referrerName !== undefined) updateData.referrerName = body.referrerName;
+    if (body.referrerContact !== undefined) updateData.referrerContact = body.referrerContact;
+    if (body.referralNotes !== undefined) updateData.referralNotes = body.referralNotes;
 
     let updated;
     try {

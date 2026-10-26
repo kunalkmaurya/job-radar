@@ -78,6 +78,22 @@ export function JobKanbanCard({
 
       <p className="text-xs text-[var(--text-secondary)] line-clamp-1">{job.role}</p>
 
+      {job.referralStatus && job.referralStatus !== 'none' && (
+        <div className="pt-0.5">
+          <span
+            className={`inline-flex items-center gap-1 text-[9px] px-1.5 py-0.2 font-mono uppercase tracking-wider font-semibold border ${
+              job.referralStatus === 'received'
+                ? 'bg-emerald-500/15 border-emerald-500/30 text-emerald-400'
+                : job.referralStatus === 'asked'
+                ? 'bg-amber-500/15 border-amber-500/30 text-amber-400'
+                : 'bg-red-500/15 border-red-500/30 text-red-400'
+            }`}
+          >
+            🤝 {job.referralStatus === 'received' ? (job.referrerName ? `Referred (${job.referrerName.split(' ')[0]})` : 'Referred') : job.referralStatus}
+          </span>
+        </div>
+      )}
+
       <div className="flex items-center justify-between pt-1 text-[11px] text-[var(--text-muted)]">
         <span>{job.status === 'Applied' && stale ? '⚠️ Stale' : 'Active'}</span>
         {job.status === 'Saved' ? (

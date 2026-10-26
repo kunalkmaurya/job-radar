@@ -26,6 +26,10 @@ export const jobs = pgTable('jobs', {
   followUpDate: date('follow_up_date'),
   appliedAt: timestamp('applied_at', { withTimezone: true }),
   isImportant: boolean('is_important').default(false),
+  referralStatus: varchar('referral_status', { length: 50 }).default('none'), // none, asked, received, declined
+  referrerName: varchar('referrer_name', { length: 255 }),
+  referrerContact: varchar('referrer_contact', { length: 255 }),
+  referralNotes: text('referral_notes').default(''),
   source: varchar('source', { length: 50 }).default('telegram').notNull(), // telegram, manual, bookmarklet
   userId: uuid('user_id').references(() => users.id, { onDelete: 'set null' }),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),

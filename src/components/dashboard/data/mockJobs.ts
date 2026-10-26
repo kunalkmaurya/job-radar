@@ -1,6 +1,4 @@
-import { Job } from '@/types';
-
-export const INITIAL_MOCK_JOBS: Job[] = [
+const RAW_MOCK_JOBS = [
   {
     id: '1',
     company: 'Stripe',
@@ -13,6 +11,10 @@ export const INITIAL_MOCK_JOBS: Job[] = [
     followUpDate: null,
     appliedAt: null,
     isImportant: true,
+    referralStatus: 'received',
+    referrerName: 'Sarah Jenkins',
+    referrerContact: 'https://linkedin.com/in/sarah-j',
+    referralNotes: 'Referred for Core Infrastructure team',
     source: 'telegram',
     userId: null,
     createdAt: new Date('2026-10-24T18:00:00Z'),
@@ -206,3 +208,14 @@ export const INITIAL_MOCK_JOBS: Job[] = [
     updatedAt: new Date('2026-10-25T14:00:00Z'),
   },
 ];
+
+import { Job } from '@/types';
+
+export const INITIAL_MOCK_JOBS: Job[] = RAW_MOCK_JOBS.map((j) => ({
+  referralStatus: 'none',
+  referrerName: null,
+  referrerContact: null,
+  referralNotes: '',
+  ...j,
+}));
+

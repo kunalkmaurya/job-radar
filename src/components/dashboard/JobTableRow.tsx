@@ -77,11 +77,25 @@ export function JobTableRow({
 
       {/* Role */}
       <td className="py-3.5 px-4 text-[var(--text-secondary)]">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
           <span>{job.role}</span>
           <span className="text-[10px] px-1.5 py-0.5 bg-[var(--border-subtle)] text-[var(--text-muted)]">
             {job.location}
           </span>
+          {job.referralStatus && job.referralStatus !== 'none' && (
+            <span
+              title={job.referrerName ? `Referrer: ${job.referrerName}` : 'Referral active'}
+              className={`text-[9px] px-1.5 py-0.2 font-mono uppercase tracking-wider font-semibold border ${
+                job.referralStatus === 'received'
+                  ? 'bg-emerald-500/15 border-emerald-500/30 text-emerald-400'
+                  : job.referralStatus === 'asked'
+                  ? 'bg-amber-500/15 border-amber-500/30 text-amber-400'
+                  : 'bg-red-500/15 border-red-500/30 text-red-400'
+              }`}
+            >
+              🤝 {job.referralStatus === 'received' ? (job.referrerName ? `Referred (${job.referrerName.split(' ')[0]})` : 'Referred') : job.referralStatus}
+            </span>
+          )}
         </div>
       </td>
 

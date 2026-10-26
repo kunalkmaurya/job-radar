@@ -6,6 +6,7 @@ import { Job, JobStatus } from '@/types';
 import { DrawerHeader } from './drawer/DrawerHeader';
 import { DrawerFollowUp } from './drawer/DrawerFollowUp';
 import { DrawerNotesSection } from './drawer/DrawerNotesSection';
+import { DrawerReferralSection } from './drawer/DrawerReferralSection';
 
 interface NotesDrawerProps {
   job: Job | null;
@@ -15,6 +16,7 @@ interface NotesDrawerProps {
   onToggleImportant?: (jobId: string) => void;
   onDeleteJob: (jobId: string) => void;
   onSaveNotes: (jobId: string, notes: string, followUpDate: string | null) => Promise<void>;
+  onUpdateReferral?: (jobId: string, data: any) => Promise<void>;
 }
 
 export function NotesDrawer({
@@ -25,6 +27,7 @@ export function NotesDrawer({
   onToggleImportant,
   onDeleteJob,
   onSaveNotes,
+  onUpdateReferral,
 }: NotesDrawerProps) {
   const [drawerNotes, setDrawerNotes] = useState('');
   const [drawerFollowUp, setDrawerFollowUp] = useState('');
@@ -50,7 +53,7 @@ export function NotesDrawer({
       <div className="fixed inset-0 bg-black/50 backdrop-blur-sm transition-opacity" onClick={onClose} />
 
       <div className="relative w-full max-w-md bg-[var(--bg-surface)] border-l border-[var(--border-subtle)] p-6 shadow-2xl flex flex-col justify-between z-10 animate-in slide-in-from-right duration-200">
-        <div className="space-y-6">
+        <div className="space-y-6 overflow-y-auto flex-1 pr-1">
           <DrawerHeader
             job={job}
             onClose={onClose}
@@ -66,6 +69,10 @@ export function NotesDrawer({
               handleSave(drawerNotes, date);
             }}
           />
+
+          {onUpdateReferral && (
+            <DrawerReferralSection job={job} onUpdateReferral={onUpdateReferral} />
+          )}
 
           <DrawerNotesSection
             job={job}

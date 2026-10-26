@@ -32,7 +32,10 @@ function DashboardContent() {
     handleToggleImportant, handleDeleteJob, handleExportCSV, fetchJobs,
   } = useDashboardJobs();
 
-  const { drawerJob, setDrawerJob, handleSaveNotes, onJobStatusChange, onJobToggleImportant, onJobDelete } = useJobDrawer({
+  const {
+    drawerJob, setDrawerJob, handleSaveNotes, handleUpdateReferral,
+    onJobStatusChange, onJobToggleImportant, onJobDelete,
+  } = useJobDrawer({
     nowTime,
     setJobs,
     handleStatusChange,
@@ -112,6 +115,7 @@ function DashboardContent() {
         drawerJob={drawerJob} nowTime={nowTime} onCloseDrawer={() => setDrawerJob(null)}
         onStatusChange={onJobStatusChange} onToggleImportant={onJobToggleImportant}
         onDeleteJob={onJobDelete} onSaveNotes={handleSaveNotes}
+        onUpdateReferral={handleUpdateReferral}
         isAddOpen={isAddOpen} onCloseAdd={() => setIsAddOpen(false)}
         onJobAdded={(newJob) => setJobs((prev) => [newJob, ...prev])} onRefreshJobs={fetchJobs}
         isBookmarkletOpen={isBookmarkletOpen} onCloseBookmarklet={() => setIsBookmarkletOpen(false)}

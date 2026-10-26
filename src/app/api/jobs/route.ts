@@ -50,7 +50,17 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { link, company, role, status = 'Saved', notes = '' } = body;
+    const {
+      link,
+      company,
+      role,
+      status = 'Saved',
+      notes = '',
+      referralStatus = 'none',
+      referrerName = '',
+      referrerContact = '',
+      referralNotes = '',
+    } = body;
 
     if (!link) {
       return NextResponse.json(
@@ -67,6 +77,10 @@ export async function POST(request: Request) {
         link,
         status,
         notes,
+        referralStatus,
+        referrerName: referrerName || null,
+        referrerContact: referrerContact || null,
+        referralNotes,
         source: 'manual',
       }).returning();
 

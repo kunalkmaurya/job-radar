@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Job, JobStatus } from '@/types';
+import { Job, JobStatus, ReferralStatus } from '@/types';
 
 interface UseJobDrawerProps {
   nowTime: number;
@@ -38,6 +38,32 @@ export function useJobDrawer({
     }
   };
 
+  const handleUpdateReferral = async (
+    jobId: string,
+    data: {
+      referralStatus: ReferralStatus;
+      referrerName?: string;
+      referrerContact?: string;
+      referralNotes?: string;
+    }
+  ) => {
+    try {
+      await fetch(`/api/jobs/${jobId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      setJobs((prev) =>
+        prev.map((j) => (j.id === jobId ? { ...j, ...data, updatedAt: new Date(nowTime) } : j))
+      );
+      if (drawerJob?.id === jobId) {
+        setDrawerJob((prev) => (prev ? { ...prev, ...data } : null));
+      }
+    } catch (err) {
+      console.error('Failed to update referral:', err);
+    }
+  };
+
   const onJobStatusChange = (jobId: string, status: JobStatus) => {
     handleStatusChange(jobId, status);
     if (drawerJob?.id === jobId) setDrawerJob((prev) => (prev ? { ...prev, status } : null));
@@ -55,5 +81,5 @@ export function useJobDrawer({
     if (drawerJob?.id === jobId) setDrawerJob(null);
   };
 
-  return { drawerJob, setDrawerJob, handleSaveNotes, onJobStatusChange, onJobToggleImportant, onJobDelete };
+  return { drawerJob, setDrawerJob, handleSaveNotes, handleUpdateReferral, onJobStatusChange, onJobToggleImportant, onJobDelete };
 }

@@ -1,13 +1,14 @@
 'use client';
 
 import React, { useState } from 'react';
-import { LogOut, Shield } from 'lucide-react';
+import { LogOut, Shield, User, ChevronRight } from 'lucide-react';
 
 interface ProfilePopoverProps {
   currentUser: { email?: string; name?: string; role?: string } | null;
+  onOpenProfile?: () => void;
 }
 
-export function ProfilePopover({ currentUser }: ProfilePopoverProps) {
+export function ProfilePopover({ currentUser, onOpenProfile }: ProfilePopoverProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleLogout = async () => {
@@ -64,6 +65,25 @@ export function ProfilePopover({ currentUser }: ProfilePopoverProps) {
                 <span className="text-[var(--text-secondary)] font-medium">Google OAuth 2.0</span>
               </div>
             </div>
+ 
+            {onOpenProfile && (
+              <div className="pt-2 border-t border-[var(--border-subtle)]">
+                <button
+                  id="open-profile-button"
+                  onClick={() => {
+                    onOpenProfile();
+                    setIsOpen(false);
+                  }}
+                  className="w-full flex items-center justify-between px-2.5 py-1.5 text-xs font-semibold text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)] border border-transparent transition-all text-left cursor-pointer"
+                >
+                  <div className="flex items-center gap-2">
+                    <User className="w-3.5 h-3.5 text-[var(--accent-primary)]" />
+                    <span>View Profile & Career Goals</span>
+                  </div>
+                  <ChevronRight className="w-3.5 h-3.5 text-[var(--text-muted)]" />
+                </button>
+              </div>
+            )}
 
             <div className="pt-2 border-t border-[var(--border-subtle)]">
               <button

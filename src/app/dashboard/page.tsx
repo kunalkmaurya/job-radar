@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import {
   useDashboardJobs,
   useJobDrawer,
@@ -10,12 +11,17 @@ import {
   PipelineView,
   AnalyticsView,
   SettingsView,
-  NotesDrawer,
-  AddJobModal,
-  BookmarkletModal,
+  ProfileView,
+  DashboardModals,
 } from '@/components/dashboard';
 
 function DashboardContent() {
+  const searchParams = useSearchParams();
+  const initialTab = (searchParams.get('tab') as DashboardTab) || 'dashboard';
+  const [activeNavTab, setActiveNavTab] = useState<DashboardTab>(initialTab);
+  const [isAddOpen, setIsAddOpen] = useState(false);
+  const [isBookmarkletOpen, setIsBookmarkletOpen] = useState(false);
+
   const {
     jobs, setJobs, isLoading, theme, toggleTheme, viewMode, setViewMode,
     timelineFilter, setTimelineFilter, customRange, setCustomRange,
@@ -25,10 +31,6 @@ function DashboardContent() {
     timelineScopedJobs, handleApplyAndAdvance, handleStatusChange,
     handleToggleImportant, handleDeleteJob, handleExportCSV, fetchJobs,
   } = useDashboardJobs();
-
-  const [activeNavTab, setActiveNavTab] = useState<DashboardTab>('dashboard');
-  const [isAddOpen, setIsAddOpen] = useState(false);
-  const [isBookmarkletOpen, setIsBookmarkletOpen] = useState(false);
 
   const { drawerJob, setDrawerJob, handleSaveNotes, onJobStatusChange, onJobToggleImportant, onJobDelete } = useJobDrawer({
     nowTime,
@@ -46,6 +48,7 @@ function DashboardContent() {
         onOpenBookmarklet={() => setIsBookmarkletOpen(true)}
         onExportCSV={handleExportCSV}
         onOpenAddJob={() => setIsAddOpen(true)}
+        onOpenProfile={() => setActiveNavTab('profile')}
         currentUser={currentUser}
       />
 
@@ -58,30 +61,18 @@ function DashboardContent() {
       <div className="w-full px-[20px] py-6 space-y-6 flex-1">
         {activeNavTab === 'dashboard' && (
           <PipelineView
-            timelineFilter={timelineFilter}
-            onSelectTimeline={setTimelineFilter}
-            customRange={customRange}
-            onCustomRangeChange={setCustomRange}
-            timelineScopedJobs={timelineScopedJobs}
-            totalJobsCount={jobs.length}
-            isLoading={isLoading}
-            metrics={metrics}
-            searchQuery={searchQuery}
-            onSearchChange={setSearchQuery}
-            staleCount={staleCount}
-            staleOnlyFilter={staleOnlyFilter}
+            timelineFilter={timelineFilter} onSelectTimeline={setTimelineFilter}
+            customRange={customRange} onCustomRangeChange={setCustomRange}
+            timelineScopedJobs={timelineScopedJobs} totalJobsCount={jobs.length}
+            isLoading={isLoading} metrics={metrics}
+            searchQuery={searchQuery} onSearchChange={setSearchQuery}
+            staleCount={staleCount} staleOnlyFilter={staleOnlyFilter}
             onToggleStaleFilter={() => setStaleOnlyFilter(!staleOnlyFilter)}
-            viewMode={viewMode}
-            onSelectViewMode={setViewMode}
-            filteredJobs={filteredJobs}
-            statusFilter={statusFilter}
-            onSelectStatus={setStatusFilter}
-            nowTime={nowTime}
-            onSelectJob={setDrawerJob}
-            onStatusChange={onJobStatusChange}
-            onToggleImportant={handleToggleImportant}
-            onApplyAndAdvance={handleApplyAndAdvance}
-            onDeleteJob={onJobDelete}
+            viewMode={viewMode} onSelectViewMode={setViewMode}
+            filteredJobs={filteredJobs} statusFilter={statusFilter} onSelectStatus={setStatusFilter}
+            nowTime={nowTime} onSelectJob={setDrawerJob}
+            onStatusChange={onJobStatusChange} onToggleImportant={handleToggleImportant}
+            onApplyAndAdvance={handleApplyAndAdvance} onDeleteJob={onJobDelete}
           />
         )}
 
@@ -106,26 +97,25 @@ function DashboardContent() {
             onToggleTheme={toggleTheme}
           />
         )}
+
+        {activeNavTab === 'profile' && (
+          <ProfileView
+            currentUser={currentUser}
+            totalJobs={jobs.length}
+            metrics={metrics}
+            onExportCSV={handleExportCSV}
+          />
+        )}
       </div>
 
-      <NotesDrawer
-        job={drawerJob}
-        nowTime={nowTime}
-        onClose={() => setDrawerJob(null)}
-        onStatusChange={onJobStatusChange}
-        onToggleImportant={onJobToggleImportant}
-        onDeleteJob={onJobDelete}
-        onSaveNotes={handleSaveNotes}
+      <DashboardModals
+        drawerJob={drawerJob} nowTime={nowTime} onCloseDrawer={() => setDrawerJob(null)}
+        onStatusChange={onJobStatusChange} onToggleImportant={onJobToggleImportant}
+        onDeleteJob={onJobDelete} onSaveNotes={handleSaveNotes}
+        isAddOpen={isAddOpen} onCloseAdd={() => setIsAddOpen(false)}
+        onJobAdded={(newJob) => setJobs((prev) => [newJob, ...prev])} onRefreshJobs={fetchJobs}
+        isBookmarkletOpen={isBookmarkletOpen} onCloseBookmarklet={() => setIsBookmarkletOpen(false)}
       />
-
-      <AddJobModal
-        isOpen={isAddOpen}
-        onClose={() => setIsAddOpen(false)}
-        onJobAdded={(newJob) => setJobs((prev) => [newJob, ...prev])}
-        onRefreshJobs={fetchJobs}
-      />
-
-      <BookmarkletModal isOpen={isBookmarkletOpen} onClose={() => setIsBookmarkletOpen(false)} />
     </div>
   );
 }

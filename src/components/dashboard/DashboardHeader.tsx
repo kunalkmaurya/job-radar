@@ -10,6 +10,7 @@ interface DashboardHeaderProps {
   onOpenBookmarklet: () => void;
   onExportCSV: () => void;
   onOpenAddJob: () => void;
+  onOpenProfile?: () => void;
   currentUser: { email?: string; name?: string; role?: string } | null;
 }
 
@@ -19,6 +20,7 @@ export function DashboardHeader({
   onOpenBookmarklet,
   onExportCSV,
   onOpenAddJob,
+  onOpenProfile,
   currentUser,
 }: DashboardHeaderProps) {
   return (
@@ -70,7 +72,7 @@ export function DashboardHeader({
         </button>
 
         {/* Profile Popover */}
-        <ProfilePopover currentUser={currentUser} />
+        <ProfilePopover currentUser={currentUser} onOpenProfile={onOpenProfile} />
       </div>
     </header>
   );

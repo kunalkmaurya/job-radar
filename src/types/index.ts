@@ -46,6 +46,7 @@ export const CreateJobSchema = z.object({
   status: z.enum(JOB_STATUSES).default('Saved'),
   notes: z.string().default(''),
   followUpDate: z.string().nullable().optional(),
+  isImportant: z.boolean().optional(),
   source: z.enum(['telegram', 'manual', 'bookmarklet']).default('manual'),
 });
 
@@ -60,6 +61,7 @@ export const UpdateJobSchema = z.object({
   notes: z.string().optional(),
   followUpDate: z.string().nullable().optional(),
   appliedAt: z.string().nullable().optional(),
+  isImportant: z.boolean().optional(),
 });
 
 export type UpdateJobPayload = z.infer<typeof UpdateJobSchema>;

@@ -21,14 +21,30 @@ export async function PATCH(
     if (body.appliedAt !== undefined) updateData.appliedAt = body.appliedAt ? new Date(body.appliedAt) : null;
     if (body.company !== undefined) updateData.company = body.company;
     if (body.role !== undefined) updateData.role = body.role;
+    if (body.isImportant !== undefined) updateData.isImportant = Boolean(body.isImportant);
 
-    const updated = await db
-      .update(jobs)
-      .set(updateData)
-      .where(eq(jobs.id, id))
-      .returning();
+    let updated;
+    try {
+      updated = await db
+        .update(jobs)
+        .set(updateData)
+        .where(eq(jobs.id, id))
+        .returning();
+    } catch (dbErr) {
+      // If isImportant column has not been added to remote DB yet, retry without it
+      if (updateData.isImportant !== undefined) {
+        delete updateData.isImportant;
+        updated = await db
+          .update(jobs)
+          .set(updateData)
+          .where(eq(jobs.id, id))
+          .returning();
+      } else {
+        throw dbErr;
+      }
+    }
 
-    if (updated.length === 0) {
+    if (!updated || updated.length === 0) {
       return NextResponse.json({ success: false, error: { message: 'Job not found' } }, { status: 404 });
     }
 

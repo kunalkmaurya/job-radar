@@ -1,4 +1,4 @@
-import { pgTable, uuid, varchar, text, timestamp, date, uniqueIndex, index } from 'drizzle-orm/pg-core';
+import { pgTable, uuid, varchar, text, timestamp, date, boolean, uniqueIndex, index } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 
 // Users Table (Personal Account)
@@ -25,6 +25,7 @@ export const jobs = pgTable('jobs', {
   notes: text('notes').default('').notNull(),
   followUpDate: date('follow_up_date'),
   appliedAt: timestamp('applied_at', { withTimezone: true }),
+  isImportant: boolean('is_important').default(false),
   source: varchar('source', { length: 50 }).default('telegram').notNull(), // telegram, manual, bookmarklet
   userId: uuid('user_id').references(() => users.id, { onDelete: 'set null' }),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),

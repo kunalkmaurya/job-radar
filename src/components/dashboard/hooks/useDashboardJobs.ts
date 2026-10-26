@@ -22,7 +22,7 @@ export function useDashboardJobs() {
   const [customRange, setCustomRange] = useState<CustomDateRange>({ startDate: '', endDate: '' });
   const [searchQuery, setSearchQuery] = useState('');
   const [staleOnlyFilter, setStaleOnlyFilter] = useState(false);
-  const [statusFilter, setStatusFilter] = useState<JobStatus | 'all'>('all');
+  const [statusFilter, setStatusFilter] = useState<JobStatus | 'all'>('Saved');
   const [nowTime, setNowTime] = useState<number>(1729792800000);
   const [currentUser, setCurrentUser] = useState<{ email?: string; name?: string; role?: string } | null>(null);
 

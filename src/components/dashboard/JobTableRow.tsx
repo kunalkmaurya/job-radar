@@ -122,7 +122,6 @@ export function JobTableRow({
         <JobRowActions
           job={job}
           onSelectJob={onSelectJob}
-          onApplyAndAdvance={onApplyAndAdvance}
           onDeleteJob={onDeleteJob}
         />
       </td>

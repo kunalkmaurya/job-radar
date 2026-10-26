@@ -1,33 +1,23 @@
 'use client';
 
 import React from 'react';
-import { ExternalLink, FileText, Trash2, ArrowUpRight } from 'lucide-react';
+import { ExternalLink, FileText, Trash2 } from 'lucide-react';
 import { Job } from '@/types';
 
 interface JobRowActionsProps {
   job: Job;
   onSelectJob: (job: Job) => void;
-  onApplyAndAdvance: (job: Job, e?: React.MouseEvent) => void;
+  onApplyAndAdvance?: (job: Job, e?: React.MouseEvent) => void;
   onDeleteJob: (jobId: string, e?: React.MouseEvent) => void;
 }
 
 export function JobRowActions({
   job,
   onSelectJob,
-  onApplyAndAdvance,
   onDeleteJob,
 }: JobRowActionsProps) {
   return (
     <div className="flex items-center justify-end gap-1.5" onClick={(e) => e.stopPropagation()}>
-      {job.status === 'Saved' && (
-        <button
-          onClick={(e) => onApplyAndAdvance(job, e)}
-          className="flex items-center gap-1 px-2.5 py-1 bg-[var(--accent-primary-bg)] border border-[var(--border-subtle)] text-[var(--accent-primary)] hover:bg-[var(--accent-primary)] hover:text-white transition-all text-xs font-medium cursor-pointer"
-        >
-          <span>Apply</span>
-          <ArrowUpRight className="w-3 h-3" />
-        </button>
-      )}
 
       <button
         onClick={() => onSelectJob(job)}

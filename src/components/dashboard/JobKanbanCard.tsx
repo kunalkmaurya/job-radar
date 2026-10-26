@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { ExternalLink, Star } from 'lucide-react';
+import { AlertTriangle, ExternalLink, FileText, Star } from 'lucide-react';
 import { Job } from '@/types';
 import { isJobStale } from './helpers';
 
@@ -10,7 +10,7 @@ interface JobKanbanCardProps {
   nowTime: number;
   onSelectJob: (job: Job) => void;
   onToggleImportant?: (jobId: string, e?: React.MouseEvent) => void;
-  onApplyAndAdvance: (job: Job, e?: React.MouseEvent) => void;
+  onApplyAndAdvance?: (job: Job, e?: React.MouseEvent) => void;
 }
 
 export function JobKanbanCard({
@@ -18,7 +18,6 @@ export function JobKanbanCard({
   nowTime,
   onSelectJob,
   onToggleImportant,
-  onApplyAndAdvance,
 }: JobKanbanCardProps) {
   const stale = isJobStale(job, nowTime);
   const isImportant = Boolean(job.isImportant);
@@ -95,17 +94,29 @@ export function JobKanbanCard({
       )}
 
       <div className="flex items-center justify-between pt-1 text-[11px] text-[var(--text-muted)]">
-        <span>{job.status === 'Applied' && stale ? '⚠️ Stale' : 'Active'}</span>
-        {job.status === 'Saved' ? (
-          <button
-            onClick={(e) => onApplyAndAdvance(job, e)}
-            className="text-[var(--accent-primary)] hover:underline flex items-center gap-0.5 cursor-pointer font-medium"
-          >
-            Apply ↗
-          </button>
-        ) : (
-          <span className="hover:text-[var(--text-primary)]">Notes 📝</span>
-        )}
+        <div className="flex items-center gap-1">
+          {job.status === 'Applied' && stale ? (
+            <span className="text-amber-400 font-medium flex items-center gap-1">
+              <AlertTriangle className="w-3 h-3 text-amber-400 animate-pulse" />
+              <span>Stale</span>
+            </span>
+          ) : (
+            <span>Active</span>
+          )}
+        </div>
+
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            onSelectJob(job);
+          }}
+          title="Open Notes"
+          aria-label={`Open notes for ${job.role} at ${job.company}`}
+          className="p-1 -mr-1 hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors cursor-pointer"
+        >
+          <FileText className="w-3.5 h-3.5" />
+        </button>
       </div>
     </div>
   );

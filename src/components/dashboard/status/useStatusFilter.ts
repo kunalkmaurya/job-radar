@@ -9,7 +9,7 @@ export function useStatusFilter(
   externalStatus?: JobStatusFilter,
   onExternalChange?: (status: JobStatusFilter) => void
 ) {
-  const [internalStatus, setInternalStatus] = useState<JobStatusFilter>('all');
+  const [internalStatus, setInternalStatus] = useState<JobStatusFilter>('Saved');
   const activeStatus = externalStatus !== undefined ? externalStatus : internalStatus;
   const setActiveStatus = onExternalChange || setInternalStatus;
 

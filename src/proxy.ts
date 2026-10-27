@@ -14,13 +14,14 @@ const PUBLIC_PATHS = [
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // 1. Allow static files, Next.js internal routes, and favicon
+  // 1. Allow static files, Next.js internal routes, favicon, and PWA manifest/icons
   if (
     pathname.startsWith('/_next') ||
     pathname.startsWith('/favicon.ico') ||
     pathname.startsWith('/public') ||
-    pathname.startsWith('/icon.svg') ||
-    pathname.startsWith('/logo')
+    pathname.startsWith('/icon') ||
+    pathname.startsWith('/logo') ||
+    pathname.startsWith('/manifest')
   ) {
     return NextResponse.next();
   }

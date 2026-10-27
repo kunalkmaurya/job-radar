@@ -73,12 +73,12 @@ export function TimelineBar({
         </div>
 
         {/* Right Segmented Timeline Tabs */}
-        <div className="flex flex-wrap items-center p-1 border border-[var(--border-subtle)] bg-[var(--bg-app)] text-xs font-mono">
+        <div className="flex items-center overflow-x-auto scrollbar-none p-1 border border-[var(--border-subtle)] bg-[var(--bg-app)] text-xs font-mono max-w-full">
           {TIMELINE_FILTERS.map((tab) => (
             <button
               key={tab}
               onClick={() => onSelectTimeline(tab)}
-              className={`px-3 py-1.5 transition-all cursor-pointer ${
+              className={`px-2.5 sm:px-3 py-1 sm:py-1.5 transition-all cursor-pointer whitespace-nowrap shrink-0 text-[11px] sm:text-xs ${
                 timelineFilter === tab
                   ? 'bg-[var(--accent-primary)] text-white font-semibold shadow-sm'
                   : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'

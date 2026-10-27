@@ -51,7 +51,7 @@ export function KanbanColumn({
   const toIndex = cardsPerColumn === 'all' ? columnJobs.length : Math.min(currentPage * cardsPerColumn, columnJobs.length);
 
   return (
-    <div className="border border-[var(--border-subtle)] bg-[var(--bg-surface)]/60 p-3 flex flex-col space-y-3 min-h-[520px]">
+    <div className="border border-[var(--border-subtle)] bg-[var(--bg-surface)]/60 p-3 flex flex-col space-y-3 min-h-[480px] sm:min-h-[520px] w-[82vw] sm:w-[320px] md:w-auto shrink-0 md:shrink snap-start">
       {/* Column Header */}
       <div className="flex items-center justify-between pb-2 border-b border-[var(--border-subtle)]">
         <span className="text-xs font-semibold uppercase tracking-wider">{status}</span>

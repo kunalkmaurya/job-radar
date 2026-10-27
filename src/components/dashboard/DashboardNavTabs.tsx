@@ -20,8 +20,8 @@ export function DashboardNavTabs({ activeTab, onTabChange, jobCount }: Dashboard
   ];
 
   return (
-    <div className="w-full border-b border-[var(--border-subtle)] bg-[var(--bg-app)] px-[20px]">
-      <nav className="flex items-center gap-1 -mb-[1px]">
+    <div className="w-full border-b border-[var(--border-subtle)] bg-[var(--bg-app)] px-3 sm:px-5">
+      <nav className="flex items-center gap-1 -mb-[1px] overflow-x-auto scrollbar-none whitespace-nowrap">
         {tabs.map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
@@ -29,7 +29,7 @@ export function DashboardNavTabs({ activeTab, onTabChange, jobCount }: Dashboard
             <button
               key={tab.id}
               onClick={() => onTabChange(tab.id)}
-              className={`flex items-center gap-2 py-3 px-4 text-xs font-mono tracking-wider uppercase transition-colors cursor-pointer border-b-2 ${
+              className={`flex items-center gap-1.5 sm:gap-2 py-2.5 sm:py-3 px-3 sm:px-4 text-[11px] sm:text-xs font-mono tracking-wider uppercase transition-colors cursor-pointer border-b-2 shrink-0 ${
                 isActive
                   ? 'border-[var(--accent-primary)] text-[var(--accent-primary)] font-bold'
                   : 'border-transparent text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--border-subtle)]'

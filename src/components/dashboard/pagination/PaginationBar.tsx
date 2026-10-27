@@ -68,7 +68,7 @@ export function PaginationBar({
       </div>
 
       {/* Right side: Page Navigation */}
-      <nav aria-label="Job pagination" className="flex items-center gap-1">
+      <nav aria-label="Job pagination" className="flex items-center gap-1 w-full sm:w-auto justify-center sm:justify-end">
         <button
           onClick={onFirstPage}
           disabled={!canPrevPage}
@@ -89,8 +89,13 @@ export function PaginationBar({
           <ChevronLeft className="w-3.5 h-3.5" />
         </button>
 
-        {/* Numbered Page Buttons */}
-        <div className="flex items-center gap-1 mx-1">
+        {/* Mobile Page Indicator */}
+        <span className="flex sm:hidden px-2.5 py-1 text-xs font-mono text-[var(--text-primary)] font-semibold select-none">
+          {currentPage} / {totalPages}
+        </span>
+
+        {/* Desktop Numbered Page Buttons */}
+        <div className="hidden sm:flex items-center gap-1 mx-1">
           {pageNumbers.map((p, idx) => {
             if (p === 'ellipsis') {
               return (

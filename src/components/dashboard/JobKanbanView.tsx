@@ -41,7 +41,7 @@ export function JobKanbanView({
       />
 
       {/* Kanban Columns Grid */}
-      <section className="grid grid-cols-1 md:grid-cols-5 gap-4 items-start">
+      <section className="flex md:grid md:grid-cols-5 gap-3 sm:gap-4 items-start overflow-x-auto pb-4 md:pb-0 scrollbar-none snap-x snap-mandatory">
         {visibleStatuses.map((colStatus) => {
           const columnJobs = jobs.filter((j) => j.status === colStatus);
           return (

@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { LogOut, Shield, User, ChevronRight } from 'lucide-react';
+import { LogOut, Shield, User, ChevronRight, Download } from 'lucide-react';
+import { usePwaInstall, InstallIOSModal } from '@/components/pwa';
 
 interface ProfilePopoverProps {
   currentUser: { email?: string; name?: string; role?: string } | null;
@@ -10,6 +11,7 @@ interface ProfilePopoverProps {
 
 export function ProfilePopover({ currentUser, onOpenProfile }: ProfilePopoverProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const { isStandalone, triggerInstall, showIOSGuide, setShowIOSGuide } = usePwaInstall();
 
   const handleLogout = async () => {
     try {
@@ -85,6 +87,25 @@ export function ProfilePopover({ currentUser, onOpenProfile }: ProfilePopoverPro
               </div>
             )}
 
+            {!isStandalone && (
+              <div className="pt-2 border-t border-[var(--border-subtle)]">
+                <button
+                  id="install-pwa-button"
+                  onClick={() => {
+                    triggerInstall();
+                    setIsOpen(false);
+                  }}
+                  className="w-full flex items-center justify-between px-2.5 py-1.5 text-xs font-semibold text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)] border border-transparent transition-all text-left cursor-pointer"
+                >
+                  <div className="flex items-center gap-2">
+                    <Download className="w-3.5 h-3.5 text-[var(--accent-primary)]" />
+                    <span>Install Job Radar App</span>
+                  </div>
+                  <ChevronRight className="w-3.5 h-3.5 text-[var(--text-muted)]" />
+                </button>
+              </div>
+            )}
+
             <div className="pt-2 border-t border-[var(--border-subtle)]">
               <button
                 id="logout-button"
@@ -98,6 +119,8 @@ export function ProfilePopover({ currentUser, onOpenProfile }: ProfilePopoverPro
           </div>
         </>
       )}
+
+      <InstallIOSModal isOpen={showIOSGuide} onClose={() => setShowIOSGuide(false)} />
     </div>
   );
 }

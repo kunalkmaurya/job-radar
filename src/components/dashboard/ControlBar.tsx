@@ -38,10 +38,10 @@ export function ControlBar({
   }, []);
 
   return (
-    <section className="flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between">
-      <div className="flex flex-1 items-center gap-3">
+    <section className="flex flex-col sm:flex-row gap-2.5 sm:gap-3 items-stretch sm:items-center justify-between">
+      <div className="flex flex-1 items-center gap-2 sm:gap-3 min-w-0">
         {/* Search Input */}
-        <div className="relative flex-1 max-w-md">
+        <div className="relative flex-1 max-w-full sm:max-w-md">
           <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)]" />
           <input
             id="job-search-input"
@@ -65,19 +65,19 @@ export function ControlBar({
         {staleCount > 0 && (
           <button
             onClick={onToggleStaleFilter}
-            className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium border transition-colors cursor-pointer ${
+            className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-xs font-medium border transition-colors cursor-pointer shrink-0 ${
               staleOnlyFilter
                 ? 'bg-amber-500/20 border-amber-500/50 text-amber-300'
                 : 'bg-amber-500/10 border-amber-500/20 text-amber-400 hover:bg-amber-500/15'
             }`}
           >
             <AlertTriangle className="w-3.5 h-3.5 animate-pulse" />
-            <span>{staleCount} Stale {staleCount === 1 ? 'Job' : 'Jobs'}</span>
+            <span>{staleCount} Stale</span>
           </button>
         )}
       </div>
 
-      <div className="flex items-center gap-2.5">
+      <div className="flex items-center justify-end gap-2.5 shrink-0">
         {/* View Mode Switcher */}
         <div className="flex items-center p-1 border border-[var(--border-subtle)] bg-[var(--bg-surface)] text-xs">
           <button

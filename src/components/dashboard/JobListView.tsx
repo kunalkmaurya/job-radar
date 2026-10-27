@@ -8,6 +8,8 @@ import { PaginationBar } from './pagination/PaginationBar';
 import { usePagination } from './pagination/usePagination';
 import { TableShimmer } from './shimmer/TableShimmer';
 
+import { JobMobileCard } from './table/JobMobileCard';
+
 interface JobListViewProps {
   jobs: Job[];
   isLoading?: boolean;
@@ -43,8 +45,34 @@ export function JobListView({
 
   return (
     <section className="border border-[var(--border-subtle)] bg-[var(--bg-surface)] shadow-sm flex flex-col">
-      <div className="overflow-x-auto flex-1">
-        <table className="w-full text-left border-collapse text-xs">
+      {/* Mobile Card List (< md) */}
+      <div className="block md:hidden divide-y divide-[var(--border-subtle)]">
+        {isLoading ? (
+          <div className="p-8 text-center text-xs text-[var(--text-muted)] animate-pulse">
+            Loading applications...
+          </div>
+        ) : paginatedJobs.length === 0 ? (
+          <div className="py-12 text-center text-xs text-[var(--text-muted)]">
+            No job applications match your filters.
+          </div>
+        ) : (
+          paginatedJobs.map((job) => (
+            <JobMobileCard
+              key={job.id}
+              job={job}
+              nowTime={nowTime}
+              onSelectJob={onSelectJob}
+              onStatusChange={onStatusChange}
+              onToggleImportant={onToggleImportant}
+              onDeleteJob={onDeleteJob}
+            />
+          ))
+        )}
+      </div>
+
+      {/* Desktop Table (>= md) */}
+      <div className="hidden md:block overflow-x-auto flex-1">
+        <table className="w-full min-w-[700px] text-left border-collapse text-xs">
           <JobTableHeader />
           {isLoading ? (
             <TableShimmer rowsCount={6} />

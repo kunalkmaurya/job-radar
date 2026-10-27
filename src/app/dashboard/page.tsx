@@ -65,7 +65,7 @@ function DashboardContent() {
         jobCount={jobs.length}
       />
 
-      <div className="w-full px-[20px] py-6 space-y-6 flex-1">
+      <div className="w-full px-3 sm:px-5 py-4 sm:py-6 space-y-4 sm:space-y-6 flex-1">
         {activeNavTab === 'dashboard' && (
           <PipelineView
             timelineFilter={timelineFilter} onSelectTimeline={setTimelineFilter}

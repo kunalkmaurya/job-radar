@@ -32,7 +32,7 @@ export function JobStatusTabs({ activeStatus, onSelectStatus, counts }: JobStatu
     <div
       role="tablist"
       aria-label="Filter jobs by pipeline status"
-      className="w-full border-b border-[var(--border-subtle)] bg-[var(--bg-app)] overflow-x-auto flex items-center gap-1"
+      className="w-full border-b border-[var(--border-subtle)] bg-[var(--bg-app)] overflow-x-auto scrollbar-none flex items-center gap-1 scroll-smooth"
     >
       {STATUS_TABS.map((tab) => {
         const isActive = activeStatus === tab.id;
@@ -47,7 +47,7 @@ export function JobStatusTabs({ activeStatus, onSelectStatus, counts }: JobStatu
             aria-controls="jobs-table-panel"
             id={`status-tab-${tab.id.toLowerCase()}`}
             onClick={() => onSelectStatus(tab.id)}
-            className={`flex items-center gap-2 py-2.5 px-3.5 text-xs font-mono uppercase tracking-wider transition-colors cursor-pointer border-b-2 whitespace-nowrap shrink-0 ${
+            className={`flex items-center gap-1.5 sm:gap-2 py-2 sm:py-2.5 px-2.5 sm:px-3.5 text-[11px] sm:text-xs font-mono uppercase tracking-wider transition-colors cursor-pointer border-b-2 whitespace-nowrap shrink-0 ${
               isActive
                 ? 'border-[var(--accent-primary)] text-[var(--text-primary)] font-bold'
                 : 'border-transparent text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--border-subtle)]'

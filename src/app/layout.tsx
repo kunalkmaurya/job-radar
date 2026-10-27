@@ -1,6 +1,7 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Geist, Geist_Mono, Newsreader } from 'next/font/google';
 import './globals.css';
+import { InstallPromptBanner } from '@/components/pwa';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -17,6 +18,12 @@ const newsreader = Newsreader({
   subsets: ['latin'],
   style: ['normal', 'italic'],
 });
+
+export const viewport: Viewport = {
+  themeColor: '#0B0F17',
+  width: 'device-width',
+  initialScale: 1,
+};
 
 export const metadata: Metadata = {
   title: {
@@ -38,13 +45,21 @@ export const metadata: Metadata = {
   authors: [{ name: 'Kunal Maurya', url: 'https://job.kunalmaurya.com' }],
   creator: 'Kunal Maurya',
   metadataBase: new URL('https://job.kunalmaurya.com'),
+  manifest: '/manifest.webmanifest',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'Job Radar',
+  },
   icons: {
     icon: [
       { url: '/icon.svg', type: 'image/svg+xml' },
       { url: '/icon.svg', sizes: '32x32', type: 'image/svg+xml' },
+      { url: '/icon-192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/icon-512.png', sizes: '512x512', type: 'image/png' },
     ],
     shortcut: '/icon.svg',
-    apple: '/icon.svg',
+    apple: '/icon-192.png',
   },
   openGraph: {
     title: 'Job Radar — High-Speed Application Pipeline & Tracker',
@@ -84,7 +99,11 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} ${newsreader.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        {children}
+        <InstallPromptBanner />
+      </body>
     </html>
   );
 }
+

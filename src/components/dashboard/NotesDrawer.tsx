@@ -52,7 +52,7 @@ export function NotesDrawer({
     <div className="fixed inset-0 z-50 overflow-hidden flex justify-end">
       <div className="fixed inset-0 bg-black/50 backdrop-blur-sm transition-opacity" onClick={onClose} />
 
-      <div className="relative w-full max-w-md bg-[var(--bg-surface)] border-l border-[var(--border-subtle)] p-6 shadow-2xl flex flex-col justify-between z-10 animate-in slide-in-from-right duration-200">
+      <div className="relative w-full max-w-md bg-[var(--bg-surface)] border-l border-[var(--border-subtle)] p-4 sm:p-6 shadow-2xl flex flex-col justify-between z-10 animate-in slide-in-from-right duration-200">
         <div className="space-y-6 overflow-y-auto flex-1 pr-1">
           <DrawerHeader
             job={job}

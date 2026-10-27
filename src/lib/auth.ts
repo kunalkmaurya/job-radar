@@ -42,16 +42,21 @@ export async function verifySessionToken(token: string): Promise<UserSession | n
 }
 
 /**
- * Checks if an email is authorized to access the personal dashboard
+ * Checks if an email is authorized to access the dashboard (supports single or comma-separated emails)
  */
 export function isAllowedEmail(email: string): boolean {
-  const allowed = process.env.ALLOWED_EMAIL;
+  const allowed = process.env.ALLOWED_EMAIL || process.env.ALLOWED_EMAILS;
   if (!allowed) {
     // If ALLOWED_EMAIL is not configured yet in local development, allow for testing
     console.warn('ALLOWED_EMAIL is not set in environment variables.');
     return true;
   }
-  return email.toLowerCase() === allowed.toLowerCase();
+  const allowedList = allowed
+    .split(',')
+    .map((e) => e.trim().toLowerCase())
+    .filter(Boolean);
+
+  return allowedList.includes(email.trim().toLowerCase());
 }
 
 /**

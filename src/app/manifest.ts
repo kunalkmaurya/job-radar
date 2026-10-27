@@ -2,7 +2,7 @@ import type { MetadataRoute } from 'next';
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'Job Radar — Application Pipeline',
+    name: 'Job Radar',
     short_name: 'Job Radar',
     description:
       'High-speed job application pipeline, Telegram link ingestion, and interview tracker.',

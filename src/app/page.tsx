@@ -20,10 +20,15 @@ export default function LandingPage() {
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme') as 'dark' | 'light' | null;
     if (savedTheme) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setTheme(savedTheme);
       document.documentElement.setAttribute('data-theme', savedTheme);
+      document.documentElement.classList.remove('dark', 'light');
+      document.documentElement.classList.add(savedTheme);
     } else {
       document.documentElement.setAttribute('data-theme', 'dark');
+      document.documentElement.classList.remove('light');
+      document.documentElement.classList.add('dark');
     }
 
     fetch('/api/auth/me')
@@ -41,15 +46,17 @@ export default function LandingPage() {
     setTheme(nextTheme);
     localStorage.setItem('theme', nextTheme);
     document.documentElement.setAttribute('data-theme', nextTheme);
+    document.documentElement.classList.remove('dark', 'light');
+    document.documentElement.classList.add(nextTheme);
   };
 
   return (
-    <div className="min-h-screen bg-[var(--bg-app)] text-[var(--text-primary)] font-sans antialiased selection:bg-[var(--accent-primary)] selection:text-white transition-colors duration-300">
+    <div className="min-h-screen bg-(--bg-app) text-(--text-primary) font-sans antialiased selection:bg-(--accent-primary) selection:text-white transition-colors duration-300">
       <div
-        className="fixed top-0 left-1/2 -translate-x-1/2 w-[1100px] h-[600px] pointer-events-none opacity-25 blur-[180px] z-0"
+        className="fixed top-0 left-1/2 -translate-x-1/2 w-275 h-150 pointer-events-none opacity-25 blur-[180px] z-0"
         style={{
           background:
-            'radial-gradient(circle, #D96B43 0%, rgba(217, 107, 67, 0.25) 45%, transparent 75%)',
+            'radial-gradient(circle, #3178C6 0%, rgba(49, 120, 198, 0.25) 45%, transparent 75%)',
         }}
       />
 

@@ -29,7 +29,7 @@ export function AnalyticsRibbon({ metrics, isLoading = false }: AnalyticsRibbonP
           <span className="text-[11px] sm:text-xs font-medium">Captured in Scope</span>
           <Briefcase className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[var(--accent-primary)]" />
         </div>
-        <div className="mt-1.5 sm:mt-2 text-xl sm:text-2xl font-bold tracking-tight">
+        <div className="mt-1.5 sm:mt-2 text-xl sm:text-2xl font-bold tracking-tight font-mono">
           {metrics.totalJobs}
         </div>
         <span className="text-[10px] sm:text-[11px] text-[var(--text-muted)] mt-1">
@@ -42,7 +42,7 @@ export function AnalyticsRibbon({ metrics, isLoading = false }: AnalyticsRibbonP
           <span className="text-[11px] sm:text-xs font-medium">{metrics.appliedLabel}</span>
           <TrendingUp className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-400" />
         </div>
-        <div className="mt-1.5 sm:mt-2 text-xl sm:text-2xl font-bold tracking-tight text-amber-400">
+        <div className="mt-1.5 sm:mt-2 text-xl sm:text-2xl font-bold tracking-tight text-amber-400 font-mono">
           {metrics.appliedCount}
         </div>
         <span className="text-[10px] sm:text-[11px] text-amber-500/80 mt-1">
@@ -55,7 +55,7 @@ export function AnalyticsRibbon({ metrics, isLoading = false }: AnalyticsRibbonP
           <span className="text-[11px] sm:text-xs font-medium">Active Interviews</span>
           <Users className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-purple-400" />
         </div>
-        <div className="mt-1.5 sm:mt-2 text-xl sm:text-2xl font-bold tracking-tight text-purple-400">
+        <div className="mt-1.5 sm:mt-2 text-xl sm:text-2xl font-bold tracking-tight text-purple-400 font-mono">
           {metrics.interviewingCount}
         </div>
         <span className="text-[10px] sm:text-[11px] text-[var(--text-muted)] mt-1">
@@ -68,7 +68,7 @@ export function AnalyticsRibbon({ metrics, isLoading = false }: AnalyticsRibbonP
           <span className="text-[11px] sm:text-xs font-medium">Response Rate</span>
           <Target className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-400" />
         </div>
-        <div className="mt-1.5 sm:mt-2 text-xl sm:text-2xl font-bold tracking-tight text-emerald-400">
+        <div className="mt-1.5 sm:mt-2 text-xl sm:text-2xl font-bold tracking-tight text-emerald-400 font-mono">
           {metrics.responseRate}%
         </div>
         <span className="text-[10px] sm:text-[11px] text-[var(--text-muted)] mt-1">

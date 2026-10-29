@@ -1,217 +1,153 @@
-# UI/UX Design Specification: Personal Job Search & Tracking Board
+# Job Radar — UI/UX Design System & Theme Specification
 
-## 1. Design Philosophy & Aesthetic Principles
-
-The UI is designed for high-efficiency job seekers handling high volumes of applications. It draws inspiration from modern productivity power-tools like **Linear**, **Raycast**, and **Vercel**:
-
-1. **Information Density with Zero Clutter**: When hundreds of jobs are captured, the layout remains scannable, clean, and organized.
-2. **Dual View Flexibility**: **List View** is optimized for high volume scanning, sorting, and batch actions; **Kanban Board** is optimized for visual pipeline progression. A 1-click toggle switches seamlessly between them.
-3. **Dual Theme (Dark & Light Modes)**: Both Dark and Light themes are engineered with curated HSL color tokens, meeting WCAG AA+ contrast standards.
-4. **Instant Keyboard & 1-Click Affordance**: Actions like "Apply & Advance", searching, and opening notes require minimum clicks and zero page reloads.
+Target Audience: AI Agents and Engineers implementing user interfaces.
+Enforcement Level: STRICT. All generated screens, components, and styling must adhere to this specification.
 
 ---
 
-## 2. Design System & Design Tokens
+## 1. Core Visual Principles & Constraints
 
-### 2.1 Theme Color Palettes (Dark & Light)
-
-| Token Name           | Dark Mode Value             | Light Mode Value            | Usage                                    |
-| -------------------- | --------------------------- | --------------------------- | ---------------------------------------- |
-| `--bg-app`           | `#0B0F17` (Deep Obsidian)   | `#F8FAFC` (Crisp Off-White) | App viewport background                  |
-| `--bg-surface`       | `#131B2B` (Surface Card)    | `#FFFFFF` (Pure White)      | Cards, modals, drawers                   |
-| `--bg-surface-hover` | `#1A2438`                   | `#F1F5F9`                   | Hover states on rows and cards           |
-| `--border-subtle`    | `rgba(255, 255, 255, 0.08)` | `rgba(0, 0, 0, 0.08)`       | Dividers, card borders                   |
-| `--border-focus`     | `#3B82F6` (Electric Blue)   | `#2563EB`                   | Active inputs, selected states           |
-| `--text-primary`     | `#F8FAFC`                   | `#0F172A`                   | Company names, headings, primary text    |
-| `--text-secondary`   | `#94A3B8`                   | `#475569`                   | Role titles, metadata, subheadings       |
-| `--text-muted`       | `#64748B`                   | `#94A3B8`                   | Timestamps, placeholders, inactive icons |
-
-### 2.2 Status Color Coding
-
-| Stage            | Dark Mode (Pill / Badge)                          | Light Mode (Pill / Badge)       | Meaning                   |
-| ---------------- | ------------------------------------------------- | ------------------------------- | ------------------------- |
-| **Saved**        | Text: `#60A5FA` / Bg: `rgba(59, 130, 246, 0.15)`  | Text: `#1D4ED8` / Bg: `#EFF6FF` | Newly captured, unapplied |
-| **Applied**      | Text: `#FBBF24` / Bg: `rgba(245, 158, 11, 0.15)`  | Text: `#B45309` / Bg: `#FEF3C7` | Application submitted     |
-| **Interviewing** | Text: `#C084FC` / Bg: `rgba(168, 85, 247, 0.15)`  | Text: `#7E22CE` / Bg: `#F3E8FF` | Active interview rounds   |
-| **Offer**        | Text: `#34D399` / Bg: `rgba(16, 185, 129, 0.15)`  | Text: `#047857` / Bg: `#D1FAE5` | Offer received            |
-| **Rejected**     | Text: `#F87171` / Bg: `rgba(239, 68, 68, 0.15)`   | Text: `#B91C1C` / Bg: `#FEE2E2` | Application closed        |
-| **Archived**     | Text: `#94A3B8` / Bg: `rgba(148, 163, 184, 0.12)` | Text: `#475569` / Bg: `#F1F5F9` | Stale or withdrawn        |
-
-### 2.3 Typography Stack
-
-- **Primary Font**: `Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`
-- **Monospace Font** (Dates & Links): `JetBrains Mono, Menlo, monospace`
-- **Scale**:
-  - `Display / H1`: 24px (Bold, tracking: -0.02em)
-  - `H2 (Section Header)`: 18px (Semi-bold, tracking: -0.01em)
-  - `Body / Primary`: 14px (Medium/Regular, line-height: 1.5)
-  - `Caption / Badges`: 12px (Medium, tracking: 0.01em)
+1. **Near-Sharp Corners (`rounded-xs`)**:
+   - Every container, button, card, input, badge, modal, and dropdown MUST have a maximum border-radius of 2px to 3px (`rounded-xs`).
+   - Standard Tailwind curves (`rounded-md`, `rounded-lg`, `rounded-xl`, `rounded-2xl`, `rounded-full` for containers) are strictly prohibited.
+2. **Zero Emojis Policy**:
+   - Emojis are strictly banned from UI text, labels, status badges, buttons, tooltips, console logs, and code comments.
+   - Use clean, precise SVG icons exclusively from `lucide-react` (14px to 16px, `strokeWidth={2}`).
+3. **Engineering Aesthetic (Linear / Raycast / Datadog Inspired)**:
+   - High information density, ultra-crisp borders, compact controls (`h-8` default, `h-9` medium).
+   - Monospace typography for numeric data, metrics, counters, timestamps, IDs, and status pills.
+4. **Dual-Theme Support**:
+   - Default is Precision Dark (`#0A0D12`). Full fidelity in Precision Light (`#F8FAFC`).
+   - Theme switches toggle the `.light` / `.dark` classes and `[data-theme]` attributes on the `<html>` root element.
 
 ---
 
-## 3. Screen Structure & Layout Hierarchy
+## 2. Color Palette & Theme Tokens
 
+### 2.1 Accent Colors (TypeScript Blue)
+
+| Token               | Hex / Value                | Tailwind Class / Role                                         |
+| :------------------ | :------------------------- | :------------------------------------------------------------ |
+| Primary Accent      | `#3178C6`                  | `bg-[#3178C6]`, `text-[#3178C6]` (Primary CTA, active states) |
+| Primary Hover       | `#235A97`                  | `hover:bg-[#235A97]`                                          |
+| Primary Active      | `#1D4A7D`                  | `active:bg-[#1D4A7D]`                                         |
+| Subtle Tint (Dark)  | `rgba(49, 120, 198, 0.15)` | `bg-[#3178C6]/15` (Pills, active nav, dropzones)              |
+| Subtle Tint (Light) | `rgba(49, 120, 198, 0.10)` | `bg-[#3178C6]/10`                                             |
+| Border Accent       | `rgba(49, 120, 198, 0.40)` | `border-[#3178C6]/40`                                         |
+| Text Blue (Bright)  | `#5499EB`                  | `text-[#5499EB]` (Links, highlighted active labels)           |
+| Selection           | `#3178C6` / `#FFFFFF`      | `selection:bg-[#3178C6] selection:text-white`                 |
+
+### 2.2 Surface & Border Tokens
+
+| Element        | Precision Dark (`dark`)              | Precision Light (`light`)            |
+| :------------- | :----------------------------------- | :----------------------------------- |
+| App Background | `#0A0D12` (`bg-[#0A0D12]`)           | `#F8FAFC` (`bg-[#F8FAFC]`)           |
+| Card / Surface | `#12171F` (`bg-[#12171F]`)           | `#FFFFFF` (`bg-[#FFFFFF]`)           |
+| Surface Hover  | `#18202C` (`hover:bg-[#18202C]`)     | `#F1F5F9` (`hover:bg-[#F1F5F9]`)     |
+| Default Border | `#202937` (`border-[#202937]`)       | `#E2E8F0` (`border-[#E2E8F0]`)       |
+| Border Hover   | `#2D3B4E` (`hover:border-[#2D3B4E]`) | `#CBD5E1` (`hover:border-[#CBD5E1]`) |
+| Text Primary   | `#F1F5F9` (`text-[#F1F5F9]`)         | `#0F172A` (`text-[#0F172A]`)         |
+| Text Secondary | `#94A3B8` (`text-[#94A3B8]`)         | `#475569` (`text-[#475569]`)         |
+| Text Muted     | `#64748B` (`text-[#64748B]`)         | `#64748B` (`text-[#64748B]`)         |
+
+### 2.3 Status & Pipeline Colors
+
+| Stage / Key          | Background        | Text (Dark / Light)                 | Border                |
+| :------------------- | :---------------- | :---------------------------------- | :-------------------- |
+| Saved / Wishlist     | `bg-[#64748B]/15` | `text-[#94A3B8]` / `text-[#475569]` | `border-[#64748B]/30` |
+| Applied              | `bg-[#3178C6]/15` | `text-[#5499EB]` / `text-[#3178C6]` | `border-[#3178C6]/40` |
+| Screening            | `bg-[#6366F1]/15` | `text-[#818CF8]` / `text-[#4F46E5]` | `border-[#6366F1]/40` |
+| Interview            | `bg-[#EAB308]/15` | `text-[#FACC15]` / `text-[#D97706]` | `border-[#EAB308]/40` |
+| Offer                | `bg-[#10B981]/15` | `text-[#34D399]` / `text-[#059669]` | `border-[#10B981]/40` |
+| Rejected             | `bg-[#EF4444]/15` | `text-[#F87171]` / `text-[#DC2626]` | `border-[#EF4444]/40` |
+| Archived / Withdrawn | `bg-[#64748B]/15` | `text-[#94A3B8]` / `text-[#475569]` | `border-[#64748B]/30` |
+
+---
+
+## 3. Typography & Hierarchy
+
+### 3.1 Typefaces
+
+- **Primary Sans**: `Geist`, `-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`.
+- **Tabular / Console Mono**: `Roboto Mono`, `ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace`.
+  - Used for: Status badges, metric numbers, timestamps, currency values, IDs, pill counters, user handles.
+
+### 3.2 Type Scale
+
+- `24px / font-mono font-bold`: Dashboard metric totals (`metrics.total`).
+- `20px / font-bold tracking-tight`: Top page headers (`h1`).
+- `16px / font-semibold tracking-tight`: Modal titles (`h2`).
+- `14px / font-semibold`: Card headings, table column titles.
+- `12px / text-xs`: Standard body text, inputs, buttons, navigation items.
+- `11px / text-[11px]`: Counter pills, table dates, captions, sub-labels.
+- `10px / text-[10px] uppercase font-mono tracking-wider`: Micro badges, card dates, next-stage triggers.
+
+---
+
+## 4. UI Component Specifications
+
+### 4.1 Buttons
+
+All buttons specify `rounded-xs font-medium select-none shrink-0 transition-colors`:
+
+- `sm`: `h-8 px-3 text-xs gap-1.5`
+- `md`: `h-9 px-4 text-xs gap-2`
+- `icon-sm`: `h-8 w-8 p-0 text-xs`
+- `primary`: `bg-[#3178C6] text-white hover:bg-[#235A97] active:bg-[#1D4A7D] shadow-xs`
+- `secondary`: `bg-[#18202C] text-[#F1F5F9] hover:bg-[#202937] border border-[#202937]`
+- `outline`: `border border-[#202937] bg-transparent text-[#F1F5F9] hover:bg-[#12171F] hover:border-[#3178C6]`
+- `danger`: `bg-[#EF4444] text-white hover:bg-[#DC2626] active:bg-[#B91C1C]`
+- `ghost`: `text-[#94A3B8] hover:text-[#F1F5F9] hover:bg-[#18202C]`
+
+### 4.2 Badges & Chips
+
+```tsx
+<span className="inline-flex items-center font-medium border rounded-xs uppercase tracking-wider px-1.5 py-0.5 text-[10px]">
+  {label}
+</span>
 ```
-┌────────────────────────────────────────────────────────────────────────────────────────┐
-│  ⚡ JOB RADAR    [ 🟢 Telegram Active ]       [☀️/🌙] [Bookmarklet] [Export] [+ Add Job] [User] │
-├────────────────────────────────────────────────────────────────────────────────────────┤
-│  [ Total Jobs: 142 ]   [ Applied This Week: 18 ]   [ Active Interviews: 4 ]   [ Response: 28% ]│
-├────────────────────────────────────────────────────────────────────────────────────────┤
-│  [ 🔍 Search company or role... ]  [ All | Today | This Week | 30d ]  [ ⚠️ 3 Stale ] [ ☰ List | 📋 Board ] │
-├────────────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                        │
-│  TABLE / LIST VIEW (High-Volume Default)                                               │
-│  [ ]  COMPANY          ROLE                      STATUS        APPLIED     ACTIONS     │
-│  ────────────────────────────────────────────────────────────────────────────────────  │
-│  [ ]  Stripe           Staff Infra Engineer      [Saved ▾]     --          [Apply ↗] [📝]│
-│  [ ]  Datadog          Backend Systems Lead      [Applied ▾]   3 days ago  [View ↗]  [📝]│
-│  [ ]  Linear           Frontend Engineer         [Interview ▾] 1 week ago  [View ↗]  [📝]│
-│  [ ]  Vercel           Edge Runtime Specialist   [Applied ▾]   18 days ago⚠️[View ↗] [📝]│
-│                                                                                        │
-└────────────────────────────────────────────────────────────────────────────────────────┘
+
+### 4.3 Inputs & Select Dropdowns
+
+- Input: `w-full h-8 px-3 text-xs bg-[#0A0D12] text-[#F1F5F9] border border-[#202937] rounded-xs placeholder:text-xs placeholder:text-[#64748B] focus:outline-none focus:border-[#3178C6] focus:ring-1 focus:ring-[#3178C6]`
+- Select: `h-8 pl-2.5 pr-7 text-xs bg-[#0A0D12] text-[#F1F5F9] border border-[#202937] rounded-xs focus:outline-none focus:border-[#3178C6] cursor-pointer`
+
+### 4.4 Custom Scrollbar
+
+```css
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-app);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-subtle);
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-primary);
+}
 ```
 
 ---
 
-## 4. Component Specifications
+## 5. Icon Usage Guidelines
 
-### 4.1 Top Navigation Bar
+Use `lucide-react` icons exclusively with standardized sizing:
 
-- **App Branding**: Clean lightning bolt icon + `JOB RADAR`.
-- **Telegram Webhook Status**: Interactive badge `🟢 Telegram Active`. Clicking opens a small tooltip showing:
-  - Last synced: _"2 minutes ago"_
-  - Channel name: _"My Job Channel"_
-- **Theme Switcher**: Smooth button toggling between `Dark` and `Light` mode (stores preference in `localStorage`).
-- **Bookmarklet Helper Button**: Opens a quick modal with the drag-to-bookmarks script.
-- **Export CSV Button**: 1-click download of all records.
-- **"+ Add Job" Glowing Button**: Accent-colored primary button (`#3B82F6` hover `#2563EB`).
-- **User Avatar**: Google account profile image with a sleek dropdown for account info and Logout.
+- `w-3.5 h-3.5`: Default button icons, search icons, input adornments, modal close.
+- `w-4 h-4`: Navigation sidebar icons, metric banner icons, modal warning icons.
+- `w-3 h-3`: Micro metadata icons.
 
 ---
 
-### 4.2 Funnel Analytics Ribbon
+## 6. Verification Checklist
 
-Four modern cards across the header with micro-sparklines or subtle gradient borders:
-
-1. **Total Jobs**: All-time tracked jobs count.
-2. **Applied This Week**: Shows weekly momentum with a mini trend badge (e.g. `+5 vs last week`).
-3. **Active Interviews**: Current count of opportunities in the pipeline.
-4. **Response Rate %**: Dynamically computed interview-to-application ratio.
-
----
-
-### 4.3 Filter & Control Bar
-
-- **Search Input**: Live instant search as you type (matches company or role, with keyboard shortcut `/` to focus).
-- **Timeline Segmented Tabs**:
-  - `All` (default)
-  - `Today`
-  - `This Week`
-  - `Past 30 Days`
-- **Stale Alert Chip**: Appears only when jobs in `Applied` have had no update for > 14 days:
-  - Yellow badge: `⚠️ 3 Stale Applications`. Clicking it instantly filters the list to those 3 jobs for quick follow-up.
-- **View Toggle**: Segmented button: `[ ☰ List View ]` | `[ 📋 Kanban Board ]`.
-
----
-
-### 4.4 High-Density List View (Primary for High Volumes)
-
-When tracking 50–200+ jobs, the list view allows high-speed scanning without endless scrolling:
-
-- **Table Columns**:
-  1. **Selection Checkbox**: For bulk actions (bulk mark applied, bulk archive).
-  2. **Company**: Company logo/initials + bold name.
-  3. **Role**: Clean title + subtle `location` & `exp` badges (e.g. `N/A`).
-  4. **Status**: Interactive dropdown pill. Clicking allows changing status with 1 click without opening a modal.
-  5. **Timeline / Age**: Relative timestamp (`"Added 2h ago"`, `"Applied 4d ago"`). If stale (> 14 days), displays an amber warning icon.
-  6. **Quick Actions**:
-     - **"Apply & Advance ↗"** (for `Saved` jobs): Opens external link and updates status to `Applied`.
-     - **"Notes 📝"**: Opens the slide-over drawer.
-     - **"Open Link ↗"** (for already applied jobs).
-- **Zebra Hover Effect**: Subtle highlight on hover (`--bg-surface-hover`).
-- **Bulk Action Bar**: When $\ge 1$ checkboxes are checked, a floating bottom bar appears:
-  > _"3 jobs selected | [Mark as Applied] [Move to Archive] [Delete] [Cancel]"_
-
----
-
-### 4.5 Kanban Board View (Visual Pipeline)
-
-Five responsive columns:
-
-1. **Saved**
-2. **Applied**
-3. **Interviewing**
-4. **Offer**
-5. **Rejected**
-
-#### Job Card Design:
-
-- **Card Header**: Company avatar + Company Name + 3-dot menu.
-- **Card Body**: Role title (large and crisp).
-- **Card Footer**:
-  - Time badge (e.g. `4d ago`).
-  - Stale alert indicator if in Applied > 14 days.
-  - Primary button:
-    - If `Saved`: **"Apply & Advance ↗"** (opens URL + advances card).
-    - If `Applied`/`Interviewing`: **"Notes 📝"** button showing preview if notes exist.
-- **Drag-and-Drop / Move**: Smooth drag between columns or click the status badge to advance.
-
----
-
-### 4.6 Slide-Over Notes Drawer (Interview & Follow-up Scratchpad)
-
-Clicking any job row or card smoothly slides out a 450px panel from the right edge:
-
-- **Header**:
-  - Company Name & Role Title.
-  - External job URL button.
-  - Status selector dropdown.
-- **Follow-up Date Picker**:
-  - Date input with quick preset buttons: `[ +3 Days ]` `[ +1 Week ]` `[ Clear ]`.
-- **Notes Scratchpad**:
-  - Clean text area supporting markdown/bullet points.
-  - Placeholder: _"Add referral contact, recruiter phone screen notes, or compensation details..."_
-  - **Auto-save**: Saves automatically 500ms after you stop typing with a subtle _"Saved ✓"_ indicator.
-- **Activity & Timestamps**:
-  - Shows when the job was ingested (`created_at`) and when it was applied to (`applied_at`).
-
----
-
-### 4.7 "+ Add Job" Modal
-
-Clean modal with 2 tabs:
-
-- **Tab 1: Auto-Fetch (Paste Link)**:
-  - Input field for Job URL.
-  - Button: `"Scrape & Extract"` with a sleek animated loading shimmer.
-  - Instant preview of extracted **Company** and **Role** with an option to edit before clicking `"Add to Board"`.
-- **Tab 2: Manual Entry**:
-  - 3 clean fields:
-    - Company Name (Required)
-    - Role Title (Required)
-    - Job Link URL (Required)
-  - Optional: Status dropdown (defaults to `Saved`) and initial Notes.
-
----
-
-## 5. Micro-Interactions & Animation States
-
-1. **Card Hover**: Subtle 2px elevation and 1px border glow.
-2. **1-Click Apply & Advance**:
-   - Opens the external job link in a new tab.
-   - The card/row smoothly animates from `Saved` to `Applied` with an optimistic transition.
-   - Shows a subtle toast: _"Moved to Applied (Timestamped)"_.
-3. **Toast Notifications**:
-   - Modern floating pill at bottom-center (e.g. _"Job saved successfully"_, _"Link copied"_, _"CSV downloaded"_).
-4. **Skeleton Loaders**:
-   - Smooth pulse shimmer while jobs are loading on initial page render.
-5. **Stale Job Visual Accent**:
-   - Subtle warm amber pulse on the date pill for jobs applied > 14 days ago to draw immediate attention.
-
----
-
-## 6. Responsive Breakpoints
-
-- **Desktop ($\ge 1280px$)**: Full 4-card analytics ribbon, complete list columns, 5-column Kanban board.
-- **Laptop / Tablet ($768px - 1279px$)**: 2x2 analytics grid, compact list view, horizontally scrollable Kanban board.
-- **Mobile ($< 768px$)**: Single-column view, list view with collapsible details, bottom navigation bar.
+- NO EMOJIS anywhere across UI, logs, comments, or scripts.
+- NEAR-SHARP CORNERS: All border-radii capped at 2px to 3px (`rounded-xs`).
+- BACKGROUND CODES: Precision Dark `#0A0D12` / `#12171F` / `#202937`, Precision Light `#F8FAFC` / `#FFFFFF` / `#E2E8F0`.
+- ACCENT COLOR: Primary action `#3178C6`, hover `#235A97`, active `#1D4A7D`.
+- TYPOGRAPHY: Counts, metrics, badges, and timestamps use `font-mono`.
+- COMPACT HEIGHTS: Primary buttons and inputs use `h-8` or `h-9`.

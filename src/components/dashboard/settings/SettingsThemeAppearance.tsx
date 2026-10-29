@@ -10,9 +10,9 @@ interface SettingsThemeAppearanceProps {
 }
 
 const ACCENTS = [
-  { label: 'Terracotta', color: '#D96B43' },
+  { label: 'TypeScript', color: '#3178C6' },
   { label: 'Amber', color: '#F59E0B' },
-  { label: 'Cyan', color: '#06B6D4' },
+  { label: 'Indigo', color: '#6366F1' },
   { label: 'Emerald', color: '#10B981' },
 ];
 
@@ -27,12 +27,11 @@ export function SettingsThemeAppearance({ settings, updateSetting }: SettingsThe
           </h3>
         </div>
         <span className="text-[10px] font-mono text-[var(--text-muted)]">
-          {settings.theme === 'dark' ? 'Obsidian Palette' : 'Warm Paper Palette'}
+          {settings.theme === 'dark' ? 'Precision Dark' : 'Precision Light'}
         </span>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 font-mono text-xs">
-        {/* Color Scheme Cards */}
         <div className="space-y-1.5">
           <label className="text-[10px] text-[var(--text-muted)] block uppercase tracking-wider">
             Theme Palette
@@ -48,7 +47,7 @@ export function SettingsThemeAppearance({ settings, updateSetting }: SettingsThe
               }`}
             >
               <Moon className="w-4 h-4 mx-auto mb-1" />
-              <span className="text-[11px]">Dark Obsidian</span>
+              <span className="text-[11px]">Precision Dark</span>
             </button>
 
             <button
@@ -61,12 +60,11 @@ export function SettingsThemeAppearance({ settings, updateSetting }: SettingsThe
               }`}
             >
               <Sun className="w-4 h-4 mx-auto mb-1 text-amber-400" />
-              <span className="text-[11px]">Warm Paper</span>
+              <span className="text-[11px]">Precision Light</span>
             </button>
           </div>
         </div>
 
-        {/* Default View Mode */}
         <div className="space-y-1.5">
           <label className="text-[10px] text-[var(--text-muted)] block uppercase tracking-wider">
             Default View Mode
@@ -100,7 +98,6 @@ export function SettingsThemeAppearance({ settings, updateSetting }: SettingsThe
           </div>
         </div>
 
-        {/* Accent Color Swatches */}
         <div className="space-y-1.5">
           <label className="text-[10px] text-[var(--text-muted)] block uppercase tracking-wider">
             Accent Brand Color

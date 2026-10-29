@@ -32,7 +32,7 @@ export const DEFAULT_SETTINGS: AppSettings = {
   telegramAllowedChatId: '',
   silentWebhook: true,
   theme: 'dark',
-  accentColor: '#D96B43',
+  accentColor: '#3178C6',
   density: 'comfortable',
   defaultView: 'list',
   staleDaysThreshold: 14,

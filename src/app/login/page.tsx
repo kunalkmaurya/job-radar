@@ -13,8 +13,12 @@ export default function LoginPage() {
     if (savedTheme) {
       setTheme(savedTheme);
       document.documentElement.setAttribute('data-theme', savedTheme);
+      document.documentElement.classList.remove('dark', 'light');
+      document.documentElement.classList.add(savedTheme);
     } else {
       document.documentElement.setAttribute('data-theme', 'dark');
+      document.documentElement.classList.remove('light');
+      document.documentElement.classList.add('dark');
     }
   }, []);
 
@@ -23,20 +27,20 @@ export default function LoginPage() {
     setTheme(nextTheme);
     localStorage.setItem('theme', nextTheme);
     document.documentElement.setAttribute('data-theme', nextTheme);
+    document.documentElement.classList.remove('dark', 'light');
+    document.documentElement.classList.add(nextTheme);
   };
 
   return (
     <div className="relative min-h-screen flex flex-col justify-between p-6 overflow-hidden bg-[var(--bg-app)] text-[var(--text-primary)] font-sans antialiased">
-      {/* Ambient Anthropic Glow */}
       <div
         className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] blur-[150px] pointer-events-none opacity-25"
         style={{
           background:
-            'radial-gradient(circle, #D96B43 0%, rgba(217, 107, 67, 0.25) 50%, transparent 80%)',
+            'radial-gradient(circle, #3178C6 0%, rgba(49, 120, 198, 0.25) 50%, transparent 80%)',
         }}
       />
 
-      {/* Top Header */}
       <header className="relative z-10 w-full max-w-5xl mx-auto flex items-center justify-between">
         <div className="flex items-center gap-2.5">
           <div className="w-8 h-8 bg-[var(--accent-primary-bg)] border border-[var(--border-subtle)] flex items-center justify-center p-1">
@@ -54,10 +58,8 @@ export default function LoginPage() {
         </button>
       </header>
 
-      {/* Main Login Card */}
       <main className="relative z-10 w-full max-w-md mx-auto my-auto py-6">
         <div className="border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-7 shadow-2xl backdrop-blur-xl transition-all space-y-5">
-          {/* Header & Tagline */}
           <div className="space-y-1">
             <div className="inline-flex items-center gap-1.5 px-2 py-0.5 text-[10px] font-mono border border-[var(--border-subtle)] bg-[var(--accent-primary-bg)] text-[var(--accent-primary)] mb-1">
               <Sparkles className="w-3 h-3" />
@@ -71,10 +73,8 @@ export default function LoginPage() {
             </p>
           </div>
 
-          {/* Email / Password Form */}
           <EmailPasswordForm />
 
-          {/* Divider */}
           <div className="relative flex items-center justify-center">
             <div className="w-full border-t border-[var(--border-subtle)]" />
             <span className="absolute px-2 bg-[var(--bg-surface)] text-[10px] font-mono uppercase text-[var(--text-muted)]">
@@ -82,10 +82,8 @@ export default function LoginPage() {
             </span>
           </div>
 
-          {/* Google OAuth Alternative */}
           <GoogleOAuthButton />
 
-          {/* Security Footer */}
           <div className="flex items-center justify-center gap-1.5 text-[10px] font-mono text-[var(--text-muted)] pt-2 border-t border-[var(--border-subtle)]">
             <Lock className="w-3 h-3 text-[var(--accent-primary)]" />
             <span>Authorized Owner Whitelist Only</span>
@@ -93,7 +91,6 @@ export default function LoginPage() {
         </div>
       </main>
 
-      {/* Footer */}
       <footer className="relative z-10 w-full text-center text-[11px] text-[var(--text-muted)] py-2 font-mono">
         <span>JOB RADAR • PRIVATE PIPELINE TELEMETRY</span>
       </footer>

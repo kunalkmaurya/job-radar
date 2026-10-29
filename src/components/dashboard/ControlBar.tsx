@@ -40,7 +40,6 @@ export function ControlBar({
   return (
     <section className="flex flex-col sm:flex-row gap-2.5 sm:gap-3 items-stretch sm:items-center justify-between">
       <div className="flex flex-1 items-center gap-2 sm:gap-3 min-w-0">
-        {/* Search Input */}
         <div className="relative flex-1 max-w-full sm:max-w-md">
           <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)]" />
           <input
@@ -61,7 +60,6 @@ export function ControlBar({
           )}
         </div>
 
-        {/* Stale Jobs Alert Chip */}
         {staleCount > 0 && (
           <button
             onClick={onToggleStaleFilter}
@@ -78,7 +76,6 @@ export function ControlBar({
       </div>
 
       <div className="flex items-center justify-end gap-2.5 shrink-0">
-        {/* View Mode Switcher */}
         <div className="flex items-center p-1 border border-[var(--border-subtle)] bg-[var(--bg-surface)] text-xs">
           <button
             onClick={() => onSelectViewMode('list')}

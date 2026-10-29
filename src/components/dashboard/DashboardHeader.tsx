@@ -37,7 +37,6 @@ export function DashboardHeader({
       </div>
 
       <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
-        {/* Theme Toggle */}
         <button
           onClick={onToggleTheme}
           aria-label="Toggle theme"
@@ -46,7 +45,6 @@ export function DashboardHeader({
           {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
         </button>
 
-        {/* Cloud Sync Button */}
         {onSync && (
           <button
             onClick={onSync}
@@ -61,7 +59,6 @@ export function DashboardHeader({
           </button>
         )}
 
-        {/* Bookmarklet Helper */}
         <button
           onClick={onOpenBookmarklet}
           title="1-Click Browser Bookmarklet"
@@ -71,7 +68,6 @@ export function DashboardHeader({
           <span>Bookmarklet</span>
         </button>
 
-        {/* Export CSV */}
         <button
           onClick={onExportCSV}
           title="Export CSV"
@@ -82,7 +78,6 @@ export function DashboardHeader({
           <span className="hidden sm:inline">Export</span>
         </button>
 
-        {/* Add Job Button */}
         <button
           onClick={onOpenAddJob}
           className="inline-flex items-center gap-1 sm:gap-1.5 h-8 px-2.5 sm:px-3.5 bg-[var(--accent-primary)] hover:bg-[var(--accent-primary-hover)] text-white text-xs font-semibold shadow-sm transition-all active:scale-[0.98] cursor-pointer shrink-0"
@@ -91,7 +86,6 @@ export function DashboardHeader({
           <span className="inline">Add Job</span>
         </button>
 
-        {/* Profile Popover */}
         <ProfilePopover currentUser={currentUser} onOpenProfile={onOpenProfile} />
       </div>
     </header>

@@ -57,9 +57,10 @@ export function computeMetrics(
   );
   const interviewingCount = scopedJobs.filter((j) => j.status === 'Interviewing').length;
   const offerCount = scopedJobs.filter((j) => j.status === 'Offer').length;
-  const responseRate = appliedJobs.length > 0
-    ? Math.round(((interviewingCount + offerCount) / appliedJobs.length) * 100)
-    : 0;
+  const responseRate =
+    appliedJobs.length > 0
+      ? Math.round(((interviewingCount + offerCount) / appliedJobs.length) * 100)
+      : 0;
 
   let appliedLabel = 'Total Applied';
   let windowLabel = 'All-time tracked';
@@ -72,11 +73,11 @@ export function computeMetrics(
     windowLabel = 'Active this week';
   } else if (timelineFilter === 'past_30_days') {
     appliedLabel = 'Applied (30d)';
-    windowLabel = 'Past 30 days window';
+    windowLabel = 'Last 30 days window';
   } else if (timelineFilter === 'custom') {
     appliedLabel = 'Applied (Range)';
     if (customRange?.startDate && customRange?.endDate) {
-      windowLabel = `${customRange.startDate} → ${customRange.endDate}`;
+      windowLabel = `${customRange.startDate} – ${customRange.endDate}`;
     } else if (customRange?.startDate) {
       windowLabel = `From ${customRange.startDate}`;
     } else if (customRange?.endDate) {
@@ -106,7 +107,8 @@ export function filterJobs(
   return jobs.filter((job) => {
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase();
-      if (!job.company.toLowerCase().includes(q) && !job.role.toLowerCase().includes(q)) return false;
+      if (!job.company.toLowerCase().includes(q) && !job.role.toLowerCase().includes(q))
+        return false;
     }
     if (staleOnly && !isJobStale(job, nowTime)) return false;
     return true;
@@ -114,7 +116,16 @@ export function filterJobs(
 }
 
 export function exportJobsToCSV(jobs: Job[]) {
-  const headers = ['Company', 'Role', 'Status', 'Link', 'Notes', 'Follow Up', 'Applied At', 'Created At'];
+  const headers = [
+    'Company',
+    'Role',
+    'Status',
+    'Link',
+    'Notes',
+    'Follow Up',
+    'Applied At',
+    'Created At',
+  ];
   const rows = jobs.map((j) => [
     `"${j.company}"`,
     `"${j.role}"`,

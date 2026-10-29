@@ -31,3 +31,4 @@ export * from './views/PipelineView';
 export * from './views/AnalyticsView';
 export * from './views/SettingsView';
 export * from './views/ProfileView';
+export * from './views/DashboardTabContent';

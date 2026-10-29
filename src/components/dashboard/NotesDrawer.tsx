@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Trash2 } from 'lucide-react';
-import { Job, JobStatus } from '@/types';
+import { Job, JobStatus, UpdateReferralData } from '@/types';
 import { DrawerHeader } from './drawer/DrawerHeader';
 import { DrawerFollowUp } from './drawer/DrawerFollowUp';
 import { DrawerNotesSection } from './drawer/DrawerNotesSection';
@@ -16,7 +16,7 @@ interface NotesDrawerProps {
   onToggleImportant?: (jobId: string) => void;
   onDeleteJob: (jobId: string) => void;
   onSaveNotes: (jobId: string, notes: string, followUpDate: string | null) => Promise<void>;
-  onUpdateReferral?: (jobId: string, data: any) => Promise<void>;
+  onUpdateReferral?: (jobId: string, data: UpdateReferralData) => Promise<void>;
 }
 
 export function NotesDrawer({
@@ -50,9 +50,12 @@ export function NotesDrawer({
 
   return (
     <div className="fixed inset-0 z-50 overflow-hidden flex justify-end">
-      <div className="fixed inset-0 bg-black/50 backdrop-blur-sm transition-opacity" onClick={onClose} />
+      <div
+        className="fixed inset-0 bg-black/50 backdrop-blur-sm transition-opacity"
+        onClick={onClose}
+      />
 
-      <div className="relative w-full max-w-md bg-[var(--bg-surface)] border-l border-[var(--border-subtle)] p-4 sm:p-6 shadow-2xl flex flex-col justify-between z-10 animate-in slide-in-from-right duration-200">
+      <div className="relative w-full max-w-md bg-(--bg-surface) border-l border-(--border-subtle) p-4 sm:p-6 shadow-2xl flex flex-col justify-between z-10 animate-in slide-in-from-right duration-200">
         <div className="space-y-6 overflow-y-auto flex-1 pr-1">
           <DrawerHeader
             job={job}
@@ -83,7 +86,7 @@ export function NotesDrawer({
           />
         </div>
 
-        <div className="pt-4 border-t border-[var(--border-subtle)] flex items-center justify-between text-xs text-[var(--text-muted)]">
+        <div className="pt-4 border-t border-(--border-subtle) flex items-center justify-between text-xs text-(--text-muted)">
           <span>Added via {job.source}</span>
           <button
             type="button"

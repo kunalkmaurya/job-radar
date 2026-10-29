@@ -23,7 +23,8 @@ interface AnalyticsViewProps {
   onCustomRangeChange: (range: CustomDateRange) => void;
   timelineScopedJobs: Job[];
   totalJobsCount: number;
-  metrics?: any;
+  metrics?: unknown;
+  nowTime?: number;
 }
 
 export function AnalyticsView({
@@ -33,24 +34,19 @@ export function AnalyticsView({
   onCustomRangeChange,
   timelineScopedJobs,
   totalJobsCount,
+  nowTime = 0,
 }: AnalyticsViewProps) {
-  const nowTime = useMemo(() => Date.now(), []);
+  const effectiveNow = nowTime || 1729792800000;
 
   const velocityData = useMemo(
-    () => computeVelocityTrend(timelineScopedJobs, nowTime),
-    [timelineScopedJobs, nowTime]
+    () => computeVelocityTrend(timelineScopedJobs, effectiveNow),
+    [timelineScopedJobs, effectiveNow]
   );
-  const funnelStages = useMemo(
-    () => computeFunnelStages(timelineScopedJobs),
-    [timelineScopedJobs]
-  );
-  const weeklyRhythm = useMemo(
-    () => computeWeeklyRhythm(timelineScopedJobs),
-    [timelineScopedJobs]
-  );
+  const funnelStages = useMemo(() => computeFunnelStages(timelineScopedJobs), [timelineScopedJobs]);
+  const weeklyRhythm = useMemo(() => computeWeeklyRhythm(timelineScopedJobs), [timelineScopedJobs]);
   const velocityStats = useMemo(
-    () => computeVelocityStats(timelineScopedJobs, nowTime),
-    [timelineScopedJobs, nowTime]
+    () => computeVelocityStats(timelineScopedJobs, effectiveNow),
+    [timelineScopedJobs, effectiveNow]
   );
 
   return (
@@ -65,10 +61,7 @@ export function AnalyticsView({
       />
 
       {/* KPI Velocity & Pipeline Health Metric Cards */}
-      <AnalyticsVelocityCards
-        stats={velocityStats}
-        totalScoped={timelineScopedJobs.length}
-      />
+      <AnalyticsVelocityCards stats={velocityStats} totalScoped={timelineScopedJobs.length} />
 
       {/* 14-Day Application Velocity Histogram */}
       <AnalyticsVelocityChart data={velocityData} />

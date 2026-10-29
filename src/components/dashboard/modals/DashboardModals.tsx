@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Job, JobStatus } from '@/types';
+import { Job, JobStatus, UpdateReferralData } from '@/types';
 import { NotesDrawer } from '../NotesDrawer';
 import { AddJobModal } from '../AddJobModal';
 import { BookmarkletModal } from '../BookmarkletModal';
@@ -15,7 +15,7 @@ interface DashboardModalsProps {
   onToggleImportant: (jobId: string) => void;
   onDeleteJob: (jobId: string) => void;
   onSaveNotes: (jobId: string, notes: string, followUpDate: string | null) => Promise<void>;
-  onUpdateReferral?: (jobId: string, data: any) => Promise<void>;
+  onUpdateReferral?: (jobId: string, data: UpdateReferralData) => Promise<void>;
   jobToDelete?: Job | null;
   onConfirmDelete?: () => void;
   onCancelDelete?: () => void;

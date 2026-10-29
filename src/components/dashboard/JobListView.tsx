@@ -44,15 +44,15 @@ export function JobListView({
   );
 
   return (
-    <section className="border border-[var(--border-subtle)] bg-[var(--bg-surface)] shadow-sm flex flex-col">
+    <section className="border border-(--border-subtle) bg-(--bg-surface) shadow-sm flex flex-col">
       {/* Mobile Card List (< md) */}
-      <div className="block md:hidden divide-y divide-[var(--border-subtle)]">
+      <div className="block md:hidden divide-y divide-(--border-subtle)">
         {isLoading ? (
-          <div className="p-8 text-center text-xs text-[var(--text-muted)] animate-pulse">
+          <div className="p-8 text-center text-xs text-(--text-muted) animate-pulse">
             Loading applications...
           </div>
         ) : paginatedJobs.length === 0 ? (
-          <div className="py-12 text-center text-xs text-[var(--text-muted)]">
+          <div className="py-12 text-center text-xs text-(--text-muted)">
             No job applications match your filters.
           </div>
         ) : (
@@ -77,10 +77,10 @@ export function JobListView({
           {isLoading ? (
             <TableShimmer rowsCount={6} />
           ) : (
-            <tbody className="divide-y divide-[var(--border-subtle)]">
+            <tbody className="divide-y divide-(--border-subtle)">
               {paginatedJobs.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="py-12 text-center text-[var(--text-muted)]">
+                  <td colSpan={6} className="py-12 text-center text-(--text-muted)">
                     No job applications match your filters.
                   </td>
                 </tr>

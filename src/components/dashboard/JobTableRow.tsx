@@ -24,7 +24,6 @@ export function JobTableRow({
   onSelectJob,
   onStatusChange,
   onToggleImportant,
-  onApplyAndAdvance,
   onDeleteJob,
 }: JobTableRowProps) {
   const stale = isJobStale(job, nowTime);
@@ -33,7 +32,7 @@ export function JobTableRow({
   return (
     <tr
       onClick={() => onSelectJob(job)}
-      className="hover:bg-[var(--bg-surface-hover)] cursor-pointer transition-colors"
+      className="hover:bg-(--bg-surface-hover) cursor-pointer transition-colors"
     >
       {/* Important / Star Toggle */}
       <td
@@ -50,54 +49,57 @@ export function JobTableRow({
             onToggleImportant?.(job.id, e);
           }}
           title={isImportant ? 'Marked as Important (Click to unmark)' : 'Mark as Important'}
-          aria-label={isImportant ? `Unmark ${job.role} at ${job.company} as important` : `Mark ${job.role} at ${job.company} as important`}
-          className="p-1 text-[var(--text-muted)] hover:text-amber-400 transition-colors cursor-pointer group inline-flex items-center justify-center"
+          aria-label={
+            isImportant
+              ? `Unmark ${job.role} at ${job.company} as important`
+              : `Mark ${job.role} at ${job.company} as important`
+          }
+          className="p-1 text-(--text-muted) hover:text-amber-400 transition-colors cursor-pointer group inline-flex items-center justify-center"
         >
           <Star
             className={`w-4 h-4 transition-transform group-hover:scale-110 active:scale-95 ${
               isImportant
                 ? 'text-amber-400 drop-shadow-[0_0_6px_rgba(251,191,36,0.5)]'
-                : 'text-[var(--text-muted)] hover:text-amber-400'
+                : 'text-(--text-muted) hover:text-amber-400'
             }`}
             fill={isImportant ? 'currentColor' : 'none'}
           />
         </button>
       </td>
 
-      {/* Company */}
       <td className="py-3.5 px-4">
         <div className="flex items-center gap-2.5">
-          <div className="w-7 h-7 bg-[var(--accent-primary-bg)] border border-[var(--border-subtle)] text-[var(--accent-primary)] font-bold text-xs flex items-center justify-center">
+          <div className="w-7 h-7 bg-(--accent-primary-bg) border border-(--border-subtle) text-(--accent-primary) font-bold text-xs flex items-center justify-center rounded-xs">
             {job.company.charAt(0)}
           </div>
-          <span className="font-semibold text-sm text-[var(--text-primary)]">
-            {job.company}
-          </span>
+          <span className="font-semibold text-sm text-(--text-primary)">{job.company}</span>
         </div>
       </td>
 
-      {/* Role */}
-      <td className="py-3.5 px-4 text-[var(--text-secondary)]">
+      <td className="py-3.5 px-4 text-(--text-secondary)">
         <div className="flex items-center gap-2 flex-wrap">
           <span>{job.role}</span>
           {job.referralStatus && job.referralStatus !== 'none' && (
             <span
               title={job.referrerName ? `Referrer: ${job.referrerName}` : 'Referral active'}
-              className={`text-[9px] px-1.5 py-0.2 font-mono uppercase tracking-wider font-semibold border ${
+              className={`text-[9px] px-1.5 py-0.2 uppercase tracking-wider font-semibold border rounded-xs ${
                 job.referralStatus === 'received'
                   ? 'bg-emerald-500/15 border-emerald-500/30 text-emerald-400'
                   : job.referralStatus === 'asked'
-                  ? 'bg-amber-500/15 border-amber-500/30 text-amber-400'
-                  : 'bg-red-500/15 border-red-500/30 text-red-400'
+                    ? 'bg-amber-500/15 border-amber-500/30 text-amber-400'
+                    : 'bg-red-500/15 border-red-500/30 text-red-400'
               }`}
             >
-              {job.referralStatus === 'received' ? (job.referrerName ? `Referred (${job.referrerName.split(' ')[0]})` : 'Referred') : `Referral: ${job.referralStatus}`}
+              {job.referralStatus === 'received'
+                ? job.referrerName
+                  ? `Referred (${job.referrerName.split(' ')[0]})`
+                  : 'Referred'
+                : `Referral: ${job.referralStatus}`}
             </span>
           )}
         </div>
       </td>
 
-      {/* Status Dropdown */}
       <td className="py-3.5 px-4" onClick={(e) => e.stopPropagation()}>
         <JobStatusDropdown
           status={job.status}
@@ -105,11 +107,10 @@ export function JobTableRow({
         />
       </td>
 
-      {/* Timeline / Age */}
       <td className="py-3.5 px-4">
-        <div className="flex items-center gap-1.5 text-[var(--text-muted)]">
+        <div className="flex items-center gap-1.5 text-(--text-muted)">
           {stale && <AlertTriangle className="w-3.5 h-3.5 text-amber-400 animate-pulse" />}
-          <span suppressHydrationWarning>
+          <span suppressHydrationWarning className="text-[11px]">
             {job.status === 'Applied' && job.appliedAt
               ? `Applied ${Math.round((nowTime - new Date(job.appliedAt).getTime()) / (1000 * 60 * 60 * 24))}d ago`
               : `Added ${formatDate(job.createdAt)}`}
@@ -117,13 +118,8 @@ export function JobTableRow({
         </div>
       </td>
 
-      {/* Quick Actions */}
       <td className="py-3.5 px-4 text-right">
-        <JobRowActions
-          job={job}
-          onSelectJob={onSelectJob}
-          onDeleteJob={onDeleteJob}
-        />
+        <JobRowActions job={job} onSelectJob={onSelectJob} onDeleteJob={onDeleteJob} />
       </td>
     </tr>
   );

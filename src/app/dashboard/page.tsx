@@ -8,10 +8,7 @@ import {
   DashboardHeader,
   DashboardNavTabs,
   DashboardTab,
-  PipelineView,
-  AnalyticsView,
-  SettingsView,
-  ProfileView,
+  DashboardTabContent,
   DashboardModals,
 } from '@/components/dashboard';
 
@@ -22,31 +19,30 @@ function DashboardContent() {
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [isBookmarkletOpen, setIsBookmarkletOpen] = useState(false);
 
+  const dashboardState = useDashboardJobs();
   const {
-    jobs, setJobs, isLoading, isSyncing, revalidate, theme, toggleTheme, viewMode, setViewMode,
-    timelineFilter, setTimelineFilter, customRange, setCustomRange,
-    searchQuery, setSearchQuery, staleOnlyFilter, setStaleOnlyFilter,
-    statusFilter, setStatusFilter,
-    nowTime, currentUser, staleCount, metrics, filteredJobs,
-    timelineScopedJobs, handleApplyAndAdvance, handleStatusChange,
-    handleToggleImportant, handleDeleteJob, handleExportCSV, fetchJobs,
-  } = useDashboardJobs();
+    jobs,
+    setJobs,
+    revalidate,
+    theme,
+    toggleTheme,
+    nowTime,
+    currentUser,
+    handleExportCSV,
+    fetchJobs,
+  } = dashboardState;
 
-  const {
-    drawerJob, setDrawerJob, handleSaveNotes, handleUpdateReferral,
-    onJobStatusChange, onJobToggleImportant, onJobDelete,
-    jobToDelete, confirmDeleteJob, cancelDeleteJob,
-  } = useJobDrawer({
+  const drawerState = useJobDrawer({
     jobs,
     nowTime,
     setJobs,
-    handleStatusChange,
-    handleToggleImportant,
-    handleDeleteJob,
+    handleStatusChange: dashboardState.handleStatusChange,
+    handleToggleImportant: dashboardState.handleToggleImportant,
+    handleDeleteJob: dashboardState.handleDeleteJob,
   });
 
   return (
-    <div className="min-h-screen flex flex-col bg-[var(--bg-app)] text-[var(--text-primary)]">
+    <div className="min-h-screen flex flex-col bg-(--bg-app) text-(--text-primary)">
       <DashboardHeader
         theme={theme}
         onToggleTheme={toggleTheme}
@@ -55,7 +51,7 @@ function DashboardContent() {
         onOpenAddJob={() => setIsAddOpen(true)}
         onOpenProfile={() => setActiveNavTab('profile')}
         currentUser={currentUser}
-        isSyncing={isSyncing}
+        isSyncing={dashboardState.isSyncing}
         onSync={revalidate}
       />
 
@@ -65,65 +61,32 @@ function DashboardContent() {
         jobCount={jobs.length}
       />
 
-      <div className="w-full px-3 sm:px-5 py-4 sm:py-6 space-y-4 sm:space-y-6 flex-1">
-        {activeNavTab === 'dashboard' && (
-          <PipelineView
-            timelineFilter={timelineFilter} onSelectTimeline={setTimelineFilter}
-            customRange={customRange} onCustomRangeChange={setCustomRange}
-            timelineScopedJobs={timelineScopedJobs} totalJobsCount={jobs.length}
-            isLoading={isLoading} metrics={metrics}
-            searchQuery={searchQuery} onSearchChange={setSearchQuery}
-            staleCount={staleCount} staleOnlyFilter={staleOnlyFilter}
-            onToggleStaleFilter={() => setStaleOnlyFilter(!staleOnlyFilter)}
-            viewMode={viewMode} onSelectViewMode={setViewMode}
-            filteredJobs={filteredJobs} statusFilter={statusFilter} onSelectStatus={setStatusFilter}
-            nowTime={nowTime} onSelectJob={setDrawerJob}
-            onStatusChange={onJobStatusChange} onToggleImportant={handleToggleImportant}
-            onApplyAndAdvance={handleApplyAndAdvance} onDeleteJob={onJobDelete}
-          />
-        )}
-
-        {activeNavTab === 'analytics' && (
-          <AnalyticsView
-            timelineFilter={timelineFilter}
-            onSelectTimeline={setTimelineFilter}
-            customRange={customRange}
-            onCustomRangeChange={setCustomRange}
-            timelineScopedJobs={timelineScopedJobs}
-            totalJobsCount={jobs.length}
-            metrics={metrics}
-          />
-        )}
-
-        {activeNavTab === 'settings' && (
-          <SettingsView
-            currentUser={currentUser}
-            onExportCSV={handleExportCSV}
-            totalJobs={jobs.length}
-            theme={theme}
-            onToggleTheme={toggleTheme}
-          />
-        )}
-
-        {activeNavTab === 'profile' && (
-          <ProfileView
-            currentUser={currentUser}
-            totalJobs={jobs.length}
-            metrics={metrics}
-            onExportCSV={handleExportCSV}
-          />
-        )}
-      </div>
+      <DashboardTabContent
+        activeTab={activeNavTab}
+        {...dashboardState}
+        setDrawerJob={drawerState.setDrawerJob}
+        onJobStatusChange={drawerState.onJobStatusChange}
+        onJobDelete={drawerState.onJobDelete}
+      />
 
       <DashboardModals
-        drawerJob={drawerJob} nowTime={nowTime} onCloseDrawer={() => setDrawerJob(null)}
-        onStatusChange={onJobStatusChange} onToggleImportant={onJobToggleImportant}
-        onDeleteJob={onJobDelete} onSaveNotes={handleSaveNotes}
-        onUpdateReferral={handleUpdateReferral}
-        jobToDelete={jobToDelete} onConfirmDelete={confirmDeleteJob} onCancelDelete={cancelDeleteJob}
-        isAddOpen={isAddOpen} onCloseAdd={() => setIsAddOpen(false)}
-        onJobAdded={(newJob) => setJobs((prev) => [newJob, ...prev])} onRefreshJobs={fetchJobs}
-        isBookmarkletOpen={isBookmarkletOpen} onCloseBookmarklet={() => setIsBookmarkletOpen(false)}
+        drawerJob={drawerState.drawerJob}
+        nowTime={nowTime}
+        onCloseDrawer={() => drawerState.setDrawerJob(null)}
+        onStatusChange={drawerState.onJobStatusChange}
+        onToggleImportant={drawerState.onJobToggleImportant}
+        onDeleteJob={drawerState.onJobDelete}
+        onSaveNotes={drawerState.handleSaveNotes}
+        onUpdateReferral={drawerState.handleUpdateReferral}
+        jobToDelete={drawerState.jobToDelete}
+        onConfirmDelete={drawerState.confirmDeleteJob}
+        onCancelDelete={drawerState.cancelDeleteJob}
+        isAddOpen={isAddOpen}
+        onCloseAdd={() => setIsAddOpen(false)}
+        onJobAdded={(newJob) => setJobs((prev) => [newJob, ...prev])}
+        onRefreshJobs={fetchJobs}
+        isBookmarkletOpen={isBookmarkletOpen}
+        onCloseBookmarklet={() => setIsBookmarkletOpen(false)}
       />
     </div>
   );
@@ -133,7 +96,7 @@ export default function DashboardPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen bg-[var(--bg-app)] flex items-center justify-center text-xs text-[var(--text-muted)]">
+        <div className="min-h-screen bg-(--bg-app) flex items-center justify-center text-xs text-(--text-muted)">
           Loading workspace...
         </div>
       }

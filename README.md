@@ -1,6 +1,7 @@
 <div align="center">
 
 # Job Radar
+
 ### High-Speed Application Pipeline & Career Telemetry Command Center
 
 A private, distraction-free command center for modern software engineers. Ingest job postings instantly from mobile via Telegram, auto-extract job specs using AI, manage referrals, track follow-ups, and visualize application velocity across high-density Table and Kanban views.
@@ -21,6 +22,7 @@ A private, distraction-free command center for modern software engineers. Ingest
 ## Visual Walkthrough
 
 ### 1. Minimalist Landing Page
+
 Anthropic-inspired dark mode landing page featuring interactive live specimens, architectural pillars, comparison matrices, and FAQ accordions.
 <div align="center">
   <img src="docs/screenshots/landing-page.png" alt="Job Radar Landing Page" width="100%" />
@@ -29,6 +31,7 @@ Anthropic-inspired dark mode landing page featuring interactive live specimens, 
 ---
 
 ### 2. High-Density Pipeline Dashboard (Table View)
+
 Fast, keyboard-friendly workspace with company avatars, referral status tags, custom status dropdowns, stale indicators, and one-click actions.
 <div align="center">
   <img src="docs/screenshots/dashboard-table.png" alt="Job Radar Dashboard Table View" width="100%" />
@@ -37,6 +40,7 @@ Fast, keyboard-friendly workspace with company avatars, referral status tags, cu
 ---
 
 ### 3. Kanban Board View with Modular Column Pagination
+
 Columnar pipeline across all hiring stages (`Saved`, `Applied`, `Interviewing`, `Offer`, `Rejected`) with customizable cards per column, star importance toggles, and direct note triggers.
 <div align="center">
   <img src="docs/screenshots/dashboard-kanban.png" alt="Job Radar Kanban Board View" width="100%" />
@@ -45,15 +49,16 @@ Columnar pipeline across all hiring stages (`Saved`, `Applied`, `Interviewing`, 
 ---
 
 ### 4. Application Details & Referral Tracker Drawer
+
 Slide-out drawer containing follow-up calendar reminder presets (`+3d`, `+1w`), complete referral tracking (referral status, referrer name, contact, notes), and markdown scratchpad.
 <div align="center">
   <img src="docs/screenshots/job-details-drawer.png" alt="Job Radar Details & Referral Drawer" width="100%" />
 </div>
 
-
 ---
 
 ### 5. Application Velocity & Conversion Analytics
+
 14-day interactive timeline bar charts, application throughput counters, and multi-stage conversion funnel telemetry.
 <div align="center">
   <img src="docs/screenshots/dashboard-analytics.png" alt="Job Radar Analytics Dashboard" width="100%" />
@@ -91,7 +96,7 @@ Slide-out drawer containing follow-up calendar reminder presets (`+3d`, `+1w`), 
 - **Single-User Security**:
   - Whitelist-enforced single-user authentication.
   - Signed 30-day JWT sessions stored in secure `HttpOnly`, `SameSite=lax` cookies.
-  - Optional Google OAuth 2.0 integration.
+  - Optional Google integration.
 
 - **Data Sovereignty**:
   - Instant 1-click CSV export of your entire job search history.
@@ -142,45 +147,51 @@ graph TD
 
 ## Tech Stack
 
-| Layer | Technology |
-|---|---|
-| **Framework** | [Next.js 16.4](https://nextjs.org/) (App Router, Turbopack) |
-| **Language** | [TypeScript 5](https://www.typescriptlang.org/) |
-| **UI Library** | [React 19](https://react.dev/) |
-| **Styling** | [TailwindCSS 4](https://tailwindcss.com/) + Custom CSS Design Tokens |
-| **Icons** | [Lucide React](https://lucide.dev/) |
-| **Database** | [Neon Serverless PostgreSQL](https://neon.tech/) |
-| **ORM** | [Drizzle ORM](https://orm.drizzle.team/) & [Drizzle Kit](https://orm.drizzle.team/kit-docs/overview) |
-| **Authentication** | [Jose](https://github.com/panva/jose) (JWT) + Google OAuth 2.0 |
-| **AI Layer** | DeepSeek-V3 / OpenAI GPT-4o-mini |
+| Layer              | Technology                                                                                           |
+| ------------------ | ---------------------------------------------------------------------------------------------------- |
+| **Framework**      | [Next.js 16.4](https://nextjs.org/) (App Router, Turbopack)                                          |
+| **Language**       | [TypeScript 5](https://www.typescriptlang.org/)                                                      |
+| **UI Library**     | [React 19](https://react.dev/)                                                                       |
+| **Styling**        | [TailwindCSS 4](https://tailwindcss.com/) + Custom CSS Design Tokens                                 |
+| **Icons**          | [Lucide React](https://lucide.dev/)                                                                  |
+| **Database**       | [Neon Serverless PostgreSQL](https://neon.tech/)                                                     |
+| **ORM**            | [Drizzle ORM](https://orm.drizzle.team/) & [Drizzle Kit](https://orm.drizzle.team/kit-docs/overview) |
+| **Authentication** | [Jose](https://github.com/panva/jose) (JWT) + Google                                                 |
+| **AI Layer**       | DeepSeek-V3 / OpenAI GPT-4o-mini                                                                     |
 
 ---
 
 ## Getting Started
 
 ### 1. Clone the repository
+
 ```bash
 git clone https://github.com/kunalkmaurya/job-rader.git
 cd job-rader
 ```
 
 ### 2. Install dependencies
+
 ```bash
 npm install
 ```
 
 ### 3. Configure environment variables
+
 Copy `.env.example` to `.env` (or configure directly):
+
 ```bash
 cp .env.example .env
 ```
 
 ### 4. Push database schema to Neon
+
 ```bash
 npx drizzle-kit push
 ```
 
 ### 5. Run the development server
+
 ```bash
 npm run dev
 ```
@@ -227,12 +238,11 @@ OPENAI_BASE_URL="https://api.openai.com/v1"
 
 ## Dashboard Shortcuts
 
-| Key | Action |
-|---|---|
-| `/` | Focus search bar |
-| `Esc` | Close notes drawer / dismiss modals |
-| `Click on Card / Row` | Open job details & referral drawer |
-| `Star` | Toggle priority job status |
+| Key                   | Action                              |
+| --------------------- | ----------------------------------- |
+| `/`                   | Focus search bar                    |
+| `Esc`                 | Close notes drawer / dismiss modals |
+| `Click on Card / Row` | Open job details & referral drawer  |
+| `Star`                | Toggle priority job status          |
 
 ---
-

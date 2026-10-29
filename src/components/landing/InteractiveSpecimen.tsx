@@ -55,29 +55,31 @@ export function InteractiveSpecimen() {
   };
 
   return (
-    <section id="interactive-showcase" className="w-full px-6 py-20 border-t border-[var(--border-subtle)] bg-[var(--bg-surface)]/40 relative">
+    <section
+      id="interactive-showcase"
+      className="w-full px-6 py-20 border-t border-(--border-subtle) bg-(--bg-surface)/40 relative"
+    >
       <div className="max-w-5xl mx-auto space-y-8">
-        {/* Section Title & Target Preset Selector */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div>
-            <div className="text-xs font-mono text-[var(--accent-primary)] uppercase tracking-widest mb-1.5 flex items-center gap-1.5">
+            <div className="text-xs text-(--accent-primary) uppercase tracking-widest mb-1.5 flex items-center gap-1.5">
               <Terminal className="w-3.5 h-3.5" />
               <span>Live Interactive Specimen</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl font-serif tracking-tight text-[var(--text-primary)]">
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-(--text-primary)">
               From Telegram URL to structured pipeline card.
             </h2>
           </div>
 
-          <div className="flex flex-wrap items-center gap-1.5 border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-1 text-xs font-mono">
+          <div className="flex flex-wrap items-center gap-1.5 border border-(--border-subtle) bg-(--bg-app) p-1 text-xs rounded-xs">
             {SHOWCASE_ITEMS.map((item) => (
               <button
                 key={item.id}
                 onClick={() => handleSelectPreset(item)}
-                className={`px-3 py-1.5 transition-colors cursor-pointer ${
+                className={`px-3 py-1.5 text-xs font-medium transition-colors cursor-pointer border rounded-xs ${
                   selectedItem.id === item.id
-                    ? 'bg-[var(--accent-primary)] text-white font-semibold'
-                    : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+                    ? 'border-(--accent-primary) bg-(--accent-primary-bg) text-(--accent-blue-bright) font-semibold shadow-xs'
+                    : 'border-(--border-subtle) bg-(--bg-surface) text-(--text-secondary) hover:text-(--text-primary) hover:border-(--border-strong)'
                 }`}
               >
                 {item.company}
@@ -87,7 +89,7 @@ export function InteractiveSpecimen() {
         </div>
 
         {/* Window Shell Container */}
-        <div className="border border-[var(--border-subtle)] bg-[var(--bg-surface)] shadow-2xl overflow-hidden">
+        <div className="border border-(--border-subtle) bg-(--bg-surface) shadow-2xl overflow-hidden">
           <SpecimenHeader
             selectedItem={selectedItem}
             activeTab={activeTab}
@@ -103,8 +105,8 @@ export function InteractiveSpecimen() {
 
           <div className="p-6 md:p-8 relative min-h-[380px]">
             {isSimulating ? (
-              <div className="h-64 flex flex-col items-center justify-center gap-3 font-mono text-xs text-[var(--text-secondary)]">
-                <Sparkles className="w-6 h-6 text-[var(--accent-primary)] animate-spin" />
+              <div className="h-64 flex flex-col items-center justify-center gap-3 text-xs text-(--text-secondary)">
+                <Sparkles className="w-6 h-6 text-(--accent-primary) animate-spin" />
                 <span>Hydrating DOM & Extracting Semantic Schema...</span>
               </div>
             ) : activeTab === 'board' ? (
@@ -114,10 +116,7 @@ export function InteractiveSpecimen() {
                 onSelectStatus={setSimulatedStatus}
               />
             ) : activeTab === 'extraction' ? (
-              <SpecimenSchemaView
-                selectedItem={selectedItem}
-                simulatedStatus={simulatedStatus}
-              />
+              <SpecimenSchemaView selectedItem={selectedItem} simulatedStatus={simulatedStatus} />
             ) : (
               <SpecimenTelegramView selectedItem={selectedItem} />
             )}

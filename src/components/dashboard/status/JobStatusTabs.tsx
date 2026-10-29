@@ -14,17 +14,85 @@ export interface JobStatusTabsProps {
 interface StatusTabConfig {
   id: JobStatusFilter;
   label: string;
-  dotColor: string;
+  textColor: string;
+  activeTextColor: string;
+  bgColor: string;
+  activeBgColor: string;
+  borderColor: string;
+  activeBorderColor: string;
 }
 
 const STATUS_TABS: StatusTabConfig[] = [
-  { id: 'all', label: 'All', dotColor: 'var(--accent-primary)' },
-  { id: 'Saved', label: 'Saved', dotColor: 'var(--status-saved-text, #70A1D7)' },
-  { id: 'Applied', label: 'Applied', dotColor: 'var(--status-applied-text, #E07A5F)' },
-  { id: 'Interviewing', label: 'Interviewing', dotColor: 'var(--status-interview-text, #B392F0)' },
-  { id: 'Offer', label: 'Offer', dotColor: 'var(--status-offer-text, #68B684)' },
-  { id: 'Rejected', label: 'Rejected', dotColor: 'var(--status-rejected-text, #E57373)' },
-  { id: 'Archived', label: 'Archived', dotColor: 'var(--status-archived-text, #A1A09A)' },
+  {
+    id: 'all',
+    label: 'All',
+    textColor: 'var(--text-secondary)',
+    activeTextColor: 'var(--accent-blue-bright)',
+    bgColor: 'rgba(49, 120, 198, 0.06)',
+    activeBgColor: 'var(--accent-primary-bg)',
+    borderColor: 'rgba(49, 120, 198, 0.2)',
+    activeBorderColor: 'var(--accent-primary)',
+  },
+  {
+    id: 'Saved',
+    label: 'Saved',
+    textColor: 'var(--text-secondary)',
+    activeTextColor: 'var(--status-saved-text, #94A3B8)',
+    bgColor: 'rgba(100, 116, 139, 0.06)',
+    activeBgColor: 'var(--status-saved-bg)',
+    borderColor: 'rgba(100, 116, 139, 0.18)',
+    activeBorderColor: 'rgba(100, 116, 139, 0.55)',
+  },
+  {
+    id: 'Applied',
+    label: 'Applied',
+    textColor: 'var(--text-secondary)',
+    activeTextColor: 'var(--status-applied-text, #5499EB)',
+    bgColor: 'rgba(49, 120, 198, 0.06)',
+    activeBgColor: 'var(--status-applied-bg)',
+    borderColor: 'rgba(49, 120, 198, 0.2)',
+    activeBorderColor: 'rgba(49, 120, 198, 0.6)',
+  },
+  {
+    id: 'Interviewing',
+    label: 'Interviewing',
+    textColor: 'var(--text-secondary)',
+    activeTextColor: 'var(--status-interview-text, #FACC15)',
+    bgColor: 'rgba(234, 179, 8, 0.06)',
+    activeBgColor: 'var(--status-interview-bg)',
+    borderColor: 'rgba(234, 179, 8, 0.2)',
+    activeBorderColor: 'rgba(234, 179, 8, 0.6)',
+  },
+  {
+    id: 'Offer',
+    label: 'Offer',
+    textColor: 'var(--text-secondary)',
+    activeTextColor: 'var(--status-offer-text, #34D399)',
+    bgColor: 'rgba(16, 185, 129, 0.06)',
+    activeBgColor: 'var(--status-offer-bg)',
+    borderColor: 'rgba(16, 185, 129, 0.2)',
+    activeBorderColor: 'rgba(16, 185, 129, 0.6)',
+  },
+  {
+    id: 'Rejected',
+    label: 'Rejected',
+    textColor: 'var(--text-secondary)',
+    activeTextColor: 'var(--status-rejected-text, #F87171)',
+    bgColor: 'rgba(239, 68, 68, 0.06)',
+    activeBgColor: 'var(--status-rejected-bg)',
+    borderColor: 'rgba(239, 68, 68, 0.2)',
+    activeBorderColor: 'rgba(239, 68, 68, 0.6)',
+  },
+  {
+    id: 'Archived',
+    label: 'Archived',
+    textColor: 'var(--text-secondary)',
+    activeTextColor: 'var(--status-archived-text, #94A3B8)',
+    bgColor: 'rgba(100, 116, 139, 0.06)',
+    activeBgColor: 'var(--status-archived-bg)',
+    borderColor: 'rgba(100, 116, 139, 0.18)',
+    activeBorderColor: 'rgba(100, 116, 139, 0.55)',
+  },
 ];
 
 export function JobStatusTabs({ activeStatus, onSelectStatus, counts }: JobStatusTabsProps) {
@@ -32,7 +100,7 @@ export function JobStatusTabs({ activeStatus, onSelectStatus, counts }: JobStatu
     <div
       role="tablist"
       aria-label="Filter jobs by pipeline status"
-      className="w-full border-b border-[var(--border-subtle)] bg-[var(--bg-app)] overflow-x-auto scrollbar-none flex items-center gap-1 scroll-smooth"
+      className="w-full flex items-center gap-1.5 overflow-x-auto scrollbar-none py-1 scroll-smooth"
     >
       {STATUS_TABS.map((tab) => {
         const isActive = activeStatus === tab.id;
@@ -47,23 +115,21 @@ export function JobStatusTabs({ activeStatus, onSelectStatus, counts }: JobStatu
             aria-controls="jobs-table-panel"
             id={`status-tab-${tab.id.toLowerCase()}`}
             onClick={() => onSelectStatus(tab.id)}
-            className={`flex items-center gap-1.5 sm:gap-2 py-2 sm:py-2.5 px-2.5 sm:px-3.5 text-[11px] sm:text-xs font-mono uppercase tracking-wider transition-colors cursor-pointer border-b-2 whitespace-nowrap shrink-0 ${
-              isActive
-                ? 'border-[var(--accent-primary)] text-[var(--text-primary)] font-bold'
-                : 'border-transparent text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--border-subtle)]'
+            style={{
+              backgroundColor: isActive ? tab.activeBgColor : tab.bgColor,
+              borderColor: isActive ? tab.activeBorderColor : tab.borderColor,
+              color: isActive ? tab.activeTextColor : tab.textColor,
+            }}
+            className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-xs border rounded-xs whitespace-nowrap shrink-0 transition-colors cursor-pointer ${
+              isActive ? 'font-semibold shadow-xs' : 'font-medium hover:text-(--text-primary)'
             }`}
           >
-            <span
-              className="w-1.5 h-1.5 shrink-0"
-              style={{ backgroundColor: tab.dotColor }}
-              aria-hidden="true"
-            />
             <span>{tab.label}</span>
             <span
-              className={`text-[10px] px-1.5 py-0.5 font-mono transition-colors ${
+              className={`text-[10px] px-1.5 py-0.2 rounded-xs transition-colors ${
                 isActive
-                  ? 'bg-[var(--accent-primary-bg)] text-[var(--accent-primary)] font-bold'
-                  : 'bg-[var(--border-subtle)] text-[var(--text-muted)]'
+                  ? 'bg-current/15 font-bold'
+                  : 'bg-black/5 dark:bg-white/5 text-(--text-muted)'
               }`}
             >
               {count}

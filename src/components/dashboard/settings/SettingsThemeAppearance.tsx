@@ -10,31 +10,30 @@ interface SettingsThemeAppearanceProps {
 }
 
 const ACCENTS = [
-  { label: 'Terracotta', color: '#D96B43' },
+  { label: 'TypeScript', color: '#3178C6' },
   { label: 'Amber', color: '#F59E0B' },
-  { label: 'Cyan', color: '#06B6D4' },
+  { label: 'Indigo', color: '#6366F1' },
   { label: 'Emerald', color: '#10B981' },
 ];
 
 export function SettingsThemeAppearance({ settings, updateSetting }: SettingsThemeAppearanceProps) {
   return (
-    <div className="p-5 border border-[var(--border-subtle)] bg-[var(--bg-surface)] space-y-4 shadow-sm">
-      <div className="flex items-center justify-between pb-3 border-b border-[var(--border-subtle)]">
+    <div className="p-5 border border-(--border-subtle) bg-(--bg-surface) space-y-4 shadow-sm">
+      <div className="flex items-center justify-between pb-3 border-b border-(--border-subtle)">
         <div className="flex items-center gap-2">
           <Palette className="w-4 h-4 text-purple-400" />
-          <h3 className="font-mono text-xs uppercase tracking-wider font-semibold text-[var(--text-primary)]">
+          <h3 className="text-xs uppercase tracking-wider font-semibold text-(--text-primary)">
             Appearance & Workspace Themes
           </h3>
         </div>
-        <span className="text-[10px] font-mono text-[var(--text-muted)]">
-          {settings.theme === 'dark' ? 'Obsidian Palette' : 'Warm Paper Palette'}
+        <span className="text-[10px] text-(--text-muted)">
+          {settings.theme === 'dark' ? 'Precision Dark' : 'Precision Light'}
         </span>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 font-mono text-xs">
-        {/* Color Scheme Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
         <div className="space-y-1.5">
-          <label className="text-[10px] text-[var(--text-muted)] block uppercase tracking-wider">
+          <label className="text-[10px] text-(--text-muted) block uppercase tracking-wider">
             Theme Palette
           </label>
           <div className="grid grid-cols-2 gap-2">
@@ -43,12 +42,12 @@ export function SettingsThemeAppearance({ settings, updateSetting }: SettingsThe
               onClick={() => updateSetting('theme', 'dark')}
               className={`p-2.5 border text-center transition-colors cursor-pointer ${
                 settings.theme === 'dark'
-                  ? 'border-[var(--accent-primary)] bg-[var(--bg-app)] text-[var(--accent-primary)] font-bold'
-                  : 'border-[var(--border-subtle)] bg-[var(--bg-app)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+                  ? 'border-(--accent-primary) bg-(--bg-app) text-(--accent-primary) font-bold'
+                  : 'border-(--border-subtle) bg-(--bg-app) text-(--text-secondary) hover:text-(--text-primary)'
               }`}
             >
               <Moon className="w-4 h-4 mx-auto mb-1" />
-              <span className="text-[11px]">Dark Obsidian</span>
+              <span className="text-[11px]">Precision Dark</span>
             </button>
 
             <button
@@ -56,19 +55,18 @@ export function SettingsThemeAppearance({ settings, updateSetting }: SettingsThe
               onClick={() => updateSetting('theme', 'light')}
               className={`p-2.5 border text-center transition-colors cursor-pointer ${
                 settings.theme === 'light'
-                  ? 'border-[var(--accent-primary)] bg-[var(--bg-app)] text-[var(--accent-primary)] font-bold'
-                  : 'border-[var(--border-subtle)] bg-[var(--bg-app)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+                  ? 'border-(--accent-primary) bg-(--bg-app) text-(--accent-primary) font-bold'
+                  : 'border-(--border-subtle) bg-(--bg-app) text-(--text-secondary) hover:text-(--text-primary)'
               }`}
             >
               <Sun className="w-4 h-4 mx-auto mb-1 text-amber-400" />
-              <span className="text-[11px]">Warm Paper</span>
+              <span className="text-[11px]">Precision Light</span>
             </button>
           </div>
         </div>
 
-        {/* Default View Mode */}
         <div className="space-y-1.5">
-          <label className="text-[10px] text-[var(--text-muted)] block uppercase tracking-wider">
+          <label className="text-[10px] text-(--text-muted) block uppercase tracking-wider">
             Default View Mode
           </label>
           <div className="grid grid-cols-2 gap-2">
@@ -77,8 +75,8 @@ export function SettingsThemeAppearance({ settings, updateSetting }: SettingsThe
               onClick={() => updateSetting('defaultView', 'list')}
               className={`p-2.5 border text-center transition-colors cursor-pointer ${
                 settings.defaultView === 'list'
-                  ? 'border-[var(--accent-primary)] bg-[var(--bg-app)] text-[var(--accent-primary)] font-bold'
-                  : 'border-[var(--border-subtle)] bg-[var(--bg-app)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+                  ? 'border-(--accent-primary) bg-(--bg-app) text-(--accent-primary) font-bold'
+                  : 'border-(--border-subtle) bg-(--bg-app) text-(--text-secondary) hover:text-(--text-primary)'
               }`}
             >
               <List className="w-4 h-4 mx-auto mb-1" />
@@ -90,8 +88,8 @@ export function SettingsThemeAppearance({ settings, updateSetting }: SettingsThe
               onClick={() => updateSetting('defaultView', 'kanban')}
               className={`p-2.5 border text-center transition-colors cursor-pointer ${
                 settings.defaultView === 'kanban'
-                  ? 'border-[var(--accent-primary)] bg-[var(--bg-app)] text-[var(--accent-primary)] font-bold'
-                  : 'border-[var(--border-subtle)] bg-[var(--bg-app)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+                  ? 'border-(--accent-primary) bg-(--bg-app) text-(--accent-primary) font-bold'
+                  : 'border-(--border-subtle) bg-(--bg-app) text-(--text-secondary) hover:text-(--text-primary)'
               }`}
             >
               <LayoutGrid className="w-4 h-4 mx-auto mb-1" />
@@ -100,9 +98,8 @@ export function SettingsThemeAppearance({ settings, updateSetting }: SettingsThe
           </div>
         </div>
 
-        {/* Accent Color Swatches */}
         <div className="space-y-1.5">
-          <label className="text-[10px] text-[var(--text-muted)] block uppercase tracking-wider">
+          <label className="text-[10px] text-(--text-muted) block uppercase tracking-wider">
             Accent Brand Color
           </label>
           <div className="grid grid-cols-4 gap-1.5 pt-1">
@@ -115,12 +112,15 @@ export function SettingsThemeAppearance({ settings, updateSetting }: SettingsThe
                   onClick={() => updateSetting('accentColor', acc.color)}
                   className={`p-2 border text-center transition-all cursor-pointer ${
                     isSelected
-                      ? 'border-[var(--text-primary)] bg-[var(--bg-app)] font-bold'
-                      : 'border-[var(--border-subtle)] bg-[var(--bg-app)] opacity-70 hover:opacity-100'
+                      ? 'border-(--text-primary) bg-(--bg-app) font-bold'
+                      : 'border-(--border-subtle) bg-(--bg-app) opacity-70 hover:opacity-100'
                   }`}
                 >
-                  <div className="w-3.5 h-3.5 mx-auto mb-1" style={{ backgroundColor: acc.color }} />
-                  <span className="text-[9px] block text-[var(--text-secondary)]">{acc.label}</span>
+                  <div
+                    className="w-3.5 h-3.5 mx-auto mb-1"
+                    style={{ backgroundColor: acc.color }}
+                  />
+                  <span className="text-[9px] block text-(--text-secondary)">{acc.label}</span>
                 </button>
               );
             })}

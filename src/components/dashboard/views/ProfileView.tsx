@@ -20,12 +20,7 @@ interface ProfileViewProps {
   onExportCSV: () => void;
 }
 
-export function ProfileView({
-  currentUser,
-  totalJobs,
-  metrics,
-  onExportCSV,
-}: ProfileViewProps) {
+export function ProfileView({ currentUser, totalJobs, metrics, onExportCSV }: ProfileViewProps) {
   return (
     <div className="space-y-6">
       {/* 1. Profile Hero & Identity Card */}

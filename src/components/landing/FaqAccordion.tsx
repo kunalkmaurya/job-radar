@@ -26,33 +26,36 @@ export function FaqAccordion() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   return (
-    <section id="faq" className="w-full px-6 py-24 border-t border-[var(--border-subtle)] bg-[var(--bg-surface)]/20">
+    <section
+      id="faq"
+      className="w-full px-6 py-24 border-t border-(--border-subtle) bg-(--bg-surface)/20"
+    >
       <div className="max-w-3xl mx-auto space-y-10">
         <div className="text-center space-y-2">
-          <div className="text-xs font-mono text-[var(--accent-primary)] uppercase tracking-widest">
+          <div className="text-xs text-(--accent-primary) uppercase tracking-widest">
             Clarity & Specifications
           </div>
-          <h2 className="text-3xl sm:text-4xl font-serif tracking-tight text-[var(--text-primary)]">
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-(--text-primary)">
             Frequently Answered Inquiries
           </h2>
         </div>
 
-        <div className="divide-y divide-[var(--border-subtle)] border border-[var(--border-subtle)] bg-[var(--bg-surface)]">
+        <div className="divide-y divide-(--border-subtle) border border-(--border-subtle) bg-(--bg-surface)">
           {FAQS.map((faq, idx) => (
             <div key={idx} className="transition-colors">
               <button
                 onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
-                className="w-full p-5 text-left flex items-center justify-between gap-4 cursor-pointer hover:bg-[var(--bg-surface-hover)]"
+                className="w-full p-5 text-left flex items-center justify-between gap-4 cursor-pointer hover:bg-(--bg-surface-hover)"
               >
-                <span className="font-medium text-sm text-[var(--text-primary)]">{faq.q}</span>
+                <span className="font-medium text-sm text-(--text-primary)">{faq.q}</span>
                 <ChevronDown
-                  className={`w-4 h-4 text-[var(--text-muted)] shrink-0 transition-transform ${
-                    openFaq === idx ? 'rotate-180 text-[var(--accent-primary)]' : ''
+                  className={`w-4 h-4 text-(--text-muted) shrink-0 transition-transform ${
+                    openFaq === idx ? 'rotate-180 text-(--accent-primary)' : ''
                   }`}
                 />
               </button>
               {openFaq === idx && (
-                <div className="px-5 pb-5 pt-1 text-xs text-[var(--text-secondary)] leading-relaxed border-t border-[var(--border-subtle)]/50">
+                <div className="px-5 pb-5 pt-1 text-xs text-(--text-secondary) leading-relaxed border-t border-(--border-subtle)/50">
                   {faq.a}
                 </div>
               )}

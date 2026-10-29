@@ -37,20 +37,21 @@ export function SettingsView({
   return (
     <div className="space-y-6">
       {/* Settings Top Command Header */}
-      <div className="p-4 border border-[var(--border-subtle)] bg-[var(--bg-surface)] flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-sm">
+      <div className="p-4 border border-(--border-subtle) bg-(--bg-surface) flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-sm">
         <div className="flex items-center gap-2.5">
-          <SlidersHorizontal className="w-4 h-4 text-[var(--accent-primary)]" />
+          <SlidersHorizontal className="w-4 h-4 text-(--accent-primary)" />
           <div>
-            <h2 className="font-mono text-xs uppercase tracking-wider font-bold text-[var(--text-primary)]">
+            <h2 className="text-xs uppercase tracking-wider font-bold text-(--text-primary)">
               System Configuration & Telemetry Control
             </h2>
-            <p className="text-[11px] font-mono text-[var(--text-secondary)]">
-              AI reasoning models, Telegram webhook ingestion, visual themes, and workspace governance
+            <p className="text-[11px] text-(--text-secondary)">
+              AI reasoning models, Telegram webhook ingestion, visual themes, and workspace
+              governance
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-2 font-mono text-[11px] text-emerald-400 font-semibold self-start sm:self-auto bg-[var(--bg-app)] px-2.5 py-1 border border-[var(--border-subtle)]">
+        <div className="flex items-center gap-2 text-[11px] text-emerald-400 font-semibold self-start sm:self-auto bg-(--bg-app) px-2.5 py-1 border border-(--border-subtle)">
           <Check className="w-3.5 h-3.5" />
           <span>{saveStatus}</span>
         </div>
@@ -66,22 +67,13 @@ export function SettingsView({
       />
 
       {/* 2. Telegram Webhook Ingestion Engine */}
-      <SettingsTelegramConfig
-        settings={settings}
-        updateSetting={updateSetting}
-      />
+      <SettingsTelegramConfig settings={settings} updateSetting={updateSetting} />
 
       {/* 3. Appearance, Themes & Default Views */}
-      <SettingsThemeAppearance
-        settings={settings}
-        updateSetting={updateSetting}
-      />
+      <SettingsThemeAppearance settings={settings} updateSetting={updateSetting} />
 
       {/* 4. Pipeline Velocity & Ingestion Rules */}
-      <SettingsPipelineAutomation
-        settings={settings}
-        updateSetting={updateSetting}
-      />
+      <SettingsPipelineAutomation settings={settings} updateSetting={updateSetting} />
 
       {/* 5. Access Security, Neon Database & Backup */}
       <SettingsAccessDataBackup

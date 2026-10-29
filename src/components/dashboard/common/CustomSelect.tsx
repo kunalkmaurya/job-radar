@@ -69,12 +69,12 @@ export function CustomSelect<T extends string | number>({
         aria-haspopup="listbox"
         aria-expanded={isOpen}
         aria-label={ariaLabel}
-        className="inline-flex items-center justify-between gap-2 py-1 px-2.5 bg-[var(--bg-app)] border border-[var(--border-subtle)] hover:border-[var(--border-strong)] text-[var(--text-primary)] font-medium text-xs transition-colors cursor-pointer focus:outline-none focus:border-[var(--border-focus)] select-none"
+        className="inline-flex items-center justify-between gap-2 py-1 px-2.5 bg-(--bg-app) border border-(--border-subtle) hover:border-(--border-strong) text-(--text-primary) font-medium text-xs transition-colors cursor-pointer focus:outline-none focus:border-(--border-focus) select-none"
       >
         <span>{selectedOption?.label}</span>
         <ChevronDown
-          className={`w-3.5 h-3.5 text-[var(--text-muted)] transition-transform duration-150 ${
-            isOpen ? 'rotate-180 text-[var(--text-primary)]' : ''
+          className={`w-3.5 h-3.5 text-(--text-muted) transition-transform duration-150 ${
+            isOpen ? 'rotate-180 text-(--text-primary)' : ''
           }`}
         />
       </button>
@@ -83,7 +83,7 @@ export function CustomSelect<T extends string | number>({
         <>
           <div className="fixed inset-0 z-40" onClick={() => setIsOpen(false)} />
           <div
-            className={`absolute right-0 z-50 min-w-[130px] py-1 bg-[var(--bg-surface)] border border-[var(--border-subtle)] backdrop-blur-xl shadow-2xl animate-in fade-in zoom-in-95 duration-100 ${
+            className={`absolute right-0 z-50 min-w-[130px] py-1 bg-(--bg-surface) border border-(--border-subtle) backdrop-blur-xl shadow-2xl animate-in fade-in zoom-in-95 duration-100 ${
               direction === 'up' ? 'bottom-full mb-1.5' : 'top-full mt-1'
             }`}
           >
@@ -96,8 +96,8 @@ export function CustomSelect<T extends string | number>({
                   onClick={(e) => handleSelect(opt.value, e)}
                   className={`w-full flex items-center justify-between px-3 py-1.5 text-xs text-left transition-colors cursor-pointer ${
                     isSelected
-                      ? 'bg-[var(--accent-primary-bg)] text-[var(--accent-primary)] font-semibold'
-                      : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)]'
+                      ? 'bg-(--accent-primary-bg) text-(--accent-primary) font-semibold'
+                      : 'text-(--text-secondary) hover:text-(--text-primary) hover:bg-(--bg-surface-hover)'
                   }`}
                 >
                   <span>{opt.label}</span>

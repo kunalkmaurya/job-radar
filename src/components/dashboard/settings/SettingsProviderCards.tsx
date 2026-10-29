@@ -25,7 +25,7 @@ interface ProviderCardsProps {
 
 export function SettingsProviderCards({ currentProvider, onSelectProvider }: ProviderCardsProps) {
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 font-mono">
+    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 ">
       {PROVIDERS.map((p) => {
         const isSelected = currentProvider === p.id;
         return (
@@ -35,17 +35,19 @@ export function SettingsProviderCards({ currentProvider, onSelectProvider }: Pro
             onClick={() => onSelectProvider(p.id)}
             className={`p-3 border text-left transition-all cursor-pointer ${
               isSelected
-                ? 'border-[var(--accent-primary)] bg-[var(--accent-primary-bg)] shadow-xs'
-                : 'border-[var(--border-subtle)] bg-[var(--bg-app)] hover:border-[var(--text-secondary)]'
+                ? 'border-(--accent-primary) bg-(--accent-primary-bg) shadow-xs'
+                : 'border-(--border-subtle) bg-(--bg-app) hover:border-(--text-secondary)'
             }`}
           >
             <div className="flex items-center justify-between">
-              <span className={`text-xs font-bold ${isSelected ? 'text-[var(--accent-primary)]' : 'text-[var(--text-primary)]'}`}>
+              <span
+                className={`text-xs font-bold ${isSelected ? 'text-(--accent-primary)' : 'text-(--text-primary)'}`}
+              >
                 {p.name}
               </span>
               <Zap className={`w-3 h-3 ${p.color}`} />
             </div>
-            <div className="text-[10px] text-[var(--text-muted)] mt-1">{p.badge}</div>
+            <div className="text-[10px] text-(--text-muted) mt-1">{p.badge}</div>
           </button>
         );
       })}

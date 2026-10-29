@@ -31,9 +31,8 @@ export function JobMobileCard({
   return (
     <div
       onClick={() => onSelectJob(job)}
-      className="p-3.5 bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] transition-colors cursor-pointer space-y-2.5 border-b border-[var(--border-subtle)] last:border-b-0"
+      className="p-3.5 bg-(--bg-surface) hover:bg-(--bg-surface-hover) transition-colors cursor-pointer space-y-2.5 border-b border-(--border-subtle) last:border-b-0"
     >
-      {/* Top Row: Star + Company + Action Icons */}
       <div className="flex items-center justify-between gap-2">
         <div className="flex items-center gap-2 min-w-0">
           <button
@@ -43,55 +42,52 @@ export function JobMobileCard({
               onToggleImportant?.(job.id, e);
             }}
             title={isImportant ? 'Unmark important' : 'Mark important'}
-            aria-label={isImportant ? `Unmark ${job.company} as important` : `Mark ${job.company} as important`}
-            className="p-1 -ml-1 text-[var(--text-muted)] hover:text-amber-400 transition-colors cursor-pointer shrink-0"
+            aria-label={
+              isImportant
+                ? `Unmark ${job.company} as important`
+                : `Mark ${job.company} as important`
+            }
+            className="p-1 -ml-1 text-(--text-muted) hover:text-amber-400 transition-colors cursor-pointer shrink-0"
           >
             <Star
-              className={`w-4 h-4 ${isImportant ? 'text-amber-400 fill-amber-400 drop-shadow-[0_0_6px_rgba(251,191,36,0.5)]' : 'text-[var(--text-muted)]'}`}
+              className={`w-4 h-4 ${isImportant ? 'text-amber-400 fill-amber-400 drop-shadow-[0_0_6px_rgba(251,191,36,0.5)]' : 'text-(--text-muted)'}`}
             />
           </button>
 
-          <div className="w-6 h-6 bg-[var(--accent-primary-bg)] border border-[var(--border-subtle)] text-[var(--accent-primary)] font-bold text-[11px] flex items-center justify-center shrink-0">
+          <div className="w-6 h-6 bg-(--accent-primary-bg) border border-(--border-subtle) text-(--accent-primary) font-bold text-[11px] flex items-center justify-center shrink-0 rounded-xs">
             {job.company.charAt(0)}
           </div>
 
-          <span className="font-semibold text-sm text-[var(--text-primary)] truncate">
+          <span className="font-semibold text-sm text-(--text-primary) truncate">
             {job.company}
           </span>
         </div>
 
-        {/* Action icons (Notes, Link, Delete) */}
-        <JobRowActions
-          job={job}
-          onSelectJob={onSelectJob}
-          onDeleteJob={onDeleteJob}
-        />
+        <JobRowActions job={job} onSelectJob={onSelectJob} onDeleteJob={onDeleteJob} />
       </div>
 
-      {/* Middle Row: Role Title & Referral Badge */}
       <div className="flex items-center gap-2 flex-wrap">
-        <span className="text-xs text-[var(--text-secondary)] font-medium">
-          {job.role}
-        </span>
+        <span className="text-xs text-(--text-secondary) font-medium">{job.role}</span>
         {job.referralStatus && job.referralStatus !== 'none' && (
           <span
-            className={`text-[9px] px-1.5 py-0.2 font-mono uppercase tracking-wider font-semibold border ${
+            className={`text-[9px] px-1.5 py-0.2 uppercase tracking-wider font-semibold border rounded-xs ${
               job.referralStatus === 'received'
                 ? 'bg-emerald-500/15 border-emerald-500/30 text-emerald-400'
                 : job.referralStatus === 'asked'
-                ? 'bg-amber-500/15 border-amber-500/30 text-amber-400'
-                : 'bg-red-500/15 border-red-500/30 text-red-400'
+                  ? 'bg-amber-500/15 border-amber-500/30 text-amber-400'
+                  : 'bg-red-500/15 border-red-500/30 text-red-400'
             }`}
           >
             {job.referralStatus === 'received'
-              ? job.referrerName ? `Referred (${job.referrerName.split(' ')[0]})` : 'Referred'
+              ? job.referrerName
+                ? `Referred (${job.referrerName.split(' ')[0]})`
+                : 'Referred'
               : `Referral: ${job.referralStatus}`}
           </span>
         )}
       </div>
 
-      {/* Bottom Row: Status Dropdown + Timeline / Age */}
-      <div className="flex items-center justify-between gap-2 pt-1 border-t border-[var(--border-subtle)]/40 text-[11px]">
+      <div className="flex items-center justify-between gap-2 pt-1 border-t border-(--border-subtle)/40 text-[11px]">
         <div onClick={(e) => e.stopPropagation()}>
           <JobStatusDropdown
             status={job.status}
@@ -99,7 +95,7 @@ export function JobMobileCard({
           />
         </div>
 
-        <div className="flex items-center gap-1 text-[var(--text-muted)] font-mono text-[10px]">
+        <div className="flex items-center gap-1 text-(--text-muted) text-[10px]">
           {stale && <AlertTriangle className="w-3 h-3 text-amber-400 animate-pulse" />}
           <span>
             {job.status === 'Applied' && job.appliedAt

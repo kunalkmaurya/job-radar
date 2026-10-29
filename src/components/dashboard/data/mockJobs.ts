@@ -218,4 +218,3 @@ export const INITIAL_MOCK_JOBS: Job[] = RAW_MOCK_JOBS.map((j) => ({
   referralNotes: '',
   ...j,
 }));
-

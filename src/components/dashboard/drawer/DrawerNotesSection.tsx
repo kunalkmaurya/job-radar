@@ -24,11 +24,11 @@ export function DrawerNotesSection({
     <div className="space-y-4">
       <div className="space-y-2">
         <div className="flex items-center justify-between">
-          <label className="text-xs font-semibold text-[var(--text-secondary)] flex items-center gap-1.5">
+          <label className="text-xs font-semibold text-(--text-secondary) flex items-center gap-1.5">
             <FileText className="w-3.5 h-3.5" />
             <span>Personal Notes & Scratchpad</span>
           </label>
-          {isSaving && <span className="text-[10px] text-[var(--accent-primary)]">Saving...</span>}
+          {isSaving && <span className="text-[10px] text-(--accent-primary)">Saving...</span>}
         </div>
         <textarea
           rows={7}
@@ -36,11 +36,11 @@ export function DrawerNotesSection({
           onChange={(e) => onNotesChange(e.target.value)}
           onBlur={onSave}
           placeholder="Jot down referral contacts, interview talking points, recruiter email, compensation..."
-          className="w-full p-3 text-xs border border-[var(--border-subtle)] bg-[var(--bg-app)] text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:border-[var(--border-focus)] leading-relaxed"
+          className="w-full p-3 text-xs border border-(--border-subtle) bg-(--bg-app) text-(--text-primary) placeholder-(--text-muted) focus:outline-none focus:border-(--border-focus) leading-relaxed"
         />
       </div>
 
-      <div className="p-3 border border-[var(--border-subtle)] bg-[var(--bg-app)] space-y-1 text-[11px] text-[var(--text-muted)]">
+      <div className="p-3 border border-(--border-subtle) bg-(--bg-app) space-y-1 text-[11px] text-(--text-muted)">
         <div>Captured: {formatDate(job.createdAt)}</div>
         {job.appliedAt && <div>Applied: {formatDate(job.appliedAt)}</div>}
         <div>Source: {job.source}</div>

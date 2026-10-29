@@ -29,14 +29,16 @@ export function usePwaInstall() {
 
     // Detect iOS
     const ua = window.navigator.userAgent.toLowerCase();
-    const isAppleDevice = /iphone|ipad|ipod/.test(ua) && !(window as unknown as { MSStream?: unknown }).MSStream;
+    const isAppleDevice =
+      /iphone|ipad|ipod/.test(ua) && !(window as unknown as { MSStream?: unknown }).MSStream;
     const isSafari = /safari/.test(ua) && !/crios|fxios|opios/.test(ua);
     const iOSSafari = isAppleDevice && isSafari;
     setIsIOS(iOSSafari);
 
     // Check recent dismissal
     const dismissedAt = localStorage.getItem(DISMISS_KEY);
-    const isDismissedRecently = dismissedAt && Date.now() - Number(dismissedAt) < DISMISS_DURATION_MS;
+    const isDismissedRecently =
+      dismissedAt && Date.now() - Number(dismissedAt) < DISMISS_DURATION_MS;
 
     // Handler for Chrome / Edge / Android native prompt
     const handleBeforeInstall = (e: Event) => {

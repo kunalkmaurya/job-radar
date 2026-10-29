@@ -10,17 +10,11 @@ export const JOB_STATUSES = [
   'Archived',
 ] as const;
 
-export type JobStatus = typeof JOB_STATUSES[number];
+export type JobStatus = (typeof JOB_STATUSES)[number];
 
-export const TIMELINE_FILTERS = [
-  'all',
-  'today',
-  'this_week',
-  'past_30_days',
-  'custom',
-] as const;
+export const TIMELINE_FILTERS = ['all', 'today', 'this_week', 'past_30_days', 'custom'] as const;
 
-export type TimelineFilter = typeof TIMELINE_FILTERS[number];
+export type TimelineFilter = (typeof TIMELINE_FILTERS)[number];
 
 export interface CustomDateRange {
   startDate: string;
@@ -28,9 +22,15 @@ export interface CustomDateRange {
 }
 
 export const REFERRAL_STATUSES = ['none', 'asked', 'received', 'declined'] as const;
-export type ReferralStatus = typeof REFERRAL_STATUSES[number];
+export type ReferralStatus = (typeof REFERRAL_STATUSES)[number];
 
-// AI Extracted Job Schema
+export interface UpdateReferralData {
+  referralStatus: ReferralStatus;
+  referrerName?: string;
+  referrerContact?: string;
+  referralNotes?: string;
+}
+
 export const ExtractedJobSchema = z.object({
   company: z.string().min(1, 'Company name is required'),
   role: z.string().min(1, 'Role title is required'),
@@ -41,7 +41,6 @@ export const ExtractedJobSchema = z.object({
 
 export type ExtractedJob = z.infer<typeof ExtractedJobSchema>;
 
-// Manual Job Creation Payload Schema
 export const CreateJobSchema = z.object({
   company: z.string().min(1, 'Company is required'),
   role: z.string().min(1, 'Role is required'),
@@ -59,7 +58,6 @@ export const CreateJobSchema = z.object({
 
 export type CreateJobPayload = z.infer<typeof CreateJobSchema>;
 
-// Update Job Payload Schema
 export const UpdateJobSchema = z.object({
   company: z.string().optional(),
   role: z.string().optional(),
@@ -77,7 +75,6 @@ export const UpdateJobSchema = z.object({
 
 export type UpdateJobPayload = z.infer<typeof UpdateJobSchema>;
 
-// Funnel Metrics Response Type
 export interface FunnelMetrics {
   totalJobs: number;
   appliedThisWeek: number;

@@ -2,9 +2,10 @@
 
 ## 1. System Overview & Engineering Objectives
 
-The **Personal Job Search & Tracking Board** is a high-efficiency personal application built on **Next.js (TypeScript)**, **Neon PostgreSQL (Serverless)**, and **Pluggable LLMs (DeepSeek / OpenAI)**. 
+The **Personal Job Search & Tracking Board** is a high-efficiency personal application built on **Next.js (TypeScript)**, **Neon PostgreSQL (Serverless)**, and **Pluggable LLMs (DeepSeek / OpenAI)**.
 
 ### Core Engineering Objectives:
+
 - **Zero-Latency Webhook Interception**: Telegram webhooks must acknowledge with `HTTP 200` in `< 500ms`, decoupling ingestion from the heavier scraping and LLM parsing pipelines.
 - **Resilient Web Scraping**: Universal handling of static job portals (Lever, Greenhouse, Ashby) and complex client-side rendered Single-Page Applications (SPAs) like **Workday** and LinkedIn.
 - **Provider-Agnostic LLM Layer**: Standardized OpenAI-compatible abstraction allowing seamless toggling between **DeepSeek** and **OpenAI (ChatGPT)** with identical prompt schemas.
@@ -64,6 +65,7 @@ graph TD
 ### 3.1 Ingestion Layer & Handlers
 
 #### A. Telegram Webhook Handler (`/api/telegram-webhook`)
+
 1. **Secret Validation**: Validates the incoming header `X-Telegram-Bot-Api-Secret-Token` against the local environment variable `TELEGRAM_WEBHOOK_SECRET`. Unsigned requests immediately return `401 Unauthorized`.
 2. **Payload Extraction**: Parses `update.channel_post.text` or entities to extract raw URLs using regex:
    ```regex
@@ -73,19 +75,21 @@ graph TD
 4. **Asynchronous Task Execution**: Dispatches the scraping and parsing workflow in a detached background execution context (Next.js `waitUntil` / serverless background task).
 
 #### B. Browser Bookmarklet (`/api/jobs/bookmarklet`)
+
 - A minimal JavaScript bookmarklet added to the user's browser bookmarks bar:
   ```javascript
-  javascript:(function(){
+  javascript: (function () {
     const url = encodeURIComponent(window.location.href);
     fetch('https://your-domain.vercel.app/api/jobs/bookmarklet?url=' + url, {
       method: 'POST',
-      credentials: 'include'
-    }).then(r => alert('Job Sent to Board!'));
+      credentials: 'include',
+    }).then((r) => alert('Job Sent to Board!'));
   })();
   ```
 - Validates the user's JWT session cookie and pushes the URL into the ingestion pipeline.
 
 #### C. Manual Add API (`/api/jobs/manual`)
+
 - Supports two modes:
   - **Quick Fetch**: Takes `{ link }` and runs the scraper + AI pipeline, returning the extracted `{ company, role, link }` for user confirmation before inserting.
   - **Direct Save**: Takes `{ company, role, link }` directly and writes to database immediately.
@@ -95,6 +99,7 @@ graph TD
 ### 3.2 Web Scraping Engine (Universal Portals & Workday)
 
 Applicant Tracking Systems (ATS) present different rendering strategies:
+
 - **Static ATS** (Lever, Greenhouse, Ashby, Workable): Plain HTML contains all job details.
 - **Client-Side SPA ATS** (Workday, Taleo, LinkedIn, custom React/Vue company sites): Initial HTML is a bare container; content is populated via client-side AJAX requests.
 
@@ -113,6 +118,7 @@ flowchart TD
 ```
 
 #### Scraper Implementation Details:
+
 1. **Jina Reader Service**:
    - Prepends `https://r.jina.ai/` to the target URL.
    - Jina executes JavaScript in a headless browser environment, strips CSS/scripts, and returns pure Markdown text.
@@ -148,6 +154,7 @@ flowchart LR
 ```
 
 #### Prompt Specification:
+
 ```text
 System: You are an expert ATS parser. Extract the hiring company name and the exact role title from the provided job posting text.
 Output MUST strictly be valid JSON matching this schema:
@@ -159,6 +166,7 @@ Do not include markdown fences, comments, or extra keys.
 ```
 
 #### Schema Validation (Zod):
+
 ```typescript
 import { z } from 'zod';
 
@@ -175,6 +183,7 @@ export const ExtractedJobSchema = z.object({
 Neon provides serverless PostgreSQL with scale-to-zero compute and instant connection pooling over WebSockets.
 
 #### Data Schema:
+
 ```sql
 -- 1. Users Table (Personal Account)
 CREATE TABLE users (
@@ -211,6 +220,7 @@ CREATE UNIQUE INDEX idx_jobs_link ON jobs(link);
 ```
 
 #### Drizzle Schema Definition (`src/db/schema.ts`):
+
 ```typescript
 import { pgTable, uuid, varchar, text, timestamp, date } from 'drizzle-orm/pg-core';
 
@@ -251,7 +261,7 @@ sequenceDiagram
     TG->>App: POST update (channel_post)
     App->>App: Verify X-Telegram-Bot-Api-Secret-Token
     App-->>TG: HTTP 200 OK (Instant Ack)
-    
+
     rect rgb(240, 245, 255)
     note right of App: Asynchronous Background Pipeline
     App->>DB: Query SELECT id FROM jobs WHERE link = url
@@ -333,24 +343,24 @@ flowchart TD
 
 ## 6. Resilience & Edge Cases
 
-| Scenario | Risk | Mitigation |
-|---|---|---|
-| **Workday SPA Rendering** | Empty HTML returned by standard `fetch()` | Routed through Jina Reader proxy (`r.jina.ai`) which executes headless JavaScript and returns clean Markdown. |
-| **Strict Anti-Bot Walls / CAPTCHA** | Scraper receives HTTP 403 / 503 | Fail-safe domain extractor pulls company name from host (e.g. `apple.wd3.myworkdayjobs.com` $\rightarrow$ "Apple"), role defaulted to "Review Role". |
-| **Telegram Retry Storm** | Telegram retries webhook if response takes > 3s | Webhook responds with `HTTP 200` immediately before dispatching scraping or AI extraction. |
-| **Duplicate Posts in Telegram** | Database pollution from duplicate links | Unique constraint on `link` column + check-before-insert prevents duplicate records. |
-| **LLM Provider Outage** | DeepSeek or OpenAI downtime | Pluggable design with fallback to alternative provider or manual review flag. |
+| Scenario                            | Risk                                            | Mitigation                                                                                                                                           |
+| ----------------------------------- | ----------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Workday SPA Rendering**           | Empty HTML returned by standard `fetch()`       | Routed through Jina Reader proxy (`r.jina.ai`) which executes headless JavaScript and returns clean Markdown.                                        |
+| **Strict Anti-Bot Walls / CAPTCHA** | Scraper receives HTTP 403 / 503                 | Fail-safe domain extractor pulls company name from host (e.g. `apple.wd3.myworkdayjobs.com` $\rightarrow$ "Apple"), role defaulted to "Review Role". |
+| **Telegram Retry Storm**            | Telegram retries webhook if response takes > 3s | Webhook responds with `HTTP 200` immediately before dispatching scraping or AI extraction.                                                           |
+| **Duplicate Posts in Telegram**     | Database pollution from duplicate links         | Unique constraint on `link` column + check-before-insert prevents duplicate records.                                                                 |
+| **LLM Provider Outage**             | DeepSeek or OpenAI downtime                     | Pluggable design with fallback to alternative provider or manual review flag.                                                                        |
 
 ---
 
 ## 7. Technology Stack Summary
 
-| Layer | Technology | Key Advantage |
-|---|---|---|
-| **Framework** | Next.js 15 (App Router, TypeScript) | Unified API route handlers and server/client rendering |
-| **Database** | Neon Serverless PostgreSQL | Auto-scaling, branchable, zero server maintenance |
-| **ORM** | Drizzle ORM | Zero cold-start latency, full TypeScript type safety |
-| **AI Providers** | DeepSeek (`deepseek-chat`) & OpenAI (`gpt-4o-mini`) | Cost-efficient, high-precision structured extraction |
-| **Scraper** | Jina Reader API + native `fetch` | Handles client-rendered SPAs (Workday) without local Puppeteer/Chrome overhead |
-| **Authentication** | Google OAuth + JWT (via `jose`) | Zero-friction 1-click login restricted to owner's email |
-| **Styling** | Modern Vanilla CSS / Tailwind with Dark Mode Tokens | High-performance, clean responsive interface |
+| Layer              | Technology                                          | Key Advantage                                                                  |
+| ------------------ | --------------------------------------------------- | ------------------------------------------------------------------------------ |
+| **Framework**      | Next.js 15 (App Router, TypeScript)                 | Unified API route handlers and server/client rendering                         |
+| **Database**       | Neon Serverless PostgreSQL                          | Auto-scaling, branchable, zero server maintenance                              |
+| **ORM**            | Drizzle ORM                                         | Zero cold-start latency, full TypeScript type safety                           |
+| **AI Providers**   | DeepSeek (`deepseek-chat`) & OpenAI (`gpt-4o-mini`) | Cost-efficient, high-precision structured extraction                           |
+| **Scraper**        | Jina Reader API + native `fetch`                    | Handles client-rendered SPAs (Workday) without local Puppeteer/Chrome overhead |
+| **Authentication** | Google OAuth + JWT (via `jose`)                     | Zero-friction 1-click login restricted to owner's email                        |
+| **Styling**        | Modern Vanilla CSS / Tailwind with Dark Mode Tokens | High-performance, clean responsive interface                                   |

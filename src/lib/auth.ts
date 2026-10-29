@@ -62,7 +62,10 @@ export function isAllowedEmail(email: string): boolean {
 /**
  * Verifies email and password credentials for direct login
  */
-export function verifyCredentials(email: string, password: string): { valid: boolean; reason?: string } {
+export function verifyCredentials(
+  email: string,
+  password: string
+): { valid: boolean; reason?: string } {
   if (!isAllowedEmail(email)) {
     return { valid: false, reason: 'This email is not authorized on this private workspace.' };
   }
@@ -74,4 +77,3 @@ export function verifyCredentials(email: string, password: string): { valid: boo
 
   return { valid: true };
 }
-

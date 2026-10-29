@@ -80,7 +80,7 @@ export function JobStatusDropdown({ status, onChange, className = '' }: JobStatu
       {isOpen && (
         <>
           <div className="fixed inset-0 z-40" onClick={() => setIsOpen(false)} />
-          <div className="absolute left-0 top-full mt-1.5 z-50 min-w-[145px] py-1 border border-[var(--border-subtle)] bg-[var(--bg-surface)] backdrop-blur-xl shadow-2xl animate-in fade-in zoom-in-95 duration-100">
+          <div className="absolute left-0 top-full mt-1.5 z-50 min-w-[145px] py-1 border border-(--border-subtle) bg-(--bg-surface) backdrop-blur-xl shadow-2xl animate-in fade-in zoom-in-95 duration-100">
             {JOB_STATUSES.map((s) => {
               const conf = STATUS_CONFIG[s];
               const isSelected = s === status;
@@ -91,8 +91,8 @@ export function JobStatusDropdown({ status, onChange, className = '' }: JobStatu
                   onClick={(e) => handleSelect(s, e)}
                   className={`w-full flex items-center justify-between px-3 py-1.5 text-xs text-left transition-colors cursor-pointer ${
                     isSelected
-                      ? 'bg-[var(--bg-surface-hover)] font-semibold'
-                      : 'hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+                      ? 'bg-(--bg-surface-hover) font-semibold'
+                      : 'hover:bg-(--bg-surface-hover) text-(--text-secondary) hover:text-(--text-primary)'
                   }`}
                 >
                   <div className="flex items-center gap-2">

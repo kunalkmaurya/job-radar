@@ -38,7 +38,7 @@ export function AddJobAutoFetchTab({ onSuccess, onClose }: AddJobAutoFetchTabPro
 
   return (
     <div className="space-y-4">
-      <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
+      <p className="text-xs text-(--text-secondary) leading-relaxed">
         Paste any job URL from Workday, Greenhouse, Lever, LinkedIn, or company career sites.
       </p>
       <input
@@ -46,12 +46,12 @@ export function AddJobAutoFetchTab({ onSuccess, onClose }: AddJobAutoFetchTabPro
         placeholder="https://..."
         value={fetchUrl}
         onChange={(e) => setFetchUrl(e.target.value)}
-        className="w-full px-3.5 py-2.5 text-xs border border-[var(--border-subtle)] bg-[var(--bg-app)] text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:border-[var(--border-focus)]"
+        className="w-full px-3.5 py-2.5 text-xs border border-(--border-subtle) bg-(--bg-app) text-(--text-primary) placeholder-(--text-muted) focus:outline-none focus:border-(--border-focus)"
       />
       <button
         onClick={handleAutoFetch}
         disabled={!fetchUrl || isScraping}
-        className="w-full flex items-center justify-center gap-2 py-2.5 bg-[var(--accent-primary)] hover:bg-[var(--accent-primary-hover)] disabled:opacity-50 text-white text-xs font-semibold transition-all shadow-sm cursor-pointer"
+        className="w-full flex items-center justify-center gap-2 py-2.5 bg-(--accent-primary) hover:bg-(--accent-primary-hover) disabled:opacity-50 text-white text-xs font-semibold transition-all shadow-sm cursor-pointer"
       >
         <Sparkles className={`w-3.5 h-3.5 ${isScraping ? 'animate-spin' : ''}`} />
         <span>{isScraping ? 'Extracting with AI...' : 'Scrape & Extract Details'}</span>

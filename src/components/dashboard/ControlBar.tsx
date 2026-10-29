@@ -41,19 +41,19 @@ export function ControlBar({
     <section className="flex flex-col sm:flex-row gap-2.5 sm:gap-3 items-stretch sm:items-center justify-between">
       <div className="flex flex-1 items-center gap-2 sm:gap-3 min-w-0">
         <div className="relative flex-1 max-w-full sm:max-w-md">
-          <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)]" />
+          <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-(--text-muted)" />
           <input
             id="job-search-input"
             type="text"
             placeholder="Search company or role... (Press '/' to focus)"
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 text-xs border border-[var(--border-subtle)] bg-[var(--bg-surface)] text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:border-[var(--border-focus)] transition-colors"
+            className="w-full pl-9 pr-4 py-2 text-xs border border-(--border-subtle) bg-(--bg-surface) text-(--text-primary) placeholder-(--text-muted) focus:outline-none focus:border-(--border-focus) transition-colors"
           />
           {searchQuery && (
             <button
               onClick={() => onSearchChange('')}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[var(--text-muted)] hover:text-[var(--text-primary)] cursor-pointer"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-(--text-muted) hover:text-(--text-primary) cursor-pointer"
             >
               <X className="w-3.5 h-3.5" />
             </button>
@@ -76,23 +76,23 @@ export function ControlBar({
       </div>
 
       <div className="flex items-center justify-end gap-2.5 shrink-0">
-        <div className="flex items-center p-1 border border-[var(--border-subtle)] bg-[var(--bg-surface)] text-xs">
+        <div className="flex items-center p-1 border border-(--border-subtle) bg-(--bg-app) text-xs gap-1 rounded-xs">
           <button
             onClick={() => onSelectViewMode('list')}
-            className={`px-3 py-1 transition-all cursor-pointer ${
+            className={`px-3 py-1 text-xs font-medium transition-colors cursor-pointer border rounded-xs ${
               viewMode === 'list'
-                ? 'bg-[var(--accent-primary)] text-white font-medium shadow-sm'
-                : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+                ? 'border-(--accent-primary) bg-(--accent-primary-bg) text-(--accent-blue-bright) font-semibold shadow-xs'
+                : 'border-(--border-subtle) bg-(--bg-surface) text-(--text-secondary) hover:text-(--text-primary)'
             }`}
           >
             List
           </button>
           <button
             onClick={() => onSelectViewMode('kanban')}
-            className={`px-3 py-1 transition-all cursor-pointer ${
+            className={`px-3 py-1 text-xs font-medium transition-colors cursor-pointer border rounded-xs ${
               viewMode === 'kanban'
-                ? 'bg-[var(--accent-primary)] text-white font-medium shadow-sm'
-                : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+                ? 'border-(--accent-primary) bg-(--accent-primary-bg) text-(--accent-blue-bright) font-semibold shadow-xs'
+                : 'border-(--border-subtle) bg-(--bg-surface) text-(--text-secondary) hover:text-(--text-primary)'
             }`}
           >
             Board

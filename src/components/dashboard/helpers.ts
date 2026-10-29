@@ -73,11 +73,11 @@ export function computeMetrics(
     windowLabel = 'Active this week';
   } else if (timelineFilter === 'past_30_days') {
     appliedLabel = 'Applied (30d)';
-    windowLabel = 'Past 30 days window';
+    windowLabel = 'Last 30 days window';
   } else if (timelineFilter === 'custom') {
     appliedLabel = 'Applied (Range)';
     if (customRange?.startDate && customRange?.endDate) {
-      windowLabel = `${customRange.startDate} → ${customRange.endDate}`;
+      windowLabel = `${customRange.startDate} – ${customRange.endDate}`;
     } else if (customRange?.startDate) {
       windowLabel = `From ${customRange.startDate}`;
     } else if (customRange?.endDate) {

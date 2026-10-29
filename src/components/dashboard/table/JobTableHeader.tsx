@@ -6,7 +6,7 @@ import { Star } from 'lucide-react';
 export function JobTableHeader() {
   return (
     <thead>
-      <tr className="border-b border-[var(--border-subtle)] text-[var(--text-muted)] bg-[var(--bg-surface)]/50 text-xs">
+      <tr className="border-b border-(--border-subtle) text-(--text-muted) bg-(--bg-surface)/50 text-xs">
         <th className="py-3 pl-3 pr-1 w-8 text-center" aria-label="Important">
           <Star className="w-3.5 h-3.5 mx-auto opacity-40" />
         </th>

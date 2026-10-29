@@ -42,7 +42,7 @@ function DashboardContent() {
   });
 
   return (
-    <div className="min-h-screen flex flex-col bg-[var(--bg-app)] text-[var(--text-primary)]">
+    <div className="min-h-screen flex flex-col bg-(--bg-app) text-(--text-primary)">
       <DashboardHeader
         theme={theme}
         onToggleTheme={toggleTheme}
@@ -96,7 +96,7 @@ export default function DashboardPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen bg-[var(--bg-app)] flex items-center justify-center text-xs text-[var(--text-muted)]">
+        <div className="min-h-screen bg-(--bg-app) flex items-center justify-center text-xs text-(--text-muted)">
           Loading workspace...
         </div>
       }

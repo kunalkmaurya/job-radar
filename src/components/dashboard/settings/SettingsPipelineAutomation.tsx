@@ -25,23 +25,23 @@ const FOLLOWUP_OPTIONS = [
 
 export function SettingsPipelineAutomation({ settings, updateSetting }: SettingsAutomationProps) {
   return (
-    <div className="p-5 border border-[var(--border-subtle)] bg-[var(--bg-surface)] space-y-4 shadow-sm">
-      <div className="flex items-center justify-between pb-3 border-b border-[var(--border-subtle)]">
+    <div className="p-5 border border-(--border-subtle) bg-(--bg-surface) space-y-4 shadow-sm">
+      <div className="flex items-center justify-between pb-3 border-b border-(--border-subtle)">
         <div className="flex items-center gap-2">
           <Sliders className="w-4 h-4 text-amber-400" />
-          <h3 className="font-mono text-xs uppercase tracking-wider font-semibold text-[var(--text-primary)]">
+          <h3 className="text-xs uppercase tracking-wider font-semibold text-(--text-primary)">
             Pipeline Velocity & Ingestion Rules
           </h3>
         </div>
-        <span className="text-[10px] font-mono text-[var(--text-muted)]">
+        <span className="text-[10px] text-(--text-muted)">
           Threshold: {settings.staleDaysThreshold}d
         </span>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 font-mono text-xs">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
         {/* Stale Threshold Chips */}
         <div className="space-y-1.5">
-          <label className="text-[10px] text-[var(--text-muted)] flex items-center gap-1.5 uppercase tracking-wider">
+          <label className="text-[10px] text-(--text-muted) flex items-center gap-1.5 uppercase tracking-wider">
             <AlertTriangle className="w-3.5 h-3.5 text-rose-400" />
             <span>Stale Inactivity Flagging</span>
           </label>
@@ -55,12 +55,12 @@ export function SettingsPipelineAutomation({ settings, updateSetting }: Settings
                   onClick={() => updateSetting('staleDaysThreshold', opt.val)}
                   className={`p-2 border text-center transition-all cursor-pointer ${
                     isSelected
-                      ? 'border-[var(--accent-primary)] bg-[var(--accent-primary-bg)] text-[var(--accent-primary)] font-bold'
-                      : 'border-[var(--border-subtle)] bg-[var(--bg-app)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+                      ? 'border-(--accent-primary) bg-(--accent-primary-bg) text-(--accent-primary) font-bold'
+                      : 'border-(--border-subtle) bg-(--bg-app) text-(--text-secondary) hover:text-(--text-primary)'
                   }`}
                 >
                   <div className="text-xs">{opt.label}</div>
-                  <div className="text-[9px] text-[var(--text-muted)]">{opt.badge}</div>
+                  <div className="text-[9px] text-(--text-muted)">{opt.badge}</div>
                 </button>
               );
             })}
@@ -69,7 +69,7 @@ export function SettingsPipelineAutomation({ settings, updateSetting }: Settings
 
         {/* Follow-Up Days Chips */}
         <div className="space-y-1.5">
-          <label className="text-[10px] text-[var(--text-muted)] flex items-center gap-1.5 uppercase tracking-wider">
+          <label className="text-[10px] text-(--text-muted) flex items-center gap-1.5 uppercase tracking-wider">
             <Clock className="w-3.5 h-3.5 text-blue-400" />
             <span>Suggested Follow-Up Interval</span>
           </label>
@@ -83,12 +83,12 @@ export function SettingsPipelineAutomation({ settings, updateSetting }: Settings
                   onClick={() => updateSetting('followUpDaysInterval', opt.val)}
                   className={`p-2 border text-center transition-all cursor-pointer ${
                     isSelected
-                      ? 'border-[var(--accent-primary)] bg-[var(--accent-primary-bg)] text-[var(--accent-primary)] font-bold'
-                      : 'border-[var(--border-subtle)] bg-[var(--bg-app)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+                      ? 'border-(--accent-primary) bg-(--accent-primary-bg) text-(--accent-primary) font-bold'
+                      : 'border-(--border-subtle) bg-(--bg-app) text-(--text-secondary) hover:text-(--text-primary)'
                   }`}
                 >
                   <div className="text-xs">{opt.label}</div>
-                  <div className="text-[9px] text-[var(--text-muted)]">{opt.badge}</div>
+                  <div className="text-[9px] text-(--text-muted)">{opt.badge}</div>
                 </button>
               );
             })}
@@ -97,8 +97,8 @@ export function SettingsPipelineAutomation({ settings, updateSetting }: Settings
       </div>
 
       {/* Industrial Toggle */}
-      <div className="flex items-center justify-between pt-2 border-t border-[var(--border-subtle)] font-mono text-xs">
-        <span className="text-[11px] text-[var(--text-secondary)]">
+      <div className="flex items-center justify-between pt-2 border-t border-(--border-subtle) text-xs">
+        <span className="text-[11px] text-(--text-secondary)">
           Auto-advance stage from &quot;Saved&quot; to &quot;Applied&quot; when launching job link
         </span>
         <button
@@ -106,8 +106,8 @@ export function SettingsPipelineAutomation({ settings, updateSetting }: Settings
           onClick={() => updateSetting('autoAdvanceOnLinkClick', !settings.autoAdvanceOnLinkClick)}
           className={`w-8 h-4.5 flex items-center p-0.5 transition-colors cursor-pointer border ${
             settings.autoAdvanceOnLinkClick
-              ? 'bg-[var(--accent-primary)] border-[var(--accent-primary)]'
-              : 'bg-[var(--bg-app)] border-[var(--border-subtle)]'
+              ? 'bg-(--accent-primary) border-(--accent-primary)'
+              : 'bg-(--bg-app) border-(--border-subtle)'
           }`}
         >
           <div

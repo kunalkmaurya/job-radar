@@ -20,8 +20,8 @@ export function AnalyticsVelocityCards({ stats, totalScoped }: VelocityCardsProp
       value: `${stats.avgDaysToInterview}d`,
       subtitle: 'From initial application',
       icon: Timer,
-      color: 'text-[var(--accent-primary)]',
-      bg: 'border-l-2 border-l-[var(--accent-primary)]',
+      color: 'text-(--accent-primary)',
+      bg: 'border-l-2 border-l-(--accent-primary)',
     },
     {
       title: 'APPLICATION VELOCITY',
@@ -50,22 +50,22 @@ export function AnalyticsVelocityCards({ stats, totalScoped }: VelocityCardsProp
   ];
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 relative z-0">
       {cards.map((card) => {
         const Icon = card.icon;
         return (
           <div
             key={card.title}
-            className={`p-4 border border-[var(--border-subtle)] bg-[var(--bg-surface)] ${card.bg} space-y-2 font-mono shadow-sm`}
+            className={`p-4 border border-(--border-subtle) bg-(--bg-surface) ${card.bg} space-y-2 shadow-sm`}
           >
             <div className="flex items-center justify-between">
-              <span className="text-[10px] uppercase tracking-wider text-[var(--text-muted)] font-semibold">
+              <span className="text-[10px] uppercase tracking-wider text-(--text-muted) font-semibold">
                 {card.title}
               </span>
               <Icon className={`w-3.5 h-3.5 ${card.color}`} />
             </div>
-            <div className="text-2xl font-bold text-[var(--text-primary)]">{card.value}</div>
-            <div className="text-[10px] text-[var(--text-secondary)]">{card.subtitle}</div>
+            <div className="text-2xl font-bold text-(--text-primary) ">{card.value}</div>
+            <div className="text-[10px] text-(--text-secondary)">{card.subtitle}</div>
           </div>
         );
       })}

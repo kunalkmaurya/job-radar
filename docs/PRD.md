@@ -12,7 +12,7 @@ Job links posted into a private Telegram channel are silently intercepted, scrap
 
 1. **Zero-Friction Ingestion**: Post a link in Telegram $\rightarrow$ job is silently parsed and saved.
 2. **Absolute Silence in Telegram**: No bot replies, no notifications, no emoji reactions in the channel.
-3. **Single-User Personal Security**: Private Google OAuth login with JWT-based session verification restricted to the owner's email (`ALLOWED_EMAIL`). No complex multi-role or admin hierarchy.
+3. **Personal Security**: Private Google OAuth login with JWT-based session verification restricted to the owner's email (`ALLOWED_EMAIL`). No complex multi-role or admin hierarchy.
 4. **Minimalist Schema with Future-Proofing**:
    - **Company Name** (extracted by AI)
    - **Role / Job Title** (extracted by AI)
@@ -164,7 +164,7 @@ A sleek, high-contrast metric counter across the top of the dashboard:
 
 ---
 
-## 7. Authentication & Security (Single-User Personal)
+## 7. Authentication & Security (Personal)
 
 - **Provider**: **Google OAuth** (Sign in with Google).
 - **Session Strategy**: **JWT (JSON Web Token)** stored in secure, `HttpOnly`, `SameSite=Lax` cookies.
@@ -230,7 +230,7 @@ CREATE UNIQUE INDEX idx_jobs_link ON jobs(link);
 ### Phase 2: Personal Dashboard & Tracking Features
 
 - [ ] Header Funnel Analytics ribbon (Total, Applied, Interviews, Response Rate).
-- [ ] Timeline filters (_All, Today, This Week, Past 30 Days, Custom Range_).
+- [ ] Timeline filters (_All, Today, This Week, Last 30 Days, Custom Range_).
 - [ ] Job Board / Table views with quick status changers.
 - [ ] 1-Click "Apply & Advance" action.
 - [ ] Stale application alerts (> 14 days in Applied) and time-in-stage counters.

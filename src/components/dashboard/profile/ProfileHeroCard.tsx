@@ -15,39 +15,39 @@ export function ProfileHeroCard({ currentUser, totalJobs }: ProfileHeroCardProps
   const displayEmail = currentUser?.email || 'kunalkrraj@gmail.com';
 
   return (
-    <div className="border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-6 shadow-sm">
+    <div className="border border-(--border-subtle) bg-(--bg-surface) p-6 shadow-sm">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
         <div className="flex items-center gap-4">
-          <div className="w-16 h-16 bg-[var(--accent-primary-bg)] border-2 border-[var(--border-subtle)] text-[var(--accent-primary)] font-bold text-2xl flex items-center justify-center shrink-0 shadow-inner">
+          <div className="w-16 h-16 bg-(--accent-primary-bg) border-2 border-(--border-subtle) text-(--accent-primary) font-bold text-2xl flex items-center justify-center shrink-0 shadow-inner">
             {initial}
           </div>
           <div className="space-y-1">
             <div className="flex items-center gap-2.5 flex-wrap">
-              <h2 className="text-lg font-bold text-[var(--text-primary)] tracking-tight">
+              <h2 className="text-lg font-bold text-(--text-primary) tracking-tight">
                 {displayName}
               </h2>
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 text-[10px] font-mono uppercase tracking-wider font-semibold bg-emerald-500/10 border border-emerald-500/25 text-emerald-400">
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 text-[10px] uppercase tracking-wider font-semibold bg-emerald-500/10 border border-emerald-500/25 text-emerald-400">
                 <ShieldCheck className="w-3 h-3" />
                 Verified Owner
               </span>
             </div>
-            <p className="flex items-center gap-1.5 text-xs text-[var(--text-secondary)] font-mono">
-              <Mail className="w-3.5 h-3.5 text-[var(--text-muted)]" />
+            <p className="flex items-center gap-1.5 text-xs text-(--text-secondary) ">
+              <Mail className="w-3.5 h-3.5 text-(--text-muted)" />
               <span>{displayEmail}</span>
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-2 flex-wrap text-xs font-mono">
-          <div className="px-3 py-1.5 border border-[var(--border-subtle)] bg-[var(--bg-app)] text-[var(--text-secondary)] flex items-center gap-1.5">
-            <Sparkles className="w-3.5 h-3.5 text-[var(--accent-primary)]" />
+        <div className="flex items-center gap-2 flex-wrap text-xs ">
+          <div className="px-3 py-1.5 border border-(--border-subtle) bg-(--bg-app) text-(--text-secondary) flex items-center gap-1.5">
+            <Sparkles className="w-3.5 h-3.5 text-(--accent-primary)" />
             <span>{totalJobs} Jobs In Radar</span>
           </div>
-          <div className="px-3 py-1.5 border border-[var(--border-subtle)] bg-[var(--bg-app)] text-[var(--text-secondary)] flex items-center gap-1.5">
+          <div className="px-3 py-1.5 border border-(--border-subtle) bg-(--bg-app) text-(--text-secondary) flex items-center gap-1.5">
             <Database className="w-3.5 h-3.5 text-blue-400" />
             <span>Neon DB Active</span>
           </div>
-          <div className="px-3 py-1.5 border border-[var(--border-subtle)] bg-[var(--bg-app)] text-[var(--text-secondary)] flex items-center gap-1.5">
+          <div className="px-3 py-1.5 border border-(--border-subtle) bg-(--bg-app) text-(--text-secondary) flex items-center gap-1.5">
             <Calendar className="w-3.5 h-3.5 text-amber-400" />
             <span>Personal Workspace</span>
           </div>

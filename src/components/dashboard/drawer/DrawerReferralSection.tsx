@@ -13,7 +13,7 @@ interface DrawerReferralSectionProps {
 const STATUS_LABELS: Record<ReferralStatus, { label: string; activeClass: string }> = {
   none: {
     label: 'No Referral',
-    activeClass: 'bg-[var(--border-subtle)] text-[var(--text-secondary)] font-bold',
+    activeClass: 'bg-(--border-subtle) text-(--text-secondary) font-bold',
   },
   asked: {
     label: 'Asked',
@@ -74,16 +74,16 @@ export function DrawerReferralSection({ job, onUpdateReferral }: DrawerReferralS
   };
 
   return (
-    <div className="space-y-3 pt-4 border-t border-[var(--border-subtle)]">
+    <div className="space-y-3 pt-4 border-t border-(--border-subtle)">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Users className="w-3.5 h-3.5 text-[var(--accent-primary)]" />
-          <h4 className="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]">
+          <Users className="w-3.5 h-3.5 text-(--accent-primary)" />
+          <h4 className="text-xs font-semibold uppercase tracking-wider text-(--text-muted)">
             Referral Tracker
           </h4>
         </div>
         {savedNotice && (
-          <span className="flex items-center gap-1 text-[10px] font-mono text-emerald-400">
+          <span className="flex items-center gap-1 text-[10px] text-emerald-400">
             <Check className="w-3 h-3" /> Saved
           </span>
         )}
@@ -98,10 +98,10 @@ export function DrawerReferralSection({ job, onUpdateReferral }: DrawerReferralS
               key={s}
               type="button"
               onClick={() => handleStatusChange(s)}
-              className={`py-1.5 px-2 text-[10px] font-mono uppercase tracking-wider border transition-colors cursor-pointer text-center ${
+              className={`py-1.5 px-2 text-[10px] uppercase tracking-wider border transition-colors cursor-pointer text-center ${
                 isSelected
                   ? conf.activeClass
-                  : 'border-[var(--border-subtle)] text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:border-[var(--border-focus)]'
+                  : 'border-(--border-subtle) text-(--text-muted) hover:text-(--text-primary) hover:border-(--border-focus)'
               }`}
             >
               {conf.label}

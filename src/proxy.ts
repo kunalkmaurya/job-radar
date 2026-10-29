@@ -3,7 +3,14 @@ import type { NextRequest } from 'next/server';
 import { verifySessionToken, isAllowedEmail, AUTH_COOKIE_NAME } from '@/lib/auth';
 
 // Paths that do not require authentication
-const PUBLIC_PATHS = ['/', '/login', '/api/auth', '/api/telegram-webhook', '/logo.png', '/icon.svg'];
+const PUBLIC_PATHS = [
+  '/',
+  '/login',
+  '/api/auth',
+  '/api/telegram-webhook',
+  '/logo.png',
+  '/icon.svg',
+];
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;

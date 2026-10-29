@@ -57,19 +57,17 @@ export function KanbanColumn({
       : Math.min(currentPage * cardsPerColumn, columnJobs.length);
 
   return (
-    <div className="border border-[var(--border-subtle)] bg-[var(--bg-surface)]/60 p-3 flex flex-col space-y-3 min-h-[480px] sm:min-h-[520px] w-[82vw] sm:w-[320px] md:w-auto shrink-0 md:shrink snap-start">
-      {/* Column Header */}
-      <div className="flex items-center justify-between pb-2 border-b border-[var(--border-subtle)]">
+    <div className="border border-(--border-subtle) bg-(--bg-surface) p-3 flex flex-col space-y-3 min-h-[480px] sm:min-h-[520px] w-[82vw] sm:w-[320px] md:w-auto shrink-0 md:shrink snap-start rounded-xs shadow-xs">
+      <div className="flex items-center justify-between pb-2 border-b border-(--border-subtle)">
         <span className="text-xs font-semibold uppercase tracking-wider">{status}</span>
-        <span className="text-xs px-2 py-0.5 bg-[var(--border-subtle)] text-[var(--text-secondary)] font-mono">
+        <span className="text-[11px] font-medium text-(--text-secondary) px-1.5 py-0.5 bg-(--bg-app) border border-(--border-subtle) rounded-xs">
           {columnJobs.length}
         </span>
       </div>
 
-      {/* Cards List */}
       <div className="space-y-2.5 flex-1">
         {visibleJobs.length === 0 ? (
-          <div className="h-32 flex items-center justify-center border border-dashed border-[var(--border-subtle)] text-[11px] text-[var(--text-muted)] p-3 text-center">
+          <div className="h-32 flex flex-col items-center justify-center border border-dashed rounded-xs border-(--accent-primary)/25 bg-(--accent-primary)/5 text-(--accent-primary) text-xs font-medium p-3 text-center">
             No jobs in {status}
           </div>
         ) : (
@@ -88,8 +86,8 @@ export function KanbanColumn({
 
       {/* Mini Column Pagination Footer */}
       {cardsPerColumn !== 'all' && totalPages > 1 && (
-        <div className="pt-2 border-t border-[var(--border-subtle)] flex items-center justify-between text-[11px] text-[var(--text-muted)]">
-          <span className="font-mono">
+        <div className="pt-2 border-t border-(--border-subtle) flex items-center justify-between text-[11px] text-(--text-muted)">
+          <span className="">
             {fromIndex}–{toIndex} of {columnJobs.length}
           </span>
 
@@ -99,12 +97,12 @@ export function KanbanColumn({
               disabled={currentPage <= 1}
               aria-label={`Previous cards in ${status}`}
               title="Previous cards"
-              className="p-1 border border-[var(--border-subtle)] bg-[var(--bg-app)] hover:bg-[var(--bg-surface-hover)] disabled:opacity-30 disabled:cursor-not-allowed transition-colors text-[var(--text-secondary)] hover:text-[var(--text-primary)] cursor-pointer"
+              className="p-1 border border-(--border-subtle) bg-(--bg-app) hover:bg-(--bg-surface-hover) disabled:opacity-30 disabled:cursor-not-allowed transition-colors text-(--text-secondary) hover:text-(--text-primary) cursor-pointer"
             >
               <ChevronLeft className="w-3 h-3" />
             </button>
 
-            <span className="px-1 font-mono text-[var(--text-primary)] font-medium">
+            <span className="px-1 text-(--text-primary) font-medium">
               {currentPage}/{totalPages}
             </span>
 
@@ -113,7 +111,7 @@ export function KanbanColumn({
               disabled={currentPage >= totalPages}
               aria-label={`Next cards in ${status}`}
               title="Next cards"
-              className="p-1 border border-[var(--border-subtle)] bg-[var(--bg-app)] hover:bg-[var(--bg-surface-hover)] disabled:opacity-30 disabled:cursor-not-allowed transition-colors text-[var(--text-secondary)] hover:text-[var(--text-primary)] cursor-pointer"
+              className="p-1 border border-(--border-subtle) bg-(--bg-app) hover:bg-(--bg-surface-hover) disabled:opacity-30 disabled:cursor-not-allowed transition-colors text-(--text-secondary) hover:text-(--text-primary) cursor-pointer"
             >
               <ChevronRight className="w-3 h-3" />
             </button>

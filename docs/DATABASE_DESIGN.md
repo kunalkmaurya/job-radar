@@ -250,7 +250,7 @@ SELECT * FROM jobs
 WHERE created_at >= NOW() - INTERVAL '7 days'
 ORDER BY created_at DESC;
 
--- Past 30 Days
+-- Last 30 Days
 SELECT * FROM jobs
 WHERE created_at >= NOW() - INTERVAL '30 days'
 ORDER BY created_at DESC;

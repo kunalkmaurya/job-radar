@@ -17,7 +17,7 @@ export const SHOWCASE_ITEMS: ShowcaseItem[] = [
   },
   {
     id: 'deepmind',
-    company: 'Google DeepMind',
+    company: 'Google',
     role: 'Senior Research Scientist — Frontier Multimodal',
     url: 'https://careers.google.com/jobs/deepmind-frontier-multimodal',
     location: 'Mountain View, CA / London, UK',
@@ -28,20 +28,6 @@ export const SHOWCASE_ITEMS: ShowcaseItem[] = [
       'Direct referral opportunity through alumni network. Prepare vision-language benchmark breakdown.',
     latencyMs: 580,
     tokensUsed: 1680,
-  },
-  {
-    id: 'stripe',
-    company: 'Stripe',
-    role: 'Staff Infrastructure Engineer — Global Compute Edge',
-    url: 'https://stripe.com/jobs/staff-infrastructure-compute-edge',
-    location: 'Remote (US / EU / Americas)',
-    salary: '$280,000 – $370,000 + Equity',
-    source: 'stripe.com',
-    tags: ['Go', 'Kubernetes', 'Multi-Cloud', 'Zero-Downtime Migration'],
-    notes:
-      'Critical high-throughput microservices team. Emphasize multi-region failover experience.',
-    latencyMs: 710,
-    tokensUsed: 1350,
   },
   {
     id: 'linear',

@@ -1,84 +1,132 @@
 'use client';
 
-import React, { useRef } from 'react';
-import { Calendar, ArrowRight } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
+import { Calendar, ChevronRight, ChevronDown, X } from 'lucide-react';
 import { CustomDateRange } from '@/types';
+import { DatePresets } from './DatePresets';
+import { DateRangePopover } from './DateRangePopover';
+import { getPresetRange, PresetKey } from './calendarHelpers';
 
 interface CustomDateInputsProps {
   customRange: CustomDateRange;
   onChange: (range: CustomDateRange) => void;
 }
 
-export function CustomDateInputs({ customRange, onChange }: CustomDateInputsProps) {
-  const fromInputRef = useRef<HTMLInputElement>(null);
-  const toInputRef = useRef<HTMLInputElement>(null);
+const PRESET_ITEMS: Array<{ key: PresetKey; label: string }> = [
+  { key: 'all', label: 'All' },
+  { key: 'today', label: 'Today' },
+  { key: '7d', label: 'Last 7 Days' },
+  { key: '14d', label: 'Last 14 Days' },
+  { key: '30d', label: 'Last 30 Days' },
+];
 
-  const openPicker = (ref: React.RefObject<HTMLInputElement | null>) => {
-    try {
-      ref.current?.showPicker?.();
-    } catch {
-      ref.current?.focus();
+export function CustomDateInputs({ customRange, onChange }: CustomDateInputsProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        setIsOpen(false);
+      }
     }
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === 'Escape') {
+        setIsOpen(false);
+      }
+    }
+    if (isOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener('keydown', handleKeyDown);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isOpen]);
+
+  const isPresetActive = (key: PresetKey) => {
+    if (key === 'all') {
+      return !customRange.startDate && !customRange.endDate;
+    }
+    const preset = getPresetRange(key);
+    return customRange.startDate === preset.startDate && customRange.endDate === preset.endDate;
+  };
+
+  const isAnyPresetActive =
+    !customRange.startDate && !customRange.endDate
+      ? false
+      : (['today', '7d', '14d', '30d'] as PresetKey[]).some(isPresetActive);
+
+  const isCustomRangeActive =
+    Boolean(customRange.startDate || customRange.endDate) && !isAnyPresetActive;
+
+  const handleClear = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onChange({ startDate: '', endDate: '' });
+  };
+
+  const handlePresetSelect = (preset: PresetKey) => {
+    onChange(getPresetRange(preset));
   };
 
   return (
-    <div className="pt-2.5 border-t border-[var(--border-subtle)] flex flex-wrap items-center gap-3 text-xs">
-      <span className="font-mono text-[11px] text-[var(--accent-primary)] uppercase tracking-wider font-semibold">
-        Custom Date Range:
-      </span>
+    <div className="flex flex-wrap items-center gap-1.5 text-xs">
+      <DatePresets
+        customRange={customRange}
+        items={PRESET_ITEMS}
+        onSelectPreset={handlePresetSelect}
+        onClear={() => onChange({ startDate: '', endDate: '' })}
+      />
 
-      <div className="flex flex-wrap items-center gap-2 font-mono">
-        {/* From Date Pill */}
-        <div
-          onClick={() => openPicker(fromInputRef)}
-          className="flex items-center gap-2 px-2.5 py-1.5 border border-[var(--border-subtle)] bg-[var(--bg-app)] hover:border-[var(--accent-primary)] transition-colors cursor-pointer"
-        >
-          <Calendar className="w-3.5 h-3.5 text-[var(--text-muted)]" />
-          <span className="text-[11px] text-[var(--text-muted)]">From:</span>
-          <input
-            ref={fromInputRef}
-            type="date"
-            value={customRange.startDate}
-            onClick={(e) => {
-              e.stopPropagation();
-              openPicker(fromInputRef);
-            }}
-            onChange={(e) => onChange({ ...customRange, startDate: e.target.value })}
-            className="bg-transparent text-xs text-[var(--text-primary)] focus:outline-none cursor-pointer"
-          />
-        </div>
-
-        <ArrowRight className="w-3.5 h-3.5 text-[var(--text-muted)]" />
-
-        {/* To Date Pill */}
-        <div
-          onClick={() => openPicker(toInputRef)}
-          className="flex items-center gap-2 px-2.5 py-1.5 border border-[var(--border-subtle)] bg-[var(--bg-app)] hover:border-[var(--accent-primary)] transition-colors cursor-pointer"
-        >
-          <Calendar className="w-3.5 h-3.5 text-[var(--text-muted)]" />
-          <span className="text-[11px] text-[var(--text-muted)]">To:</span>
-          <input
-            ref={toInputRef}
-            type="date"
-            value={customRange.endDate}
-            onClick={(e) => {
-              e.stopPropagation();
-              openPicker(toInputRef);
-            }}
-            onChange={(e) => onChange({ ...customRange, endDate: e.target.value })}
-            className="bg-transparent text-xs text-[var(--text-primary)] focus:outline-none cursor-pointer"
-          />
-        </div>
-      </div>
-
-      {(customRange.startDate || customRange.endDate) && (
+      <div ref={containerRef} className="relative">
         <button
-          onClick={() => onChange({ startDate: '', endDate: '' })}
-          className="text-[11px] font-mono text-[var(--text-muted)] hover:text-[var(--text-primary)] underline cursor-pointer"
+          type="button"
+          onClick={() => setIsOpen((prev) => !prev)}
+          className={`flex items-center gap-2 px-2.5 py-1.5 border bg-(--bg-app) transition-colors cursor-pointer text-xs font-medium rounded-xs shadow-xs ${
+            isOpen || isCustomRangeActive
+              ? 'border-(--accent-primary) bg-(--accent-primary-bg) text-(--accent-blue-bright)'
+              : 'border-(--border-subtle) hover:border-(--border-strong) text-(--text-secondary) hover:text-(--text-primary)'
+          }`}
         >
-          Reset Range
+          <Calendar className="w-3.5 h-3.5 text-(--accent-primary)" />
+          <span
+            className={isCustomRangeActive && customRange.startDate ? 'text-(--text-primary)' : ''}
+          >
+            {isCustomRangeActive && customRange.startDate ? customRange.startDate : 'From'}
+          </span>
+          <ChevronRight className="w-3 h-3 text-(--text-muted)" />
+          <span
+            className={isCustomRangeActive && customRange.endDate ? 'text-(--text-primary)' : ''}
+          >
+            {isCustomRangeActive && customRange.endDate ? customRange.endDate : 'To'}
+          </span>
+
+          {isCustomRangeActive ? (
+            <span
+              onClick={handleClear}
+              className="p-0.5 hover:bg-(--border-subtle) text-(--text-muted) hover:text-(--text-primary) transition-colors ml-0.5"
+            >
+              <X className="w-3 h-3" />
+            </span>
+          ) : (
+            <ChevronDown
+              className={`w-3.5 h-3.5 text-(--text-muted) transition-transform ${
+                isOpen ? 'rotate-180 text-(--accent-primary)' : ''
+              }`}
+            />
+          )}
         </button>
-      )}
+
+        {isOpen && (
+          <DateRangePopover
+            startDate={customRange.startDate}
+            endDate={customRange.endDate}
+            onApply={(newRange) => onChange(newRange)}
+            onClose={() => setIsOpen(false)}
+          />
+        )}
+      </div>
     </div>
   );
 }

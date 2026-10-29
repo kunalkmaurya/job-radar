@@ -31,15 +31,15 @@ export function SettingsLLMConfig({
   };
 
   return (
-    <div className="p-5 border border-[var(--border-subtle)] bg-[var(--bg-surface)] space-y-4 shadow-sm">
-      <div className="flex items-center justify-between pb-3 border-b border-[var(--border-subtle)]">
+    <div className="p-5 border border-(--border-subtle) bg-(--bg-surface) space-y-4 shadow-sm">
+      <div className="flex items-center justify-between pb-3 border-b border-(--border-subtle)">
         <div className="flex items-center gap-2">
-          <Cpu className="w-4 h-4 text-[var(--accent-primary)]" />
-          <h3 className="font-mono text-xs uppercase tracking-wider font-semibold text-[var(--text-primary)]">
+          <Cpu className="w-4 h-4 text-(--accent-primary)" />
+          <h3 className="text-xs uppercase tracking-wider font-semibold text-(--text-primary)">
             AI Extraction Engine
           </h3>
         </div>
-        <span className="text-[10px] font-mono px-2 py-0.5 bg-[var(--bg-app)] border border-[var(--border-subtle)] text-[var(--accent-primary)] font-semibold flex items-center gap-1">
+        <span className="text-[10px] px-2 py-0.5 bg-(--bg-app) border border-(--border-subtle) text-(--accent-primary) font-semibold flex items-center gap-1">
           <Sparkles className="w-3 h-3" />
           <span>{settings.llmModel}</span>
         </span>
@@ -52,10 +52,8 @@ export function SettingsLLMConfig({
       />
 
       {/* Model Chips */}
-      <div className="flex items-center gap-2 font-mono text-xs flex-wrap">
-        <span className="text-[10px] uppercase tracking-wider text-[var(--text-muted)]">
-          Model:
-        </span>
+      <div className="flex items-center gap-2 text-xs flex-wrap">
+        <span className="text-[10px] uppercase tracking-wider text-(--text-muted)">Model:</span>
         {(MODELS[settings.llmProvider] || [settings.llmModel]).map((m) => {
           const isSelected = settings.llmModel === m;
           return (
@@ -65,8 +63,8 @@ export function SettingsLLMConfig({
               onClick={() => updateSetting('llmModel', m)}
               className={`px-2.5 py-1 text-[11px] border transition-colors cursor-pointer ${
                 isSelected
-                  ? 'border-[var(--accent-primary)] bg-[var(--bg-app)] text-[var(--accent-primary)] font-semibold'
-                  : 'border-[var(--border-subtle)] bg-[var(--bg-app)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+                  ? 'border-(--accent-primary) bg-(--bg-app) text-(--accent-primary) font-semibold'
+                  : 'border-(--border-subtle) bg-(--bg-app) text-(--text-secondary) hover:text-(--text-primary)'
               }`}
             >
               {m}
@@ -76,12 +74,10 @@ export function SettingsLLMConfig({
       </div>
 
       {/* API Key Row */}
-      <div className="space-y-1 font-mono text-xs">
+      <div className="space-y-1 text-xs">
         <div className="flex justify-between items-center text-[11px]">
-          <span className="text-[var(--text-muted)] uppercase tracking-wider">API Key</span>
-          <span className="text-[10px] text-[var(--text-muted)]">
-            Defaults to server .env if empty
-          </span>
+          <span className="text-(--text-muted) uppercase tracking-wider">API Key</span>
+          <span className="text-[10px] text-(--text-muted)">Defaults to server .env if empty</span>
         </div>
         <div className="relative flex items-center">
           <input
@@ -89,12 +85,12 @@ export function SettingsLLMConfig({
             value={settings.apiKey}
             onChange={(e) => updateSetting('apiKey', e.target.value)}
             placeholder="sk-••••••••••••••••••••••••••••••••"
-            className="w-full px-3 py-2 pr-9 border border-[var(--border-subtle)] bg-[var(--bg-app)] text-[var(--text-primary)] font-mono text-xs placeholder:text-[var(--text-muted)] focus:border-[var(--accent-primary)] focus:outline-none"
+            className="w-full px-3 py-2 pr-9 border border-(--border-subtle) bg-(--bg-app) text-(--text-primary) text-xs placeholder:text-(--text-muted) focus:border-(--accent-primary) focus:outline-none"
           />
           <button
             type="button"
             onClick={() => setShowKey(!showKey)}
-            className="absolute right-2.5 p-1 text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors cursor-pointer"
+            className="absolute right-2.5 p-1 text-(--text-muted) hover:text-(--text-primary) transition-colors cursor-pointer"
           >
             {showKey ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
           </button>
@@ -102,18 +98,18 @@ export function SettingsLLMConfig({
       </div>
 
       {/* Toggle & Test Action */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pt-2 border-t border-[var(--border-subtle)] font-mono text-xs">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pt-2 border-t border-(--border-subtle) text-xs">
         <div className="flex items-center gap-3">
           <button
             type="button"
             onClick={() => onTestConnection(settings.llmProvider)}
             disabled={isTesting}
-            className="flex items-center gap-1.5 px-3 py-1.5 border border-[var(--border-subtle)] hover:border-[var(--accent-primary)] bg-[var(--bg-app)] text-[var(--text-primary)] transition-colors cursor-pointer disabled:opacity-50"
+            className="flex items-center gap-1.5 px-3 py-1.5 border border-(--border-subtle) hover:border-(--accent-primary) bg-(--bg-app) text-(--text-primary) transition-colors cursor-pointer disabled:opacity-50"
           >
             {isTesting ? (
               <Loader2 className="w-3.5 h-3.5 animate-spin" />
             ) : (
-              <CheckCircle2 className="w-3.5 h-3.5 text-[var(--accent-primary)]" />
+              <CheckCircle2 className="w-3.5 h-3.5 text-(--accent-primary)" />
             )}
             <span>{isTesting ? 'Testing...' : 'Test Connection'}</span>
           </button>
@@ -129,15 +125,15 @@ export function SettingsLLMConfig({
             onClick={() => updateSetting('useJinaFallback', !settings.useJinaFallback)}
             className={`w-8 h-4.5 flex items-center p-0.5 transition-colors cursor-pointer border ${
               settings.useJinaFallback
-                ? 'bg-[var(--accent-primary)] border-[var(--accent-primary)]'
-                : 'bg-[var(--bg-app)] border-[var(--border-subtle)]'
+                ? 'bg-(--accent-primary) border-(--accent-primary)'
+                : 'bg-(--bg-app) border-(--border-subtle)'
             }`}
           >
             <div
               className={`w-3 h-3 bg-white transition-transform ${settings.useJinaFallback ? 'translate-x-3.5' : 'translate-x-0'}`}
             />
           </button>
-          <span className="text-[11px] text-[var(--text-secondary)]">Jina Reader Fallback</span>
+          <span className="text-[11px] text-(--text-secondary)">Jina Reader Fallback</span>
         </div>
       </div>
     </div>

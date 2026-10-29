@@ -38,7 +38,7 @@ export function EmailPasswordForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-3 font-mono text-xs">
+    <form onSubmit={handleSubmit} className="space-y-3 text-xs">
       {error && (
         <div className="p-2.5 border border-rose-500/30 bg-rose-500/10 text-rose-400 text-xs flex items-center gap-2">
           <AlertCircle className="w-3.5 h-3.5 shrink-0" />
@@ -47,40 +47,40 @@ export function EmailPasswordForm() {
       )}
 
       <div className="space-y-1">
-        <label className="text-[10px] text-[var(--text-muted)] uppercase tracking-wider block">
+        <label className="text-[10px] text-(--text-muted) uppercase tracking-wider block">
           Authorized Email
         </label>
         <div className="relative flex items-center">
-          <Mail className="w-3.5 h-3.5 absolute left-3 text-[var(--text-muted)] pointer-events-none" />
+          <Mail className="w-3.5 h-3.5 absolute left-3 text-(--text-muted) pointer-events-none" />
           <input
             type="email"
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="you@domain.com"
-            className="w-full pl-9 pr-3 py-2 border border-[var(--border-subtle)] bg-[var(--bg-app)] text-[var(--text-primary)] font-mono text-xs placeholder:text-[var(--text-muted)] focus:border-[var(--accent-primary)] focus:outline-none"
+            className="w-full pl-9 pr-3 py-2 border border-(--border-subtle) bg-(--bg-app) text-(--text-primary) text-xs placeholder:text-(--text-muted) focus:border-(--accent-primary) focus:outline-none"
           />
         </div>
       </div>
 
       <div className="space-y-1">
-        <label className="text-[10px] text-[var(--text-muted)] uppercase tracking-wider block">
+        <label className="text-[10px] text-(--text-muted) uppercase tracking-wider block">
           Workspace Password
         </label>
         <div className="relative flex items-center">
-          <Lock className="w-3.5 h-3.5 absolute left-3 text-[var(--text-muted)] pointer-events-none" />
+          <Lock className="w-3.5 h-3.5 absolute left-3 text-(--text-muted) pointer-events-none" />
           <input
             type={showPassword ? 'text' : 'password'}
             required
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="••••••••••••"
-            className="w-full pl-9 pr-9 py-2 border border-[var(--border-subtle)] bg-[var(--bg-app)] text-[var(--text-primary)] font-mono text-xs placeholder:text-[var(--text-muted)] focus:border-[var(--accent-primary)] focus:outline-none"
+            className="w-full pl-9 pr-9 py-2 border border-(--border-subtle) bg-(--bg-app) text-(--text-primary) text-xs placeholder:text-(--text-muted) focus:border-(--accent-primary) focus:outline-none"
           />
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-2.5 p-1 text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors cursor-pointer"
+            className="absolute right-2.5 p-1 text-(--text-muted) hover:text-(--text-primary) transition-colors cursor-pointer"
           >
             {showPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
           </button>
@@ -90,7 +90,7 @@ export function EmailPasswordForm() {
       <button
         type="submit"
         disabled={loading}
-        className="w-full mt-2 flex items-center justify-center gap-2 py-2.5 px-4 bg-[var(--accent-primary)] hover:bg-[var(--accent-primary-hover)] text-white font-medium text-xs uppercase tracking-wider transition-colors cursor-pointer disabled:opacity-60"
+        className="w-full mt-2 flex items-center justify-center gap-2 py-2.5 px-4 bg-(--accent-primary) hover:bg-(--accent-primary-hover) text-white font-medium text-xs uppercase tracking-wider transition-colors cursor-pointer disabled:opacity-60"
       >
         {loading ? (
           <>

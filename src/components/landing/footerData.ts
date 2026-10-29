@@ -14,7 +14,7 @@ export const WORKSPACE_LINKS = [
 ];
 
 export const ARCHITECTURE_ITEMS = [
-  { label: 'DeepSeek-V3 LLM', badge: true },
+  { label: 'DeepSeek-V3 LLM' },
   { label: 'Neon PostgreSQL' },
   { label: 'Jina Dual-Tier DOM' },
   { label: 'Google OAuth Guard' },

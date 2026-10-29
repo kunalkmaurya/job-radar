@@ -96,7 +96,7 @@ Slide-out drawer containing follow-up calendar reminder presets (`+3d`, `+1w`), 
 - **Single-User Security**:
   - Whitelist-enforced single-user authentication.
   - Signed 30-day JWT sessions stored in secure `HttpOnly`, `SameSite=lax` cookies.
-  - Optional Google OAuth 2.0 integration.
+  - Optional Google integration.
 
 - **Data Sovereignty**:
   - Instant 1-click CSV export of your entire job search history.
@@ -156,7 +156,7 @@ graph TD
 | **Icons**          | [Lucide React](https://lucide.dev/)                                                                  |
 | **Database**       | [Neon Serverless PostgreSQL](https://neon.tech/)                                                     |
 | **ORM**            | [Drizzle ORM](https://orm.drizzle.team/) & [Drizzle Kit](https://orm.drizzle.team/kit-docs/overview) |
-| **Authentication** | [Jose](https://github.com/panva/jose) (JWT) + Google OAuth 2.0                                       |
+| **Authentication** | [Jose](https://github.com/panva/jose) (JWT) + Google                                                 |
 | **AI Layer**       | DeepSeek-V3 / OpenAI GPT-4o-mini                                                                     |
 
 ---

@@ -18,7 +18,7 @@ export function JobRowActions({ job, onSelectJob, onDeleteJob }: JobRowActionsPr
         onClick={() => onSelectJob(job)}
         title="Open Notes"
         aria-label={`Open notes for ${job.role} at ${job.company}`}
-        className="p-1.5 hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] cursor-pointer"
+        className="p-1.5 hover:bg-(--bg-surface-hover) text-(--text-secondary) hover:text-(--text-primary) cursor-pointer"
       >
         <FileText className="w-4 h-4" />
       </button>
@@ -29,7 +29,7 @@ export function JobRowActions({ job, onSelectJob, onDeleteJob }: JobRowActionsPr
         rel="noreferrer"
         title="Open Job Link"
         aria-label={`External link to ${job.role} at ${job.company}`}
-        className="p-1.5 hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] cursor-pointer"
+        className="p-1.5 hover:bg-(--bg-surface-hover) text-(--text-secondary) hover:text-(--text-primary) cursor-pointer"
       >
         <ExternalLink className="w-4 h-4" />
       </a>
@@ -38,7 +38,7 @@ export function JobRowActions({ job, onSelectJob, onDeleteJob }: JobRowActionsPr
         onClick={(e) => onDeleteJob(job.id, e)}
         title="Delete Job"
         aria-label={`Delete ${job.role} at ${job.company}`}
-        className="p-1.5 hover:bg-red-500/10 text-[var(--text-muted)] hover:text-red-400 cursor-pointer"
+        className="p-1.5 hover:bg-red-500/10 text-(--text-muted) hover:text-red-400 cursor-pointer"
       >
         <Trash2 className="w-4 h-4" />
       </button>

@@ -38,17 +38,17 @@ export function ProfilePreferencesCard() {
   return (
     <form
       onSubmit={handleSave}
-      className="border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-5 shadow-sm space-y-4"
+      className="border border-(--border-subtle) bg-(--bg-surface) p-5 shadow-sm space-y-4"
     >
-      <div className="flex items-center justify-between border-b border-[var(--border-subtle)] pb-3">
+      <div className="flex items-center justify-between border-b border-(--border-subtle) pb-3">
         <div className="flex items-center gap-2">
-          <Target className="w-4 h-4 text-[var(--accent-primary)]" />
-          <h3 className="font-mono text-xs uppercase tracking-wider font-bold text-[var(--text-primary)]">
+          <Target className="w-4 h-4 text-(--accent-primary)" />
+          <h3 className="text-xs uppercase tracking-wider font-bold text-(--text-primary)">
             Job Search & Career Target Preferences
           </h3>
         </div>
         {savedNotice && (
-          <span className="flex items-center gap-1 text-[11px] font-mono text-emerald-400 font-semibold">
+          <span className="flex items-center gap-1 text-[11px] text-emerald-400 font-semibold">
             <Check className="w-3.5 h-3.5" /> Saved
           </span>
         )}
@@ -56,51 +56,51 @@ export function ProfilePreferencesCard() {
 
       <div className="space-y-3 text-xs">
         <div>
-          <label className="block text-[11px] font-mono uppercase text-[var(--text-secondary)] mb-1">
+          <label className="block text-[11px] uppercase text-(--text-secondary) mb-1">
             Target Job Title / Focus Role
           </label>
           <input
             type="text"
             value={targetRole}
             onChange={(e) => setTargetRole(e.target.value)}
-            className="w-full px-3 py-2 border border-[var(--border-subtle)] bg-[var(--bg-app)] text-[var(--text-primary)] text-xs focus:outline-none focus:border-[var(--border-focus)] transition-colors"
+            className="w-full px-3 py-2 border border-(--border-subtle) bg-(--bg-app) text-(--text-primary) text-xs focus:outline-none focus:border-(--border-focus) transition-colors"
           />
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
-            <label className="block text-[11px] font-mono uppercase text-[var(--text-secondary)] mb-1">
+            <label className="block text-[11px] uppercase text-(--text-secondary) mb-1">
               Geographic Preference
             </label>
             <input
               type="text"
               value={locationPref}
               onChange={(e) => setLocationPref(e.target.value)}
-              className="w-full px-3 py-2 border border-[var(--border-subtle)] bg-[var(--bg-app)] text-[var(--text-primary)] text-xs focus:outline-none focus:border-[var(--border-focus)] transition-colors"
+              className="w-full px-3 py-2 border border-(--border-subtle) bg-(--bg-app) text-(--text-primary) text-xs focus:outline-none focus:border-(--border-focus) transition-colors"
             />
           </div>
           <div>
-            <label className="block text-[11px] font-mono uppercase text-[var(--text-secondary)] mb-1">
+            <label className="block text-[11px] uppercase text-(--text-secondary) mb-1">
               Target Annual Compensation
             </label>
             <input
               type="text"
               value={targetSalary}
               onChange={(e) => setTargetSalary(e.target.value)}
-              className="w-full px-3 py-2 border border-[var(--border-subtle)] bg-[var(--bg-app)] text-[var(--text-primary)] text-xs focus:outline-none focus:border-[var(--border-focus)] transition-colors"
+              className="w-full px-3 py-2 border border-(--border-subtle) bg-(--bg-app) text-(--text-primary) text-xs focus:outline-none focus:border-(--border-focus) transition-colors"
             />
           </div>
         </div>
 
         <div>
-          <label className="block text-[11px] font-mono uppercase text-[var(--text-secondary)] mb-1">
+          <label className="block text-[11px] uppercase text-(--text-secondary) mb-1">
             Primary Tech Stack & Core Skills
           </label>
           <input
             type="text"
             value={techStack}
             onChange={(e) => setTechStack(e.target.value)}
-            className="w-full px-3 py-2 border border-[var(--border-subtle)] bg-[var(--bg-app)] text-[var(--text-primary)] text-xs focus:outline-none focus:border-[var(--border-focus)] transition-colors"
+            className="w-full px-3 py-2 border border-(--border-subtle) bg-(--bg-app) text-(--text-primary) text-xs focus:outline-none focus:border-(--border-focus) transition-colors"
           />
         </div>
       </div>
@@ -108,7 +108,7 @@ export function ProfilePreferencesCard() {
       <div className="pt-2 flex justify-end">
         <button
           type="submit"
-          className="flex items-center gap-1.5 px-4 py-2 bg-[var(--accent-primary)] hover:bg-[var(--accent-primary-hover)] text-white text-xs font-semibold shadow-sm transition-all cursor-pointer"
+          className="flex items-center gap-1.5 px-4 py-2 bg-(--accent-primary) hover:bg-(--accent-primary-hover) text-white text-xs font-semibold shadow-sm transition-all cursor-pointer"
         >
           <Save className="w-3.5 h-3.5" />
           <span>Save Preferences</span>

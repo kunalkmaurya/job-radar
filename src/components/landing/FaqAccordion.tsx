@@ -26,7 +26,10 @@ export function FaqAccordion() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   return (
-    <section id="faq" className="w-full px-6 py-24 border-t border-[var(--border-subtle)] bg-[var(--bg-surface)]/20">
+    <section
+      id="faq"
+      className="w-full px-6 py-24 border-t border-[var(--border-subtle)] bg-[var(--bg-surface)]/20"
+    >
       <div className="max-w-3xl mx-auto space-y-10">
         <div className="text-center space-y-2">
           <div className="text-xs font-mono text-[var(--accent-primary)] uppercase tracking-widest">

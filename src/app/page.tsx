@@ -26,7 +26,6 @@ export default function LandingPage() {
       document.documentElement.setAttribute('data-theme', 'dark');
     }
 
-    // Verify session
     fetch('/api/auth/me')
       .then((res) => res.json())
       .then((json) => {
@@ -46,15 +45,14 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen bg-[var(--bg-app)] text-[var(--text-primary)] font-sans antialiased selection:bg-[var(--accent-primary)] selection:text-white transition-colors duration-300">
-      {/* Warm Ambient Anthropic Light Glow */}
       <div
         className="fixed top-0 left-1/2 -translate-x-1/2 w-[1100px] h-[600px] pointer-events-none opacity-25 blur-[180px] z-0"
         style={{
-          background: 'radial-gradient(circle, #D96B43 0%, rgba(217, 107, 67, 0.25) 45%, transparent 75%)',
+          background:
+            'radial-gradient(circle, #D96B43 0%, rgba(217, 107, 67, 0.25) 45%, transparent 75%)',
         }}
       />
 
-      {/* Composed Modular Feature Components */}
       <Navbar theme={theme} onToggleTheme={toggleTheme} isLoggedIn={isLoggedIn} />
       <Hero isLoggedIn={isLoggedIn} />
       <InteractiveSpecimen />

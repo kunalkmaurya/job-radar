@@ -4,7 +4,10 @@ import React from 'react';
 
 export function ComparisonMatrix() {
   return (
-    <section id="comparison" className="w-full px-6 py-24 border-t border-[var(--border-subtle)] bg-[var(--bg-surface)]/30">
+    <section
+      id="comparison"
+      className="w-full px-6 py-24 border-t border-[var(--border-subtle)] bg-[var(--bg-surface)]/30"
+    >
       <div className="max-w-5xl mx-auto space-y-12">
         <div className="max-w-2xl">
           <div className="text-xs font-mono text-[var(--accent-primary)] uppercase tracking-widest mb-1.5">

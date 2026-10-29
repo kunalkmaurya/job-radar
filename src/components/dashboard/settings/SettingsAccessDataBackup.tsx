@@ -34,7 +34,9 @@ export function SettingsAccessDataBackup({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 font-mono text-xs">
         <div className="p-3 border border-[var(--border-subtle)] bg-[var(--bg-app)] flex items-center justify-between">
           <div>
-            <div className="text-[10px] text-[var(--text-muted)] uppercase tracking-wider">Authorized Account</div>
+            <div className="text-[10px] text-[var(--text-muted)] uppercase tracking-wider">
+              Authorized Account
+            </div>
             <div className="font-bold text-[var(--text-primary)] mt-0.5 truncate max-w-[220px]">
               {currentUser?.email || 'kunalkrraj@gmail.com'}
             </div>
@@ -47,7 +49,9 @@ export function SettingsAccessDataBackup({
 
         <div className="p-3 border border-[var(--border-subtle)] bg-[var(--bg-app)] flex items-center justify-between">
           <div>
-            <div className="text-[10px] text-[var(--text-muted)] uppercase tracking-wider">Neon PostgreSQL</div>
+            <div className="text-[10px] text-[var(--text-muted)] uppercase tracking-wider">
+              Neon PostgreSQL
+            </div>
             <div className="font-bold text-[var(--text-primary)] mt-0.5">
               {totalJobs} Pipeline Records
             </div>

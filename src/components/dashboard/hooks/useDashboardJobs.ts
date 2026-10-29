@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Job, JobStatus, TimelineFilter, CustomDateRange } from '@/types';
 import {
   isJobStale,
@@ -24,7 +24,11 @@ export function useDashboardJobs() {
   const [staleOnlyFilter, setStaleOnlyFilter] = useState(false);
   const [statusFilter, setStatusFilter] = useState<JobStatus | 'all'>('Saved');
   const [nowTime, setNowTime] = useState<number>(1729792800000);
-  const [currentUser, setCurrentUser] = useState<{ email?: string; name?: string; role?: string } | null>(null);
+  const [currentUser, setCurrentUser] = useState<{
+    email?: string;
+    name?: string;
+    role?: string;
+  } | null>(null);
 
   const { fetchJobs, isSyncing, lastSyncedAt, revalidate } = useSmartJobSync({
     setJobs,
@@ -78,7 +82,13 @@ export function useDashboardJobs() {
     if (e) e.stopPropagation();
     window.open(job.link, '_blank');
     const appliedAt = new Date(nowTime);
-    setJobs((prev) => prev.map((j) => (j.id === job.id ? { ...j, status: 'Applied' as JobStatus, appliedAt, updatedAt: appliedAt } : j)));
+    setJobs((prev) =>
+      prev.map((j) =>
+        j.id === job.id
+          ? { ...j, status: 'Applied' as JobStatus, appliedAt, updatedAt: appliedAt }
+          : j
+      )
+    );
     setStatusFilter('Applied');
     await patchJob(job.id, { status: 'Applied', appliedAt: appliedAt.toISOString() });
   };
@@ -87,17 +97,33 @@ export function useDashboardJobs() {
     if (e) e.stopPropagation();
     const appliedAt = newStatus === 'Applied' ? new Date(nowTime) : undefined;
     setJobs((prev) =>
-      prev.map((j) => (j.id === jobId ? { ...j, status: newStatus, appliedAt: appliedAt || j.appliedAt, updatedAt: new Date(nowTime) } : j))
+      prev.map((j) =>
+        j.id === jobId
+          ? {
+              ...j,
+              status: newStatus,
+              appliedAt: appliedAt || j.appliedAt,
+              updatedAt: new Date(nowTime),
+            }
+          : j
+      )
     );
     setStatusFilter(newStatus);
-    await patchJob(jobId, { status: newStatus, ...(appliedAt ? { appliedAt: appliedAt.toISOString() } : {}) });
+    await patchJob(jobId, {
+      status: newStatus,
+      ...(appliedAt ? { appliedAt: appliedAt.toISOString() } : {}),
+    });
   };
 
   const handleToggleImportant = async (jobId: string, e?: React.MouseEvent) => {
     if (e) e.stopPropagation();
     const currentJob = jobs.find((j) => j.id === jobId);
     const nextVal = currentJob ? !Boolean(currentJob.isImportant) : true;
-    setJobs((prev) => prev.map((j) => (j.id === jobId ? { ...j, isImportant: nextVal, updatedAt: new Date(nowTime) } : j)));
+    setJobs((prev) =>
+      prev.map((j) =>
+        j.id === jobId ? { ...j, isImportant: nextVal, updatedAt: new Date(nowTime) } : j
+      )
+    );
 
     const res = await patchJob(jobId, { isImportant: nextVal });
     if (!res?.success) {
@@ -112,13 +138,36 @@ export function useDashboardJobs() {
   };
 
   return {
-    jobs, setJobs, isLoading, isSyncing, lastSyncedAt, revalidate, theme, toggleTheme, viewMode, setViewMode,
-    timelineFilter, setTimelineFilter, customRange, setCustomRange,
-    searchQuery, setSearchQuery, staleOnlyFilter, setStaleOnlyFilter,
-    statusFilter, setStatusFilter,
-    nowTime, currentUser, staleCount, metrics, filteredJobs,
-    timelineScopedJobs, handleApplyAndAdvance, handleStatusChange,
-    handleToggleImportant, handleDeleteJob,
+    jobs,
+    setJobs,
+    isLoading,
+    isSyncing,
+    lastSyncedAt,
+    revalidate,
+    theme,
+    toggleTheme,
+    viewMode,
+    setViewMode,
+    timelineFilter,
+    setTimelineFilter,
+    customRange,
+    setCustomRange,
+    searchQuery,
+    setSearchQuery,
+    staleOnlyFilter,
+    setStaleOnlyFilter,
+    statusFilter,
+    setStatusFilter,
+    nowTime,
+    currentUser,
+    staleCount,
+    metrics,
+    filteredJobs,
+    timelineScopedJobs,
+    handleApplyAndAdvance,
+    handleStatusChange,
+    handleToggleImportant,
+    handleDeleteJob,
     handleExportCSV: () => exportJobsToCSV(timelineScopedJobs),
     fetchJobs,
   };

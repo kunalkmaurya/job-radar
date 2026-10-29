@@ -9,11 +9,7 @@ interface SpecimenHeaderProps {
   onSelectTab: (tab: SpecimenTab) => void;
 }
 
-export function SpecimenHeader({
-  selectedItem,
-  activeTab,
-  onSelectTab,
-}: SpecimenHeaderProps) {
+export function SpecimenHeader({ selectedItem, activeTab, onSelectTab }: SpecimenHeaderProps) {
   return (
     <div className="px-6 py-3.5 border-b border-[var(--border-subtle)] bg-[var(--bg-app)]/80 flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs font-mono">
       <div className="flex items-center gap-2 text-[var(--text-muted)]">

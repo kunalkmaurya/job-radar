@@ -3,13 +3,7 @@ import type { NextRequest } from 'next/server';
 import { verifySessionToken, isAllowedEmail, AUTH_COOKIE_NAME } from '@/lib/auth';
 
 // Paths that do not require authentication
-const PUBLIC_PATHS = [
-  '/',
-  '/login',
-  '/api/auth',
-  '/api/telegram-webhook',
-  '/icon.svg',
-];
+const PUBLIC_PATHS = ['/', '/login', '/api/auth', '/api/telegram-webhook', '/icon.svg'];
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -27,7 +21,9 @@ export async function proxy(request: NextRequest) {
   }
 
   // 2. Allow public endpoints
-  if (PUBLIC_PATHS.some((path) => pathname === path || (path !== '/' && pathname.startsWith(path)))) {
+  if (
+    PUBLIC_PATHS.some((path) => pathname === path || (path !== '/' && pathname.startsWith(path)))
+  ) {
     // If user is already authenticated and visits /login, redirect to /dashboard
     if (pathname === '/login') {
       const token = request.cookies.get(AUTH_COOKIE_NAME)?.value;

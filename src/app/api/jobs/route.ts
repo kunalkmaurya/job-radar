@@ -10,14 +10,12 @@ export async function GET(request: Request) {
     const timeline = searchParams.get('timeline') || 'all';
     const status = searchParams.get('status');
 
-    let conditions = [];
+    const conditions = [];
 
-    // Status filter
     if (status) {
       conditions.push(eq(jobs.status, status));
     }
 
-    // Timeline filter
     const now = new Date();
     if (timeline === 'today') {
       const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
@@ -30,10 +28,13 @@ export async function GET(request: Request) {
       conditions.push(gte(jobs.createdAt, thirtyDaysAgo));
     }
 
-    // Fast metadata check for HTTP 304 (ETag / If-None-Match)
-    const [meta] = conditions.length > 0
-      ? await db.select({ lastUpdated: max(jobs.updatedAt), total: count() }).from(jobs).where(and(...conditions))
-      : await db.select({ lastUpdated: max(jobs.updatedAt), total: count() }).from(jobs);
+    const [meta] =
+      conditions.length > 0
+        ? await db
+            .select({ lastUpdated: max(jobs.updatedAt), total: count() })
+            .from(jobs)
+            .where(and(...conditions))
+        : await db.select({ lastUpdated: max(jobs.updatedAt), total: count() }).from(jobs);
 
     const lastUpdatedTs = meta?.lastUpdated ? new Date(meta.lastUpdated).getTime() : 0;
     const totalCount = meta?.total ?? 0;
@@ -44,15 +45,20 @@ export async function GET(request: Request) {
       return new NextResponse(null, {
         status: 304,
         headers: {
-          'ETag': etag,
+          ETag: etag,
           'Cache-Control': 'private, no-cache',
         },
       });
     }
 
-    const result = conditions.length > 0
-      ? await db.select().from(jobs).where(and(...conditions)).orderBy(desc(jobs.createdAt))
-      : await db.select().from(jobs).orderBy(desc(jobs.createdAt));
+    const result =
+      conditions.length > 0
+        ? await db
+            .select()
+            .from(jobs)
+            .where(and(...conditions))
+            .orderBy(desc(jobs.createdAt))
+        : await db.select().from(jobs).orderBy(desc(jobs.createdAt));
 
     return NextResponse.json(
       {
@@ -61,7 +67,7 @@ export async function GET(request: Request) {
       },
       {
         headers: {
-          'ETag': etag,
+          ETag: etag,
           'Cache-Control': 'private, no-cache',
         },
       }
@@ -97,32 +103,37 @@ export async function POST(request: Request) {
       );
     }
 
-    // If company and role are provided, save directly
     if (company && role) {
-      const inserted = await db.insert(jobs).values({
-        company,
-        role,
-        link,
-        status,
-        notes,
-        referralStatus,
-        referrerName: referrerName || null,
-        referrerContact: referrerContact || null,
-        referralNotes,
-        source: 'manual',
-      }).returning();
+      const inserted = await db
+        .insert(jobs)
+        .values({
+          company,
+          role,
+          link,
+          status,
+          notes,
+          referralStatus,
+          referrerName: referrerName || null,
+          referrerContact: referrerContact || null,
+          referralNotes,
+          source: 'manual',
+        })
+        .returning();
 
       return NextResponse.json({ success: true, data: inserted[0] });
     }
 
-    // Otherwise, run through ingestion pipeline (scrape + AI)
     const result = await processJobLink(link, 'manual');
     return NextResponse.json({ success: true, data: result });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('[API /api/jobs POST Error]:', error);
-    if (error?.code === '23505') {
+    const errCode = (error as { code?: string })?.code;
+    if (errCode === '23505') {
       return NextResponse.json(
-        { success: false, error: { code: 'DUPLICATE', message: 'Job link already exists in your board.' } },
+        {
+          success: false,
+          error: { code: 'DUPLICATE', message: 'Job link already exists in your board.' },
+        },
         { status: 409 }
       );
     }

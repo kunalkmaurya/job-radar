@@ -1,4 +1,4 @@
-export async function patchJob(jobId: string, data: Record<string, any>) {
+export async function patchJob(jobId: string, data: Record<string, unknown>) {
   try {
     const res = await fetch(`/api/jobs/${jobId}`, {
       method: 'PATCH',

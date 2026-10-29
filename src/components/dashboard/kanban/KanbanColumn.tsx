@@ -47,8 +47,14 @@ export function KanbanColumn({
     return columnJobs.slice(start, start + cardsPerColumn);
   }, [columnJobs, cardsPerColumn, currentPage]);
 
-  const fromIndex = columnJobs.length === 0 ? 0 : (currentPage - 1) * (cardsPerColumn === 'all' ? 1 : cardsPerColumn) + 1;
-  const toIndex = cardsPerColumn === 'all' ? columnJobs.length : Math.min(currentPage * cardsPerColumn, columnJobs.length);
+  const fromIndex =
+    columnJobs.length === 0
+      ? 0
+      : (currentPage - 1) * (cardsPerColumn === 'all' ? 1 : cardsPerColumn) + 1;
+  const toIndex =
+    cardsPerColumn === 'all'
+      ? columnJobs.length
+      : Math.min(currentPage * cardsPerColumn, columnJobs.length);
 
   return (
     <div className="border border-[var(--border-subtle)] bg-[var(--bg-surface)]/60 p-3 flex flex-col space-y-3 min-h-[480px] sm:min-h-[520px] w-[82vw] sm:w-[320px] md:w-auto shrink-0 md:shrink snap-start">

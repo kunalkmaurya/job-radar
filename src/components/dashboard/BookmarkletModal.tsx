@@ -21,13 +21,17 @@ export function BookmarkletModal({ isOpen, onClose }: BookmarkletModalProps) {
             <Bookmark className="w-4 h-4 text-[var(--accent-primary)]" />
             <span>1-Click Browser Bookmarklet</span>
           </h3>
-          <button onClick={onClose} className="text-[var(--text-muted)] hover:text-white cursor-pointer">
+          <button
+            onClick={onClose}
+            className="text-[var(--text-muted)] hover:text-white cursor-pointer"
+          >
             <X className="w-4 h-4" />
           </button>
         </div>
 
         <p className="text-[var(--text-secondary)] leading-relaxed">
-          Drag this button to your browser bookmarks bar. When viewing any job on LinkedIn or Workday, click it to save instantly:
+          Drag this button to your browser bookmarks bar. When viewing any job on LinkedIn or
+          Workday, click it to save instantly:
         </p>
 
         <div className="p-4 border border-dashed border-[var(--accent-primary)]/40 bg-[var(--accent-primary-bg)] text-center">

@@ -29,15 +29,15 @@ export function KanbanHeaderBar({
       <div className="flex items-center gap-2">
         <LayoutGrid className="w-4 h-4 text-[var(--accent-primary)]" />
         <span className="font-mono text-[var(--text-muted)]">
-          Board Pipeline • <strong className="text-[var(--text-primary)] font-semibold">{totalJobs}</strong> jobs across{' '}
-          <strong className="text-[var(--text-primary)] font-semibold">{columnCount}</strong> stages
+          Board Pipeline •{' '}
+          <strong className="text-[var(--text-primary)] font-semibold">{totalJobs}</strong> jobs
+          across <strong className="text-[var(--text-primary)] font-semibold">{columnCount}</strong>{' '}
+          stages
         </span>
       </div>
 
       <div className="flex items-center gap-2">
-        <span className="text-[var(--text-muted)] whitespace-nowrap">
-          Cards per column:
-        </span>
+        <span className="text-[var(--text-muted)] whitespace-nowrap">Cards per column:</span>
         <CustomSelect
           value={cardsPerColumn}
           options={SELECT_OPTIONS}

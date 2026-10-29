@@ -24,7 +24,6 @@ export function JobTableRow({
   onSelectJob,
   onStatusChange,
   onToggleImportant,
-  onApplyAndAdvance,
   onDeleteJob,
 }: JobTableRowProps) {
   const stale = isJobStale(job, nowTime);
@@ -50,7 +49,11 @@ export function JobTableRow({
             onToggleImportant?.(job.id, e);
           }}
           title={isImportant ? 'Marked as Important (Click to unmark)' : 'Mark as Important'}
-          aria-label={isImportant ? `Unmark ${job.role} at ${job.company} as important` : `Mark ${job.role} at ${job.company} as important`}
+          aria-label={
+            isImportant
+              ? `Unmark ${job.role} at ${job.company} as important`
+              : `Mark ${job.role} at ${job.company} as important`
+          }
           className="p-1 text-[var(--text-muted)] hover:text-amber-400 transition-colors cursor-pointer group inline-flex items-center justify-center"
         >
           <Star
@@ -70,9 +73,7 @@ export function JobTableRow({
           <div className="w-7 h-7 bg-[var(--accent-primary-bg)] border border-[var(--border-subtle)] text-[var(--accent-primary)] font-bold text-xs flex items-center justify-center">
             {job.company.charAt(0)}
           </div>
-          <span className="font-semibold text-sm text-[var(--text-primary)]">
-            {job.company}
-          </span>
+          <span className="font-semibold text-sm text-[var(--text-primary)]">{job.company}</span>
         </div>
       </td>
 
@@ -87,11 +88,15 @@ export function JobTableRow({
                 job.referralStatus === 'received'
                   ? 'bg-emerald-500/15 border-emerald-500/30 text-emerald-400'
                   : job.referralStatus === 'asked'
-                  ? 'bg-amber-500/15 border-amber-500/30 text-amber-400'
-                  : 'bg-red-500/15 border-red-500/30 text-red-400'
+                    ? 'bg-amber-500/15 border-amber-500/30 text-amber-400'
+                    : 'bg-red-500/15 border-red-500/30 text-red-400'
               }`}
             >
-              {job.referralStatus === 'received' ? (job.referrerName ? `Referred (${job.referrerName.split(' ')[0]})` : 'Referred') : `Referral: ${job.referralStatus}`}
+              {job.referralStatus === 'received'
+                ? job.referrerName
+                  ? `Referred (${job.referrerName.split(' ')[0]})`
+                  : 'Referred'
+                : `Referral: ${job.referralStatus}`}
             </span>
           )}
         </div>
@@ -119,11 +124,7 @@ export function JobTableRow({
 
       {/* Quick Actions */}
       <td className="py-3.5 px-4 text-right">
-        <JobRowActions
-          job={job}
-          onSelectJob={onSelectJob}
-          onDeleteJob={onDeleteJob}
-        />
+        <JobRowActions job={job} onSelectJob={onSelectJob} onDeleteJob={onDeleteJob} />
       </td>
     </tr>
   );

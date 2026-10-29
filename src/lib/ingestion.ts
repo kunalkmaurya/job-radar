@@ -36,11 +36,7 @@ export async function processJobLink(
     console.log(`[Ingestion] Processing job link from ${source}: ${url}`);
 
     // 1. De-duplication Check
-    const existing = await db
-      .select({ id: jobs.id })
-      .from(jobs)
-      .where(eq(jobs.link, url))
-      .limit(1);
+    const existing = await db.select({ id: jobs.id }).from(jobs).where(eq(jobs.link, url)).limit(1);
 
     if (existing.length > 0) {
       console.log(`[Ingestion] Duplicate link already exists in DB. Skipping: ${url}`);

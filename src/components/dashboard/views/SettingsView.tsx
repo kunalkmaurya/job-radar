@@ -45,7 +45,8 @@ export function SettingsView({
               System Configuration & Telemetry Control
             </h2>
             <p className="text-[11px] font-mono text-[var(--text-secondary)]">
-              AI reasoning models, Telegram webhook ingestion, visual themes, and workspace governance
+              AI reasoning models, Telegram webhook ingestion, visual themes, and workspace
+              governance
             </p>
           </div>
         </div>
@@ -66,22 +67,13 @@ export function SettingsView({
       />
 
       {/* 2. Telegram Webhook Ingestion Engine */}
-      <SettingsTelegramConfig
-        settings={settings}
-        updateSetting={updateSetting}
-      />
+      <SettingsTelegramConfig settings={settings} updateSetting={updateSetting} />
 
       {/* 3. Appearance, Themes & Default Views */}
-      <SettingsThemeAppearance
-        settings={settings}
-        updateSetting={updateSetting}
-      />
+      <SettingsThemeAppearance settings={settings} updateSetting={updateSetting} />
 
       {/* 4. Pipeline Velocity & Ingestion Rules */}
-      <SettingsPipelineAutomation
-        settings={settings}
-        updateSetting={updateSetting}
-      />
+      <SettingsPipelineAutomation settings={settings} updateSetting={updateSetting} />
 
       {/* 5. Access Security, Neon Database & Backup */}
       <SettingsAccessDataBackup

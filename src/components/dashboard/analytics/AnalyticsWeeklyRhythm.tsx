@@ -32,12 +32,18 @@ export function AnalyticsWeeklyRhythm({ data }: WeeklyRhythmProps) {
         <div className="flex items-end justify-between gap-2 h-28 border-b border-[var(--border-subtle)] pb-1 px-2">
           {data.rhythm.map((item) => {
             const isPrime = item.day === data.primeDay && item.count > 0;
-            const heightPercent = item.count > 0 ? Math.max((item.count / data.maxCount) * 100, 16) : 6;
+            const heightPercent =
+              item.count > 0 ? Math.max((item.count / data.maxCount) * 100, 16) : 6;
 
             return (
-              <div key={item.day} className="flex-1 flex flex-col items-center justify-end h-full group">
+              <div
+                key={item.day}
+                className="flex-1 flex flex-col items-center justify-end h-full group"
+              >
                 {item.count > 0 && (
-                  <span className={`text-[10px] font-mono mb-1 ${isPrime ? 'text-[var(--accent-primary)] font-bold' : 'text-[var(--text-secondary)]'}`}>
+                  <span
+                    className={`text-[10px] font-mono mb-1 ${isPrime ? 'text-[var(--accent-primary)] font-bold' : 'text-[var(--text-secondary)]'}`}
+                  >
                     {item.count}
                   </span>
                 )}
@@ -47,11 +53,13 @@ export function AnalyticsWeeklyRhythm({ data }: WeeklyRhythmProps) {
                     item.count === 0
                       ? 'bg-[var(--border-subtle)] opacity-40'
                       : isPrime
-                      ? 'bg-[var(--accent-primary)]'
-                      : 'bg-neutral-600 dark:bg-neutral-400 group-hover:bg-[var(--accent-primary)]'
+                        ? 'bg-[var(--accent-primary)]'
+                        : 'bg-neutral-600 dark:bg-neutral-400 group-hover:bg-[var(--accent-primary)]'
                   }`}
                 />
-                <span className={`text-[10px] font-mono mt-2 ${isPrime ? 'text-[var(--accent-primary)] font-bold' : 'text-[var(--text-muted)]'}`}>
+                <span
+                  className={`text-[10px] font-mono mt-2 ${isPrime ? 'text-[var(--accent-primary)] font-bold' : 'text-[var(--text-muted)]'}`}
+                >
                   {item.day}
                 </span>
               </div>
@@ -61,7 +69,8 @@ export function AnalyticsWeeklyRhythm({ data }: WeeklyRhythmProps) {
       </div>
 
       <div className="p-2.5 border border-[var(--border-subtle)] bg-[var(--bg-app)] font-mono text-[11px] text-[var(--text-secondary)] leading-relaxed">
-        Submissions sent on <strong className="text-[var(--text-primary)]">{data.primeDay}</strong> yielded the quickest review responses. Avoid late Friday submissions.
+        Submissions sent on <strong className="text-[var(--text-primary)]">{data.primeDay}</strong>{' '}
+        yielded the quickest review responses. Avoid late Friday submissions.
       </div>
     </div>
   );

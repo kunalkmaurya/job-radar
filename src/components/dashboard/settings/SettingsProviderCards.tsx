@@ -40,7 +40,9 @@ export function SettingsProviderCards({ currentProvider, onSelectProvider }: Pro
             }`}
           >
             <div className="flex items-center justify-between">
-              <span className={`text-xs font-bold ${isSelected ? 'text-[var(--accent-primary)]' : 'text-[var(--text-primary)]'}`}>
+              <span
+                className={`text-xs font-bold ${isSelected ? 'text-[var(--accent-primary)]' : 'text-[var(--text-primary)]'}`}
+              >
                 {p.name}
               </span>
               <Zap className={`w-3 h-3 ${p.color}`} />

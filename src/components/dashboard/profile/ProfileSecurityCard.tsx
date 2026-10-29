@@ -32,13 +32,19 @@ export function ProfileSecurityCard({ currentUser, onExportCSV }: ProfileSecurit
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
         <div className="p-3 border border-[var(--border-subtle)] bg-[var(--bg-app)] space-y-1">
-          <span className="text-[10px] font-mono uppercase text-[var(--text-muted)]">Auth Architecture</span>
-          <div className="font-semibold text-[var(--text-primary)]">Google OAuth 2.0 / Password</div>
+          <span className="text-[10px] font-mono uppercase text-[var(--text-muted)]">
+            Auth Architecture
+          </span>
+          <div className="font-semibold text-[var(--text-primary)]">
+            Google OAuth 2.0 / Password
+          </div>
           <span className="text-[10px] text-emerald-400 font-mono">Protected</span>
         </div>
 
         <div className="p-3 border border-[var(--border-subtle)] bg-[var(--bg-app)] space-y-1">
-          <span className="text-[10px] font-mono uppercase text-[var(--text-muted)]">Whitelist Verification</span>
+          <span className="text-[10px] font-mono uppercase text-[var(--text-muted)]">
+            Whitelist Verification
+          </span>
           <div className="font-semibold text-[var(--text-primary)] truncate">{email}</div>
           <span className="text-[10px] text-emerald-400 font-mono flex items-center gap-1">
             <ShieldCheck className="w-3 h-3" /> Whitelisted
@@ -46,7 +52,9 @@ export function ProfileSecurityCard({ currentUser, onExportCSV }: ProfileSecurit
         </div>
 
         <div className="p-3 border border-[var(--border-subtle)] bg-[var(--bg-app)] space-y-1">
-          <span className="text-[10px] font-mono uppercase text-[var(--text-muted)]">Data Sovereignty</span>
+          <span className="text-[10px] font-mono uppercase text-[var(--text-muted)]">
+            Data Sovereignty
+          </span>
           <div className="font-semibold text-[var(--text-primary)]">Neon Serverless PostgreSQL</div>
           <span className="text-[10px] text-blue-400 font-mono">Encrypted at rest</span>
         </div>

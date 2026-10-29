@@ -35,7 +35,8 @@ export function FeatureGrid({ isLoggedIn }: FeatureGridProps) {
             <Clock className="w-5 h-5 text-[var(--accent-primary)]" />
             <div className="font-bold text-sm">Stale Alerts</div>
             <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
-              Applications inactive for more than 7 days automatically surface with follow-up nudges.
+              Applications inactive for more than 7 days automatically surface with follow-up
+              nudges.
             </p>
           </div>
 
@@ -43,7 +44,8 @@ export function FeatureGrid({ isLoggedIn }: FeatureGridProps) {
             <FileText className="w-5 h-5 text-[var(--accent-primary)]" />
             <div className="font-bold text-sm">Slide-Over Scratchpad</div>
             <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
-              Jot recruiter contacts, interview talking points, and target compensation right inside the drawer.
+              Jot recruiter contacts, interview talking points, and target compensation right inside
+              the drawer.
             </p>
           </div>
 
@@ -51,7 +53,8 @@ export function FeatureGrid({ isLoggedIn }: FeatureGridProps) {
             <Layers className="w-5 h-5 text-[var(--accent-primary)]" />
             <div className="font-bold text-sm">Dual View Modes</div>
             <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
-              Toggle seamlessly between an ultra-dense enterprise list and an intuitive Kanban board.
+              Toggle seamlessly between an ultra-dense enterprise list and an intuitive Kanban
+              board.
             </p>
           </div>
 
@@ -59,7 +62,8 @@ export function FeatureGrid({ isLoggedIn }: FeatureGridProps) {
             <Compass className="w-5 h-5 text-[var(--accent-primary)]" />
             <div className="font-bold text-sm">1-Click Bookmarklet</div>
             <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
-              Browse on desktop? Drag our bookmarklet to your browser bar to save jobs directly from LinkedIn.
+              Browse on desktop? Drag our bookmarklet to your browser bar to save jobs directly from
+              LinkedIn.
             </p>
           </div>
         </div>

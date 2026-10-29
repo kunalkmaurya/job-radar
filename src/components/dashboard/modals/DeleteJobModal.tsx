@@ -48,7 +48,9 @@ export function DeleteJobModal({
               <Trash2 className="w-4 h-4" />
             </div>
             <div>
-              <h3 className="font-bold text-sm text-[var(--text-primary)]">Delete Job Application</h3>
+              <h3 className="font-bold text-sm text-[var(--text-primary)]">
+                Delete Job Application
+              </h3>
               <p className="text-[11px] text-[var(--text-muted)]">This action cannot be undone</p>
             </div>
           </div>
@@ -88,7 +90,8 @@ export function DeleteJobModal({
         </div>
 
         <p className="text-[var(--text-secondary)] leading-relaxed">
-          Are you sure you want to delete this job application? All associated notes, timeline records, and referral details will be permanently removed.
+          Are you sure you want to delete this job application? All associated notes, timeline
+          records, and referral details will be permanently removed.
         </p>
 
         <div className="pt-2 flex items-center justify-end gap-2.5 border-t border-[var(--border-subtle)]">

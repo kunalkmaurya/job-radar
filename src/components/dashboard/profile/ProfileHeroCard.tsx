@@ -10,7 +10,8 @@ interface ProfileHeroCardProps {
 
 export function ProfileHeroCard({ currentUser, totalJobs }: ProfileHeroCardProps) {
   const initial = currentUser?.email ? currentUser.email.charAt(0).toUpperCase() : 'K';
-  const displayName = currentUser?.name || (currentUser?.email ? currentUser.email.split('@')[0] : 'Workspace Owner');
+  const displayName =
+    currentUser?.name || (currentUser?.email ? currentUser.email.split('@')[0] : 'Workspace Owner');
   const displayEmail = currentUser?.email || 'kunalkrraj@gmail.com';
 
   return (

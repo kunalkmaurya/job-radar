@@ -36,7 +36,15 @@ export function AddJobManualTab({ onJobAdded, onClose }: AddJobManualTabProps) {
       console.error('Failed to create job:', err);
     }
     onClose();
-    setManualForm({ company: '', role: '', link: '', status: 'Saved', referralStatus: 'none', referrerName: '', notes: '' });
+    setManualForm({
+      company: '',
+      role: '',
+      link: '',
+      status: 'Saved',
+      referralStatus: 'none',
+      referrerName: '',
+      notes: '',
+    });
   };
 
   return (
@@ -64,7 +72,9 @@ export function AddJobManualTab({ onJobAdded, onClose }: AddJobManualTabProps) {
         />
       </div>
       <div>
-        <label className="block text-[var(--text-secondary)] mb-1 font-medium">Job Application Link</label>
+        <label className="block text-[var(--text-secondary)] mb-1 font-medium">
+          Job Application Link
+        </label>
         <input
           type="url"
           required
@@ -76,22 +86,30 @@ export function AddJobManualTab({ onJobAdded, onClose }: AddJobManualTabProps) {
       </div>
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <label className="block text-[var(--text-secondary)] mb-1 font-medium">Initial Status</label>
+          <label className="block text-[var(--text-secondary)] mb-1 font-medium">
+            Initial Status
+          </label>
           <select
             value={manualForm.status}
             onChange={(e) => setManualForm({ ...manualForm, status: e.target.value as JobStatus })}
             className="w-full px-3 py-2 border border-[var(--border-subtle)] bg-[var(--bg-app)] text-[var(--text-primary)] focus:outline-none cursor-pointer text-xs"
           >
             {JOB_STATUSES.map((status) => (
-              <option key={status} value={status}>{status}</option>
+              <option key={status} value={status}>
+                {status}
+              </option>
             ))}
           </select>
         </div>
         <div>
-          <label className="block text-[var(--text-secondary)] mb-1 font-medium">Referral Status</label>
+          <label className="block text-[var(--text-secondary)] mb-1 font-medium">
+            Referral Status
+          </label>
           <select
             value={manualForm.referralStatus}
-            onChange={(e) => setManualForm({ ...manualForm, referralStatus: e.target.value as ReferralStatus })}
+            onChange={(e) =>
+              setManualForm({ ...manualForm, referralStatus: e.target.value as ReferralStatus })
+            }
             className="w-full px-3 py-2 border border-[var(--border-subtle)] bg-[var(--bg-app)] text-[var(--text-primary)] focus:outline-none cursor-pointer text-xs"
           >
             <option value="none">No Referral</option>
@@ -104,7 +122,9 @@ export function AddJobManualTab({ onJobAdded, onClose }: AddJobManualTabProps) {
 
       {manualForm.referralStatus !== 'none' && (
         <div>
-          <label className="block text-[var(--text-secondary)] mb-1 font-medium">Referrer Name (Optional)</label>
+          <label className="block text-[var(--text-secondary)] mb-1 font-medium">
+            Referrer Name (Optional)
+          </label>
           <input
             type="text"
             placeholder="e.g. Alex Smith"

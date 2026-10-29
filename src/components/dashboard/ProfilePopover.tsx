@@ -24,7 +24,8 @@ export function ProfilePopover({ currentUser, onOpenProfile }: ProfilePopoverPro
   };
 
   const initial = currentUser?.email ? currentUser.email.charAt(0).toUpperCase() : 'K';
-  const displayName = currentUser?.name || (currentUser?.email ? currentUser.email.split('@')[0] : 'Workspace Owner');
+  const displayName =
+    currentUser?.name || (currentUser?.email ? currentUser.email.split('@')[0] : 'Workspace Owner');
   const displayEmail = currentUser?.email || 'kunalkrraj@gmail.com';
 
   return (
@@ -47,7 +48,9 @@ export function ProfilePopover({ currentUser, onOpenProfile }: ProfilePopoverPro
                 {initial}
               </div>
               <div className="flex-1 min-w-0">
-                <div className="font-semibold text-sm text-[var(--text-primary)] truncate">{displayName}</div>
+                <div className="font-semibold text-sm text-[var(--text-primary)] truncate">
+                  {displayName}
+                </div>
                 <div className="text-[11px] text-[var(--text-muted)] truncate">{displayEmail}</div>
               </div>
             </div>
@@ -60,14 +63,16 @@ export function ProfilePopover({ currentUser, onOpenProfile }: ProfilePopoverPro
             <div className="pt-2 border-t border-[var(--border-subtle)] space-y-1.5 text-[11px] text-[var(--text-muted)]">
               <div className="flex items-center justify-between">
                 <span>Access Level</span>
-                <span className="text-[var(--text-secondary)] font-medium">Single-User Personal</span>
+                <span className="text-[var(--text-secondary)] font-medium">
+                  Single-User Personal
+                </span>
               </div>
               <div className="flex items-center justify-between">
                 <span>Auth Provider</span>
                 <span className="text-[var(--text-secondary)] font-medium">Google OAuth 2.0</span>
               </div>
             </div>
- 
+
             {onOpenProfile && (
               <div className="pt-2 border-t border-[var(--border-subtle)]">
                 <button

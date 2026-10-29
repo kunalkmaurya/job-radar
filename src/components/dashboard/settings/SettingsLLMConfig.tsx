@@ -53,7 +53,9 @@ export function SettingsLLMConfig({
 
       {/* Model Chips */}
       <div className="flex items-center gap-2 font-mono text-xs flex-wrap">
-        <span className="text-[10px] uppercase tracking-wider text-[var(--text-muted)]">Model:</span>
+        <span className="text-[10px] uppercase tracking-wider text-[var(--text-muted)]">
+          Model:
+        </span>
         {(MODELS[settings.llmProvider] || [settings.llmModel]).map((m) => {
           const isSelected = settings.llmModel === m;
           return (
@@ -77,7 +79,9 @@ export function SettingsLLMConfig({
       <div className="space-y-1 font-mono text-xs">
         <div className="flex justify-between items-center text-[11px]">
           <span className="text-[var(--text-muted)] uppercase tracking-wider">API Key</span>
-          <span className="text-[10px] text-[var(--text-muted)]">Defaults to server .env if empty</span>
+          <span className="text-[10px] text-[var(--text-muted)]">
+            Defaults to server .env if empty
+          </span>
         </div>
         <div className="relative flex items-center">
           <input
@@ -106,7 +110,11 @@ export function SettingsLLMConfig({
             disabled={isTesting}
             className="flex items-center gap-1.5 px-3 py-1.5 border border-[var(--border-subtle)] hover:border-[var(--accent-primary)] bg-[var(--bg-app)] text-[var(--text-primary)] transition-colors cursor-pointer disabled:opacity-50"
           >
-            {isTesting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <CheckCircle2 className="w-3.5 h-3.5 text-[var(--accent-primary)]" />}
+            {isTesting ? (
+              <Loader2 className="w-3.5 h-3.5 animate-spin" />
+            ) : (
+              <CheckCircle2 className="w-3.5 h-3.5 text-[var(--accent-primary)]" />
+            )}
             <span>{isTesting ? 'Testing...' : 'Test Connection'}</span>
           </button>
           {testResult && (
@@ -125,7 +133,9 @@ export function SettingsLLMConfig({
                 : 'bg-[var(--bg-app)] border-[var(--border-subtle)]'
             }`}
           >
-            <div className={`w-3 h-3 bg-white transition-transform ${settings.useJinaFallback ? 'translate-x-3.5' : 'translate-x-0'}`} />
+            <div
+              className={`w-3 h-3 bg-white transition-transform ${settings.useJinaFallback ? 'translate-x-3.5' : 'translate-x-0'}`}
+            />
           </button>
           <span className="text-[11px] text-[var(--text-secondary)]">Jina Reader Fallback</span>
         </div>

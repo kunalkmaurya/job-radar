@@ -25,7 +25,10 @@ export function AddJobModal({ isOpen, onClose, onJobAdded, onRefreshJobs }: AddJ
       <div className="relative w-full max-w-md border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-6 shadow-2xl z-10 space-y-5 animate-in zoom-in-95 duration-150">
         <div className="flex items-center justify-between">
           <h3 className="font-bold text-base">Add New Job Opening</h3>
-          <button onClick={onClose} className="text-[var(--text-muted)] hover:text-white cursor-pointer">
+          <button
+            onClick={onClose}
+            className="text-[var(--text-muted)] hover:text-white cursor-pointer"
+          >
             <X className="w-4 h-4" />
           </button>
         </div>
@@ -34,7 +37,9 @@ export function AddJobModal({ isOpen, onClose, onJobAdded, onRefreshJobs }: AddJ
           <button
             onClick={() => setAddTab('fetch')}
             className={`flex-1 py-1.5 font-medium transition-all cursor-pointer ${
-              addTab === 'fetch' ? 'bg-[var(--accent-primary)] text-white shadow-sm' : 'text-[var(--text-secondary)]'
+              addTab === 'fetch'
+                ? 'bg-[var(--accent-primary)] text-white shadow-sm'
+                : 'text-[var(--text-secondary)]'
             }`}
           >
             Auto-Fetch Link
@@ -42,7 +47,9 @@ export function AddJobModal({ isOpen, onClose, onJobAdded, onRefreshJobs }: AddJ
           <button
             onClick={() => setAddTab('manual')}
             className={`flex-1 py-1.5 font-medium transition-all cursor-pointer ${
-              addTab === 'manual' ? 'bg-[var(--accent-primary)] text-white shadow-sm' : 'text-[var(--text-secondary)]'
+              addTab === 'manual'
+                ? 'bg-[var(--accent-primary)] text-white shadow-sm'
+                : 'text-[var(--text-secondary)]'
             }`}
           >
             Manual Entry

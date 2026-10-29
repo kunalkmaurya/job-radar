@@ -3,25 +3,9 @@
 import React from 'react';
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react';
 import { CustomSelect } from '../common/CustomSelect';
+import { PaginationBarProps } from './types';
 
-interface PaginationBarProps {
-  currentPage: number;
-  totalPages: number;
-  totalItems: number;
-  fromItem: number;
-  toItem: number;
-  pageSize: number;
-  pageSizeOptions: number[];
-  canPrevPage: boolean;
-  canNextPage: boolean;
-  pageNumbers: (number | 'ellipsis')[];
-  onPageChange: (page: number) => void;
-  onPageSizeChange: (size: number) => void;
-  onFirstPage: () => void;
-  onLastPage: () => void;
-  onPrevPage: () => void;
-  onNextPage: () => void;
-}
+export type { PaginationBarProps };
 
 export function PaginationBar({
   currentPage,
@@ -54,9 +38,7 @@ export function PaginationBar({
         </span>
 
         <div className="flex items-center gap-2">
-          <span className="text-[var(--text-muted)] whitespace-nowrap">
-            Jobs per page:
-          </span>
+          <span className="text-[var(--text-muted)] whitespace-nowrap">Jobs per page:</span>
           <CustomSelect
             value={pageSize}
             options={pageSizeOptions.map((opt) => ({ value: opt, label: `${opt}` }))}
@@ -68,7 +50,10 @@ export function PaginationBar({
       </div>
 
       {/* Right side: Page Navigation */}
-      <nav aria-label="Job pagination" className="flex items-center gap-1 w-full sm:w-auto justify-center sm:justify-end">
+      <nav
+        aria-label="Job pagination"
+        className="flex items-center gap-1 w-full sm:w-auto justify-center sm:justify-end"
+      >
         <button
           onClick={onFirstPage}
           disabled={!canPrevPage}
@@ -99,7 +84,10 @@ export function PaginationBar({
           {pageNumbers.map((p, idx) => {
             if (p === 'ellipsis') {
               return (
-                <span key={`ellipsis-${idx}`} className="px-2 py-1 text-[var(--text-muted)] select-none">
+                <span
+                  key={`ellipsis-${idx}`}
+                  className="px-2 py-1 text-[var(--text-muted)] select-none"
+                >
                   …
                 </span>
               );

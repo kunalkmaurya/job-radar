@@ -2,12 +2,12 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { PRODUCT_LINKS, WORKSPACE_LINKS, ARCHITECTURE_ITEMS } from './footerData';
 
 export function Footer() {
   return (
     <footer className="w-full border-t border-[var(--border-subtle)] bg-[var(--bg-app)] pt-16 pb-12">
       <div className="max-w-6xl mx-auto px-6 space-y-12">
-        {/* Top Grid: Brand & Navigation Columns */}
         <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
           {/* Brand Identity Column */}
           <div className="md:col-span-2 space-y-4">
@@ -23,92 +23,75 @@ export function Footer() {
               </div>
             </Link>
             <p className="text-xs text-[var(--text-secondary)] max-w-sm leading-relaxed">
-              Quietly capture job opportunities from Telegram channels, parse complex SPAs with headless AI, and curate your private pipeline.
+              Quietly capture job opportunities from Telegram channels, parse complex SPAs with
+              headless AI, and curate your private pipeline.
             </p>
           </div>
 
-          {/* Navigation Column 1: Product Navigation */}
+          {/* Product Navigation */}
           <div className="space-y-3">
             <div className="text-[11px] font-mono text-[var(--text-primary)] uppercase tracking-wider font-semibold">
               Product
             </div>
             <ul className="space-y-2 text-xs font-mono text-[var(--text-secondary)]">
-              <li>
-                <a href="#interactive-showcase" className="hover:text-[var(--accent-primary)] transition-colors">
-                  Interactive Specimen
-                </a>
-              </li>
-              <li>
-                <a href="#architecture" className="hover:text-[var(--accent-primary)] transition-colors">
-                  Architectural Intent
-                </a>
-              </li>
-              <li>
-                <a href="#comparison" className="hover:text-[var(--accent-primary)] transition-colors">
-                  Paradigm Comparison
-                </a>
-              </li>
-              <li>
-                <a href="#features" className="hover:text-[var(--accent-primary)] transition-colors">
-                  Ecosystem Features
-                </a>
-              </li>
-              <li>
-                <a href="#faq" className="hover:text-[var(--accent-primary)] transition-colors">
-                  Inquiries & FAQ
-                </a>
-              </li>
+              {PRODUCT_LINKS.map((link) => (
+                <li key={link.href}>
+                  <a
+                    href={link.href}
+                    className="hover:text-[var(--accent-primary)] transition-colors"
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
             </ul>
           </div>
 
-          {/* Navigation Column 2: Workspace Links */}
+          {/* Workspace Links */}
           <div className="space-y-3">
             <div className="text-[11px] font-mono text-[var(--text-primary)] uppercase tracking-wider font-semibold">
               Workspace
             </div>
             <ul className="space-y-2 text-xs font-mono text-[var(--text-secondary)]">
-              <li>
-                <Link href="/login" className="hover:text-[var(--accent-primary)] transition-colors">
-                  Owner Sign In
-                </Link>
-              </li>
-              <li>
-                <Link href="/dashboard" className="hover:text-[var(--accent-primary)] transition-colors">
-                  Active Radar Console
-                </Link>
-              </li>
-              <li>
-                <a href="#features" className="hover:text-[var(--accent-primary)] transition-colors">
-                  1-Click Bookmarklet
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://t.me"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="hover:text-[var(--accent-primary)] transition-colors"
-                >
-                  Telegram Ingestion
-                </a>
-              </li>
+              {WORKSPACE_LINKS.map((link) => (
+                <li key={link.label}>
+                  {link.external ? (
+                    <a
+                      href={link.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="hover:text-[var(--accent-primary)] transition-colors"
+                    >
+                      {link.label}
+                    </a>
+                  ) : (
+                    <Link
+                      href={link.href}
+                      className="hover:text-[var(--accent-primary)] transition-colors"
+                    >
+                      {link.label}
+                    </Link>
+                  )}
+                </li>
+              ))}
             </ul>
           </div>
 
-          {/* Navigation Column 3: Stack & Telemetry */}
+          {/* Stack & Telemetry */}
           <div className="space-y-3">
             <div className="text-[11px] font-mono text-[var(--text-primary)] uppercase tracking-wider font-semibold">
               Architecture
             </div>
             <ul className="space-y-2 text-xs font-mono text-[var(--text-secondary)]">
-              <li className="flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 bg-emerald-400" />
-                <span>DeepSeek-V3 LLM</span>
-              </li>
-              <li>Neon PostgreSQL</li>
-              <li>Jina Dual-Tier DOM</li>
-              <li>Google OAuth Guard</li>
-              <li>0 dB Silent Webhook</li>
+              {ARCHITECTURE_ITEMS.map((item) => (
+                <li
+                  key={item.label}
+                  className={item.badge ? 'flex items-center gap-1.5' : undefined}
+                >
+                  {item.badge && <span className="w-1.5 h-1.5 bg-emerald-400" />}
+                  <span>{item.label}</span>
+                </li>
+              ))}
             </ul>
           </div>
         </div>

@@ -43,7 +43,11 @@ export function JobMobileCard({
               onToggleImportant?.(job.id, e);
             }}
             title={isImportant ? 'Unmark important' : 'Mark important'}
-            aria-label={isImportant ? `Unmark ${job.company} as important` : `Mark ${job.company} as important`}
+            aria-label={
+              isImportant
+                ? `Unmark ${job.company} as important`
+                : `Mark ${job.company} as important`
+            }
             className="p-1 -ml-1 text-[var(--text-muted)] hover:text-amber-400 transition-colors cursor-pointer shrink-0"
           >
             <Star
@@ -61,30 +65,26 @@ export function JobMobileCard({
         </div>
 
         {/* Action icons (Notes, Link, Delete) */}
-        <JobRowActions
-          job={job}
-          onSelectJob={onSelectJob}
-          onDeleteJob={onDeleteJob}
-        />
+        <JobRowActions job={job} onSelectJob={onSelectJob} onDeleteJob={onDeleteJob} />
       </div>
 
       {/* Middle Row: Role Title & Referral Badge */}
       <div className="flex items-center gap-2 flex-wrap">
-        <span className="text-xs text-[var(--text-secondary)] font-medium">
-          {job.role}
-        </span>
+        <span className="text-xs text-[var(--text-secondary)] font-medium">{job.role}</span>
         {job.referralStatus && job.referralStatus !== 'none' && (
           <span
             className={`text-[9px] px-1.5 py-0.2 font-mono uppercase tracking-wider font-semibold border ${
               job.referralStatus === 'received'
                 ? 'bg-emerald-500/15 border-emerald-500/30 text-emerald-400'
                 : job.referralStatus === 'asked'
-                ? 'bg-amber-500/15 border-amber-500/30 text-amber-400'
-                : 'bg-red-500/15 border-red-500/30 text-red-400'
+                  ? 'bg-amber-500/15 border-amber-500/30 text-amber-400'
+                  : 'bg-red-500/15 border-red-500/30 text-red-400'
             }`}
           >
             {job.referralStatus === 'received'
-              ? job.referrerName ? `Referred (${job.referrerName.split(' ')[0]})` : 'Referred'
+              ? job.referrerName
+                ? `Referred (${job.referrerName.split(' ')[0]})`
+                : 'Referred'
               : `Referral: ${job.referralStatus}`}
           </span>
         )}

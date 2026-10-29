@@ -12,7 +12,12 @@ interface DrawerHeaderProps {
   onToggleImportant?: (jobId: string) => void;
 }
 
-export function DrawerHeader({ job, onClose, onStatusChange, onToggleImportant }: DrawerHeaderProps) {
+export function DrawerHeader({
+  job,
+  onClose,
+  onStatusChange,
+  onToggleImportant,
+}: DrawerHeaderProps) {
   const isImportant = Boolean(job.isImportant);
 
   return (
@@ -22,14 +27,18 @@ export function DrawerHeader({ job, onClose, onStatusChange, onToggleImportant }
           <div className="flex items-center gap-2">
             <h2 className="text-xl font-bold tracking-tight">{job.company}</h2>
             {isImportant && (
-              <span className="text-xs px-2 py-0.5 bg-amber-500/10 border border-amber-500/30 text-amber-400 font-mono font-medium">
-                ★ Priority
+              <span className="inline-flex items-center gap-1 text-xs px-2 py-0.5 bg-amber-500/10 border border-amber-500/30 text-amber-400 font-mono font-medium">
+                <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
+                <span>Priority</span>
               </span>
             )}
           </div>
           <p className="text-xs text-[var(--text-secondary)] mt-0.5">{job.role}</p>
         </div>
-        <button onClick={onClose} className="p-1 text-[var(--text-muted)] hover:text-[var(--text-primary)] cursor-pointer">
+        <button
+          onClick={onClose}
+          className="p-1 text-[var(--text-muted)] hover:text-[var(--text-primary)] cursor-pointer"
+        >
           <X className="w-5 h-5" />
         </button>
       </div>
@@ -50,7 +59,9 @@ export function DrawerHeader({ job, onClose, onStatusChange, onToggleImportant }
             className={`w-3.5 h-3.5 ${isImportant ? 'text-amber-400' : 'text-[var(--text-muted)]'}`}
             fill={isImportant ? 'currentColor' : 'none'}
           />
-          <span className={isImportant ? 'text-amber-400 font-medium' : 'text-[var(--text-secondary)]'}>
+          <span
+            className={isImportant ? 'text-amber-400 font-medium' : 'text-[var(--text-secondary)]'}
+          >
             {isImportant ? 'Important' : 'Mark Important'}
           </span>
         </button>

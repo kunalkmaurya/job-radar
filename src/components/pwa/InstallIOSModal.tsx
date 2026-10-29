@@ -27,8 +27,12 @@ export function InstallIOSModal({ isOpen, onClose }: InstallIOSModalProps) {
             <img src="/icon.svg" alt="Job Radar" className="w-6 h-6 object-contain" />
           </div>
           <div>
-            <h3 className="font-bold text-sm tracking-tight text-[var(--text-primary)]">Install on iPhone / iPad</h3>
-            <p className="text-[11px] text-[var(--text-muted)]">Add to Home Screen for the full app experience</p>
+            <h3 className="font-bold text-sm tracking-tight text-[var(--text-primary)]">
+              Install on iPhone / iPad
+            </h3>
+            <p className="text-[11px] text-[var(--text-muted)]">
+              Add to Home Screen for the full app experience
+            </p>
           </div>
         </div>
 
@@ -39,7 +43,8 @@ export function InstallIOSModal({ isOpen, onClose }: InstallIOSModalProps) {
             </div>
             <div>
               <span className="font-semibold text-[var(--text-primary)]">Step 1: </span>
-              Tap the <span className="font-semibold text-sky-400">Share</span> icon in Safari&apos;s bottom bar.
+              Tap the <span className="font-semibold text-sky-400">Share</span> icon in
+              Safari&apos;s bottom bar.
             </div>
           </div>
 
@@ -49,7 +54,8 @@ export function InstallIOSModal({ isOpen, onClose }: InstallIOSModalProps) {
             </div>
             <div>
               <span className="font-semibold text-[var(--text-primary)]">Step 2: </span>
-              Scroll down and tap <span className="font-semibold text-emerald-400">Add to Home Screen</span>.
+              Scroll down and tap{' '}
+              <span className="font-semibold text-emerald-400">Add to Home Screen</span>.
             </div>
           </div>
 
@@ -59,7 +65,8 @@ export function InstallIOSModal({ isOpen, onClose }: InstallIOSModalProps) {
             </div>
             <div>
               <span className="font-semibold text-[var(--text-primary)]">Step 3: </span>
-              Tap <span className="font-semibold text-[var(--text-primary)]">Add</span> in the top right corner.
+              Tap <span className="font-semibold text-[var(--text-primary)]">Add</span> in the top
+              right corner.
             </div>
           </div>
         </div>

@@ -50,8 +50,12 @@ export function computeFunnelStages(jobs: Job[]) {
 
   const totalAppliedPipeline = applied + interviewing + offer + rejected;
   const savedToAppliedRate = total > 0 ? Math.round((totalAppliedPipeline / total) * 100) : 0;
-  const appliedToInterviewRate = totalAppliedPipeline > 0 ? Math.round(((interviewing + offer) / totalAppliedPipeline) * 100) : 0;
-  const interviewToOfferRate = (interviewing + offer) > 0 ? Math.round((offer / (interviewing + offer)) * 100) : 0;
+  const appliedToInterviewRate =
+    totalAppliedPipeline > 0
+      ? Math.round(((interviewing + offer) / totalAppliedPipeline) * 100)
+      : 0;
+  const interviewToOfferRate =
+    interviewing + offer > 0 ? Math.round((offer / (interviewing + offer)) * 100) : 0;
 
   return {
     total,
@@ -68,7 +72,6 @@ export function computeFunnelStages(jobs: Job[]) {
 }
 
 export function computeWeeklyRhythm(jobs: Job[]) {
-  const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   const counts = [0, 0, 0, 0, 0, 0, 0];
 
   jobs.forEach((j) => {
@@ -107,7 +110,9 @@ export function computeVelocityStats(jobs: Job[], nowTime: number) {
     return dueTime <= nowTime + 86400000 * 3; // within next 3 days or past
   }).length;
 
-  const interviewJobs = jobs.filter((j) => (j.status === 'Interviewing' || j.status === 'Offer') && j.appliedAt);
+  const interviewJobs = jobs.filter(
+    (j) => (j.status === 'Interviewing' || j.status === 'Offer') && j.appliedAt
+  );
   let avgDaysToInterview = 0;
   if (interviewJobs.length > 0) {
     const totalDays = interviewJobs.reduce((acc, j) => {

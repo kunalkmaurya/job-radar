@@ -42,10 +42,7 @@ export const DEFAULT_SETTINGS: AppSettings = {
 
 const SETTINGS_KEY = 'job_radar_app_settings_v1';
 
-export function useSettingsManager(
-  currentTheme: 'dark' | 'light',
-  onToggleTheme: () => void
-) {
+export function useSettingsManager(currentTheme: 'dark' | 'light', onToggleTheme: () => void) {
   const [settings, setSettings] = useState<AppSettings>(() => ({
     ...DEFAULT_SETTINGS,
     theme: currentTheme,
@@ -62,7 +59,7 @@ export function useSettingsManager(
         setSettings((prev) => ({ ...prev, ...parsed, theme: currentTheme }));
       }
     } catch {
-      // fallback
+      return;
     }
   }, [currentTheme]);
 
@@ -72,7 +69,7 @@ export function useSettingsManager(
       try {
         localStorage.setItem(SETTINGS_KEY, JSON.stringify(next));
       } catch {
-        // storage fallback
+        return next;
       }
       return next;
     });
@@ -81,7 +78,10 @@ export function useSettingsManager(
       onToggleTheme();
     }
 
-    setSaveStatus('Changes saved • ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }));
+    setSaveStatus(
+      'Changes saved • ' +
+        new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })
+    );
   };
 
   const testConnection = (provider: string) => {

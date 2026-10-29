@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Job, JobStatus, ReferralStatus } from '@/types';
+import { Job, JobStatus, UpdateReferralData } from '@/types';
 
 interface UseJobDrawerProps {
   nowTime: number;
@@ -31,7 +31,9 @@ export function useJobDrawer({
         body: JSON.stringify({ notes, followUpDate }),
       });
       setJobs((prev) =>
-        prev.map((j) => (j.id === jobId ? { ...j, notes, followUpDate, updatedAt: new Date(nowTime) } : j))
+        prev.map((j) =>
+          j.id === jobId ? { ...j, notes, followUpDate, updatedAt: new Date(nowTime) } : j
+        )
       );
       if (drawerJob?.id === jobId) {
         setDrawerJob((prev) => (prev ? { ...prev, notes, followUpDate } : null));
@@ -41,15 +43,7 @@ export function useJobDrawer({
     }
   };
 
-  const handleUpdateReferral = async (
-    jobId: string,
-    data: {
-      referralStatus: ReferralStatus;
-      referrerName?: string;
-      referrerContact?: string;
-      referralNotes?: string;
-    }
-  ) => {
+  const handleUpdateReferral = async (jobId: string, data: UpdateReferralData) => {
     try {
       await fetch(`/api/jobs/${jobId}`, {
         method: 'PATCH',
@@ -80,7 +74,8 @@ export function useJobDrawer({
   };
 
   const onJobDelete = (jobId: string) => {
-    const target = jobs?.find((j) => j.id === jobId) || (drawerJob?.id === jobId ? drawerJob : null);
+    const target =
+      jobs?.find((j) => j.id === jobId) || (drawerJob?.id === jobId ? drawerJob : null);
     if (target) {
       setJobToDelete(target);
     } else {

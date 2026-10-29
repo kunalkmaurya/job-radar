@@ -24,9 +24,9 @@ export function ArchitecturalPillars() {
               Zero-Spam Silent Ingestion
             </h3>
             <p className="text-xs text-[var(--text-secondary)] leading-relaxed font-normal">
-              Most bot implementations flood your channel with celebratory replies or confirmation cards.
-              Job Radar never sends a single message. It consumes the webhook in the background
-              and stays completely silent.
+              Most bot implementations flood your channel with celebratory replies or confirmation
+              cards. Job Radar never sends a single message. It consumes the webhook in the
+              background and stays completely silent.
             </p>
           </div>
 
@@ -38,8 +38,9 @@ export function ArchitecturalPillars() {
               Headless SPA Decryption
             </h3>
             <p className="text-xs text-[var(--text-secondary)] leading-relaxed font-normal">
-              Workday, Greenhouse, Lever, and Ashby portals require client-side execution that breaks
-              elementary scrapers. Our universal dual-tier engine renders the DOM effortlessly before extraction.
+              Workday, Greenhouse, Lever, and Ashby portals require client-side execution that
+              breaks elementary scrapers. Our universal dual-tier engine renders the DOM
+              effortlessly before extraction.
             </p>
           </div>
 
@@ -52,7 +53,8 @@ export function ArchitecturalPillars() {
             </h3>
             <p className="text-xs text-[var(--text-secondary)] leading-relaxed font-normal">
               Your application pipeline is confidential. There are no multi-tenant shared tables or
-              public data feeds. A strict whitelist guards your session, writing directly to your private Neon PostgreSQL database.
+              public data feeds. A strict whitelist guards your session, writing directly to your
+              private Neon PostgreSQL database.
             </p>
           </div>
         </div>

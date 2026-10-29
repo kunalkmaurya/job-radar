@@ -11,14 +11,9 @@ interface JobRowActionsProps {
   onDeleteJob: (jobId: string, e?: React.MouseEvent) => void;
 }
 
-export function JobRowActions({
-  job,
-  onSelectJob,
-  onDeleteJob,
-}: JobRowActionsProps) {
+export function JobRowActions({ job, onSelectJob, onDeleteJob }: JobRowActionsProps) {
   return (
     <div className="flex items-center justify-end gap-1.5" onClick={(e) => e.stopPropagation()}>
-
       <button
         onClick={() => onSelectJob(job)}
         title="Open Notes"

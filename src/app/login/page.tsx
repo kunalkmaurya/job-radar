@@ -30,7 +30,10 @@ export default function LoginPage() {
       {/* Ambient Anthropic Glow */}
       <div
         className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] blur-[150px] pointer-events-none opacity-25"
-        style={{ background: 'radial-gradient(circle, #D96B43 0%, rgba(217, 107, 67, 0.25) 50%, transparent 80%)' }}
+        style={{
+          background:
+            'radial-gradient(circle, #D96B43 0%, rgba(217, 107, 67, 0.25) 50%, transparent 80%)',
+        }}
       />
 
       {/* Top Header */}

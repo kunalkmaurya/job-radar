@@ -25,7 +25,10 @@ export function DrawerReferralForm({
   onSubmit,
 }: DrawerReferralFormProps) {
   return (
-    <form onSubmit={onSubmit} className="p-3 border border-[var(--border-subtle)] bg-[var(--bg-app)] space-y-2.5 text-xs">
+    <form
+      onSubmit={onSubmit}
+      className="p-3 border border-[var(--border-subtle)] bg-[var(--bg-app)] space-y-2.5 text-xs"
+    >
       <div>
         <label className="block text-[10px] font-mono uppercase text-[var(--text-muted)] mb-1">
           Referrer Name & Role

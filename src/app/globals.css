@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 /* =========================================================
    Anthropic Editorial Theme Tokens (Dark & Light Mode)
@@ -7,82 +7,84 @@
 
 :root {
   /* Anthropic Dark Theme */
-  --bg-app: #141413;            /* Warm charcoal / obsidian */
-  --bg-surface: #1E1E1C;        /* Warm elevated surface */
-  --bg-surface-hover: #292825;  /* Subtle warm card hover */
+  --bg-app: #141413; /* Warm charcoal / obsidian */
+  --bg-surface: #1e1e1c; /* Warm elevated surface */
+  --bg-surface-hover: #292825; /* Subtle warm card hover */
   --border-subtle: rgba(240, 236, 225, 0.1);
   --border-strong: rgba(240, 236, 225, 0.2);
-  --border-focus: #D96B43;      /* Anthropic Terracotta Coral */
+  --border-focus: #d96b43; /* Anthropic Terracotta Coral */
 
-  --text-primary: #FAF9F5;      /* Warm ivory text */
-  --text-secondary: #A1A09A;    /* Warm stone gray */
-  --text-muted: #6B6A63;        /* Pebble muted text */
+  --text-primary: #faf9f5; /* Warm ivory text */
+  --text-secondary: #a1a09a; /* Warm stone gray */
+  --text-muted: #6b6a63; /* Pebble muted text */
 
   /* Anthropic Terracotta Accents */
-  --accent-primary: #D96B43;
-  --accent-primary-hover: #E27D56;
-  --accent-primary-text: #FFFFFF;
+  --accent-primary: #d96b43;
+  --accent-primary-hover: #e27d56;
+  --accent-primary-text: #ffffff;
   --accent-primary-bg: rgba(217, 107, 67, 0.15);
 
   /* Status Colors */
-  --status-saved-text: #70A1D7;
+  --status-saved-text: #70a1d7;
   --status-saved-bg: rgba(112, 161, 215, 0.14);
-  --status-applied-text: #E07A5F;
+  --status-applied-text: #e07a5f;
   --status-applied-bg: rgba(224, 122, 95, 0.14);
-  --status-interview-text: #B392F0;
+  --status-interview-text: #b392f0;
   --status-interview-bg: rgba(179, 146, 240, 0.14);
-  --status-offer-text: #68B684;
+  --status-offer-text: #68b684;
   --status-offer-bg: rgba(104, 182, 132, 0.14);
-  --status-rejected-text: #E57373;
+  --status-rejected-text: #e57373;
   --status-rejected-bg: rgba(229, 115, 115, 0.14);
-  --status-archived-text: #A1A09A;
+  --status-archived-text: #a1a09a;
   --status-archived-bg: rgba(161, 160, 154, 0.12);
 }
 
-[data-theme="light"] {
+[data-theme='light'] {
   /* Anthropic Warm Paper Light Theme */
-  --bg-app: #FAF9F5;            /* Iconic Claude warm paper */
-  --bg-surface: #FFFFFF;        /* Crisp card */
-  --bg-surface-hover: #F2EFE9;  /* Delicate warm stone */
+  --bg-app: #faf9f5; /* Iconic Claude warm paper */
+  --bg-surface: #ffffff; /* Crisp card */
+  --bg-surface-hover: #f2efe9; /* Delicate warm stone */
   --border-subtle: rgba(20, 20, 19, 0.1);
   --border-strong: rgba(20, 20, 19, 0.22);
-  --border-focus: #C45A33;      /* Deep terracotta */
+  --border-focus: #c45a33; /* Deep terracotta */
 
-  --text-primary: #141413;      /* Espresso / charcoal */
-  --text-secondary: #5C5B56;    /* Warm stone */
-  --text-muted: #8E8D85;        /* Muted umber */
+  --text-primary: #141413; /* Espresso / charcoal */
+  --text-secondary: #5c5b56; /* Warm stone */
+  --text-muted: #8e8d85; /* Muted umber */
 
   /* Anthropic Terracotta Accents (Light) */
-  --accent-primary: #C45A33;
-  --accent-primary-hover: #AD4B26;
-  --accent-primary-text: #FFFFFF;
+  --accent-primary: #c45a33;
+  --accent-primary-hover: #ad4b26;
+  --accent-primary-text: #ffffff;
   --accent-primary-bg: rgba(196, 90, 51, 0.12);
 
   /* Status Colors (Light) */
-  --status-saved-text: #2B5C8F;
-  --status-saved-bg: #EAF2F8;
-  --status-applied-text: #C45A33;
-  --status-applied-bg: #FDF2EC;
-  --status-interview-text: #6B46C1;
-  --status-interview-bg: #F3EEFA;
-  --status-offer-text: #2D6A4F;
-  --status-offer-bg: #E8F5E9;
-  --status-rejected-text: #C53030;
-  --status-rejected-bg: #FFEBEE;
-  --status-archived-text: #5C5B56;
-  --status-archived-bg: #EDEBE6;
+  --status-saved-text: #2b5c8f;
+  --status-saved-bg: #eaf2f8;
+  --status-applied-text: #c45a33;
+  --status-applied-bg: #fdf2ec;
+  --status-interview-text: #6b46c1;
+  --status-interview-bg: #f3eefa;
+  --status-offer-text: #2d6a4f;
+  --status-offer-bg: #e8f5e9;
+  --status-rejected-text: #c53030;
+  --status-rejected-bg: #ffebee;
+  --status-archived-text: #5c5b56;
+  --status-archived-bg: #edebe6;
 }
 
 body {
   background-color: var(--bg-app);
   color: var(--text-primary);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', sans-serif;
   min-height: 100vh;
-  transition: background-color 0.25s cubic-bezier(0.16, 1, 0.3, 1), color 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  transition:
+    background-color 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    color 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .font-serif {
-  font-family: var(--font-serif), Georgia, Cambria, "Times New Roman", Times, serif;
+  font-family: var(--font-serif), Georgia, Cambria, 'Times New Roman', Times, serif;
 }
 
 /* Enterprise Mode: Zero Border Radius Across All Elements */
@@ -132,7 +134,7 @@ body {
   animation: shimmer-sweep 1.8s ease-in-out infinite;
 }
 
-[data-theme="light"] .shimmer-block {
+[data-theme='light'] .shimmer-block {
   background: linear-gradient(
     90deg,
     rgba(0, 0, 0, 0.04) 25%,

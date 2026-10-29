@@ -36,7 +36,10 @@ export function ProfilePreferencesCard() {
   };
 
   return (
-    <form onSubmit={handleSave} className="border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-5 shadow-sm space-y-4">
+    <form
+      onSubmit={handleSave}
+      className="border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-5 shadow-sm space-y-4"
+    >
       <div className="flex items-center justify-between border-b border-[var(--border-subtle)] pb-3">
         <div className="flex items-center gap-2">
           <Target className="w-4 h-4 text-[var(--accent-primary)]" />

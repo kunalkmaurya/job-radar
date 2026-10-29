@@ -34,11 +34,7 @@ export function JobKanbanCard({
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-1.5 min-w-0">
           <span className="font-bold text-sm truncate">{job.company}</span>
-          {isImportant && (
-            <span className="text-[10px] px-1 py-0.2 text-amber-400 font-mono font-semibold tracking-wider">
-              ★
-            </span>
-          )}
+          {isImportant && <Star className="w-3 h-3 fill-amber-400 text-amber-400 shrink-0" />}
         </div>
 
         <div className="flex items-center gap-1">
@@ -49,7 +45,11 @@ export function JobKanbanCard({
               onToggleImportant?.(job.id, e);
             }}
             title={isImportant ? 'Marked as Important (Click to unmark)' : 'Mark as Important'}
-            aria-label={isImportant ? `Unmark ${job.role} at ${job.company} as important` : `Mark ${job.role} at ${job.company} as important`}
+            aria-label={
+              isImportant
+                ? `Unmark ${job.role} at ${job.company} as important`
+                : `Mark ${job.role} at ${job.company} as important`
+            }
             className="p-1 text-[var(--text-muted)] hover:text-amber-400 transition-colors cursor-pointer group"
           >
             <Star
@@ -84,11 +84,15 @@ export function JobKanbanCard({
               job.referralStatus === 'received'
                 ? 'bg-emerald-500/15 border-emerald-500/30 text-emerald-400'
                 : job.referralStatus === 'asked'
-                ? 'bg-amber-500/15 border-amber-500/30 text-amber-400'
-                : 'bg-red-500/15 border-red-500/30 text-red-400'
+                  ? 'bg-amber-500/15 border-amber-500/30 text-amber-400'
+                  : 'bg-red-500/15 border-red-500/30 text-red-400'
             }`}
           >
-            {job.referralStatus === 'received' ? (job.referrerName ? `Referred (${job.referrerName.split(' ')[0]})` : 'Referred') : `Referral: ${job.referralStatus}`}
+            {job.referralStatus === 'received'
+              ? job.referrerName
+                ? `Referred (${job.referrerName.split(' ')[0]})`
+                : 'Referred'
+              : `Referral: ${job.referralStatus}`}
           </span>
         </div>
       )}

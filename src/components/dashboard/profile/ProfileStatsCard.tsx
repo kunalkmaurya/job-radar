@@ -16,10 +16,30 @@ interface ProfileStatsCardProps {
 
 export function ProfileStatsCard({ metrics }: ProfileStatsCardProps) {
   const statItems = [
-    { label: 'Total Jobs Tracked', value: metrics.totalJobs, color: 'var(--accent-primary)', icon: BarChart3 },
-    { label: 'Applications Submitted', value: metrics.appliedCount, color: 'var(--status-applied-text)', icon: TrendingUp },
-    { label: 'In Active Interview', value: metrics.interviewingCount, color: 'var(--status-interview-text)', icon: Clock },
-    { label: 'Offers Received', value: metrics.offerCount, color: 'var(--status-offer-text)', icon: CheckCircle },
+    {
+      label: 'Total Jobs Tracked',
+      value: metrics.totalJobs,
+      color: 'var(--accent-primary)',
+      icon: BarChart3,
+    },
+    {
+      label: 'Applications Submitted',
+      value: metrics.appliedCount,
+      color: 'var(--status-applied-text)',
+      icon: TrendingUp,
+    },
+    {
+      label: 'In Active Interview',
+      value: metrics.interviewingCount,
+      color: 'var(--status-interview-text)',
+      icon: Clock,
+    },
+    {
+      label: 'Offers Received',
+      value: metrics.offerCount,
+      color: 'var(--status-offer-text)',
+      icon: CheckCircle,
+    },
   ];
 
   return (
@@ -40,7 +60,10 @@ export function ProfileStatsCard({ metrics }: ProfileStatsCardProps) {
         {statItems.map((item) => {
           const Icon = item.icon;
           return (
-            <div key={item.label} className="p-3 border border-[var(--border-subtle)] bg-[var(--bg-app)] space-y-1">
+            <div
+              key={item.label}
+              className="p-3 border border-[var(--border-subtle)] bg-[var(--bg-app)] space-y-1"
+            >
               <div className="flex items-center justify-between text-[var(--text-muted)]">
                 <span className="text-[10px] font-mono uppercase tracking-wider">{item.label}</span>
                 <Icon className="w-3.5 h-3.5" style={{ color: item.color }} />

@@ -55,7 +55,10 @@ export function InteractiveSpecimen() {
   };
 
   return (
-    <section id="interactive-showcase" className="w-full px-6 py-20 border-t border-[var(--border-subtle)] bg-[var(--bg-surface)]/40 relative">
+    <section
+      id="interactive-showcase"
+      className="w-full px-6 py-20 border-t border-[var(--border-subtle)] bg-[var(--bg-surface)]/40 relative"
+    >
       <div className="max-w-5xl mx-auto space-y-8">
         {/* Section Title & Target Preset Selector */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
@@ -114,10 +117,7 @@ export function InteractiveSpecimen() {
                 onSelectStatus={setSimulatedStatus}
               />
             ) : activeTab === 'extraction' ? (
-              <SpecimenSchemaView
-                selectedItem={selectedItem}
-                simulatedStatus={simulatedStatus}
-              />
+              <SpecimenSchemaView selectedItem={selectedItem} simulatedStatus={simulatedStatus} />
             ) : (
               <SpecimenTelegramView selectedItem={selectedItem} />
             )}

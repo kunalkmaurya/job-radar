@@ -22,8 +22,8 @@ export function CtaSection({ isLoggedIn }: CtaSectionProps) {
         </h2>
 
         <p className="text-sm sm:text-base text-[var(--text-secondary)] max-w-lg mx-auto leading-relaxed">
-          Stop losing links across fragmented chats and messy spreadsheets.
-          Deploy your personal radar and take back control of your application pipeline.
+          Stop losing links across fragmented chats and messy spreadsheets. Deploy your personal
+          radar and take back control of your application pipeline.
         </p>
 
         <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3">

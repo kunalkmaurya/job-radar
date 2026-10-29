@@ -13,9 +13,10 @@ export function SettingsTelegramConfig({ settings, updateSetting }: SettingsTele
   const [copied, setCopied] = useState(false);
   const [pingStatus, setPingStatus] = useState<string | null>(null);
 
-  const webhookUrl = typeof window !== 'undefined'
-    ? `${window.location.origin}/api/telegram-webhook`
-    : '/api/telegram-webhook';
+  const webhookUrl =
+    typeof window !== 'undefined'
+      ? `${window.location.origin}/api/telegram-webhook`
+      : '/api/telegram-webhook';
 
   const handleCopy = () => {
     navigator.clipboard.writeText(webhookUrl);
@@ -59,7 +60,11 @@ export function SettingsTelegramConfig({ settings, updateSetting }: SettingsTele
             onClick={handleCopy}
             className="px-3 py-1.5 border border-[var(--border-subtle)] bg-[var(--bg-app)] hover:border-[var(--accent-primary)] text-[var(--text-primary)] transition-colors flex items-center gap-1.5 cursor-pointer text-xs"
           >
-            {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+            {copied ? (
+              <Check className="w-3.5 h-3.5 text-emerald-400" />
+            ) : (
+              <Copy className="w-3.5 h-3.5" />
+            )}
             <span>{copied ? 'Copied' : 'Copy'}</span>
           </button>
         </div>
@@ -107,9 +112,13 @@ export function SettingsTelegramConfig({ settings, updateSetting }: SettingsTele
                 : 'bg-[var(--bg-app)] border-[var(--border-subtle)]'
             }`}
           >
-            <div className={`w-3 h-3 bg-white transition-transform ${settings.silentWebhook ? 'translate-x-3.5' : 'translate-x-0'}`} />
+            <div
+              className={`w-3 h-3 bg-white transition-transform ${settings.silentWebhook ? 'translate-x-3.5' : 'translate-x-0'}`}
+            />
           </button>
-          <span className="text-[11px] text-[var(--text-secondary)]">0 dB Silent Listening (No chat noise)</span>
+          <span className="text-[11px] text-[var(--text-secondary)]">
+            0 dB Silent Listening (No chat noise)
+          </span>
         </div>
 
         <div className="flex items-center gap-2">

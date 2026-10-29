@@ -15,29 +15,30 @@ The UI is designed for high-efficiency job seekers handling high volumes of appl
 
 ### 2.1 Theme Color Palettes (Dark & Light)
 
-| Token Name | Dark Mode Value | Light Mode Value | Usage |
-|---|---|---|---|
-| `--bg-app` | `#0B0F17` (Deep Obsidian) | `#F8FAFC` (Crisp Off-White) | App viewport background |
-| `--bg-surface` | `#131B2B` (Surface Card) | `#FFFFFF` (Pure White) | Cards, modals, drawers |
-| `--bg-surface-hover` | `#1A2438` | `#F1F5F9` | Hover states on rows and cards |
-| `--border-subtle` | `rgba(255, 255, 255, 0.08)` | `rgba(0, 0, 0, 0.08)` | Dividers, card borders |
-| `--border-focus` | `#3B82F6` (Electric Blue) | `#2563EB` | Active inputs, selected states |
-| `--text-primary` | `#F8FAFC` | `#0F172A` | Company names, headings, primary text |
-| `--text-secondary` | `#94A3B8` | `#475569` | Role titles, metadata, subheadings |
-| `--text-muted` | `#64748B` | `#94A3B8` | Timestamps, placeholders, inactive icons |
+| Token Name           | Dark Mode Value             | Light Mode Value            | Usage                                    |
+| -------------------- | --------------------------- | --------------------------- | ---------------------------------------- |
+| `--bg-app`           | `#0B0F17` (Deep Obsidian)   | `#F8FAFC` (Crisp Off-White) | App viewport background                  |
+| `--bg-surface`       | `#131B2B` (Surface Card)    | `#FFFFFF` (Pure White)      | Cards, modals, drawers                   |
+| `--bg-surface-hover` | `#1A2438`                   | `#F1F5F9`                   | Hover states on rows and cards           |
+| `--border-subtle`    | `rgba(255, 255, 255, 0.08)` | `rgba(0, 0, 0, 0.08)`       | Dividers, card borders                   |
+| `--border-focus`     | `#3B82F6` (Electric Blue)   | `#2563EB`                   | Active inputs, selected states           |
+| `--text-primary`     | `#F8FAFC`                   | `#0F172A`                   | Company names, headings, primary text    |
+| `--text-secondary`   | `#94A3B8`                   | `#475569`                   | Role titles, metadata, subheadings       |
+| `--text-muted`       | `#64748B`                   | `#94A3B8`                   | Timestamps, placeholders, inactive icons |
 
 ### 2.2 Status Color Coding
 
-| Stage | Dark Mode (Pill / Badge) | Light Mode (Pill / Badge) | Meaning |
-|---|---|---|---|
-| **Saved** | Text: `#60A5FA` / Bg: `rgba(59, 130, 246, 0.15)` | Text: `#1D4ED8` / Bg: `#EFF6FF` | Newly captured, unapplied |
-| **Applied** | Text: `#FBBF24` / Bg: `rgba(245, 158, 11, 0.15)` | Text: `#B45309` / Bg: `#FEF3C7` | Application submitted |
-| **Interviewing** | Text: `#C084FC` / Bg: `rgba(168, 85, 247, 0.15)` | Text: `#7E22CE` / Bg: `#F3E8FF` | Active interview rounds |
-| **Offer** | Text: `#34D399` / Bg: `rgba(16, 185, 129, 0.15)` | Text: `#047857` / Bg: `#D1FAE5` | Offer received |
-| **Rejected** | Text: `#F87171` / Bg: `rgba(239, 68, 68, 0.15)` | Text: `#B91C1C` / Bg: `#FEE2E2` | Application closed |
-| **Archived** | Text: `#94A3B8` / Bg: `rgba(148, 163, 184, 0.12)`| Text: `#475569` / Bg: `#F1F5F9` | Stale or withdrawn |
+| Stage            | Dark Mode (Pill / Badge)                          | Light Mode (Pill / Badge)       | Meaning                   |
+| ---------------- | ------------------------------------------------- | ------------------------------- | ------------------------- |
+| **Saved**        | Text: `#60A5FA` / Bg: `rgba(59, 130, 246, 0.15)`  | Text: `#1D4ED8` / Bg: `#EFF6FF` | Newly captured, unapplied |
+| **Applied**      | Text: `#FBBF24` / Bg: `rgba(245, 158, 11, 0.15)`  | Text: `#B45309` / Bg: `#FEF3C7` | Application submitted     |
+| **Interviewing** | Text: `#C084FC` / Bg: `rgba(168, 85, 247, 0.15)`  | Text: `#7E22CE` / Bg: `#F3E8FF` | Active interview rounds   |
+| **Offer**        | Text: `#34D399` / Bg: `rgba(16, 185, 129, 0.15)`  | Text: `#047857` / Bg: `#D1FAE5` | Offer received            |
+| **Rejected**     | Text: `#F87171` / Bg: `rgba(239, 68, 68, 0.15)`   | Text: `#B91C1C` / Bg: `#FEE2E2` | Application closed        |
+| **Archived**     | Text: `#94A3B8` / Bg: `rgba(148, 163, 184, 0.12)` | Text: `#475569` / Bg: `#F1F5F9` | Stale or withdrawn        |
 
 ### 2.3 Typography Stack
+
 - **Primary Font**: `Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`
 - **Monospace Font** (Dates & Links): `JetBrains Mono, Menlo, monospace`
 - **Scale**:
@@ -75,10 +76,11 @@ The UI is designed for high-efficiency job seekers handling high volumes of appl
 ## 4. Component Specifications
 
 ### 4.1 Top Navigation Bar
+
 - **App Branding**: Clean lightning bolt icon + `JOB RADAR`.
 - **Telegram Webhook Status**: Interactive badge `🟢 Telegram Active`. Clicking opens a small tooltip showing:
-  - Last synced: *"2 minutes ago"*
-  - Channel name: *"My Job Channel"*
+  - Last synced: _"2 minutes ago"_
+  - Channel name: _"My Job Channel"_
 - **Theme Switcher**: Smooth button toggling between `Dark` and `Light` mode (stores preference in `localStorage`).
 - **Bookmarklet Helper Button**: Opens a quick modal with the drag-to-bookmarks script.
 - **Export CSV Button**: 1-click download of all records.
@@ -88,7 +90,9 @@ The UI is designed for high-efficiency job seekers handling high volumes of appl
 ---
 
 ### 4.2 Funnel Analytics Ribbon
+
 Four modern cards across the header with micro-sparklines or subtle gradient borders:
+
 1. **Total Jobs**: All-time tracked jobs count.
 2. **Applied This Week**: Shows weekly momentum with a mini trend badge (e.g. `+5 vs last week`).
 3. **Active Interviews**: Current count of opportunities in the pipeline.
@@ -97,6 +101,7 @@ Four modern cards across the header with micro-sparklines or subtle gradient bor
 ---
 
 ### 4.3 Filter & Control Bar
+
 - **Search Input**: Live instant search as you type (matches company or role, with keyboard shortcut `/` to focus).
 - **Timeline Segmented Tabs**:
   - `All` (default)
@@ -112,6 +117,7 @@ Four modern cards across the header with micro-sparklines or subtle gradient bor
 ### 4.4 High-Density List View (Primary for High Volumes)
 
 When tracking 50–200+ jobs, the list view allows high-speed scanning without endless scrolling:
+
 - **Table Columns**:
   1. **Selection Checkbox**: For bulk actions (bulk mark applied, bulk archive).
   2. **Company**: Company logo/initials + bold name.
@@ -124,13 +130,14 @@ When tracking 50–200+ jobs, the list view allows high-speed scanning without e
      - **"Open Link ↗"** (for already applied jobs).
 - **Zebra Hover Effect**: Subtle highlight on hover (`--bg-surface-hover`).
 - **Bulk Action Bar**: When $\ge 1$ checkboxes are checked, a floating bottom bar appears:
-  > *"3 jobs selected  |  [Mark as Applied]  [Move to Archive]  [Delete]  [Cancel]"*
+  > _"3 jobs selected | [Mark as Applied] [Move to Archive] [Delete] [Cancel]"_
 
 ---
 
 ### 4.5 Kanban Board View (Visual Pipeline)
 
 Five responsive columns:
+
 1. **Saved**
 2. **Applied**
 3. **Interviewing**
@@ -138,6 +145,7 @@ Five responsive columns:
 5. **Rejected**
 
 #### Job Card Design:
+
 - **Card Header**: Company avatar + Company Name + 3-dot menu.
 - **Card Body**: Role title (large and crisp).
 - **Card Footer**:
@@ -153,6 +161,7 @@ Five responsive columns:
 ### 4.6 Slide-Over Notes Drawer (Interview & Follow-up Scratchpad)
 
 Clicking any job row or card smoothly slides out a 450px panel from the right edge:
+
 - **Header**:
   - Company Name & Role Title.
   - External job URL button.
@@ -161,8 +170,8 @@ Clicking any job row or card smoothly slides out a 450px panel from the right ed
   - Date input with quick preset buttons: `[ +3 Days ]` `[ +1 Week ]` `[ Clear ]`.
 - **Notes Scratchpad**:
   - Clean text area supporting markdown/bullet points.
-  - Placeholder: *"Add referral contact, recruiter phone screen notes, or compensation details..."*
-  - **Auto-save**: Saves automatically 500ms after you stop typing with a subtle *"Saved ✓"* indicator.
+  - Placeholder: _"Add referral contact, recruiter phone screen notes, or compensation details..."_
+  - **Auto-save**: Saves automatically 500ms after you stop typing with a subtle _"Saved ✓"_ indicator.
 - **Activity & Timestamps**:
   - Shows when the job was ingested (`created_at`) and when it was applied to (`applied_at`).
 
@@ -171,6 +180,7 @@ Clicking any job row or card smoothly slides out a 450px panel from the right ed
 ### 4.7 "+ Add Job" Modal
 
 Clean modal with 2 tabs:
+
 - **Tab 1: Auto-Fetch (Paste Link)**:
   - Input field for Job URL.
   - Button: `"Scrape & Extract"` with a sleek animated loading shimmer.
@@ -190,9 +200,9 @@ Clean modal with 2 tabs:
 2. **1-Click Apply & Advance**:
    - Opens the external job link in a new tab.
    - The card/row smoothly animates from `Saved` to `Applied` with an optimistic transition.
-   - Shows a subtle toast: *"Moved to Applied (Timestamped)"*.
+   - Shows a subtle toast: _"Moved to Applied (Timestamped)"_.
 3. **Toast Notifications**:
-   - Modern floating pill at bottom-center (e.g. *"Job saved successfully"*, *"Link copied"*, *"CSV downloaded"*).
+   - Modern floating pill at bottom-center (e.g. _"Job saved successfully"_, _"Link copied"_, _"CSV downloaded"_).
 4. **Skeleton Loaders**:
    - Smooth pulse shimmer while jobs are loading on initial page render.
 5. **Stale Job Visual Accent**:

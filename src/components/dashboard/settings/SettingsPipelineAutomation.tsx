@@ -110,7 +110,9 @@ export function SettingsPipelineAutomation({ settings, updateSetting }: Settings
               : 'bg-[var(--bg-app)] border-[var(--border-subtle)]'
           }`}
         >
-          <div className={`w-3 h-3 bg-white transition-transform ${settings.autoAdvanceOnLinkClick ? 'translate-x-3.5' : 'translate-x-0'}`} />
+          <div
+            className={`w-3 h-3 bg-white transition-transform ${settings.autoAdvanceOnLinkClick ? 'translate-x-3.5' : 'translate-x-0'}`}
+          />
         </button>
       </div>
     </div>

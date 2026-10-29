@@ -2,31 +2,37 @@
 
 import React, { useState, useEffect } from 'react';
 import { Users, Check } from 'lucide-react';
-import { Job, ReferralStatus, REFERRAL_STATUSES } from '@/types';
+import { Job, ReferralStatus, REFERRAL_STATUSES, UpdateReferralData } from '@/types';
 import { DrawerReferralForm } from './DrawerReferralForm';
 
 interface DrawerReferralSectionProps {
   job: Job;
-  onUpdateReferral: (
-    jobId: string,
-    data: {
-      referralStatus: ReferralStatus;
-      referrerName?: string;
-      referrerContact?: string;
-      referralNotes?: string;
-    }
-  ) => Promise<void>;
+  onUpdateReferral: (jobId: string, data: UpdateReferralData) => Promise<void>;
 }
 
 const STATUS_LABELS: Record<ReferralStatus, { label: string; activeClass: string }> = {
-  none: { label: 'No Referral', activeClass: 'bg-[var(--border-subtle)] text-[var(--text-secondary)] font-bold' },
-  asked: { label: 'Asked', activeClass: 'bg-amber-500/20 text-amber-300 border-amber-500/40 font-bold' },
-  received: { label: 'Got Referral', activeClass: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40 font-bold' },
-  declined: { label: 'Declined', activeClass: 'bg-red-500/20 text-red-300 border-red-500/40 font-bold' },
+  none: {
+    label: 'No Referral',
+    activeClass: 'bg-[var(--border-subtle)] text-[var(--text-secondary)] font-bold',
+  },
+  asked: {
+    label: 'Asked',
+    activeClass: 'bg-amber-500/20 text-amber-300 border-amber-500/40 font-bold',
+  },
+  received: {
+    label: 'Got Referral',
+    activeClass: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40 font-bold',
+  },
+  declined: {
+    label: 'Declined',
+    activeClass: 'bg-red-500/20 text-red-300 border-red-500/40 font-bold',
+  },
 };
 
 export function DrawerReferralSection({ job, onUpdateReferral }: DrawerReferralSectionProps) {
-  const [status, setStatus] = useState<ReferralStatus>((job.referralStatus as ReferralStatus) || 'none');
+  const [status, setStatus] = useState<ReferralStatus>(
+    (job.referralStatus as ReferralStatus) || 'none'
+  );
   const [name, setName] = useState(job.referrerName || '');
   const [contact, setContact] = useState(job.referrerContact || '');
   const [notes, setNotes] = useState(job.referralNotes || '');

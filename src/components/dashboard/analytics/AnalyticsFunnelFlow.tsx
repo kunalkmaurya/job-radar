@@ -19,10 +19,33 @@ interface FunnelFlowProps {
 
 export function AnalyticsFunnelFlow({ stages }: FunnelFlowProps) {
   const steps = [
-    { label: 'INGESTED / SAVED', count: stages.saved, color: 'text-blue-400', bg: 'bg-blue-400/10' },
-    { label: 'SUBMITTED', count: stages.applied, color: 'text-amber-400', bg: 'bg-amber-400/10', rate: `${stages.savedToAppliedRate}% applied` },
-    { label: 'INTERVIEWING', count: stages.interviewing, color: 'text-purple-400', bg: 'bg-purple-400/10', rate: `${stages.appliedToInterviewRate}% screen` },
-    { label: 'OFFER WON', count: stages.offer, color: 'text-emerald-400', bg: 'bg-emerald-400/10', rate: `${stages.interviewToOfferRate}% offer` },
+    {
+      label: 'INGESTED / SAVED',
+      count: stages.saved,
+      color: 'text-blue-400',
+      bg: 'bg-blue-400/10',
+    },
+    {
+      label: 'SUBMITTED',
+      count: stages.applied,
+      color: 'text-amber-400',
+      bg: 'bg-amber-400/10',
+      rate: `${stages.savedToAppliedRate}% applied`,
+    },
+    {
+      label: 'INTERVIEWING',
+      count: stages.interviewing,
+      color: 'text-purple-400',
+      bg: 'bg-purple-400/10',
+      rate: `${stages.appliedToInterviewRate}% screen`,
+    },
+    {
+      label: 'OFFER WON',
+      count: stages.offer,
+      color: 'text-emerald-400',
+      bg: 'bg-emerald-400/10',
+      rate: `${stages.interviewToOfferRate}% offer`,
+    },
   ];
 
   return (
@@ -42,14 +65,15 @@ export function AnalyticsFunnelFlow({ stages }: FunnelFlowProps) {
       {/* Stepped Conversion Flow */}
       <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 font-mono">
         {steps.map((step, idx) => (
-          <div key={step.label} className="relative flex flex-col justify-between p-3.5 border border-[var(--border-subtle)] bg-[var(--bg-app)]">
+          <div
+            key={step.label}
+            className="relative flex flex-col justify-between p-3.5 border border-[var(--border-subtle)] bg-[var(--bg-app)]"
+          >
             <div className="space-y-1">
               <div className="text-[10px] uppercase tracking-wider text-[var(--text-muted)]">
                 {step.label}
               </div>
-              <div className="text-2xl font-bold text-[var(--text-primary)]">
-                {step.count}
-              </div>
+              <div className="text-2xl font-bold text-[var(--text-primary)]">{step.count}</div>
             </div>
 
             <div className="mt-3 pt-2 border-t border-[var(--border-subtle)] flex items-center justify-between text-[11px]">
@@ -71,15 +95,36 @@ export function AnalyticsFunnelFlow({ stages }: FunnelFlowProps) {
         <div className="flex justify-between items-center text-[11px]">
           <span className="text-[var(--text-secondary)]">Pipeline Attrition & Closure:</span>
           <span className="text-[var(--text-muted)]">
-            Archived / Rejected: <strong className="text-rose-400">{stages.rejected}</strong> ({Math.round((stages.rejected / stages.total) * 100)}%)
+            Archived / Rejected: <strong className="text-rose-400">{stages.rejected}</strong> (
+            {Math.round((stages.rejected / stages.total) * 100)}%)
           </span>
         </div>
         <div className="w-full h-1.5 bg-[var(--border-subtle)] flex overflow-hidden">
-          <div style={{ width: `${Math.round((stages.offer / stages.total) * 100)}%` }} className="bg-emerald-400 h-full" title="Offer" />
-          <div style={{ width: `${Math.round((stages.interviewing / stages.total) * 100)}%` }} className="bg-purple-400 h-full" title="Interviewing" />
-          <div style={{ width: `${Math.round((stages.applied / stages.total) * 100)}%` }} className="bg-amber-400 h-full" title="Applied" />
-          <div style={{ width: `${Math.round((stages.saved / stages.total) * 100)}%` }} className="bg-blue-400 h-full" title="Saved" />
-          <div style={{ width: `${Math.round((stages.rejected / stages.total) * 100)}%` }} className="bg-neutral-500 h-full" title="Rejected" />
+          <div
+            style={{ width: `${Math.round((stages.offer / stages.total) * 100)}%` }}
+            className="bg-emerald-400 h-full"
+            title="Offer"
+          />
+          <div
+            style={{ width: `${Math.round((stages.interviewing / stages.total) * 100)}%` }}
+            className="bg-purple-400 h-full"
+            title="Interviewing"
+          />
+          <div
+            style={{ width: `${Math.round((stages.applied / stages.total) * 100)}%` }}
+            className="bg-amber-400 h-full"
+            title="Applied"
+          />
+          <div
+            style={{ width: `${Math.round((stages.saved / stages.total) * 100)}%` }}
+            className="bg-blue-400 h-full"
+            title="Saved"
+          />
+          <div
+            style={{ width: `${Math.round((stages.rejected / stages.total) * 100)}%` }}
+            className="bg-neutral-500 h-full"
+            title="Rejected"
+          />
         </div>
       </div>
     </div>

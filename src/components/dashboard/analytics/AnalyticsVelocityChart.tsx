@@ -25,9 +25,14 @@ export function AnalyticsVelocityChart({ data }: VelocityChartProps) {
           </h3>
         </div>
         <div className="flex items-center gap-3 font-mono text-[11px] text-[var(--text-muted)]">
-          <span>Total: <strong className="text-[var(--text-primary)]">{totalInPeriod}</strong></span>
+          <span>
+            Total: <strong className="text-[var(--text-primary)]">{totalInPeriod}</strong>
+          </span>
           <span>•</span>
-          <span>Peak: <strong className="text-[var(--accent-primary)]">{peakDay?.count || 0}</strong> ({peakDay?.label})</span>
+          <span>
+            Peak: <strong className="text-[var(--accent-primary)]">{peakDay?.count || 0}</strong> (
+            {peakDay?.label})
+          </span>
         </div>
       </div>
 
@@ -66,10 +71,10 @@ export function AnalyticsVelocityChart({ data }: VelocityChartProps) {
                     d.count === 0
                       ? 'bg-[var(--border-subtle)] opacity-40'
                       : isHovered
-                      ? 'bg-[var(--accent-primary)]'
-                      : isPeak
-                      ? 'bg-[var(--accent-primary)] opacity-90'
-                      : 'bg-neutral-600 dark:bg-neutral-400 group-hover:bg-[var(--accent-primary)]'
+                        ? 'bg-[var(--accent-primary)]'
+                        : isPeak
+                          ? 'bg-[var(--accent-primary)] opacity-90'
+                          : 'bg-neutral-600 dark:bg-neutral-400 group-hover:bg-[var(--accent-primary)]'
                   }`}
                 />
               </div>

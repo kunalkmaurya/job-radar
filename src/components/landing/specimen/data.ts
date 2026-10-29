@@ -10,7 +10,8 @@ export const SHOWCASE_ITEMS: ShowcaseItem[] = [
     salary: '$360,000 – $480,000 + Equity',
     source: 'lever.co',
     tags: ['Distributed Systems', 'PyTorch', 'Cluster Orchestration', 'LLM Safety'],
-    notes: 'Prioritize evaluation cluster throughput. Reference previous distributed training work.',
+    notes:
+      'Prioritize evaluation cluster throughput. Reference previous distributed training work.',
     latencyMs: 640,
     tokensUsed: 1420,
   },
@@ -23,7 +24,8 @@ export const SHOWCASE_ITEMS: ShowcaseItem[] = [
     salary: '$320,000 – $450,000 + Bonus + GSU',
     source: 'google.com',
     tags: ['Gemini Architecture', 'JAX', 'Reinforcement Learning', 'World Models'],
-    notes: 'Direct referral opportunity through alumni network. Prepare vision-language benchmark breakdown.',
+    notes:
+      'Direct referral opportunity through alumni network. Prepare vision-language benchmark breakdown.',
     latencyMs: 580,
     tokensUsed: 1680,
   },
@@ -36,7 +38,8 @@ export const SHOWCASE_ITEMS: ShowcaseItem[] = [
     salary: '$280,000 – $370,000 + Equity',
     source: 'stripe.com',
     tags: ['Go', 'Kubernetes', 'Multi-Cloud', 'Zero-Downtime Migration'],
-    notes: 'Critical high-throughput microservices team. Emphasize multi-region failover experience.',
+    notes:
+      'Critical high-throughput microservices team. Emphasize multi-region failover experience.',
     latencyMs: 710,
     tokensUsed: 1350,
   },

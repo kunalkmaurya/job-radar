@@ -40,11 +40,15 @@ export function AnalyticsCompanyBreakdown({ jobs }: CompanyBreakdownProps) {
           <div key={job.id} className="py-2.5 flex items-center justify-between gap-3 group">
             <div className="flex items-center gap-2.5 min-w-0">
               <span className="font-bold text-[var(--text-primary)] truncate">{job.company}</span>
-              <span className="text-[var(--text-muted)] truncate hidden sm:inline">• {job.role}</span>
+              <span className="text-[var(--text-muted)] truncate hidden sm:inline">
+                • {job.role}
+              </span>
             </div>
 
             <div className="flex items-center gap-3 shrink-0">
-              <span className={`px-2 py-0.5 text-[10px] font-medium border uppercase tracking-wider ${STATUS_BADGES[job.status] || ''}`}>
+              <span
+                className={`px-2 py-0.5 text-[10px] font-medium border uppercase tracking-wider ${STATUS_BADGES[job.status] || ''}`}
+              >
                 {job.status}
               </span>
               <span className="text-[10px] text-[var(--text-muted)] hidden md:inline">

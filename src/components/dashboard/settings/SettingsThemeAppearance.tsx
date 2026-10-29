@@ -119,7 +119,10 @@ export function SettingsThemeAppearance({ settings, updateSetting }: SettingsThe
                       : 'border-[var(--border-subtle)] bg-[var(--bg-app)] opacity-70 hover:opacity-100'
                   }`}
                 >
-                  <div className="w-3.5 h-3.5 mx-auto mb-1" style={{ backgroundColor: acc.color }} />
+                  <div
+                    className="w-3.5 h-3.5 mx-auto mb-1"
+                    style={{ backgroundColor: acc.color }}
+                  />
                   <span className="text-[9px] block text-[var(--text-secondary)]">{acc.label}</span>
                 </button>
               );

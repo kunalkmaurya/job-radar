@@ -3,10 +3,12 @@ import { NextResponse } from 'next/server';
 export async function GET(request: Request) {
   const clientId = process.env.GOOGLE_CLIENT_ID;
 
-  // Dynamically resolve current origin (works on localhost, preview URLs, and production)
   const host = request.headers.get('x-forwarded-host') || request.headers.get('host');
-  const proto = request.headers.get('x-forwarded-proto') || (host?.includes('localhost') ? 'http' : 'https');
-  const origin = host ? `${proto}://${host}` : (process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000');
+  const proto =
+    request.headers.get('x-forwarded-proto') || (host?.includes('localhost') ? 'http' : 'https');
+  const origin = host
+    ? `${proto}://${host}`
+    : process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
   const redirectUri = `${origin}/api/auth/callback`;
 
   if (!clientId) {
@@ -16,7 +18,6 @@ export async function GET(request: Request) {
     );
   }
 
-  // Generate random state for CSRF protection
   const state = Math.random().toString(36).substring(7);
 
   const googleAuthUrl = new URL('https://accounts.google.com/o/oauth2/v2/auth');

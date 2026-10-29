@@ -81,35 +81,33 @@ export function JobStatusDropdown({ status, onChange, className = '' }: JobStatu
         <>
           <div className="fixed inset-0 z-40" onClick={() => setIsOpen(false)} />
           <div className="absolute left-0 top-full mt-1.5 z-50 min-w-[145px] py-1 border border-[var(--border-subtle)] bg-[var(--bg-surface)] backdrop-blur-xl shadow-2xl animate-in fade-in zoom-in-95 duration-100">
-          {JOB_STATUSES.map((s) => {
-            const conf = STATUS_CONFIG[s];
-            const isSelected = s === status;
-            return (
-              <button
-                key={s}
-                type="button"
-                onClick={(e) => handleSelect(s, e)}
-                className={`w-full flex items-center justify-between px-3 py-1.5 text-xs text-left transition-colors cursor-pointer ${
-                  isSelected
-                    ? 'bg-[var(--bg-surface-hover)] font-semibold'
-                    : 'hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
-                }`}
-              >
-                <div className="flex items-center gap-2">
-                  <span
-                    className="w-2 h-2 rounded-full shrink-0"
-                    style={{ backgroundColor: conf.dot }}
-                  />
-                  <span style={{ color: isSelected ? conf.text : undefined }}>{s}</span>
-                </div>
-                {isSelected && (
-                  <Check className="w-3.5 h-3.5" style={{ color: conf.text }} />
-                )}
-              </button>
-            );
-          })}
-        </div>
-      </>
+            {JOB_STATUSES.map((s) => {
+              const conf = STATUS_CONFIG[s];
+              const isSelected = s === status;
+              return (
+                <button
+                  key={s}
+                  type="button"
+                  onClick={(e) => handleSelect(s, e)}
+                  className={`w-full flex items-center justify-between px-3 py-1.5 text-xs text-left transition-colors cursor-pointer ${
+                    isSelected
+                      ? 'bg-[var(--bg-surface-hover)] font-semibold'
+                      : 'hover:bg-[var(--bg-surface-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+                  }`}
+                >
+                  <div className="flex items-center gap-2">
+                    <span
+                      className="w-2 h-2 rounded-full shrink-0"
+                      style={{ backgroundColor: conf.dot }}
+                    />
+                    <span style={{ color: isSelected ? conf.text : undefined }}>{s}</span>
+                  </div>
+                  {isSelected && <Check className="w-3.5 h-3.5" style={{ color: conf.text }} />}
+                </button>
+              );
+            })}
+          </div>
+        </>
       )}
     </div>
   );

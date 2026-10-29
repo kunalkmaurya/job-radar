@@ -31,12 +31,18 @@ export function TimelineBar({
 
   const getFilterLabel = (f: TimelineFilter) => {
     switch (f) {
-      case 'all': return 'All Time';
-      case 'today': return 'Today';
-      case 'this_week': return 'This Week';
-      case 'past_30_days': return 'Past 30 Days';
-      case 'custom': return 'Custom Range';
-      default: return f;
+      case 'all':
+        return 'All Time';
+      case 'today':
+        return 'Today';
+      case 'this_week':
+        return 'This Week';
+      case 'past_30_days':
+        return 'Past 30 Days';
+      case 'custom':
+        return 'Custom Range';
+      default:
+        return f;
     }
   };
 
@@ -67,7 +73,9 @@ export function TimelineBar({
             </div>
             <span className="text-xs text-[var(--text-secondary)]">
               Filtering full workspace analytics and pipeline by:{' '}
-              <strong className="text-[var(--text-primary)] font-semibold">{activeDescription}</strong>
+              <strong className="text-[var(--text-primary)] font-semibold">
+                {activeDescription}
+              </strong>
             </span>
           </div>
         </div>

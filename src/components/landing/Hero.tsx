@@ -20,14 +20,15 @@ export function Hero({ isLoggedIn }: HeroProps) {
       {/* Anthropic Literary Serif Headline */}
       <h1 className="text-4xl sm:text-6xl md:text-7xl font-serif tracking-tight font-normal leading-[1.08] max-w-4xl mx-auto text-[var(--text-primary)]">
         The quiet command center <br className="hidden sm:inline" />
-        for your <span className="italic font-normal text-[var(--accent-primary)]">next ambition</span>.
+        for your{' '}
+        <span className="italic font-normal text-[var(--accent-primary)]">next ambition</span>.
       </h1>
 
       {/* Editorial Subcopy */}
       <p className="mt-8 text-base sm:text-lg md:text-xl text-[var(--text-secondary)] max-w-2xl mx-auto font-normal leading-relaxed">
-        Forward raw job URLs from your phone into a private Telegram channel.
-        Job Radar silently parses complex JavaScript portals with AI—cataloging your pipeline
-        on a serene, distraction-free board.
+        Forward raw job URLs from your phone into a private Telegram channel. Job Radar silently
+        parses complex JavaScript portals with AI—cataloging your pipeline on a serene,
+        distraction-free board.
       </p>
 
       {/* Hero Actions */}

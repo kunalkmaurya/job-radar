@@ -17,7 +17,7 @@ export function extractCompanyFromUrl(url: string): string {
   try {
     const parsed = new URL(url);
     const host = parsed.hostname.toLowerCase();
-    
+
     // Workday subdomain matching (e.g. nvidia.wd5.myworkdayjobs.com)
     if (host.includes('.myworkdayjobs.com')) {
       const parts = host.split('.');
@@ -71,7 +71,7 @@ export async function scrapeJobPage(url: string): Promise<ScrapedContent> {
     const res = await fetch(jinaUrl, {
       signal: controller.signal,
       headers: {
-        'Accept': 'text/plain, text/markdown',
+        Accept: 'text/plain, text/markdown',
       },
     });
 
@@ -101,7 +101,7 @@ export async function scrapeJobPage(url: string): Promise<ScrapedContent> {
       headers: {
         'User-Agent':
           'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
-        'Accept':
+        Accept:
           'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
       },
     });

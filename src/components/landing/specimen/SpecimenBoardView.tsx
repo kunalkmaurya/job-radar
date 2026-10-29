@@ -120,9 +120,7 @@ export function SpecimenBoardView({
           <span className="text-[var(--text-muted)] block text-[10px] uppercase">
             Neon PostgreSQL
           </span>
-          <span className="font-bold text-[#70A1D7]">
-            Committed in {selectedItem.latencyMs}ms
-          </span>
+          <span className="font-bold text-[#70A1D7]">Committed in {selectedItem.latencyMs}ms</span>
         </div>
       </div>
     </div>

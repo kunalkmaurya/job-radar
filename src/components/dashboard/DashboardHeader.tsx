@@ -52,7 +52,7 @@ export function DashboardHeader({
           {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
         </button>
 
-        {/* {onSync && (
+      {onSync && (
           <button
             onClick={onSync}
             disabled={isSyncing}
@@ -64,7 +64,7 @@ export function DashboardHeader({
               className={`w-3.5 h-3.5 ${isSyncing ? 'animate-spin text-(--accent-primary)' : ''}`}
             />
           </button>
-        )} */}
+        )} 
 
         <button
           onClick={onOpenBookmarklet}

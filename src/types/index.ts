@@ -1,5 +1,5 @@
 import { z } from 'zod';
-export type { Job, NewJob, User, NewUser } from '@/db/schema';
+export type { Job, NewJob, User, NewUser, PublicJob, NewPublicJob } from '@/db/schema';
 
 export const JOB_STATUSES = [
   'Saved',

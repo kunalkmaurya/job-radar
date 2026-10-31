@@ -1,10 +1,14 @@
 import { NextResponse } from 'next/server';
 import { db } from '@/db';
 import { jobs } from '@/db/schema';
-import { eq } from 'drizzle-orm';
+import { eq, and, or, isNull } from 'drizzle-orm';
+import { getSessionFromCookies, isAdminEmail } from '@/lib/auth';
 
 export async function PATCH(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
+    const session = await getSessionFromCookies();
+    const isUserAdmin = !session || session.role === 'admin' || isAdminEmail(session?.email || '');
+
     const { id } = await params;
     const body = await request.json();
 
@@ -25,14 +29,19 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
     if (body.referrerContact !== undefined) updateData.referrerContact = body.referrerContact;
     if (body.referralNotes !== undefined) updateData.referralNotes = body.referralNotes;
 
+    const userScope = isUserAdmin
+      ? or(eq(jobs.userId, session?.sub || ''), isNull(jobs.userId))
+      : eq(jobs.userId, session.sub);
+
+    const userCondition = and(eq(jobs.id, id), userScope);
+
     let updated;
     try {
-      updated = await db.update(jobs).set(updateData).where(eq(jobs.id, id)).returning();
+      updated = await db.update(jobs).set(updateData).where(userCondition).returning();
     } catch (dbErr) {
-      // If isImportant column has not been added to remote DB yet, retry without it
       if (updateData.isImportant !== undefined) {
         delete updateData.isImportant;
-        updated = await db.update(jobs).set(updateData).where(eq(jobs.id, id)).returning();
+        updated = await db.update(jobs).set(updateData).where(userCondition).returning();
       } else {
         throw dbErr;
       }
@@ -57,8 +66,18 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
 
 export async function DELETE(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
+    const session = await getSessionFromCookies();
+    const isUserAdmin = !session || session.role === 'admin' || isAdminEmail(session?.email || '');
+
     const { id } = await params;
-    const deleted = await db.delete(jobs).where(eq(jobs.id, id)).returning();
+    const userScope = isUserAdmin
+      ? or(eq(jobs.userId, session?.sub || ''), isNull(jobs.userId))
+      : eq(jobs.userId, session.sub);
+
+    const deleted = await db
+      .delete(jobs)
+      .where(and(eq(jobs.id, id), userScope))
+      .returning();
 
     if (deleted.length === 0) {
       return NextResponse.json(

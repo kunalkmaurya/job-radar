@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { createSessionToken, isAllowedEmail, AUTH_COOKIE_NAME } from '@/lib/auth';
+import { createSessionToken, isAllowedEmail, isAdminEmail, AUTH_COOKIE_NAME } from '@/lib/auth';
 import { db } from '@/db';
 import { users } from '@/db/schema';
 import { eq } from 'drizzle-orm';
@@ -97,11 +97,13 @@ export async function GET(request: Request) {
       console.warn('Could not upsert user to database:', dbErr);
     }
 
+    const role = isAdminEmail(googleUser.email) ? 'admin' : 'user';
     const sessionToken = await createSessionToken({
       sub: userId,
       email: googleUser.email,
       name: googleUser.name || 'User',
       image: googleUser.picture,
+      role,
     });
 
     const response = NextResponse.redirect(`${appUrl}/dashboard`);

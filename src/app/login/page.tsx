@@ -70,13 +70,13 @@ export default function LoginPage() {
           <div className="space-y-1">
             <div className="inline-flex items-center gap-1.5 px-2 py-0.5 text-[10px] border border-(--border-subtle) bg-(--accent-primary-bg) text-(--accent-primary) mb-1">
               <Sparkles className="w-3 h-3" />
-              <span>Private Career Board</span>
+              <span>Career Board & Job Tracker</span>
             </div>
             <h1 className="text-2xl font-bold tracking-tight text-(--text-primary)">
               Welcome back
             </h1>
             <p className="text-xs text-(--text-secondary)">
-              Sign in to manage your high-speed pipeline & Telegram ingestion
+              Sign in to manage your high-speed pipeline and explore opportunities
             </p>
           </div>
 
@@ -93,13 +93,13 @@ export default function LoginPage() {
 
           <div className="flex items-center justify-center gap-1.5 text-[10px] text-(--text-muted) pt-2 border-t border-(--border-subtle)">
             <Lock className="w-3 h-3 text-(--accent-primary)" />
-            <span>Authorized Owner Whitelist Only</span>
+            <span>Open Access • Instant Sign In</span>
           </div>
         </div>
       </main>
 
       <footer className="relative z-10 w-full text-center text-[11px] text-(--text-muted) py-2 ">
-        <span>JOB RADAR • PRIVATE PIPELINE TELEMETRY</span>
+        <span>JOB RADAR • CAREER SEARCH & TRACKING PLATFORM</span>
       </footer>
     </div>
   );

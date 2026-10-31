@@ -19,7 +19,7 @@ export function ProfileSecurityCard({ currentUser, onExportCSV }: ProfileSecurit
     }
   };
 
-  const email = currentUser?.email || 'kunalkrraj@gmail.com';
+  const email = currentUser?.email || 'user@example.com';
 
   return (
     <div className="border border-(--border-subtle) bg-(--bg-surface) p-5 shadow-sm space-y-4">
@@ -38,10 +38,10 @@ export function ProfileSecurityCard({ currentUser, onExportCSV }: ProfileSecurit
         </div>
 
         <div className="p-3 border border-(--border-subtle) bg-(--bg-app) space-y-1">
-          <span className="text-[10px] uppercase text-(--text-muted)">Whitelist Verification</span>
+          <span className="text-[10px] uppercase text-(--text-muted)">Active Session</span>
           <div className="font-semibold text-(--text-primary) truncate">{email}</div>
           <span className="text-[10px] text-emerald-400 flex items-center gap-1">
-            <ShieldCheck className="w-3 h-3" /> Whitelisted
+            <ShieldCheck className="w-3 h-3" /> Verified
           </span>
         </div>
 

@@ -1,33 +1,22 @@
-# Product Requirements Document (PRD): Personal Job Search & Tracking Board
+# Product Requirements Document (PRD): Job Radar Platform
 
 ## 1. Executive Summary
 
-The **Personal Job Search & Tracking Board** is a private, high-speed application built for individual job seekers to capture, organize, and track job openings effortlessly.
+**Job Radar** is a high-speed career telemetry command center and multi-tenant job tracking platform. It allows software engineers to discover curated job openings from an administrative public feed, clone opportunities to a private pipeline with one click, and capture external job postings silently via Telegram, browser bookmarklet, or manual input.
 
-Job links posted into a private Telegram channel are silently intercepted, scraped across all job portals (including JavaScript-rendered portals like Workday), parsed with an AI model (starting with **DeepSeek**, switchable to **OpenAI / ChatGPT**), and saved into a **Neon PostgreSQL** database. The app features a personal dashboard equipped with timeline tracking, fast 1-click application workflows, follow-up alerts, funnel analytics, and bookmarklet support.
+Job links posted into Telegram channels are silently intercepted, scraped across all job portals (including JavaScript-rendered portals like Workday), parsed with an AI model (DeepSeek / OpenAI), and stored in **Neon PostgreSQL**. Each user gets an isolated tracking board with status workflows, referral management, timeline filtering, and analytics.
 
 ---
 
 ## 2. Key Goals & Principles
 
-1. **Zero-Friction Ingestion**: Post a link in Telegram $\rightarrow$ job is silently parsed and saved.
-2. **Absolute Silence in Telegram**: No bot replies, no notifications, no emoji reactions in the channel.
-3. **Personal Security**: Private Google OAuth login with JWT-based session verification restricted to the owner's email (`ALLOWED_EMAIL`). No complex multi-role or admin hierarchy.
-4. **Minimalist Schema with Future-Proofing**:
-   - **Company Name** (extracted by AI)
-   - **Role / Job Title** (extracted by AI)
-   - **Job Link (URL)** (extracted from message)
-   - **Location** (default `'N/A'`, reserved for future extraction)
-   - **Experience Level (`exp`)** (default `'N/A'`, reserved for future extraction)
-   - **Status** (`Saved` $\rightarrow$ `Applied` $\rightarrow$ `Interviewing` $\rightarrow$ `Offer` $\rightarrow$ `Rejected` $\rightarrow$ `Archived`)
-   - **Notes & Follow-up**: Scratchpad for referrals, interview notes, and follow-up reminders.
-   - **Timestamps**: Creation date and `applied_at` date.
-5. **Universal Job Portal Scraping**: Must handle complex and client-side rendered portals (especially **Workday**, Greenhouse, Lever, Ashby, LinkedIn, and direct career sites).
-6. **Pluggable LLM Provider**: Start with **DeepSeek**; allow instant zero-friction switching to **OpenAI (ChatGPT)** via config.
-7. **Multiple Ingestion Channels**:
-   - Telegram Channel (Automated silent webhook)
-   - Manual Ingestion Modal (Auto-fetch via link OR manual type-in)
-   - 1-Click Desktop Browser Bookmarklet
+1. **Shared Public Feed & 1-Click Track**: Curated opportunities visible to all users; 1-click "Track" copies jobs to the user's private pipeline.
+2. **Multi-Tenant Isolation**: Every user manages their own applications, notes, referral records, and statuses in strict privacy.
+3. **Open Access Authentication**: Google OAuth and password authentication with automatic PostgreSQL account provisioning (`ALLOWED_EMAIL="*"`). Platform administrative controls reserved for `ADMIN_EMAIL`.
+4. **Zero-Friction Ingestion**: Forward a link in Telegram or use the bookmarklet $\rightarrow$ job is silently scraped and saved.
+5. **Universal Job Portal Scraping**: Handles client-side SPAs (Workday, Greenhouse, Lever, Ashby, LinkedIn) using two-tier scraping (Jina Reader markdown proxy + direct HTTP).
+6. **Dual Feed Views**: High-speed switching between responsive Card grid view and high-density Table list view with configurable pagination.
+7. **Complete Referral Management**: Track referral status (`none`, `asked`, `referred`, `declined`), referrer contacts, and notes.
 
 ---
 
@@ -164,51 +153,71 @@ A sleek, high-contrast metric counter across the top of the dashboard:
 
 ---
 
-## 7. Authentication & Security (Personal)
+## 7. Authentication & Multi-Tenancy
 
-- **Provider**: **Google OAuth** (Sign in with Google).
-- **Session Strategy**: **JWT (JSON Web Token)** stored in secure, `HttpOnly`, `SameSite=Lax` cookies.
-- **Access Restriction**: Only the email address configured in `ALLOWED_EMAIL` is permitted to log in. Any unauthorized Google account is rejected at the middleware level.
-- **Webhook Security**: Telegram webhook endpoint (`/api/telegram-webhook`) is secured via Telegram's `X-Telegram-Bot-Api-Secret-Token` header.
+- **Provider**: **Google OAuth** and Direct Credentials.
+- **Session Strategy**: **JWT (JSON Web Token)** stored in secure `HttpOnly`, `SameSite=Lax` cookies.
+- **Open Access**: Enabled via `ALLOWED_EMAIL="*"`. All users can authenticate and receive a dedicated user account.
+- **Role Hierarchy**:
+  - `admin`: Curates public job feed, triggers batch ingestion, and accesses telemetry (`ADMIN_EMAIL="kunalkrraj@gmail.com"`).
+  - `user`: Personal job search board with complete isolation of pipeline and notes.
+- **Webhook Security**: Telegram endpoint (`/api/telegram-webhook`) verified with `X-Telegram-Bot-Api-Secret-Token`.
 
 ---
 
 ## 8. Database Schema (Neon PostgreSQL)
 
 ```sql
--- Personal User Table
+-- Users Table
 CREATE TABLE users (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     email VARCHAR(255) NOT NULL UNIQUE,
     name VARCHAR(255),
     image TEXT,
+    role VARCHAR(50) NOT NULL DEFAULT 'user',
+    telegram_chat_id VARCHAR(100) UNIQUE,
+    ingest_token VARCHAR(64) UNIQUE,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE INDEX idx_users_email ON users(email);
-
--- Jobs Table
-CREATE TABLE jobs (
+-- Public Feed Table
+CREATE TABLE public_jobs (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     company VARCHAR(255) NOT NULL,
     role VARCHAR(255) NOT NULL,
     link TEXT NOT NULL UNIQUE,
-    location VARCHAR(255) NOT NULL DEFAULT 'N/A', -- Defaults to 'N/A' (ready for future extraction)
-    exp VARCHAR(100) NOT NULL DEFAULT 'N/A',      -- Experience level (defaults to 'N/A')
-    status VARCHAR(50) NOT NULL DEFAULT 'Saved',  -- Saved, Applied, Interviewing, Offer, Rejected, Archived
-    notes TEXT NOT NULL DEFAULT '',               -- Referral details, interview notes, scratchpad
-    follow_up_date DATE,                          -- Optional follow-up reminder date
-    applied_at TIMESTAMP WITH TIME ZONE,          -- Timestamp when status changed to 'Applied'
-    source VARCHAR(50) NOT NULL DEFAULT 'telegram', -- 'telegram' | 'manual' | 'bookmarklet'
+    location VARCHAR(255) NOT NULL DEFAULT 'N/A',
+    exp VARCHAR(100) NOT NULL DEFAULT 'N/A',
+    source VARCHAR(50) NOT NULL DEFAULT 'admin',
+    posted_by UUID REFERENCES users(id) ON DELETE SET NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE INDEX idx_jobs_status ON jobs(status);
-CREATE INDEX idx_jobs_created_at ON jobs(created_at DESC);
-CREATE INDEX idx_jobs_applied_at ON jobs(applied_at DESC);
-CREATE UNIQUE INDEX idx_jobs_link ON jobs(link);
+-- Personal Scoped Jobs Table
+CREATE TABLE jobs (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    public_job_id UUID REFERENCES public_jobs(id) ON DELETE SET NULL,
+    company VARCHAR(255) NOT NULL,
+    role VARCHAR(255) NOT NULL,
+    link TEXT NOT NULL,
+    location VARCHAR(255) NOT NULL DEFAULT 'N/A',
+    exp VARCHAR(100) NOT NULL DEFAULT 'N/A',
+    status VARCHAR(50) NOT NULL DEFAULT 'Saved',
+    notes TEXT NOT NULL DEFAULT '',
+    follow_up_date DATE,
+    applied_at TIMESTAMP WITH TIME ZONE,
+    is_important BOOLEAN NOT NULL DEFAULT FALSE,
+    referral_status VARCHAR(50) NOT NULL DEFAULT 'none',
+    referrer_name VARCHAR(255),
+    referrer_contact VARCHAR(255),
+    referral_notes TEXT NOT NULL DEFAULT '',
+    source VARCHAR(50) NOT NULL DEFAULT 'telegram',
+    user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
 ```
 
 ---

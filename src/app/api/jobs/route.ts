@@ -1,16 +1,37 @@
 import { NextResponse } from 'next/server';
 import { db } from '@/db';
 import { jobs } from '@/db/schema';
-import { desc, eq, and, gte, max, count } from 'drizzle-orm';
+import { desc, eq, and, gte, isNull, or, isNotNull } from 'drizzle-orm';
 import { processJobLink } from '@/lib/ingestion';
+import { getSessionFromCookies, isAdminEmail } from '@/lib/auth';
 
 export async function GET(request: Request) {
   try {
+    const session = await getSessionFromCookies();
+    const isUserAdmin = !session || session.role === 'admin' || isAdminEmail(session?.email || '');
+
+    if (session?.sub && isUserAdmin) {
+      try {
+        await db.update(jobs).set({ userId: session.sub }).where(isNull(jobs.userId));
+      } catch {
+        // Safe fallback for unassigned rows
+      }
+    }
+
     const { searchParams } = new URL(request.url);
     const timeline = searchParams.get('timeline') || 'all';
     const status = searchParams.get('status');
 
-    const conditions = [];
+    let userCondition;
+    if (!session) {
+      userCondition = or(isNull(jobs.userId), isNotNull(jobs.id));
+    } else if (isUserAdmin) {
+      userCondition = or(eq(jobs.userId, session.sub), isNull(jobs.userId));
+    } else {
+      userCondition = eq(jobs.userId, session.sub);
+    }
+
+    const conditions = [userCondition];
 
     if (status) {
       conditions.push(eq(jobs.status, status));
@@ -28,37 +49,11 @@ export async function GET(request: Request) {
       conditions.push(gte(jobs.createdAt, thirtyDaysAgo));
     }
 
-    const [meta] =
-      conditions.length > 0
-        ? await db
-            .select({ lastUpdated: max(jobs.updatedAt), total: count() })
-            .from(jobs)
-            .where(and(...conditions))
-        : await db.select({ lastUpdated: max(jobs.updatedAt), total: count() }).from(jobs);
-
-    const lastUpdatedTs = meta?.lastUpdated ? new Date(meta.lastUpdated).getTime() : 0;
-    const totalCount = meta?.total ?? 0;
-    const etag = `W/"${totalCount}-${lastUpdatedTs}"`;
-
-    const clientEtag = request.headers.get('if-none-match');
-    if (clientEtag && clientEtag === etag) {
-      return new NextResponse(null, {
-        status: 304,
-        headers: {
-          ETag: etag,
-          'Cache-Control': 'private, no-cache',
-        },
-      });
-    }
-
-    const result =
-      conditions.length > 0
-        ? await db
-            .select()
-            .from(jobs)
-            .where(and(...conditions))
-            .orderBy(desc(jobs.createdAt))
-        : await db.select().from(jobs).orderBy(desc(jobs.createdAt));
+    const result = await db
+      .select()
+      .from(jobs)
+      .where(and(...conditions))
+      .orderBy(desc(jobs.createdAt));
 
     return NextResponse.json(
       {
@@ -67,8 +62,7 @@ export async function GET(request: Request) {
       },
       {
         headers: {
-          ETag: etag,
-          'Cache-Control': 'private, no-cache',
+          'Cache-Control': 'no-store, no-cache, must-revalidate',
         },
       }
     );
@@ -83,6 +77,9 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   try {
+    const session = await getSessionFromCookies();
+    const userId = session?.sub || null;
+
     const body = await request.json();
     const {
       link,
@@ -94,6 +91,7 @@ export async function POST(request: Request) {
       referrerName = '',
       referrerContact = '',
       referralNotes = '',
+      publicJobId,
     } = body;
 
     if (!link) {
@@ -117,13 +115,15 @@ export async function POST(request: Request) {
           referrerContact: referrerContact || null,
           referralNotes,
           source: 'manual',
+          userId,
+          publicJobId: publicJobId || null,
         })
         .returning();
 
       return NextResponse.json({ success: true, data: inserted[0] });
     }
 
-    const result = await processJobLink(link, 'manual');
+    const result = await processJobLink(link, 'manual', userId || undefined, 'personal');
     return NextResponse.json({ success: true, data: result });
   } catch (error: unknown) {
     console.error('[API /api/jobs POST Error]:', error);

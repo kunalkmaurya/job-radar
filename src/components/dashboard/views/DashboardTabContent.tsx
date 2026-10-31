@@ -6,6 +6,7 @@ import { PipelineView } from './PipelineView';
 import { AnalyticsView } from './AnalyticsView';
 import { SettingsView } from './SettingsView';
 import { ProfileView } from './ProfileView';
+import { FeedView } from '../feed/FeedView';
 import { PipelineMetrics } from './pipelineViewTypes';
 import { Job, JobStatus, TimelineFilter, CustomDateRange } from '@/types';
 
@@ -39,6 +40,8 @@ interface DashboardTabContentProps {
   setDrawerJob: (job: Job) => void;
   onJobStatusChange: (jobId: string, status: JobStatus) => void;
   onJobDelete: (jobId: string) => void;
+  onJobTracked?: () => void;
+  refreshTrigger?: number;
 }
 
 export function DashboardTabContent({
@@ -71,6 +74,8 @@ export function DashboardTabContent({
   setDrawerJob,
   onJobStatusChange,
   onJobDelete,
+  onJobTracked,
+  refreshTrigger,
 }: DashboardTabContentProps) {
   return (
     <div className="w-full px-3 sm:px-5 py-4 sm:py-6 space-y-4 sm:space-y-6 flex-1">
@@ -101,6 +106,10 @@ export function DashboardTabContent({
           onApplyAndAdvance={handleApplyAndAdvance}
           onDeleteJob={onJobDelete}
         />
+      )}
+
+      {activeTab === 'feed' && (
+        <FeedView currentUser={currentUser} onJobTracked={onJobTracked} refreshTrigger={refreshTrigger} />
       )}
 
       {activeTab === 'analytics' && (

@@ -68,11 +68,22 @@ Slide-out drawer containing follow-up calendar reminder presets (`+3d`, `+1w`), 
 
 ## Key Features
 
+- **Public Job Feed & 1-Click Tracking**:
+  - **Explore Jobs Feed**: Curated public feed with admin-posted and telegram-crawled job opportunities.
+  - **Cards & List View Switcher**: Instant switching between responsive Card grid view and high-density Table list view.
+  - **Interactive Pagination**: Configurable page sizes (12, 24, 48, 96) and page navigation.
+  - **1-Click Pipeline Cloning**: Click "Track" on any public job to immediately import it into your personal private board.
+
 - **Multi-Channel Job Ingestion**:
-  - **Telegram Webhook Bot**: Forward raw URLs from LinkedIn, Indeed, or company career pages on your mobile device into a private Telegram chat. The webhook triggers background extraction and instantly catalogs the job.
+  - **Telegram Webhook Bot**: Forward raw URLs from LinkedIn, Indeed, or career pages into Telegram. Automatically routes to your personal board or the public feed.
   - **1-Click Browser Bookmarklet**: Drag-and-drop bookmarklet into your browser bar to capture open tabs instantly.
   - **Auto-Fetch Modal**: Paste any URL into the dashboard to auto-scrape company and role metadata via AI.
   - **Manual Quick Entry**: Fast keyboard-friendly modal for manual tracking.
+
+- **Multi-Tenant Architecture & Open Access**:
+  - Open access authentication (`ALLOWED_EMAIL="*"`) allowing any user to sign in with Google or password.
+  - Strict data isolation: each user's applications, notes, referral info, and statuses remain private.
+  - Designated platform admin (`ADMIN_EMAIL`) for curating and posting public feed opportunities.
 
 - **Complete Referral Tracking**:
   - Explicit referral pipeline tracking across 4 states: `No Referral`, `Asked`, `Got Referral`, and `Declined`.

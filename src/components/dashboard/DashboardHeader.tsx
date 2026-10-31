@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
-import { Sun, Moon, Bookmark, Download, Plus } from 'lucide-react';
+import { Sun, Moon, Bookmark, Download, Plus, RefreshCw } from 'lucide-react';
 import { ProfilePopover } from './ProfilePopover';
 
 interface DashboardHeaderProps {

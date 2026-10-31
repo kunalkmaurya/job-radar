@@ -1,9 +1,9 @@
 'use client';
 
 import React from 'react';
-import { LayoutDashboard, BarChart3, Settings2, User } from 'lucide-react';
+import { LayoutDashboard, Globe, BarChart3, Settings2, User } from 'lucide-react';
 
-export type DashboardTab = 'dashboard' | 'analytics' | 'settings' | 'profile';
+export type DashboardTab = 'dashboard' | 'feed' | 'analytics' | 'settings' | 'profile';
 
 interface DashboardNavTabsProps {
   activeTab: DashboardTab;
@@ -13,7 +13,8 @@ interface DashboardNavTabsProps {
 
 export function DashboardNavTabs({ activeTab, onTabChange, jobCount }: DashboardNavTabsProps) {
   const tabs = [
-    { id: 'dashboard' as const, label: 'Dashboard', icon: LayoutDashboard, badge: jobCount },
+    { id: 'dashboard' as const, label: 'My Dashboard', icon: LayoutDashboard, badge: jobCount },
+    { id: 'feed' as const, label: 'Explore Jobs', icon: Globe },
     { id: 'analytics' as const, label: 'Analytics', icon: BarChart3 },
     { id: 'settings' as const, label: 'Settings', icon: Settings2 },
     { id: 'profile' as const, label: 'Profile', icon: User },

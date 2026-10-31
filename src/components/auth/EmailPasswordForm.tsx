@@ -48,7 +48,7 @@ export function EmailPasswordForm() {
 
       <div className="space-y-1">
         <label className="text-[10px] text-(--text-muted) uppercase tracking-wider block">
-          Authorized Email
+          Email Address
         </label>
         <div className="relative flex items-center">
           <Mail className="w-3.5 h-3.5 absolute left-3 text-(--text-muted) pointer-events-none" />
@@ -65,7 +65,7 @@ export function EmailPasswordForm() {
 
       <div className="space-y-1">
         <label className="text-[10px] text-(--text-muted) uppercase tracking-wider block">
-          Workspace Password
+          Password
         </label>
         <div className="relative flex items-center">
           <Lock className="w-3.5 h-3.5 absolute left-3 text-(--text-muted) pointer-events-none" />

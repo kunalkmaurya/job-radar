@@ -59,8 +59,19 @@ export async function proxy(request: NextRequest) {
 
   const session = await verifySessionToken(token);
 
-  if (!session || !isAllowedEmail(session.email)) {
-    // Clear invalid cookie
+  if (!session) {
+    const response = pathname.startsWith('/api/')
+      ? NextResponse.json(
+          { success: false, error: { code: 'UNAUTHORIZED', message: 'Session expired' } },
+          { status: 401 }
+        )
+      : NextResponse.redirect(new URL('/login', request.url));
+
+    response.cookies.delete(AUTH_COOKIE_NAME);
+    return response;
+  }
+
+  if (!isAllowedEmail(session.email)) {
     const response = pathname.startsWith('/api/')
       ? NextResponse.json(
           { success: false, error: { code: 'FORBIDDEN', message: 'Unauthorized account' } },

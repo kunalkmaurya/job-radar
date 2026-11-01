@@ -18,6 +18,8 @@ function DashboardContent() {
   const [activeNavTab, setActiveNavTab] = useState<DashboardTab>(initialTab);
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [isBookmarkletOpen, setIsBookmarkletOpen] = useState(false);
+  const [feedRefreshCount, setFeedRefreshCount] = useState(0);
+  const [isFeedSyncing, setIsFeedSyncing] = useState(false);
 
   const dashboardState = useDashboardJobs();
   const {
@@ -31,6 +33,13 @@ function DashboardContent() {
     handleExportCSV,
     fetchJobs,
   } = dashboardState;
+
+  const handleSync = async () => {
+    setIsFeedSyncing(true);
+    setFeedRefreshCount((c) => c + 1);
+    await revalidate();
+    setTimeout(() => setIsFeedSyncing(false), 500);
+  };
 
   const drawerState = useJobDrawer({
     jobs,
@@ -51,8 +60,8 @@ function DashboardContent() {
         onOpenAddJob={() => setIsAddOpen(true)}
         onOpenProfile={() => setActiveNavTab('profile')}
         currentUser={currentUser}
-        isSyncing={dashboardState.isSyncing}
-        onSync={revalidate}
+        isSyncing={dashboardState.isSyncing || isFeedSyncing}
+        onSync={handleSync}
       />
 
       <DashboardNavTabs
@@ -67,6 +76,8 @@ function DashboardContent() {
         setDrawerJob={drawerState.setDrawerJob}
         onJobStatusChange={drawerState.onJobStatusChange}
         onJobDelete={drawerState.onJobDelete}
+        onJobTracked={revalidate}
+        refreshTrigger={feedRefreshCount}
       />
 
       <DashboardModals

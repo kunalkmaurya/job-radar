@@ -143,7 +143,25 @@ Use `lucide-react` icons exclusively with standardized sizing:
 
 ---
 
-## 6. Verification Checklist
+## 6. Public Job Feed Specification
+
+### 6.1 View Mode Switcher
+- **Controls**: Dual toggle (`LayoutGrid` for Cards, `List` for Table) placed within `FeedHeader`.
+- **Active State**: `border-(--accent-primary) bg-(--accent-primary-bg) text-(--accent-blue-bright)`.
+- **Inactive State**: `border-(--border-subtle) bg-(--bg-surface) text-(--text-secondary) hover:text-(--text-primary)`.
+
+### 6.2 Grid (Card) vs. List (Table)
+- **Grid View**: 3-column responsive layout (`grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5`).
+- **Table View**: High-density horizontal table (`overflow-x-auto min-w-[720px]`) with monogram initials box, company, role, location, experience, date, and inline actions.
+
+### 6.3 1-Click Track Button State Machine
+- **Untracked**: Solid primary button (`bg-(--accent-primary)`) with `Plus` icon and "Track" label.
+- **Tracking (Loading)**: `Loader2` spinner with `opacity-50` and disabled state.
+- **Tracked**: Muted emerald badge (`bg-(--status-offer-bg) text-(--status-offer-text) border-(--status-offer-border)`) with `Check` icon.
+
+---
+
+## 7. Verification Checklist
 
 - NO EMOJIS anywhere across UI, logs, comments, or scripts.
 - NEAR-SHARP CORNERS: All border-radii capped at 2px to 3px (`rounded-xs`).

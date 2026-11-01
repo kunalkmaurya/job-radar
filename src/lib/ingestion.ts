@@ -1,6 +1,6 @@
 import { db } from '@/db';
-import { jobs } from '@/db/schema';
-import { eq } from 'drizzle-orm';
+import { jobs, publicJobs } from '@/db/schema';
+import { eq, and } from 'drizzle-orm';
 import { scrapeJobPage } from './scraper';
 import { extractJobDetails } from './ai';
 
@@ -10,21 +10,18 @@ import { extractJobDetails } from './ai';
 export function extractUrls(text: string): string[] {
   const urlRegex = /(https?:\/\/[^\s]+)/gi;
   const matches = text.match(urlRegex) || [];
-  // Clean trailing punctuation commonly attached in chat messages
   return matches.map((u) => u.replace(/[.,;:)]+$/, ''));
 }
 
 /**
  * Core Ingestion Pipeline
- * 1. Validates and normalizes URL
- * 2. Checks for duplicates in Neon DB
- * 3. Scrapes content (Jina Reader / Direct)
- * 4. Extracts details with AI (DeepSeek / OpenAI)
- * 5. Inserts into Neon PostgreSQL
+ * Supports both personal user board ingestion and public curated feed ingestion.
  */
 export async function processJobLink(
   rawUrl: string,
-  source: 'telegram' | 'manual' | 'bookmarklet' = 'telegram'
+  source: 'telegram' | 'manual' | 'bookmarklet' | 'feed' | 'admin' = 'telegram',
+  userId?: string,
+  target: 'personal' | 'public' = 'personal'
 ) {
   try {
     const url = rawUrl.trim();
@@ -33,26 +30,58 @@ export async function processJobLink(
       return null;
     }
 
-    console.log(`[Ingestion] Processing job link from ${source}: ${url}`);
+    console.log(`[Ingestion] Processing ${target} job link from ${source}: ${url}`);
 
-    // 1. De-duplication Check
-    const existing = await db.select({ id: jobs.id }).from(jobs).where(eq(jobs.link, url)).limit(1);
+    if (target === 'public') {
+      const existing = await db
+        .select({ id: publicJobs.id })
+        .from(publicJobs)
+        .where(eq(publicJobs.link, url))
+        .limit(1);
+
+      if (existing.length > 0) {
+        console.log(`[Ingestion] Duplicate public link skipped: ${url}`);
+        return { duplicate: true, id: existing[0].id };
+      }
+
+      console.log(`[Ingestion] Scraping content for public job ${url}...`);
+      const scraped = await scrapeJobPage(url);
+      const extracted = await extractJobDetails(scraped.text, url, scraped.isFallback);
+
+      const inserted = await db
+        .insert(publicJobs)
+        .values({
+          company: extracted.company,
+          role: extracted.role,
+          link: url,
+          location: extracted.location || 'N/A',
+          exp: extracted.exp || 'N/A',
+          source,
+          postedBy: userId || null,
+        })
+        .returning();
+
+      return { success: true, job: inserted[0] };
+    }
+
+    // Target: personal pipeline
+    const existing = userId
+      ? await db
+          .select({ id: jobs.id })
+          .from(jobs)
+          .where(and(eq(jobs.link, url), eq(jobs.userId, userId)))
+          .limit(1)
+      : await db.select({ id: jobs.id }).from(jobs).where(eq(jobs.link, url)).limit(1);
 
     if (existing.length > 0) {
-      console.log(`[Ingestion] Duplicate link already exists in DB. Skipping: ${url}`);
+      console.log(`[Ingestion] Duplicate link already tracked by user. Skipping: ${url}`);
       return { duplicate: true, id: existing[0].id };
     }
 
-    // 2. Scrape job page
     console.log(`[Ingestion] Scraping content for ${url}...`);
     const scraped = await scrapeJobPage(url);
-
-    // 3. AI Extraction
-    console.log(`[Ingestion] Extracting details with AI...`);
     const extracted = await extractJobDetails(scraped.text, url, scraped.isFallback);
-    console.log(`[Ingestion] Extracted: ${extracted.company} — ${extracted.role}`);
 
-    // 4. Insert into Neon DB
     const inserted = await db
       .insert(jobs)
       .values({
@@ -64,10 +93,11 @@ export async function processJobLink(
         status: 'Saved',
         notes: '',
         source,
+        userId: userId || null,
       })
       .returning();
 
-    console.log(`[Ingestion] Successfully saved to Neon DB with ID: ${inserted[0]?.id}`);
+    console.log(`[Ingestion] Successfully saved to personal board with ID: ${inserted[0]?.id}`);
     return { success: true, job: inserted[0] };
   } catch (error) {
     console.error(`[Ingestion Error for ${rawUrl}]:`, error);

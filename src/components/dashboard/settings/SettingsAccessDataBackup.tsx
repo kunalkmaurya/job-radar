@@ -27,7 +27,7 @@ export function SettingsAccessDataBackup({
         </div>
         <span className="text-[10px] text-emerald-400 font-semibold flex items-center gap-1">
           <CheckCircle className="w-3 h-3" />
-          <span>Whitelist Enforced</span>
+          <span>Active & Protected</span>
         </span>
       </div>
 
@@ -35,15 +35,17 @@ export function SettingsAccessDataBackup({
         <div className="p-3 border border-(--border-subtle) bg-(--bg-app) flex items-center justify-between">
           <div>
             <div className="text-[10px] text-(--text-muted) uppercase tracking-wider">
-              Authorized Account
+              Signed In Account
             </div>
             <div className="font-bold text-(--text-primary) mt-0.5 truncate max-w-[220px]">
-              {currentUser?.email || 'kunalkrraj@gmail.com'}
+              {currentUser?.email || 'user@example.com'}
             </div>
-            <div className="text-[9px] text-(--text-muted)">OAuth Personal Whitelist</div>
+            <div className="text-[9px] text-(--text-muted)">
+              {currentUser?.role === 'admin' ? 'Platform Administrator' : 'Standard Member'}
+            </div>
           </div>
           <span className="px-2 py-0.5 text-[9px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-bold">
-            OWNER
+            {currentUser?.role === 'admin' ? 'ADMIN' : 'MEMBER'}
           </span>
         </div>
 

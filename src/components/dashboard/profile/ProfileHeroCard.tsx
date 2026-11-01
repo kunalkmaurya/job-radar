@@ -9,10 +9,10 @@ interface ProfileHeroCardProps {
 }
 
 export function ProfileHeroCard({ currentUser, totalJobs }: ProfileHeroCardProps) {
-  const initial = currentUser?.email ? currentUser.email.charAt(0).toUpperCase() : 'K';
+  const initial = currentUser?.email ? currentUser.email.charAt(0).toUpperCase() : 'U';
   const displayName =
-    currentUser?.name || (currentUser?.email ? currentUser.email.split('@')[0] : 'Workspace Owner');
-  const displayEmail = currentUser?.email || 'kunalkrraj@gmail.com';
+    currentUser?.name || (currentUser?.email ? currentUser.email.split('@')[0] : 'User');
+  const displayEmail = currentUser?.email || 'user@example.com';
 
   return (
     <div className="border border-(--border-subtle) bg-(--bg-surface) p-6 shadow-sm">
@@ -28,7 +28,7 @@ export function ProfileHeroCard({ currentUser, totalJobs }: ProfileHeroCardProps
               </h2>
               <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 text-[10px] uppercase tracking-wider font-semibold bg-emerald-500/10 border border-emerald-500/25 text-emerald-400">
                 <ShieldCheck className="w-3 h-3" />
-                Verified Owner
+                {currentUser?.role === 'admin' ? 'Platform Admin' : 'Member'}
               </span>
             </div>
             <p className="flex items-center gap-1.5 text-xs text-(--text-secondary) ">

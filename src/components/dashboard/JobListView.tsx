@@ -43,6 +43,11 @@ export function JobListView({
     [jobs, pagination.currentPage, pagination.pageSize]
   );
 
+  const emptyMessage =
+    jobs.length === 0
+      ? 'No job applications yet. Visit Explore Jobs or click + Add Job to start tracking.'
+      : 'No job applications match your filters.';
+
   return (
     <section className="border border-(--border-subtle) bg-(--bg-surface) shadow-sm flex flex-col">
       {/* Mobile Card List (< md) */}
@@ -53,7 +58,7 @@ export function JobListView({
           </div>
         ) : paginatedJobs.length === 0 ? (
           <div className="py-12 text-center text-xs text-(--text-muted)">
-            No job applications match your filters.
+            {emptyMessage}
           </div>
         ) : (
           paginatedJobs.map((job) => (
@@ -81,7 +86,7 @@ export function JobListView({
               {paginatedJobs.length === 0 ? (
                 <tr>
                   <td colSpan={6} className="py-12 text-center text-(--text-muted)">
-                    No job applications match your filters.
+                    {emptyMessage}
                   </td>
                 </tr>
               ) : (

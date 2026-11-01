@@ -6,7 +6,7 @@ import {
   useDashboardJobs,
   useJobDrawer,
   DashboardHeader,
-  DashboardNavTabs,
+  DashboardSidebar,
   DashboardTab,
   DashboardTabContent,
   DashboardModals,
@@ -18,6 +18,7 @@ function DashboardContent() {
   const [activeNavTab, setActiveNavTab] = useState<DashboardTab>(initialTab);
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [isBookmarkletOpen, setIsBookmarkletOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [feedRefreshCount, setFeedRefreshCount] = useState(0);
   const [isFeedSyncing, setIsFeedSyncing] = useState(false);
 
@@ -51,34 +52,46 @@ function DashboardContent() {
   });
 
   return (
-    <div className="min-h-screen flex flex-col bg-(--bg-app) text-(--text-primary)">
-      <DashboardHeader
-        theme={theme}
-        onToggleTheme={toggleTheme}
-        onOpenBookmarklet={() => setIsBookmarkletOpen(true)}
-        onExportCSV={handleExportCSV}
-        onOpenAddJob={() => setIsAddOpen(true)}
-        onOpenProfile={() => setActiveNavTab('profile')}
-        currentUser={currentUser}
-        isSyncing={dashboardState.isSyncing || isFeedSyncing}
-        onSync={handleSync}
-      />
-
-      <DashboardNavTabs
+    <div className="min-h-screen flex bg-(--bg-app) text-(--text-primary)">
+      <DashboardSidebar
         activeTab={activeNavTab}
         onTabChange={setActiveNavTab}
         jobCount={jobs.length}
+        currentUser={currentUser}
+        theme={theme}
+        onToggleTheme={toggleTheme}
+        onOpenAddJob={() => setIsAddOpen(true)}
+        isMobileOpen={isMobileMenuOpen}
+        onCloseMobile={() => setIsMobileMenuOpen(false)}
       />
 
-      <DashboardTabContent
-        activeTab={activeNavTab}
-        {...dashboardState}
-        setDrawerJob={drawerState.setDrawerJob}
-        onJobStatusChange={drawerState.onJobStatusChange}
-        onJobDelete={drawerState.onJobDelete}
-        onJobTracked={revalidate}
-        refreshTrigger={feedRefreshCount}
-      />
+      <div className="flex-1 flex flex-col min-w-0">
+        <DashboardHeader
+          theme={theme}
+          onToggleTheme={toggleTheme}
+          onOpenBookmarklet={() => setIsBookmarkletOpen(true)}
+          onExportCSV={handleExportCSV}
+          onOpenAddJob={() => setIsAddOpen(true)}
+          onOpenProfile={() => setActiveNavTab('profile')}
+          currentUser={currentUser}
+          isSyncing={dashboardState.isSyncing || isFeedSyncing}
+          onSync={handleSync}
+          onOpenMobileMenu={() => setIsMobileMenuOpen(true)}
+          activeTab={activeNavTab}
+        />
+
+        <main className="flex-1 overflow-y-auto">
+          <DashboardTabContent
+            activeTab={activeNavTab}
+            {...dashboardState}
+            setDrawerJob={drawerState.setDrawerJob}
+            onJobStatusChange={drawerState.onJobStatusChange}
+            onJobDelete={drawerState.onJobDelete}
+            onJobTracked={revalidate}
+            refreshTrigger={feedRefreshCount}
+          />
+        </main>
+      </div>
 
       <DashboardModals
         drawerJob={drawerState.drawerJob}

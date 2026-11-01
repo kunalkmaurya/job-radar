@@ -86,14 +86,21 @@ export function isAdminEmail(email: string): boolean {
  */
 export function isAllowedEmail(email: string): boolean {
   if (!email) return false;
-  const clean = email.trim().toLowerCase();
-  const allowed = process.env.ALLOWED_EMAIL || process.env.ALLOWED_EMAILS;
-  if (!allowed || allowed.trim() === '*' || allowed.trim().toLowerCase() === 'all') {
+  const clean = email.trim().toLowerCase().replace(/['"]/g, '');
+  if (isAdminEmail(clean)) {
+    return true;
+  }
+  const rawAllowed = process.env.ALLOWED_EMAIL || process.env.ALLOWED_EMAILS;
+  if (!rawAllowed) {
+    return true;
+  }
+  const allowed = rawAllowed.replace(/['"]/g, '').trim();
+  if (!allowed || allowed === '*' || allowed.toLowerCase() === 'all') {
     return true;
   }
   const allowedList = allowed
     .split(',')
-    .map((e) => e.trim().toLowerCase())
+    .map((e) => e.trim().toLowerCase().replace(/['"]/g, ''))
     .filter(Boolean);
 
   if (allowedList.includes('*') || allowedList.includes('all')) {

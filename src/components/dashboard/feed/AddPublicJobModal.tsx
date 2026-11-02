@@ -131,7 +131,11 @@ export function AddPublicJobModal({ isOpen, onClose, onSuccess }: AddPublicJobMo
               disabled={isLoading}
               className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs bg-(--accent-primary) hover:bg-(--accent-primary-hover) text-white font-medium disabled:opacity-50"
             >
-              {isLoading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Plus className="w-3.5 h-3.5" />}
+              {isLoading ? (
+                <Loader2 className="w-3.5 h-3.5 animate-spin" />
+              ) : (
+                <Plus className="w-3.5 h-3.5" />
+              )}
               <span>{company && role ? 'Post Job' : 'Auto-Scrape & Post'}</span>
             </button>
           </div>
@@ -140,4 +144,3 @@ export function AddPublicJobModal({ isOpen, onClose, onSuccess }: AddPublicJobMo
     </div>
   );
 }
-

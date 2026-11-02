@@ -109,7 +109,11 @@ export function DashboardTabContent({
       )}
 
       {activeTab === 'feed' && (
-        <FeedView currentUser={currentUser} onJobTracked={onJobTracked} refreshTrigger={refreshTrigger} />
+        <FeedView
+          currentUser={currentUser}
+          onJobTracked={onJobTracked}
+          refreshTrigger={refreshTrigger}
+        />
       )}
 
       {activeTab === 'analytics' && (

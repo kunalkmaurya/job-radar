@@ -30,28 +30,30 @@ All endpoints follow REST principles and are served under the `/api` namespace.
 
 ## 3. Endpoints Overview
 
-| Method | Endpoint | Description | Access |
-| :--- | :--- | :--- | :--- |
-| **GET** | `/api/auth/google` | Initiates Google OAuth redirect | Public |
-| **GET** | `/api/auth/callback` | Handles Google OAuth callback | Public |
-| **POST** | `/api/auth/login` | Email/password credential login | Public |
-| **POST** | `/api/auth/logout` | Clears session cookie | Authenticated |
-| **GET** | `/api/auth/me` | Returns current user profile & role | Authenticated |
-| **GET** | `/api/jobs` | Fetches personal pipeline jobs | Authenticated |
-| **POST** | `/api/jobs` | Creates a new personal job (auto-scrape or manual) | Authenticated |
-| **PATCH** | `/api/jobs/[id]` | Updates status, notes, referral info, or reminder | Authenticated |
-| **DELETE** | `/api/jobs/[id]` | Deletes a job application from private board | Authenticated |
-| **GET** | `/api/feed/jobs` | Fetches public feed jobs with `isTracked` state | Authenticated |
-| **POST** | `/api/feed/jobs` | Posts a new job to the public feed | Admin Only |
-| **POST** | `/api/feed/jobs/[id]/track` | Clones a public job to personal pipeline | Authenticated |
-| **POST** | `/api/telegram-webhook` | Ingests job links from Telegram channels | Webhook Secret |
+| Method     | Endpoint                    | Description                                        | Access         |
+| :--------- | :-------------------------- | :------------------------------------------------- | :------------- |
+| **GET**    | `/api/auth/google`          | Initiates Google OAuth redirect                    | Public         |
+| **GET**    | `/api/auth/callback`        | Handles Google OAuth callback                      | Public         |
+| **POST**   | `/api/auth/login`           | Email/password credential login                    | Public         |
+| **POST**   | `/api/auth/logout`          | Clears session cookie                              | Authenticated  |
+| **GET**    | `/api/auth/me`              | Returns current user profile & role                | Authenticated  |
+| **GET**    | `/api/jobs`                 | Fetches personal pipeline jobs                     | Authenticated  |
+| **POST**   | `/api/jobs`                 | Creates a new personal job (auto-scrape or manual) | Authenticated  |
+| **PATCH**  | `/api/jobs/[id]`            | Updates status, notes, referral info, or reminder  | Authenticated  |
+| **DELETE** | `/api/jobs/[id]`            | Deletes a job application from private board       | Authenticated  |
+| **GET**    | `/api/feed/jobs`            | Fetches public feed jobs with `isTracked` state    | Authenticated  |
+| **POST**   | `/api/feed/jobs`            | Posts a new job to the public feed                 | Admin Only     |
+| **POST**   | `/api/feed/jobs/[id]/track` | Clones a public job to personal pipeline           | Authenticated  |
+| **POST**   | `/api/telegram-webhook`     | Ingests job links from Telegram channels           | Webhook Secret |
 
 ---
 
 ## 4. Authentication Endpoints
 
 ### `POST /api/auth/login`
+
 Logs in using email and workspace password.
+
 - **Request Body**:
   ```json
   { "email": "user@example.com", "password": "access-password" }
@@ -59,7 +61,9 @@ Logs in using email and workspace password.
 - **Response `200`**: Sets `auth_token` cookie and returns `{ "success": true, "redirect": "/dashboard" }`.
 
 ### `GET /api/auth/me`
+
 Fetches the active user session.
+
 - **Response `200`**:
   ```json
   {
@@ -78,7 +82,9 @@ Fetches the active user session.
 ## 5. Personal Pipeline Endpoints
 
 ### `GET /api/jobs`
+
 Fetches all jobs belonging to the authenticated user (`jobs.user_id = session.sub`).
+
 - **Query Parameters**:
   - `timeline`: `all` (default) \| `today` \| `this_week` \| `past_30_days`
   - `status`: Filter by status (`Saved`, `Applied`, `Interviewing`, `Offer`, `Rejected`, `Archived`)
@@ -107,7 +113,9 @@ Fetches all jobs belonging to the authenticated user (`jobs.user_id = session.su
   ```
 
 ### `POST /api/jobs`
+
 Creates a job in the user's private pipeline.
+
 - **Manual Mode**:
   ```json
   {
@@ -124,7 +132,9 @@ Creates a job in the user's private pipeline.
 - Scrapes the URL with Jina Reader and parses company/role with DeepSeek/OpenAI.
 
 ### `PATCH /api/jobs/[id]`
+
 Updates an application in the user's private pipeline.
+
 - **Request Body**:
   ```json
   {
@@ -139,6 +149,7 @@ Updates an application in the user's private pipeline.
   ```
 
 ### `DELETE /api/jobs/[id]`
+
 Permanently removes a job application from the private pipeline.
 
 ---
@@ -146,7 +157,9 @@ Permanently removes a job application from the private pipeline.
 ## 6. Public Feed Endpoints
 
 ### `GET /api/feed/jobs`
+
 Fetches public feed opportunities, sorted chronologically with tracking detection.
+
 - **Query Parameters**:
   - `search`: Filter by company, role, or location prefix.
 - **Response `200`**:
@@ -173,7 +186,9 @@ Fetches public feed opportunities, sorted chronologically with tracking detectio
   ```
 
 ### `POST /api/feed/jobs` (Admin Only)
+
 Posts a new curated job opportunity to the public feed.
+
 - **Request Body**:
   ```json
   {
@@ -186,7 +201,9 @@ Posts a new curated job opportunity to the public feed.
   ```
 
 ### `POST /api/feed/jobs/[id]/track`
+
 Clones a public job into the authenticated user's private pipeline.
+
 - Automatically associates `public_job_id` and sets `status = 'Saved'`.
 - **Response `200`**:
   ```json
@@ -202,7 +219,9 @@ Clones a public job into the authenticated user's private pipeline.
 ## 7. Ingestion Webhook
 
 ### `POST /api/telegram-webhook`
+
 Receives Telegram channel updates.
+
 - **Header**: `X-Telegram-Bot-Api-Secret-Token: <SECRET>`
 - If `chat.id` belongs to a registered user (`telegram_chat_id`), links are ingested into their personal board.
 - If unassigned or admin channel, links are scraped and ingested into `public_jobs`.

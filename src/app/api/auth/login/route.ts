@@ -1,5 +1,12 @@
 import { NextResponse } from 'next/server';
-import { createSessionToken, verifyCredentials, isAdminEmail, AUTH_COOKIE_NAME } from '@/lib/auth';
+import {
+  createSessionToken,
+  comparePassword,
+  verifyCredentials,
+  isAdminEmail,
+  isAllowedEmail,
+  AUTH_COOKIE_NAME,
+} from '@/lib/auth';
 import { db } from '@/db';
 import { users } from '@/db/schema';
 import { eq } from 'drizzle-orm';
@@ -17,13 +24,18 @@ export async function POST(request: Request) {
     }
 
     const trimmedEmail = email.trim().toLowerCase();
-    const check = verifyCredentials(trimmedEmail, password);
-    if (!check.valid) {
-      return NextResponse.json({ success: false, error: check.reason }, { status: 401 });
+
+    if (!isAllowedEmail(trimmedEmail)) {
+      return NextResponse.json(
+        { success: false, error: 'This email is not authorized on this private workspace.' },
+        { status: 403 }
+      );
     }
 
-    const role = isAdminEmail(trimmedEmail) ? 'admin' : 'user';
     let userId = 'personal-owner-id';
+    let userRole = isAdminEmail(trimmedEmail) ? 'admin' : 'user';
+    let userName = trimmedEmail.split('@')[0];
+
     try {
       if (process.env.DATABASE_URL) {
         const existingUsers = await db
@@ -31,34 +43,70 @@ export async function POST(request: Request) {
           .from(users)
           .where(eq(users.email, trimmedEmail))
           .limit(1);
+
         if (existingUsers.length > 0) {
-          userId = existingUsers[0].id;
-          if (existingUsers[0].role !== role) {
-            await db.update(users).set({ role }).where(eq(users.id, userId));
+          const user = existingUsers[0];
+          userId = user.id;
+          userName = user.name || userName;
+          userRole = isAdminEmail(trimmedEmail) ? 'admin' : user.role;
+
+          if (user.passwordHash) {
+            const matches = await comparePassword(password, user.passwordHash);
+            if (!matches) {
+              return NextResponse.json(
+                { success: false, error: 'Incorrect password. Please try again.' },
+                { status: 401 }
+              );
+            }
+          } else {
+            const fallbackCheck = verifyCredentials(trimmedEmail, password);
+            if (!fallbackCheck.valid) {
+              return NextResponse.json(
+                { success: false, error: fallbackCheck.reason },
+                { status: 401 }
+              );
+            }
           }
         } else {
+          const fallbackCheck = verifyCredentials(trimmedEmail, password);
+          if (!fallbackCheck.valid) {
+            return NextResponse.json(
+              { success: false, error: fallbackCheck.reason },
+              { status: 401 }
+            );
+          }
+
           const newRecords = await db
             .insert(users)
             .values({
               email: trimmedEmail,
-              name: trimmedEmail.split('@')[0],
-              role,
+              name: userName,
+              role: userRole,
             })
             .returning({ id: users.id });
+
           if (newRecords.length > 0) {
             userId = newRecords[0].id;
           }
         }
+      } else {
+        const fallbackCheck = verifyCredentials(trimmedEmail, password);
+        if (!fallbackCheck.valid) {
+          return NextResponse.json(
+            { success: false, error: fallbackCheck.reason },
+            { status: 401 }
+          );
+        }
       }
     } catch (dbErr) {
-      console.warn('Database user sync skipped:', dbErr);
+      console.warn('Database user lookup skipped:', dbErr);
     }
 
     const sessionToken = await createSessionToken({
       sub: userId,
       email: trimmedEmail,
-      name: trimmedEmail.split('@')[0],
-      role,
+      name: userName,
+      role: userRole,
     });
 
     const response = NextResponse.json({

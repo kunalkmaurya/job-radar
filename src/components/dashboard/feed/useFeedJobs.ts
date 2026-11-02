@@ -46,9 +46,7 @@ export function useFeedJobs({ onJobTracked, refreshTrigger }: UseFeedJobsProps =
 
   const trackJob = async (jobId: string) => {
     setTrackingId(jobId);
-    setFeedJobs((prev) =>
-      prev.map((j) => (j.id === jobId ? { ...j, isTracked: true } : j))
-    );
+    setFeedJobs((prev) => prev.map((j) => (j.id === jobId ? { ...j, isTracked: true } : j)));
 
     try {
       const res = await fetch(`/api/feed/jobs/${jobId}/track`, {
@@ -56,17 +54,13 @@ export function useFeedJobs({ onJobTracked, refreshTrigger }: UseFeedJobsProps =
       });
       const json = await res.json();
       if (!res.ok && json.error?.code !== 'DUPLICATE') {
-        setFeedJobs((prev) =>
-          prev.map((j) => (j.id === jobId ? { ...j, isTracked: false } : j))
-        );
+        setFeedJobs((prev) => prev.map((j) => (j.id === jobId ? { ...j, isTracked: false } : j)));
       } else {
         if (onJobTracked) onJobTracked();
       }
     } catch (err) {
       console.error('[Feed] Failed to track job:', err);
-      setFeedJobs((prev) =>
-        prev.map((j) => (j.id === jobId ? { ...j, isTracked: false } : j))
-      );
+      setFeedJobs((prev) => prev.map((j) => (j.id === jobId ? { ...j, isTracked: false } : j)));
     } finally {
       setTrackingId(null);
     }
@@ -84,4 +78,3 @@ export function useFeedJobs({ onJobTracked, refreshTrigger }: UseFeedJobsProps =
     refreshFeed: fetchFeedJobs,
   };
 }
-

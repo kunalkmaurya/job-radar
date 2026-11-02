@@ -4,10 +4,7 @@ import { publicJobs, jobs } from '@/db/schema';
 import { eq } from 'drizzle-orm';
 import { getSessionFromCookies } from '@/lib/auth';
 
-export async function POST(
-  request: Request,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function POST(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
     const session = await getSessionFromCookies();
     if (!session?.sub) {
@@ -19,11 +16,7 @@ export async function POST(
 
     const { id } = await params;
 
-    const publicJob = await db
-      .select()
-      .from(publicJobs)
-      .where(eq(publicJobs.id, id))
-      .limit(1);
+    const publicJob = await db.select().from(publicJobs).where(eq(publicJobs.id, id)).limit(1);
 
     if (publicJob.length === 0) {
       return NextResponse.json(
@@ -72,4 +65,3 @@ export async function POST(
     );
   }
 }
-

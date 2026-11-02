@@ -56,7 +56,10 @@ export function FeedListView({ jobs, trackingId, onTrack }: FeedListViewProps) {
                   </div>
                 </td>
                 <td className="py-3 px-3">
-                  <span className="font-medium text-(--text-primary) truncate block max-w-[220px]" title={job.role}>
+                  <span
+                    className="font-medium text-(--text-primary) truncate block max-w-[220px]"
+                    title={job.role}
+                  >
                     {job.role}
                   </span>
                 </td>
@@ -115,4 +118,3 @@ export function FeedListView({ jobs, trackingId, onTrack }: FeedListViewProps) {
     </div>
   );
 }
-

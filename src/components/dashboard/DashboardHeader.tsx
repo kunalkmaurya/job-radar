@@ -54,7 +54,13 @@ export function DashboardHeader({
 
         <div className="flex items-center gap-2 md:hidden">
           <div className="w-6 h-6 bg-(--accent-primary-bg) border border-(--border-subtle) flex items-center justify-center p-0.5 rounded-xs">
-            <Image src="/logo.png" alt="Job Radar" width={16} height={16} className="w-3.5 h-3.5 object-contain" />
+            <Image
+              src="/logo.png"
+              alt="Job Radar"
+              width={16}
+              height={16}
+              className="w-3.5 h-3.5 object-contain"
+            />
           </div>
           <span className="font-bold text-xs tracking-wider uppercase text-(--text-primary)">
             JOB RADAR
@@ -85,7 +91,9 @@ export function DashboardHeader({
             aria-label="Sync jobs pipeline"
             className="h-8 w-8 flex items-center justify-center border border-(--border-subtle) bg-(--bg-surface) hover:bg-(--bg-surface-hover) text-(--text-secondary) hover:text-(--text-primary) transition-colors cursor-pointer rounded-xs shrink-0 disabled:opacity-50"
           >
-            <RefreshCw className={`w-3.5 h-3.5 ${isSyncing ? 'animate-spin text-(--accent-primary)' : ''}`} />
+            <RefreshCw
+              className={`w-3.5 h-3.5 ${isSyncing ? 'animate-spin text-(--accent-primary)' : ''}`}
+            />
           </button>
         )}
 

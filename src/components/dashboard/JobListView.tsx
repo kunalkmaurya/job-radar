@@ -57,9 +57,7 @@ export function JobListView({
             Loading applications...
           </div>
         ) : paginatedJobs.length === 0 ? (
-          <div className="py-12 text-center text-xs text-(--text-muted)">
-            {emptyMessage}
-          </div>
+          <div className="py-12 text-center text-xs text-(--text-muted)">{emptyMessage}</div>
         ) : (
           paginatedJobs.map((job) => (
             <JobMobileCard

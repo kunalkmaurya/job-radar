@@ -34,7 +34,9 @@ export function SidebarUserFooter({
 
   return (
     <div className="p-2 border-t border-(--border-subtle) space-y-2">
-      <div className={`flex items-center gap-2 ${isCollapsed ? 'justify-center' : 'justify-between'}`}>
+      <div
+        className={`flex items-center gap-2 ${isCollapsed ? 'justify-center' : 'justify-between'}`}
+      >
         <button
           onClick={onToggleTheme}
           title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
@@ -83,4 +85,3 @@ export function SidebarUserFooter({
     </div>
   );
 }
-

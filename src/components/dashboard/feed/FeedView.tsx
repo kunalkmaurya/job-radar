@@ -60,7 +60,9 @@ export function FeedView({ currentUser, onJobTracked, refreshTrigger }: FeedView
         <div className="flex flex-col items-center justify-center py-16 border border-dashed border-(--border-subtle) text-(--text-muted) gap-1 rounded-xs">
           <p className="text-sm font-medium">No public opportunities found</p>
           <p className="text-xs">
-            {searchQuery ? 'Try adjusting your search query' : 'Jobs posted by admins will appear here'}
+            {searchQuery
+              ? 'Try adjusting your search query'
+              : 'Jobs posted by admins will appear here'}
           </p>
         </div>
       ) : (

@@ -1,0 +1,1 @@
+ALTER TABLE "users" ADD COLUMN "job_digest_frequency" varchar(20) DEFAULT 'none' NOT NULL;

@@ -106,4 +106,3 @@ export function FeedCard({ job, isTracking, onTrack }: FeedCardProps) {
     </div>
   );
 }
-

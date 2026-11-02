@@ -40,16 +40,57 @@ export async function POST(request: Request) {
           resolvedUserId = matched[0].id;
         }
       } catch {
-        // Continue with default routing if lookup fails
+        // Fallback to owner below
       }
     }
 
-    // If chat belongs to a specific user, ingest to their personal board; otherwise ingest to public feed
-    const target = resolvedUserId ? 'personal' : 'public';
+    // Fallback: If chat is not mapped to a specific user, default to the workspace owner/admin
+    if (!resolvedUserId) {
+      try {
+        const adminEmail = (
+          process.env.ADMIN_EMAIL ||
+          process.env.ADMIN_EMAILS ||
+          'kunalkrraj@gmail.com'
+        )
+          .split(',')[0]
+          .trim()
+          .toLowerCase();
+
+        const adminUser = await db
+          .select({ id: users.id })
+          .from(users)
+          .where(eq(users.email, adminEmail))
+          .limit(1);
+
+        if (adminUser.length > 0) {
+          resolvedUserId = adminUser[0].id;
+          if (chatId) {
+            await db
+              .update(users)
+              .set({ telegramChatId: chatId })
+              .where(eq(users.id, adminUser[0].id));
+          }
+        } else {
+          const fallbackAdmin = await db
+            .select({ id: users.id })
+            .from(users)
+            .where(eq(users.role, 'admin'))
+            .limit(1);
+          if (fallbackAdmin.length > 0) {
+            resolvedUserId = fallbackAdmin[0].id;
+          }
+        }
+      } catch (err) {
+        console.warn('[Telegram Webhook] Admin fallback lookup failed:', err);
+      }
+    }
 
     for (const url of urls) {
       try {
-        await processJobLink(url, 'telegram', resolvedUserId, target);
+        // Ingest into personal dashboard
+        await processJobLink(url, 'telegram', resolvedUserId, 'personal');
+        // Also ensure public feed has it
+        await processJobLink(url, 'telegram', resolvedUserId, 'public');
       } catch (err) {
         console.error(`[Telegram Webhook] Failed to process ${url}:`, err);
       }

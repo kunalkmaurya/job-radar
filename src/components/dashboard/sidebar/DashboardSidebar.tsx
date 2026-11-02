@@ -61,7 +61,13 @@ export function DashboardSidebar({
                 className="w-full flex items-center justify-center p-1 text-(--text-muted) hover:text-(--text-primary) rounded-xs cursor-pointer transition-colors group"
               >
                 <div className="w-7 h-7 bg-(--accent-primary-bg) border border-(--border-subtle) flex items-center justify-center p-1 shrink-0 rounded-xs group-hover:hidden">
-                  <Image src="/logo.png" alt="Job Radar" width={18} height={18} className="w-4 h-4 object-contain rounded-xs" />
+                  <Image
+                    src="/logo.png"
+                    alt="Job Radar"
+                    width={18}
+                    height={18}
+                    className="w-4 h-4 object-contain rounded-xs"
+                  />
                 </div>
                 <PanelLeft className="w-4 h-4 hidden group-hover:block text-(--accent-blue-bright)" />
               </button>
@@ -69,7 +75,13 @@ export function DashboardSidebar({
               <>
                 <div className="flex items-center gap-2.5 min-w-0">
                   <div className="w-7 h-7 bg-(--accent-primary-bg) border border-(--border-subtle) flex items-center justify-center p-1 shrink-0 rounded-xs">
-                    <Image src="/logo.png" alt="Job Radar" width={18} height={18} className="w-4 h-4 object-contain rounded-xs" />
+                    <Image
+                      src="/logo.png"
+                      alt="Job Radar"
+                      width={18}
+                      height={18}
+                      className="w-4 h-4 object-contain rounded-xs"
+                    />
                   </div>
                   <span className="font-bold text-xs tracking-wider uppercase text-(--text-primary) truncate">
                     JOB RADAR

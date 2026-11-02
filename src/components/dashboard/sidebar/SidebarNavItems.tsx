@@ -49,7 +49,9 @@ export function SidebarNavItems({
                 : 'border-transparent text-(--text-secondary) hover:text-(--text-primary) hover:bg-(--bg-surface-hover)'
             } ${isCollapsed ? 'justify-center px-0' : 'justify-between'}`}
           >
-            <div className={`flex items-center gap-2.5 min-w-0 ${isCollapsed ? 'justify-center' : ''}`}>
+            <div
+              className={`flex items-center gap-2.5 min-w-0 ${isCollapsed ? 'justify-center' : ''}`}
+            >
               <Icon className="w-4 h-4 shrink-0" />
               {!isCollapsed && <span className="truncate">{item.label}</span>}
             </div>
@@ -71,4 +73,3 @@ export function SidebarNavItems({
     </nav>
   );
 }
-

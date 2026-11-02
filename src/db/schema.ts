@@ -20,6 +20,10 @@ export const users = pgTable(
     name: varchar('name', { length: 255 }),
     image: text('image'),
     role: varchar('role', { length: 50 }).default('user').notNull(), // 'admin' | 'user'
+    passwordHash: text('password_hash'),
+    resetPasswordToken: text('reset_password_token'),
+    resetPasswordExpires: timestamp('reset_password_expires', { withTimezone: true }),
+    jobDigestFrequency: varchar('job_digest_frequency', { length: 20 }).default('none').notNull(),
     telegramChatId: varchar('telegram_chat_id', { length: 100 }),
     ingestToken: varchar('ingest_token', { length: 64 }),
     createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
@@ -29,6 +33,7 @@ export const users = pgTable(
     uniqueIndex('idx_users_email').on(table.email),
     uniqueIndex('idx_users_ingest_token').on(table.ingestToken),
     index('idx_users_telegram_chat_id').on(table.telegramChatId),
+    index('idx_users_reset_password_token').on(table.resetPasswordToken),
   ]
 );
 

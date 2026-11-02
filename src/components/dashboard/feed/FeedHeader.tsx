@@ -35,7 +35,8 @@ export function FeedHeader({
           </span>
         </div>
         <p className="text-xs text-(--text-muted) mt-0.5">
-          Curated opportunities from admins and official channels. Add them to your private pipeline to track status.
+          Curated opportunities from admins and official channels. Add them to your private pipeline
+          to track status.
         </p>
       </div>
 
@@ -93,4 +94,3 @@ export function FeedHeader({
     </div>
   );
 }
-

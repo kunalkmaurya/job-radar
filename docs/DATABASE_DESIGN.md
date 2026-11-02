@@ -75,65 +75,68 @@ erDiagram
 ## 3. Data Dictionary
 
 ### 3.1 `users` Table
+
 Stores authenticated user accounts with role hierarchy and Telegram channel bindings.
 
-| Column | Type | Constraints | Default | Description |
-| :--- | :--- | :--- | :--- | :--- |
-| `id` | `UUID` | `PRIMARY KEY` | `gen_random_uuid()` | Unique user identifier |
-| `email` | `VARCHAR(255)` | `UNIQUE, NOT NULL` | _None_ | Account email address |
-| `name` | `VARCHAR(255)` | `NULLABLE` | _None_ | User display name |
-| `image` | `TEXT` | `NULLABLE` | _None_ | Profile avatar URL |
-| `role` | `VARCHAR(50)` | `NOT NULL` | `'user'` | Role: `'admin'` or `'user'` |
-| `telegram_chat_id` | `VARCHAR(100)` | `UNIQUE, NULLABLE` | _None_ | Bound Telegram chat ID |
-| `ingest_token` | `VARCHAR(64)` | `UNIQUE, NULLABLE` | _None_ | Direct webhook ingestion token |
-| `created_at` | `TIMESTAMPTZ` | `NOT NULL` | `CURRENT_TIMESTAMP` | Account creation date |
-| `updated_at` | `TIMESTAMPTZ` | `NOT NULL` | `CURRENT_TIMESTAMP` | Profile update timestamp |
+| Column             | Type           | Constraints        | Default             | Description                    |
+| :----------------- | :------------- | :----------------- | :------------------ | :----------------------------- |
+| `id`               | `UUID`         | `PRIMARY KEY`      | `gen_random_uuid()` | Unique user identifier         |
+| `email`            | `VARCHAR(255)` | `UNIQUE, NOT NULL` | _None_              | Account email address          |
+| `name`             | `VARCHAR(255)` | `NULLABLE`         | _None_              | User display name              |
+| `image`            | `TEXT`         | `NULLABLE`         | _None_              | Profile avatar URL             |
+| `role`             | `VARCHAR(50)`  | `NOT NULL`         | `'user'`            | Role: `'admin'` or `'user'`    |
+| `telegram_chat_id` | `VARCHAR(100)` | `UNIQUE, NULLABLE` | _None_              | Bound Telegram chat ID         |
+| `ingest_token`     | `VARCHAR(64)`  | `UNIQUE, NULLABLE` | _None_              | Direct webhook ingestion token |
+| `created_at`       | `TIMESTAMPTZ`  | `NOT NULL`         | `CURRENT_TIMESTAMP` | Account creation date          |
+| `updated_at`       | `TIMESTAMPTZ`  | `NOT NULL`         | `CURRENT_TIMESTAMP` | Profile update timestamp       |
 
 ---
 
 ### 3.2 `public_jobs` Table
+
 Stores curated opportunities visible across the global Explore Jobs feed.
 
-| Column | Type | Constraints | Default | Description |
-| :--- | :--- | :--- | :--- | :--- |
-| `id` | `UUID` | `PRIMARY KEY` | `gen_random_uuid()` | Unique public job ID |
-| `company` | `VARCHAR(255)` | `NOT NULL` | _None_ | Hiring organization |
-| `role` | `VARCHAR(255)` | `NOT NULL` | _None_ | Position title |
-| `link` | `TEXT` | `UNIQUE, NOT NULL` | _None_ | Primary application URL |
-| `location` | `VARCHAR(255)` | `NOT NULL` | `'N/A'` | Job location |
-| `exp` | `VARCHAR(100)` | `NOT NULL` | `'N/A'` | Experience requirement |
-| `source` | `VARCHAR(50)` | `NOT NULL` | `'admin'` | Ingestion origin |
-| `posted_by` | `UUID` | `NULLABLE, FK` | `NULL` | Admin user who posted |
-| `created_at` | `TIMESTAMPTZ` | `NOT NULL` | `CURRENT_TIMESTAMP` | Post timestamp |
-| `updated_at` | `TIMESTAMPTZ` | `NOT NULL` | `CURRENT_TIMESTAMP` | Update timestamp |
+| Column       | Type           | Constraints        | Default             | Description             |
+| :----------- | :------------- | :----------------- | :------------------ | :---------------------- |
+| `id`         | `UUID`         | `PRIMARY KEY`      | `gen_random_uuid()` | Unique public job ID    |
+| `company`    | `VARCHAR(255)` | `NOT NULL`         | _None_              | Hiring organization     |
+| `role`       | `VARCHAR(255)` | `NOT NULL`         | _None_              | Position title          |
+| `link`       | `TEXT`         | `UNIQUE, NOT NULL` | _None_              | Primary application URL |
+| `location`   | `VARCHAR(255)` | `NOT NULL`         | `'N/A'`             | Job location            |
+| `exp`        | `VARCHAR(100)` | `NOT NULL`         | `'N/A'`             | Experience requirement  |
+| `source`     | `VARCHAR(50)`  | `NOT NULL`         | `'admin'`           | Ingestion origin        |
+| `posted_by`  | `UUID`         | `NULLABLE, FK`     | `NULL`              | Admin user who posted   |
+| `created_at` | `TIMESTAMPTZ`  | `NOT NULL`         | `CURRENT_TIMESTAMP` | Post timestamp          |
+| `updated_at` | `TIMESTAMPTZ`  | `NOT NULL`         | `CURRENT_TIMESTAMP` | Update timestamp        |
 
 ---
 
 ### 3.3 `jobs` Table
+
 Personal pipeline records scoped to individual users (`user_id`).
 
-| Column | Type | Constraints | Default | Description |
-| :--- | :--- | :--- | :--- | :--- |
-| `id` | `UUID` | `PRIMARY KEY` | `gen_random_uuid()` | Job application ID |
-| `public_job_id` | `UUID` | `NULLABLE, FK` | `NULL` | Originating public job ID |
-| `company` | `VARCHAR(255)` | `NOT NULL` | _None_ | Hiring organization |
-| `role` | `VARCHAR(255)` | `NOT NULL` | _None_ | Position title |
-| `link` | `TEXT` | `NOT NULL` | _None_ | Application URL |
-| `location` | `VARCHAR(255)` | `NOT NULL` | `'N/A'` | Job location |
-| `exp` | `VARCHAR(100)` | `NOT NULL` | `'N/A'` | Experience requirement |
-| `status` | `VARCHAR(50)` | `NOT NULL` | `'Saved'` | Application workflow status |
-| `notes` | `TEXT` | `NOT NULL` | `''` | Personal notes & scratchpad |
-| `follow_up_date`| `DATE` | `NULLABLE` | `NULL` | Calendar follow-up reminder |
-| `applied_at` | `TIMESTAMPTZ` | `NULLABLE` | `NULL` | Timestamp marked Applied |
-| `is_important` | `BOOLEAN` | `NOT NULL` | `FALSE` | High-priority star flag |
-| `referral_status`| `VARCHAR(50)` | `NOT NULL` | `'none'` | Referral tracking state |
-| `referrer_name` | `VARCHAR(255)` | `NULLABLE` | `NULL` | Referrer contact name |
-| `referrer_contact`| `VARCHAR(255)` | `NULLABLE` | `NULL` | Referrer email or link |
-| `referral_notes`| `TEXT` | `NOT NULL` | `''` | Referral scratchpad |
-| `source` | `VARCHAR(50)` | `NOT NULL` | `'telegram'` | Ingestion source |
-| `user_id` | `UUID` | `NULLABLE, FK` | `NULL` | Owning user ID |
-| `created_at` | `TIMESTAMPTZ` | `NOT NULL` | `CURRENT_TIMESTAMP` | Record creation date |
-| `updated_at` | `TIMESTAMPTZ` | `NOT NULL` | `CURRENT_TIMESTAMP` | Last updated date |
+| Column             | Type           | Constraints    | Default             | Description                 |
+| :----------------- | :------------- | :------------- | :------------------ | :-------------------------- |
+| `id`               | `UUID`         | `PRIMARY KEY`  | `gen_random_uuid()` | Job application ID          |
+| `public_job_id`    | `UUID`         | `NULLABLE, FK` | `NULL`              | Originating public job ID   |
+| `company`          | `VARCHAR(255)` | `NOT NULL`     | _None_              | Hiring organization         |
+| `role`             | `VARCHAR(255)` | `NOT NULL`     | _None_              | Position title              |
+| `link`             | `TEXT`         | `NOT NULL`     | _None_              | Application URL             |
+| `location`         | `VARCHAR(255)` | `NOT NULL`     | `'N/A'`             | Job location                |
+| `exp`              | `VARCHAR(100)` | `NOT NULL`     | `'N/A'`             | Experience requirement      |
+| `status`           | `VARCHAR(50)`  | `NOT NULL`     | `'Saved'`           | Application workflow status |
+| `notes`            | `TEXT`         | `NOT NULL`     | `''`                | Personal notes & scratchpad |
+| `follow_up_date`   | `DATE`         | `NULLABLE`     | `NULL`              | Calendar follow-up reminder |
+| `applied_at`       | `TIMESTAMPTZ`  | `NULLABLE`     | `NULL`              | Timestamp marked Applied    |
+| `is_important`     | `BOOLEAN`      | `NOT NULL`     | `FALSE`             | High-priority star flag     |
+| `referral_status`  | `VARCHAR(50)`  | `NOT NULL`     | `'none'`            | Referral tracking state     |
+| `referrer_name`    | `VARCHAR(255)` | `NULLABLE`     | `NULL`              | Referrer contact name       |
+| `referrer_contact` | `VARCHAR(255)` | `NULLABLE`     | `NULL`              | Referrer email or link      |
+| `referral_notes`   | `TEXT`         | `NOT NULL`     | `''`                | Referral scratchpad         |
+| `source`           | `VARCHAR(50)`  | `NOT NULL`     | `'telegram'`        | Ingestion source            |
+| `user_id`          | `UUID`         | `NULLABLE, FK` | `NULL`              | Owning user ID              |
+| `created_at`       | `TIMESTAMPTZ`  | `NOT NULL`     | `CURRENT_TIMESTAMP` | Record creation date        |
+| `updated_at`       | `TIMESTAMPTZ`  | `NOT NULL`     | `CURRENT_TIMESTAMP` | Last updated date           |
 
 ---
 

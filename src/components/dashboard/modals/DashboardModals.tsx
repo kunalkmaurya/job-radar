@@ -49,6 +49,7 @@ export function DashboardModals({
   return (
     <>
       <NotesDrawer
+        key={drawerJob?.id || 'empty'}
         job={drawerJob}
         nowTime={nowTime}
         onClose={onCloseDrawer}

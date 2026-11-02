@@ -60,7 +60,6 @@ function DashboardContent() {
         currentUser={currentUser}
         theme={theme}
         onToggleTheme={toggleTheme}
-        onOpenAddJob={() => setIsAddOpen(true)}
         isMobileOpen={isMobileMenuOpen}
         onCloseMobile={() => setIsMobileMenuOpen(false)}
       />

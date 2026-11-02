@@ -1,9 +1,10 @@
 'use client';
 
 import React from 'react';
-import { AlertTriangle, ExternalLink, FileText, Star } from 'lucide-react';
+import { AlertTriangle, ExternalLink, Star, Users } from 'lucide-react';
 import { Job } from '@/types';
 import { isJobStale } from './helpers';
+import { getLinkedIn1stDegreeSearchUrl } from '@/lib/linkedin';
 
 interface JobKanbanCardProps {
   job: Job;
@@ -21,6 +22,7 @@ export function JobKanbanCard({
 }: JobKanbanCardProps) {
   const stale = isJobStale(job, nowTime);
   const isImportant = Boolean(job.isImportant);
+  const linkedInUrl = getLinkedIn1stDegreeSearchUrl(job.company);
 
   return (
     <div
@@ -61,6 +63,17 @@ export function JobKanbanCard({
               fill={isImportant ? 'currentColor' : 'none'}
             />
           </button>
+
+          <a
+            href={linkedInUrl}
+            target="_blank"
+            rel="noreferrer"
+            onClick={(e) => e.stopPropagation()}
+            title={`Find 1st-degree connections at ${job.company}`}
+            className="p-1 text-(--text-muted) hover:text-[#0A66C2] transition-colors"
+          >
+            <Users className="w-3.5 h-3.5" />
+          </a>
 
           <a
             href={job.link}
@@ -119,7 +132,7 @@ export function JobKanbanCard({
           aria-label={`Open notes for ${job.role} at ${job.company}`}
           className="p-1 -mr-1 hover:bg-(--bg-surface-hover) text-(--text-secondary) hover:text-(--text-primary) transition-colors cursor-pointer"
         >
-          <FileText className="w-3.5 h-3.5" />
+          Details
         </button>
       </div>
     </div>

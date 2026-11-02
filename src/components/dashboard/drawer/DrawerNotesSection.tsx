@@ -31,12 +31,12 @@ export function DrawerNotesSection({
           {isSaving && <span className="text-[10px] text-(--accent-primary)">Saving...</span>}
         </div>
         <textarea
-          rows={7}
+          rows={14}
           value={notes}
           onChange={(e) => onNotesChange(e.target.value)}
           onBlur={onSave}
           placeholder="Jot down referral contacts, interview talking points, recruiter email, compensation..."
-          className="w-full p-3 text-xs border border-(--border-subtle) bg-(--bg-app) text-(--text-primary) placeholder-(--text-muted) focus:outline-none focus:border-(--border-focus) leading-relaxed"
+          className="w-full p-3 text-xs border border-(--border-subtle) bg-(--bg-app) text-(--text-primary) placeholder-(--text-muted) focus:outline-none focus:border-(--border-focus) leading-relaxed min-h-[260px] resize-y"
         />
       </div>
 

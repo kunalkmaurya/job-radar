@@ -4,7 +4,7 @@
 
 ### High-Speed Application Pipeline & Career Telemetry Command Center
 
-A private, distraction-free command center for modern software engineers. Ingest job postings instantly from mobile via Telegram, auto-extract job specs using AI, manage referrals, track follow-ups, and visualize application velocity across high-density Table and Kanban views.
+A private, distraction-free command center for modern software engineers. Ingest job postings instantly from mobile via Telegram, auto-extract job specs using AI, manage referrals, track follow-ups, collaborate with peers in dedicated Job Pods, and visualize velocity across Table and Kanban views.
 
 [![Next.js 16](https://img.shields.io/badge/Next.js-16.4.3-black?style=flat-square&logo=next.js)](https://nextjs.org/)
 [![React 19](https://img.shields.io/badge/React-19.3.0-blue?style=flat-square&logo=react)](https://react.dev/)
@@ -13,7 +13,7 @@ A private, distraction-free command center for modern software engineers. Ingest
 [![Neon Database](https://img.shields.io/badge/Database-Neon%20Serverless%20Postgres-00E599?style=flat-square&logo=postgresql)](https://neon.tech/)
 [![TailwindCSS 4](https://img.shields.io/badge/Styling-Tailwind%20v4-38B2AC?style=flat-square&logo=tailwindcss)](https://tailwindcss.com/)
 
-[Explore Features](#key-features) • [Screenshots](#visual-walkthrough) • [Tech Stack](#technical-architecture) • [Getting Started](#getting-started) • [Environment Setup](#environment-variables)
+[Visual Walkthrough](#visual-walkthrough) • [Key Features](#key-features) • [Technical Architecture](#technical-architecture) • [Getting Started](#getting-started) • [Environment Setup](#environment-variables)
 
 </div>
 
@@ -48,7 +48,34 @@ Columnar pipeline across all hiring stages (`Saved`, `Applied`, `Interviewing`, 
 
 ---
 
-### 4. Application Details & Referral Tracker Drawer
+### 4. Dedicated Peer Job Pod Feed
+
+Pool job opportunities with up to 6 peers straight from shared Telegram groups. Features docked bottom pagination and isolated opportunity tracking.
+<div align="center">
+  <img src="docs/screenshots/pod-feed.png" alt="Job Radar Peer Pod Feed" width="100%" />
+</div>
+
+---
+
+### 5. Peer Pod Collaboration & Telegram Sync
+
+Invite peers via unique invitation links (`/join?code=...`), connect private Telegram groups, test bot connectivity, and manage pod membership.
+<div align="center">
+  <img src="docs/screenshots/pod-modal.png" alt="Job Radar Pod Collaboration Modal" width="100%" />
+</div>
+
+---
+
+### 6. Curated Explore Jobs Feed
+
+Separate verified public opportunity feed with admin curation, 1-click pipeline import, search filtering, and responsive grid/list switcher.
+<div align="center">
+  <img src="docs/screenshots/explore-feed.png" alt="Job Radar Explore Jobs Feed" width="100%" />
+</div>
+
+---
+
+### 7. Application Details & Referral Tracker Drawer
 
 Slide-out drawer containing follow-up calendar reminder presets (`+3d`, `+1w`), complete referral tracking (referral status, referrer name, contact, notes), and markdown scratchpad.
 <div align="center">
@@ -57,7 +84,7 @@ Slide-out drawer containing follow-up calendar reminder presets (`+3d`, `+1w`), 
 
 ---
 
-### 5. Application Velocity & Conversion Analytics
+### 8. Application Velocity & Conversion Analytics
 
 14-day interactive timeline bar charts, application throughput counters, and multi-stage conversion funnel telemetry.
 <div align="center">
@@ -68,50 +95,37 @@ Slide-out drawer containing follow-up calendar reminder presets (`+3d`, `+1w`), 
 
 ## Key Features
 
+- **Peer Job Pods (Collaborative Pooling)**:
+  - Create or join peer pods (up to 6 members) with secure invite codes (`/join?code=...`).
+  - Connect a shared Telegram group: any job link posted by members is scraped and added to the shared Pod Feed.
+  - Strict separation: Pod opportunities remain within the pod and never pollute the public feed.
+  - 1-click tracking: Members can import any pod listing directly into their private pipeline.
+
 - **Public Job Feed & 1-Click Tracking**:
-  - **Explore Jobs Feed**: Curated public feed with admin-posted and telegram-crawled job opportunities.
-  - **Cards & List View Switcher**: Instant switching between responsive Card grid view and high-density Table list view.
-  - **Interactive Pagination**: Configurable page sizes (12, 24, 48, 96) and page navigation.
-  - **1-Click Pipeline Cloning**: Click "Track" on any public job to immediately import it into your personal private board.
+  - **Explore Jobs Feed**: Curated public listings posted by administrators.
+  - **Grid & List Switcher**: Seamless toggle between responsive cards and table view.
+  - **Docked Bottom Pagination**: Anchored pagination bar ensures consistent viewport layout.
 
 - **Multi-Channel Job Ingestion**:
-  - **Telegram Webhook Bot**: Forward raw URLs from LinkedIn, Indeed, or career pages into Telegram. Automatically routes to your personal board or the public feed.
-  - **1-Click Browser Bookmarklet**: Drag-and-drop bookmarklet into your browser bar to capture open tabs instantly.
-  - **Auto-Fetch Modal**: Paste any URL into the dashboard to auto-scrape company and role metadata via AI.
-  - **Manual Quick Entry**: Fast keyboard-friendly modal for manual tracking.
-
-- **Multi-Tenant Architecture & Open Access**:
-  - Open access authentication (`ALLOWED_EMAIL="*"`) allowing any user to sign in with Google or password.
-  - Strict data isolation: each user's applications, notes, referral info, and statuses remain private.
-  - Designated platform admin (`ADMIN_EMAIL`) for curating and posting public feed opportunities.
+  - **Telegram Bot Webhook**: Post raw job URLs to auto-extract company, role, location, and metadata via AI.
+  - **Browser Bookmarklet**: Drag-and-drop bookmarklet to capture career pages directly from browser tabs.
+  - **Auto-Fetch Modal**: Scrape role details on-demand with DeepSeek or OpenAI.
+  - **Manual Fast Entry**: Keyboard-friendly dialog for manual submissions.
 
 - **Complete Referral Tracking**:
-  - Explicit referral pipeline tracking across 4 states: `No Referral`, `Asked`, `Got Referral`, and `Declined`.
-  - Store referrer contact information (LinkedIn/email/phone) and internal notes.
-  - Color-coded referral badges in both Table and Kanban cards.
+  - Explicit pipeline tracking across 4 states: `No Referral`, `Asked`, `Got Referral`, `Declined`.
+  - Store referrer contact information (LinkedIn, email, phone) and internal notes.
+  - Color-coded referral tags in Table and Kanban cards.
 
-- **Native SWR & HTTP 304 Smart Sync**:
-  - **Zero Network Spam**: Uses server-side `ETag` metadata computation (`max(updatedAt)`, count) returning empty `304 Not Modified` responses when no jobs have changed.
-  - **Visibility-Aware Polling**: Sync timers automatically halt when the browser tab is hidden or backgrounded.
-  - **Instant Window-Focus Revalidation**: Immediate background update as soon as you refocus the workspace.
-  - **Manual Sync Trigger**: On-demand Sync button in the top navigation.
+- **Smart Sync & Performance**:
+  - **Zero Network Spam**: Server-side ETag computation returns HTTP `304 Not Modified` when unchanged.
+  - **Visibility-Aware Polling**: Sync timers pause when tabs are backgrounded.
+  - **Instant Window-Focus Revalidation**: Immediate background refresh on refocus.
 
-- **Accidental Action Protection**:
-  - Delete actions from table rows and detail drawers prompt a sleek confirmation modal with full job context before removing records from PostgreSQL.
-
-- **Comprehensive Career Telemetry**:
-  - 14-day application velocity histograms.
-  - Ingested -> Submitted -> Interview -> Offer conversion funnels.
-  - Stale application detector highlighting jobs with no status updates for >14 days.
-
-- **Single-User Security**:
-  - Whitelist-enforced single-user authentication.
-  - Signed 30-day JWT sessions stored in secure `HttpOnly`, `SameSite=lax` cookies.
-  - Optional Google integration.
-
-- **Data Sovereignty**:
-  - Instant 1-click CSV export of your entire job search history.
-  - Stored in serverless PostgreSQL (Neon) with migrations managed via Drizzle Kit.
+- **Data Sovereignty & Security**:
+  - Whitelist-enforced authentication with signed 30-day JWT sessions in `HttpOnly` cookies.
+  - Instant 1-click CSV export of your entire pipeline history.
+  - Serverless PostgreSQL (Neon) with migrations managed via Drizzle Kit.
 
 ---
 
@@ -120,16 +134,16 @@ Slide-out drawer containing follow-up calendar reminder presets (`+3d`, `+1w`), 
 ```mermaid
 graph TD
     subgraph Ingestion Channels
-        TG[Telegram Mobile Webhook]
+        TG[Telegram Mobile / Pod Group]
         BM[Browser Bookmarklet]
         FE[Dashboard UI / Auto-Fetch Modal]
     end
 
-    subgraph Core Application Next.js 16
+    subgraph Core Next.js 16 Application
         API_TG["/api/telegram-webhook"]
+        API_POD["/api/workspaces/*"]
         API_JOBS["/api/jobs"]
-        API_AUTH["/api/auth/*"]
-        SYNC[Smart Revalidation Engine]
+        API_FEED["/api/feed/jobs"]
     end
 
     subgraph AI Extraction Layer
@@ -141,17 +155,16 @@ graph TD
         DRZ[Drizzle ORM Schema]
     end
 
-    TG -->|Webhook POST| API_TG
-    BM -->|URL Payload| API_JOBS
+    TG -->|Webhook / Poller| API_TG
+    BM -->|Payload| API_JOBS
     FE -->|JSON Payload| API_JOBS
 
-    API_TG -->|HTML Scrape & Prompt| LLM
+    API_TG -->|HTML Scrape & Parse| LLM
     API_JOBS -->|URL Auto-Fetch| LLM
-
-    LLM -->|Parsed Job Metadata| API_JOBS
-    API_JOBS -->|Type-safe Queries| DRZ
+    LLM -->|Parsed Job Metadata| API_TG
+    API_TG -->|Workspace Scoped Insert| DRZ
+    API_JOBS -->|Personal Insert| DRZ
     DRZ --> DB
-    SYNC <-->|ETag 304 Polling| DB
 ```
 
 ---
@@ -163,11 +176,11 @@ graph TD
 | **Framework**      | [Next.js 16.4](https://nextjs.org/) (App Router, Turbopack)                                          |
 | **Language**       | [TypeScript 5](https://www.typescriptlang.org/)                                                      |
 | **UI Library**     | [React 19](https://react.dev/)                                                                       |
-| **Styling**        | [TailwindCSS 4](https://tailwindcss.com/) + Custom CSS Design Tokens                                 |
+| **Styling**        | [TailwindCSS 4](https://tailwindcss.com/) + Design Tokens                                            |
 | **Icons**          | [Lucide React](https://lucide.dev/)                                                                  |
 | **Database**       | [Neon Serverless PostgreSQL](https://neon.tech/)                                                     |
 | **ORM**            | [Drizzle ORM](https://orm.drizzle.team/) & [Drizzle Kit](https://orm.drizzle.team/kit-docs/overview) |
-| **Authentication** | [Jose](https://github.com/panva/jose) (JWT) + Google                                                 |
+| **Authentication** | [Jose](https://github.com/panva/jose) (JWT) + Google OAuth                                           |
 | **AI Layer**       | DeepSeek-V3 / OpenAI GPT-4o-mini                                                                     |
 
 ---
@@ -177,8 +190,8 @@ graph TD
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/kunalkmaurya/job-rader.git
-cd job-rader
+git clone https://github.com/kunalkmaurya/job-radar.git
+cd job-radar
 ```
 
 ### 2. Install dependencies
@@ -188,8 +201,6 @@ npm install
 ```
 
 ### 3. Configure environment variables
-
-Copy `.env.example` to `.env` (or configure directly):
 
 ```bash
 cp .env.example .env
@@ -211,42 +222,6 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
-## Environment Variables
-
-Create a `.env` file in the root directory:
-
-```env
-# 1. Database (Neon Serverless PostgreSQL)
-DATABASE_URL="postgresql://user:password@ep-sample.us-east-2.aws.neon.tech/neondb?sslmode=require"
-
-# 2. Authentication & Security
-ALLOWED_EMAIL="your-email@example.com"
-AUTH_PASSWORD="your-strong-password"
-JWT_SECRET="super-secret-jwt-key-minimum-32-characters"
-
-# Optional: Google OAuth (Google Cloud Console)
-GOOGLE_CLIENT_ID="your-client-id.apps.googleusercontent.com"
-GOOGLE_CLIENT_SECRET="your-client-secret"
-NEXT_PUBLIC_APP_URL="http://localhost:3000"
-
-# 3. Telegram Webhook Bot (Optional for mobile capture)
-TELEGRAM_BOT_TOKEN="123456789:ABC-DEF1234ghIkl-zyx57W2v1u123ew11"
-TELEGRAM_WEBHOOK_SECRET="your-telegram-webhook-secret"
-
-# 4. Pluggable AI Extraction Layer ("deepseek" | "openai")
-LLM_PROVIDER="deepseek"
-
-# DeepSeek Configuration
-DEEPSEEK_API_KEY="sk-your-deepseek-api-key"
-DEEPSEEK_BASE_URL="https://api.deepseek.com"
-
-# OpenAI Configuration
-OPENAI_API_KEY="sk-your-openai-api-key"
-OPENAI_BASE_URL="https://api.openai.com/v1"
-```
-
----
-
 ## Dashboard Shortcuts
 
 | Key                   | Action                              |
@@ -255,5 +230,3 @@ OPENAI_BASE_URL="https://api.openai.com/v1"
 | `Esc`                 | Close notes drawer / dismiss modals |
 | `Click on Card / Row` | Open job details & referral drawer  |
 | `Star`                | Toggle priority job status          |
-
----

@@ -1,6 +1,6 @@
 import { db } from '@/db';
 import { jobs, publicJobs } from '@/db/schema';
-import { eq, and } from 'drizzle-orm';
+import { eq, and, isNull } from 'drizzle-orm';
 import { scrapeJobPage } from './scraper';
 import { extractJobDetails } from './ai';
 
@@ -21,7 +21,9 @@ export async function processJobLink(
   rawUrl: string,
   source: 'telegram' | 'manual' | 'bookmarklet' | 'feed' | 'admin' = 'telegram',
   userId?: string,
-  target: 'personal' | 'public' = 'personal'
+  target: 'personal' | 'public' = 'personal',
+  workspaceId?: string,
+  submittedByName?: string
 ) {
   try {
     const url = rawUrl.trim();
@@ -33,14 +35,18 @@ export async function processJobLink(
     console.log(`[Ingestion] Processing ${target} job link from ${source}: ${url}`);
 
     if (target === 'public') {
+      const condition = workspaceId
+        ? and(eq(publicJobs.workspaceId, workspaceId), eq(publicJobs.link, url))
+        : and(isNull(publicJobs.workspaceId), eq(publicJobs.link, url));
+
       const existing = await db
         .select({ id: publicJobs.id })
         .from(publicJobs)
-        .where(eq(publicJobs.link, url))
+        .where(condition)
         .limit(1);
 
       if (existing.length > 0) {
-        console.log(`[Ingestion] Duplicate public link skipped: ${url}`);
+        console.log(`[Ingestion] Duplicate scoped link skipped: ${url}`);
         return { duplicate: true, id: existing[0].id };
       }
 
@@ -58,6 +64,8 @@ export async function processJobLink(
           exp: extracted.exp || 'N/A',
           source,
           postedBy: userId || null,
+          workspaceId: workspaceId || null,
+          submittedByName: submittedByName || null,
         })
         .returning();
 

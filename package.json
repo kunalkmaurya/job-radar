@@ -10,7 +10,8 @@
     "lint:fix": "eslint --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "poll": "node --env-file=.env scripts/poll.mjs"
+    "poll": "node --env-file=.env scripts/poll.mjs",
+    "webhook:set": "node --env-file=.env scripts/set-webhook.mjs"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.2.0",

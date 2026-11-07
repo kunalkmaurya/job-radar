@@ -66,10 +66,16 @@ export function FeedCard({ job, isTracking, onTrack }: FeedCardProps) {
           <span className="truncate max-w-[120px]">{displayExp}</span>
         </span>
 
-        <span className="inline-flex items-center gap-1 px-2 py-0.5 border border-(--border-subtle) bg-(--bg-app) text-(--text-muted) rounded-xs">
-          <ShieldCheck className="w-3 h-3 text-(--accent-blue-bright)" />
-          <span className="capitalize">{job.source} Curated</span>
-        </span>
+        {job.submittedByName ? (
+          <span className="inline-flex items-center gap-1 px-2 py-0.5 border border-blue-500/30 bg-blue-500/10 text-blue-400 rounded-xs font-medium">
+            <span>Shared by {job.submittedByName}</span>
+          </span>
+        ) : (
+          <span className="inline-flex items-center gap-1 px-2 py-0.5 border border-(--border-subtle) bg-(--bg-app) text-(--text-muted) rounded-xs">
+            <ShieldCheck className="w-3 h-3 text-(--accent-blue-bright)" />
+            <span className="capitalize">{job.source} Curated</span>
+          </span>
+        )}
       </div>
 
       <div className="pt-2.5 border-t border-(--border-subtle) flex items-center justify-between gap-2">

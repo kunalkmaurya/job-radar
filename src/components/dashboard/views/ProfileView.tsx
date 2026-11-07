@@ -7,6 +7,7 @@ import {
   ProfileStatsCard,
   ProfileSecurityCard,
   ProfileEmailDigestCard,
+  ProfilePodCard,
 } from '../profile';
 
 interface ProfileViewProps {
@@ -21,24 +22,29 @@ interface ProfileViewProps {
     responseRate: number;
   };
   onExportCSV: () => void;
+  onOpenInviteModal?: () => void;
 }
 
-export function ProfileView({ currentUser, totalJobs, metrics, onExportCSV }: ProfileViewProps) {
+export function ProfileView({
+  currentUser,
+  totalJobs,
+  metrics,
+  onExportCSV,
+  onOpenInviteModal,
+}: ProfileViewProps) {
   return (
     <div className="space-y-6">
-      {/* 1. Profile Hero & Identity Card */}
       <ProfileHeroCard currentUser={currentUser} totalJobs={totalJobs} />
 
-      {/* 2. Middle Grid: Career Preferences & Pipeline Velocity Stats */}
+      <ProfilePodCard onOpenInviteModal={onOpenInviteModal} />
+
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <ProfilePreferencesCard />
         <ProfileEmailDigestCard userEmail={currentUser?.email} />
       </div>
 
-      {/* 3. Pipeline Metrics & Stats */}
       <ProfileStatsCard metrics={metrics} />
 
-      {/* 4. Security Boundary & Account Governance */}
       <ProfileSecurityCard currentUser={currentUser} onExportCSV={onExportCSV} />
     </div>
   );

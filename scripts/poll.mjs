@@ -7,8 +7,21 @@ if (!botToken) {
   process.exit(1);
 }
 
-console.log('[Poller] Starting Local Telegram Poller...');
-console.log(`Forwarding updates to: ${localWebhookUrl}`);
+console.log('[Poller] Initializing Local Telegram Poller...');
+
+async function init() {
+  try {
+    const delRes = await fetch(`https://api.telegram.org/bot${botToken}/deleteWebhook`);
+    const delData = await delRes.json();
+    if (delData.ok) {
+      console.log('[Poller] Cleared active webhook to enable local getUpdates polling.');
+    }
+  } catch (e) {
+    console.warn('[Poller] Could not clear webhook:', e.message);
+  }
+  console.log(`[Poller] Forwarding updates to: ${localWebhookUrl}`);
+  loop();
+}
 
 let lastUpdateId = 0;
 
@@ -63,4 +76,4 @@ async function loop() {
   }
 }
 
-loop();
+init();

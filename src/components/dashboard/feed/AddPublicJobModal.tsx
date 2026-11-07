@@ -60,7 +60,7 @@ export function AddPublicJobModal({ isOpen, onClose, onSuccess }: AddPublicJobMo
         <div className="flex items-center justify-between border-b border-(--border-subtle) pb-3">
           <div className="flex items-center gap-1.5 font-bold text-sm text-(--text-primary)">
             <Sparkles className="w-4 h-4 text-(--accent-blue-bright)" />
-            <span>Post to Public Feed</span>
+            <span>Share Opportunity with Pod</span>
           </div>
           <button
             onClick={onClose}

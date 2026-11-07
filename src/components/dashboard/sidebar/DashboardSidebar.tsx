@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
-import { PanelLeftClose, PanelLeft, Plus, X } from 'lucide-react';
+import { PanelLeftClose, PanelLeft, X } from 'lucide-react';
 import { useSidebar } from './useSidebar';
 import { SidebarNavItems } from './SidebarNavItems';
 import { SidebarUserFooter } from './SidebarUserFooter';
@@ -12,10 +12,10 @@ interface DashboardSidebarProps {
   activeTab: DashboardTab;
   onTabChange: (tab: DashboardTab) => void;
   jobCount?: number;
+  podJobCount?: number;
   currentUser: { email?: string; name?: string; role?: string } | null;
   theme: 'dark' | 'light';
   onToggleTheme: () => void;
-  onOpenAddJob: () => void;
   isMobileOpen: boolean;
   onCloseMobile: () => void;
 }
@@ -24,10 +24,10 @@ export function DashboardSidebar({
   activeTab,
   onTabChange,
   jobCount,
+  podJobCount,
   currentUser,
   theme,
   onToggleTheme,
-  onOpenAddJob,
   isMobileOpen,
   onCloseMobile,
 }: DashboardSidebarProps) {
@@ -106,26 +106,13 @@ export function DashboardSidebar({
             )}
           </div>
 
-          {/* Quick CTA */}
-          <div className="p-2.5">
-            <button
-              onClick={onOpenAddJob}
-              title="Add Job"
-              className={`w-full flex items-center justify-center gap-1.5 bg-(--accent-primary) hover:bg-(--accent-primary-hover) text-white font-semibold text-xs py-2 rounded-xs shadow-xs transition-all active:scale-[0.98] cursor-pointer ${
-                isCollapsed ? 'px-0' : 'px-3'
-              }`}
-            >
-              <Plus className="w-3.5 h-3.5 shrink-0" />
-              {!isCollapsed && <span>Add Job</span>}
-            </button>
-          </div>
-
           {/* Nav Items */}
           <div className="flex-1 overflow-y-auto py-2">
             <SidebarNavItems
               activeTab={activeTab}
               onTabChange={onTabChange}
               jobCount={jobCount}
+              podJobCount={podJobCount}
               isCollapsed={isCollapsed}
               onItemClick={onCloseMobile}
             />

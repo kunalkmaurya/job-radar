@@ -1,19 +1,38 @@
 'use client';
 
 import React from 'react';
-import { LayoutDashboard, Globe, BarChart3, Settings2, User } from 'lucide-react';
+import { LayoutDashboard, Users, Globe, BarChart3, Settings2, User } from 'lucide-react';
 
-export type DashboardTab = 'dashboard' | 'feed' | 'analytics' | 'settings' | 'profile';
+export type DashboardTab = 'dashboard' | 'pod' | 'feed' | 'analytics' | 'settings' | 'profile';
+
+export const DASHBOARD_TAB_MAP: Record<
+  DashboardTab,
+  { label: string; icon: React.ComponentType<{ className?: string }> }
+> = {
+  dashboard: { label: 'My Dashboard', icon: LayoutDashboard },
+  pod: { label: 'Pod Feed', icon: Users },
+  feed: { label: 'Explore Jobs', icon: Globe },
+  analytics: { label: 'Analytics', icon: BarChart3 },
+  settings: { label: 'Settings', icon: Settings2 },
+  profile: { label: 'Profile', icon: User },
+};
 
 interface DashboardNavTabsProps {
   activeTab: DashboardTab;
   onTabChange: (tab: DashboardTab) => void;
   jobCount?: number;
+  podJobCount?: number;
 }
 
-export function DashboardNavTabs({ activeTab, onTabChange, jobCount }: DashboardNavTabsProps) {
+export function DashboardNavTabs({
+  activeTab,
+  onTabChange,
+  jobCount,
+  podJobCount,
+}: DashboardNavTabsProps) {
   const tabs = [
     { id: 'dashboard' as const, label: 'My Dashboard', icon: LayoutDashboard, badge: jobCount },
+    { id: 'pod' as const, label: 'Pod Feed', icon: Users, badge: podJobCount },
     { id: 'feed' as const, label: 'Explore Jobs', icon: Globe },
     { id: 'analytics' as const, label: 'Analytics', icon: BarChart3 },
     { id: 'settings' as const, label: 'Settings', icon: Settings2 },

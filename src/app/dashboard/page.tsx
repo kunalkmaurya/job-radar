@@ -10,6 +10,7 @@ import {
   DashboardTab,
   DashboardTabContent,
   DashboardModals,
+  usePodManager,
 } from '@/components/dashboard';
 
 function DashboardContent() {
@@ -22,6 +23,7 @@ function DashboardContent() {
   const [feedRefreshCount, setFeedRefreshCount] = useState(0);
   const [isFeedSyncing, setIsFeedSyncing] = useState(false);
 
+  const podManager = usePodManager();
   const dashboardState = useDashboardJobs();
   const {
     jobs,
@@ -38,7 +40,7 @@ function DashboardContent() {
   const handleSync = async () => {
     setIsFeedSyncing(true);
     setFeedRefreshCount((c) => c + 1);
-    await revalidate();
+    await Promise.all([revalidate(), podManager.fetchPod()]);
     setTimeout(() => setIsFeedSyncing(false), 500);
   };
 
@@ -52,7 +54,7 @@ function DashboardContent() {
   });
 
   return (
-    <div className="min-h-screen flex bg-(--bg-app) text-(--text-primary)">
+    <div className="h-screen flex bg-(--bg-app) text-(--text-primary) overflow-hidden">
       <DashboardSidebar
         activeTab={activeNavTab}
         onTabChange={setActiveNavTab}
@@ -64,13 +66,15 @@ function DashboardContent() {
         onCloseMobile={() => setIsMobileMenuOpen(false)}
       />
 
-      <div className="flex-1 flex flex-col min-w-0">
+      <div className="flex-1 flex flex-col min-w-0 h-full overflow-hidden">
         <DashboardHeader
           theme={theme}
           onToggleTheme={toggleTheme}
           onOpenBookmarklet={() => setIsBookmarkletOpen(true)}
           onExportCSV={handleExportCSV}
           onOpenAddJob={() => setIsAddOpen(true)}
+          onOpenPodModal={() => podManager.setIsPodOpen(true)}
+          podMemberCount={podManager.podData?.memberCount}
           isSyncing={dashboardState.isSyncing || isFeedSyncing}
           onSync={handleSync}
           onOpenMobileMenu={() => setIsMobileMenuOpen(true)}
@@ -78,7 +82,7 @@ function DashboardContent() {
           jobCount={jobs.length}
         />
 
-        <main className="flex-1 overflow-y-auto">
+        <main className="flex-1 overflow-y-auto flex flex-col min-h-0">
           <DashboardTabContent
             activeTab={activeNavTab}
             {...dashboardState}
@@ -87,6 +91,7 @@ function DashboardContent() {
             onJobDelete={drawerState.onJobDelete}
             onJobTracked={revalidate}
             refreshTrigger={feedRefreshCount}
+            onOpenInviteModal={() => podManager.setIsPodOpen(true)}
           />
         </main>
       </div>
@@ -109,6 +114,13 @@ function DashboardContent() {
         onRefreshJobs={fetchJobs}
         isBookmarkletOpen={isBookmarkletOpen}
         onCloseBookmarklet={() => setIsBookmarkletOpen(false)}
+        isPodOpen={podManager.isPodOpen}
+        onClosePod={() => podManager.setIsPodOpen(false)}
+        podData={podManager.podData}
+        onRefreshPod={podManager.fetchPod}
+        isRefreshingPod={podManager.isRefreshing}
+        onSaveChatId={podManager.handleSaveChatId}
+        onSendTest={podManager.handleSendTest}
       />
     </div>
   );

@@ -5,37 +5,52 @@ import { PublicJob } from '@/types';
 
 export interface FeedJobItem extends PublicJob {
   isTracked: boolean;
+  isPodJob?: boolean;
 }
 
 interface UseFeedJobsProps {
+  initialFeedType?: 'pod' | 'public';
   onJobTracked?: () => void;
   refreshTrigger?: number;
 }
 
-export function useFeedJobs({ onJobTracked, refreshTrigger }: UseFeedJobsProps = {}) {
+export function useFeedJobs({
+  initialFeedType = 'public',
+  onJobTracked,
+  refreshTrigger,
+}: UseFeedJobsProps = {}) {
   const [feedJobs, setFeedJobs] = useState<FeedJobItem[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const [filterMode, setFilterMode] = useState<'pod' | 'public'>(initialFeedType);
+  const [podJobCount, setPodJobCount] = useState<number>(0);
+  const [publicJobCount, setPublicJobCount] = useState<number>(0);
+  const [userPodName, setUserPodName] = useState<string | null>(null);
   const [trackingId, setTrackingId] = useState<string | null>(null);
   const [isAddOpen, setIsAddOpen] = useState<boolean>(false);
+  const [isSyncing, setIsSyncing] = useState<boolean>(false);
 
   const fetchFeedJobs = useCallback(async () => {
     try {
       setIsLoading(true);
-      const url = searchQuery
-        ? `/api/feed/jobs?search=${encodeURIComponent(searchQuery)}`
-        : '/api/feed/jobs';
-      const res = await fetch(url, { cache: 'no-store' });
+      const params = new URLSearchParams();
+      params.set('feedType', filterMode);
+      if (searchQuery) params.set('search', searchQuery);
+
+      const res = await fetch(`/api/feed/jobs?${params.toString()}`, { cache: 'no-store' });
       const json = await res.json();
       if (json.success && Array.isArray(json.data?.jobs)) {
         setFeedJobs(json.data.jobs);
+        setPodJobCount(json.data.podCount || 0);
+        setPublicJobCount(json.data.publicCount || 0);
+        if (json.data.userPodName) setUserPodName(json.data.userPodName);
       }
     } catch (err) {
-      console.error('[Feed] Failed to fetch public jobs:', err);
+      console.error('[Feed] Failed to fetch feed jobs:', err);
     } finally {
       setIsLoading(false);
     }
-  }, [searchQuery]);
+  }, [filterMode, searchQuery]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -43,6 +58,26 @@ export function useFeedJobs({ onJobTracked, refreshTrigger }: UseFeedJobsProps =
     }, 200);
     return () => clearTimeout(timer);
   }, [fetchFeedJobs, refreshTrigger]);
+
+  const syncTelegramJobs = async () => {
+    try {
+      setIsSyncing(true);
+      const res = await fetch('/api/workspaces/current', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'sync_jobs' }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        await fetchFeedJobs();
+      }
+      return data;
+    } catch {
+      return { success: false, error: 'Sync failed' };
+    } finally {
+      setIsSyncing(false);
+    }
+  };
 
   const trackJob = async (jobId: string) => {
     setTrackingId(jobId);
@@ -68,6 +103,12 @@ export function useFeedJobs({ onJobTracked, refreshTrigger }: UseFeedJobsProps =
 
   return {
     feedJobs,
+    totalCount: feedJobs.length,
+    podJobCount,
+    publicJobCount,
+    userPodName,
+    filterMode,
+    setFilterMode,
     isLoading,
     searchQuery,
     setSearchQuery,
@@ -75,6 +116,8 @@ export function useFeedJobs({ onJobTracked, refreshTrigger }: UseFeedJobsProps =
     trackJob,
     isAddOpen,
     setIsAddOpen,
+    isSyncing,
+    syncTelegramJobs,
     refreshFeed: fetchFeedJobs,
   };
 }

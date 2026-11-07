@@ -1,13 +1,14 @@
 'use client';
 
 import React from 'react';
-import { LayoutDashboard, Globe, BarChart3, Settings2, User } from 'lucide-react';
+import { LayoutDashboard, Users, Globe, BarChart3, Settings2, User } from 'lucide-react';
 import { DashboardTab } from '../DashboardNavTabs';
 
 interface SidebarNavItemsProps {
   activeTab: DashboardTab;
   onTabChange: (tab: DashboardTab) => void;
   jobCount?: number;
+  podJobCount?: number;
   isCollapsed: boolean;
   onItemClick?: () => void;
 }
@@ -16,11 +17,13 @@ export function SidebarNavItems({
   activeTab,
   onTabChange,
   jobCount,
+  podJobCount,
   isCollapsed,
   onItemClick,
 }: SidebarNavItemsProps) {
   const navItems = [
     { id: 'dashboard' as const, label: 'My Dashboard', icon: LayoutDashboard, badge: jobCount },
+    { id: 'pod' as const, label: 'Pod Feed', icon: Users, badge: podJobCount },
     { id: 'feed' as const, label: 'Explore Jobs', icon: Globe },
     { id: 'analytics' as const, label: 'Analytics', icon: BarChart3 },
     { id: 'settings' as const, label: 'Settings', icon: Settings2 },

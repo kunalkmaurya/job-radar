@@ -12,6 +12,7 @@ interface DashboardSidebarProps {
   activeTab: DashboardTab;
   onTabChange: (tab: DashboardTab) => void;
   jobCount?: number;
+  podJobCount?: number;
   currentUser: { email?: string; name?: string; role?: string } | null;
   theme: 'dark' | 'light';
   onToggleTheme: () => void;
@@ -23,6 +24,7 @@ export function DashboardSidebar({
   activeTab,
   onTabChange,
   jobCount,
+  podJobCount,
   currentUser,
   theme,
   onToggleTheme,
@@ -110,6 +112,7 @@ export function DashboardSidebar({
               activeTab={activeTab}
               onTabChange={onTabChange}
               jobCount={jobCount}
+              podJobCount={podJobCount}
               isCollapsed={isCollapsed}
               onItemClick={onCloseMobile}
             />

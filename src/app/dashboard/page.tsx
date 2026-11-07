@@ -71,12 +71,11 @@ function DashboardContent() {
           onOpenBookmarklet={() => setIsBookmarkletOpen(true)}
           onExportCSV={handleExportCSV}
           onOpenAddJob={() => setIsAddOpen(true)}
-          onOpenProfile={() => setActiveNavTab('profile')}
-          currentUser={currentUser}
           isSyncing={dashboardState.isSyncing || isFeedSyncing}
           onSync={handleSync}
           onOpenMobileMenu={() => setIsMobileMenuOpen(true)}
           activeTab={activeNavTab}
+          jobCount={jobs.length}
         />
 
         <main className="flex-1 overflow-y-auto">

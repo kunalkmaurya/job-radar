@@ -5,6 +5,17 @@ import { LayoutDashboard, Globe, BarChart3, Settings2, User } from 'lucide-react
 
 export type DashboardTab = 'dashboard' | 'feed' | 'analytics' | 'settings' | 'profile';
 
+export const DASHBOARD_TAB_MAP: Record<
+  DashboardTab,
+  { label: string; icon: React.ComponentType<{ className?: string }> }
+> = {
+  dashboard: { label: 'My Dashboard', icon: LayoutDashboard },
+  feed: { label: 'Explore Jobs', icon: Globe },
+  analytics: { label: 'Analytics', icon: BarChart3 },
+  settings: { label: 'Settings', icon: Settings2 },
+  profile: { label: 'Profile', icon: User },
+};
+
 interface DashboardNavTabsProps {
   activeTab: DashboardTab;
   onTabChange: (tab: DashboardTab) => void;

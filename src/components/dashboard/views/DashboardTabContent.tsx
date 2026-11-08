@@ -7,6 +7,7 @@ import { AnalyticsView } from './AnalyticsView';
 import { SettingsView } from './SettingsView';
 import { ProfileView } from './ProfileView';
 import { FeedView } from '../feed/FeedView';
+import { PodFeedView } from '../pod/PodFeedView';
 import { PipelineMetrics } from './pipelineViewTypes';
 import { Job, JobStatus, TimelineFilter, CustomDateRange } from '@/types';
 
@@ -42,90 +43,65 @@ interface DashboardTabContentProps {
   onJobDelete: (jobId: string) => void;
   onJobTracked?: () => void;
   refreshTrigger?: number;
+  onOpenInviteModal?: () => void;
 }
 
-export function DashboardTabContent({
-  activeTab,
-  jobs,
-  isLoading,
-  theme,
-  toggleTheme,
-  viewMode,
-  setViewMode,
-  timelineFilter,
-  setTimelineFilter,
-  customRange,
-  setCustomRange,
-  searchQuery,
-  setSearchQuery,
-  staleOnlyFilter,
-  setStaleOnlyFilter,
-  statusFilter,
-  setStatusFilter,
-  nowTime,
-  currentUser,
-  staleCount,
-  metrics,
-  filteredJobs,
-  timelineScopedJobs,
-  handleApplyAndAdvance,
-  handleToggleImportant,
-  handleExportCSV,
-  setDrawerJob,
-  onJobStatusChange,
-  onJobDelete,
-  onJobTracked,
-  refreshTrigger,
-}: DashboardTabContentProps) {
+export function DashboardTabContent(props: DashboardTabContentProps) {
+  const { activeTab, jobs, metrics, currentUser, handleExportCSV, onOpenInviteModal } = props;
+
   return (
-    <div className="w-full px-3 sm:px-5 py-4 sm:py-6 space-y-4 sm:space-y-6 flex-1">
+    <div className="w-full px-3 sm:px-5 py-4 sm:py-6 flex-1 flex flex-col min-h-full">
       {activeTab === 'dashboard' && (
         <PipelineView
-          timelineFilter={timelineFilter}
-          onSelectTimeline={setTimelineFilter}
-          customRange={customRange}
-          onCustomRangeChange={setCustomRange}
-          timelineScopedJobs={timelineScopedJobs}
+          timelineFilter={props.timelineFilter}
+          onSelectTimeline={props.setTimelineFilter}
+          customRange={props.customRange}
+          onCustomRangeChange={props.setCustomRange}
+          timelineScopedJobs={props.timelineScopedJobs}
           totalJobsCount={jobs.length}
-          isLoading={isLoading}
+          isLoading={props.isLoading}
           metrics={metrics}
-          searchQuery={searchQuery}
-          onSearchChange={setSearchQuery}
-          staleCount={staleCount}
-          staleOnlyFilter={staleOnlyFilter}
-          onToggleStaleFilter={() => setStaleOnlyFilter(!staleOnlyFilter)}
-          viewMode={viewMode}
-          onSelectViewMode={setViewMode}
-          filteredJobs={filteredJobs}
-          statusFilter={statusFilter}
-          onSelectStatus={setStatusFilter}
-          nowTime={nowTime}
-          onSelectJob={setDrawerJob}
-          onStatusChange={onJobStatusChange}
-          onToggleImportant={handleToggleImportant}
-          onApplyAndAdvance={handleApplyAndAdvance}
-          onDeleteJob={onJobDelete}
+          searchQuery={props.searchQuery}
+          onSearchChange={props.setSearchQuery}
+          staleCount={props.staleCount}
+          staleOnlyFilter={props.staleOnlyFilter}
+          onToggleStaleFilter={() => props.setStaleOnlyFilter(!props.staleOnlyFilter)}
+          viewMode={props.viewMode}
+          onSelectViewMode={props.setViewMode}
+          filteredJobs={props.filteredJobs}
+          statusFilter={props.statusFilter}
+          onSelectStatus={props.setStatusFilter}
+          nowTime={props.nowTime}
+          onSelectJob={props.setDrawerJob}
+          onStatusChange={props.onJobStatusChange}
+          onToggleImportant={props.handleToggleImportant}
+          onApplyAndAdvance={props.handleApplyAndAdvance}
+          onDeleteJob={props.onJobDelete}
+        />
+      )}
+
+      {activeTab === 'pod' && (
+        <PodFeedView
+          onJobTracked={props.onJobTracked}
+          refreshTrigger={props.refreshTrigger}
+          onOpenInviteModal={onOpenInviteModal}
         />
       )}
 
       {activeTab === 'feed' && (
-        <FeedView
-          currentUser={currentUser}
-          onJobTracked={onJobTracked}
-          refreshTrigger={refreshTrigger}
-        />
+        <FeedView onJobTracked={props.onJobTracked} refreshTrigger={props.refreshTrigger} />
       )}
 
       {activeTab === 'analytics' && (
         <AnalyticsView
-          timelineFilter={timelineFilter}
-          onSelectTimeline={setTimelineFilter}
-          customRange={customRange}
-          onCustomRangeChange={setCustomRange}
-          timelineScopedJobs={timelineScopedJobs}
+          timelineFilter={props.timelineFilter}
+          onSelectTimeline={props.setTimelineFilter}
+          customRange={props.customRange}
+          onCustomRangeChange={props.setCustomRange}
+          timelineScopedJobs={props.timelineScopedJobs}
           totalJobsCount={jobs.length}
           metrics={metrics}
-          nowTime={nowTime}
+          nowTime={props.nowTime}
         />
       )}
 
@@ -134,8 +110,8 @@ export function DashboardTabContent({
           currentUser={currentUser}
           onExportCSV={handleExportCSV}
           totalJobs={jobs.length}
-          theme={theme}
-          onToggleTheme={toggleTheme}
+          theme={props.theme}
+          onToggleTheme={props.toggleTheme}
         />
       )}
 
@@ -145,6 +121,7 @@ export function DashboardTabContent({
           totalJobs={jobs.length}
           metrics={metrics}
           onExportCSV={handleExportCSV}
+          onOpenInviteModal={onOpenInviteModal}
         />
       )}
     </div>

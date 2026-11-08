@@ -3,7 +3,11 @@
 import React, { useState } from 'react';
 import { Mail, Lock, Eye, EyeOff, Loader2, ArrowRight, AlertCircle } from 'lucide-react';
 
-export function EmailPasswordForm() {
+interface EmailPasswordFormProps {
+  onForgotPassword?: () => void;
+}
+
+export function EmailPasswordForm({ onForgotPassword }: EmailPasswordFormProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -64,9 +68,20 @@ export function EmailPasswordForm() {
       </div>
 
       <div className="space-y-1">
-        <label className="text-[10px] text-(--text-muted) uppercase tracking-wider block">
-          Password
-        </label>
+        <div className="flex items-center justify-between">
+          <label className="text-[10px] text-(--text-muted) uppercase tracking-wider block">
+            Password
+          </label>
+          {onForgotPassword && (
+            <button
+              type="button"
+              onClick={onForgotPassword}
+              className="text-[10px] text-(--accent-primary) hover:underline cursor-pointer"
+            >
+              Forgot password?
+            </button>
+          )}
+        </div>
         <div className="relative flex items-center">
           <Lock className="w-3.5 h-3.5 absolute left-3 text-(--text-muted) pointer-events-none" />
           <input

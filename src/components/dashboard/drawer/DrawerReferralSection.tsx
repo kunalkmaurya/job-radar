@@ -1,9 +1,12 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { Users, Check } from 'lucide-react';
+import React from 'react';
+import { Users, Check, Sparkles } from 'lucide-react';
 import { Job, ReferralStatus, REFERRAL_STATUSES, UpdateReferralData } from '@/types';
 import { DrawerReferralForm } from './DrawerReferralForm';
+import { LinkedInFinderCard } from './LinkedInFinderCard';
+import { LinkedInPitchGenerator } from './LinkedInPitchGenerator';
+import { useDrawerReferral } from './useDrawerReferral';
 
 interface DrawerReferralSectionProps {
   job: Job;
@@ -30,56 +33,30 @@ const STATUS_LABELS: Record<ReferralStatus, { label: string; activeClass: string
 };
 
 export function DrawerReferralSection({ job, onUpdateReferral }: DrawerReferralSectionProps) {
-  const [status, setStatus] = useState<ReferralStatus>(
-    (job.referralStatus as ReferralStatus) || 'none'
-  );
-  const [name, setName] = useState(job.referrerName || '');
-  const [contact, setContact] = useState(job.referrerContact || '');
-  const [notes, setNotes] = useState(job.referralNotes || '');
-  const [isSaving, setIsSaving] = useState(false);
-  const [savedNotice, setSavedNotice] = useState(false);
-
-  useEffect(() => {
-    setStatus((job.referralStatus as ReferralStatus) || 'none');
-    setName(job.referrerName || '');
-    setContact(job.referrerContact || '');
-    setNotes(job.referralNotes || '');
-  }, [job]);
-
-  const handleStatusChange = async (newStatus: ReferralStatus) => {
-    setStatus(newStatus);
-    setIsSaving(true);
-    await onUpdateReferral(job.id, {
-      referralStatus: newStatus,
-      referrerName: name,
-      referrerContact: contact,
-      referralNotes: notes,
-    });
-    setIsSaving(false);
-  };
-
-  const handleSaveDetails = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSaving(true);
-    await onUpdateReferral(job.id, {
-      referralStatus: status === 'none' ? 'asked' : status,
-      referrerName: name,
-      referrerContact: contact,
-      referralNotes: notes,
-    });
-    if (status === 'none') setStatus('asked');
-    setIsSaving(false);
-    setSavedNotice(true);
-    setTimeout(() => setSavedNotice(false), 2000);
-  };
+  const {
+    status,
+    name,
+    setName,
+    contact,
+    setContact,
+    notes,
+    setNotes,
+    isSaving,
+    savedNotice,
+    showPitchDrafter,
+    setShowPitchDrafter,
+    handleStatusChange,
+    handleSaveDetails,
+    handleSetReferrerFromPitch,
+  } = useDrawerReferral(job, onUpdateReferral);
 
   return (
-    <div className="space-y-3 pt-4 border-t border-(--border-subtle)">
+    <div className="space-y-3 p-4 border border-(--border-subtle) bg-(--bg-app)/30">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Users className="w-3.5 h-3.5 text-(--accent-primary)" />
           <h4 className="text-xs font-semibold uppercase tracking-wider text-(--text-muted)">
-            Referral Tracker
+            Referral & Network Outreach
           </h4>
         </div>
         {savedNotice && (
@@ -89,6 +66,10 @@ export function DrawerReferralSection({ job, onUpdateReferral }: DrawerReferralS
         )}
       </div>
 
+      {/* 1. LinkedIn 1st-Degree & 2nd-Degree Deep-Link Finder */}
+      <LinkedInFinderCard company={job.company} />
+
+      {/* 2. Referral Status Chips */}
       <div className="grid grid-cols-4 gap-1.5">
         {REFERRAL_STATUSES.map((s) => {
           const isSelected = status === s;
@@ -110,6 +91,29 @@ export function DrawerReferralSection({ job, onUpdateReferral }: DrawerReferralS
         })}
       </div>
 
+      {/* 3. AI Referral Pitch Drafter Toggle */}
+      <div className="flex justify-between items-center text-xs">
+        <button
+          type="button"
+          onClick={() => setShowPitchDrafter(!showPitchDrafter)}
+          className="inline-flex items-center gap-1.5 text-[11px] text-(--accent-primary) hover:underline cursor-pointer"
+        >
+          <Sparkles className="w-3 h-3" />
+          <span>{showPitchDrafter ? 'Hide Outreach Drafter' : 'Draft Referral Pitch with AI'}</span>
+        </button>
+      </div>
+
+      {showPitchDrafter && (
+        <LinkedInPitchGenerator
+          company={job.company}
+          role={job.role}
+          recipientName={name}
+          onRecipientNameChange={setName}
+          onSetReferrer={handleSetReferrerFromPitch}
+        />
+      )}
+
+      {/* 4. Contact & Notes Form when referral is active */}
       {status !== 'none' && (
         <DrawerReferralForm
           name={name}

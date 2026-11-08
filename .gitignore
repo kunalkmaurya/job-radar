@@ -44,3 +44,7 @@ next-env.d.ts
 
 # screenshot generator scripts
 scripts/capture_screenshots.mjs
+
+# local agent rules and configurations
+.agents/
+.agent*

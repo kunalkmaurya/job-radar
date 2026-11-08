@@ -15,6 +15,20 @@
       "when": 1793464320192,
       "tag": "0001_faithful_lady_bullseye",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1793508797396,
+      "tag": "0002_small_colossus",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1793510660333,
+      "tag": "0003_mysterious_mac_gargan",
+      "breakpoints": true
     }
   ]
 }

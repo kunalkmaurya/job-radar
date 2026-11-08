@@ -6,6 +6,7 @@ import { verifySessionToken, isAllowedEmail, AUTH_COOKIE_NAME } from '@/lib/auth
 const PUBLIC_PATHS = [
   '/',
   '/login',
+  '/reset-password',
   '/api/auth',
   '/api/telegram-webhook',
   '/logo.png',

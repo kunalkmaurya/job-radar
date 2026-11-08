@@ -6,6 +6,7 @@ import {
   timestamp,
   date,
   boolean,
+  integer,
   uniqueIndex,
   index,
 } from 'drizzle-orm/pg-core';
@@ -20,6 +21,10 @@ export const users = pgTable(
     name: varchar('name', { length: 255 }),
     image: text('image'),
     role: varchar('role', { length: 50 }).default('user').notNull(), // 'admin' | 'user'
+    passwordHash: text('password_hash'),
+    resetPasswordToken: text('reset_password_token'),
+    resetPasswordExpires: timestamp('reset_password_expires', { withTimezone: true }),
+    jobDigestFrequency: varchar('job_digest_frequency', { length: 20 }).default('none').notNull(),
     telegramChatId: varchar('telegram_chat_id', { length: 100 }),
     ingestToken: varchar('ingest_token', { length: 64 }),
     createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
@@ -29,14 +34,58 @@ export const users = pgTable(
     uniqueIndex('idx_users_email').on(table.email),
     uniqueIndex('idx_users_ingest_token').on(table.ingestToken),
     index('idx_users_telegram_chat_id').on(table.telegramChatId),
+    index('idx_users_reset_password_token').on(table.resetPasswordToken),
   ]
 );
 
-// Public Jobs Table (Curated Community / Admin Pool)
+// Workspaces / Job Pods Table (Collaborative Cohorts)
+export const workspaces = pgTable(
+  'workspaces',
+  {
+    id: uuid('id').defaultRandom().primaryKey(),
+    name: varchar('name', { length: 255 }).notNull(),
+    ownerId: uuid('owner_id').references(() => users.id, { onDelete: 'cascade' }),
+    inviteCode: varchar('invite_code', { length: 64 }).notNull().unique(),
+    memberLimit: integer('member_limit').default(6).notNull(),
+    telegramChatId: varchar('telegram_chat_id', { length: 100 }),
+    createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
+  },
+  (table) => [
+    uniqueIndex('idx_workspaces_invite_code').on(table.inviteCode),
+    index('idx_workspaces_owner_id').on(table.ownerId),
+    index('idx_workspaces_telegram_chat_id').on(table.telegramChatId),
+  ]
+);
+
+// Workspace Members Table
+export const workspaceMembers = pgTable(
+  'workspace_members',
+  {
+    id: uuid('id').defaultRandom().primaryKey(),
+    workspaceId: uuid('workspace_id')
+      .references(() => workspaces.id, { onDelete: 'cascade' })
+      .notNull(),
+    userId: uuid('user_id')
+      .references(() => users.id, { onDelete: 'cascade' })
+      .notNull(),
+    role: varchar('role', { length: 32 }).default('member').notNull(), // 'owner' | 'member'
+    joinedAt: timestamp('joined_at', { withTimezone: true }).defaultNow().notNull(),
+  },
+  (table) => [
+    uniqueIndex('idx_workspace_members_user_ws').on(table.workspaceId, table.userId),
+    index('idx_workspace_members_user_id').on(table.userId),
+    index('idx_workspace_members_ws_id').on(table.workspaceId),
+  ]
+);
+
+// Public & Pod Jobs Table (Shared Community / Cohort Pool)
 export const publicJobs = pgTable(
   'public_jobs',
   {
     id: uuid('id').defaultRandom().primaryKey(),
+    workspaceId: uuid('workspace_id').references(() => workspaces.id, { onDelete: 'cascade' }),
+    submittedByName: varchar('submitted_by_name', { length: 255 }),
     company: varchar('company', { length: 255 }).notNull(),
     role: varchar('role', { length: 255 }).notNull(),
     link: text('link').notNull(),
@@ -48,7 +97,8 @@ export const publicJobs = pgTable(
     updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
   },
   (table) => [
-    uniqueIndex('idx_public_jobs_link').on(table.link),
+    index('idx_public_jobs_link').on(table.link),
+    index('idx_public_jobs_workspace_id').on(table.workspaceId),
     index('idx_public_jobs_created_at').on(table.createdAt),
     index('idx_public_jobs_posted_by').on(table.postedBy),
   ]
@@ -94,12 +144,38 @@ export const jobs = pgTable(
 export const usersRelations = relations(users, ({ many }) => ({
   jobs: many(jobs),
   publicJobs: many(publicJobs),
+  ownedWorkspaces: many(workspaces),
+  workspaceMemberships: many(workspaceMembers),
+}));
+
+export const workspacesRelations = relations(workspaces, ({ one, many }) => ({
+  owner: one(users, {
+    fields: [workspaces.ownerId],
+    references: [users.id],
+  }),
+  members: many(workspaceMembers),
+  publicJobs: many(publicJobs),
+}));
+
+export const workspaceMembersRelations = relations(workspaceMembers, ({ one }) => ({
+  workspace: one(workspaces, {
+    fields: [workspaceMembers.workspaceId],
+    references: [workspaces.id],
+  }),
+  user: one(users, {
+    fields: [workspaceMembers.userId],
+    references: [users.id],
+  }),
 }));
 
 export const publicJobsRelations = relations(publicJobs, ({ one, many }) => ({
   postedByUser: one(users, {
     fields: [publicJobs.postedBy],
     references: [users.id],
+  }),
+  workspace: one(workspaces, {
+    fields: [publicJobs.workspaceId],
+    references: [workspaces.id],
   }),
   trackedUserJobs: many(jobs),
 }));
@@ -122,3 +198,7 @@ export type User = typeof users.$inferSelect;
 export type NewUser = typeof users.$inferInsert;
 export type PublicJob = typeof publicJobs.$inferSelect;
 export type NewPublicJob = typeof publicJobs.$inferInsert;
+export type Workspace = typeof workspaces.$inferSelect;
+export type NewWorkspace = typeof workspaces.$inferInsert;
+export type WorkspaceMember = typeof workspaceMembers.$inferSelect;
+export type NewWorkspaceMember = typeof workspaceMembers.$inferInsert;

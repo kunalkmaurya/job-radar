@@ -1,5 +1,6 @@
 import { SignJWT, jwtVerify } from 'jose';
 import { cookies } from 'next/headers';
+import bcrypt from 'bcryptjs';
 
 const JWT_SECRET = new TextEncoder().encode(
   process.env.JWT_SECRET || 'default_super_secret_job_radar_key_minimum_32_characters'
@@ -15,9 +16,15 @@ export interface UserSession {
   role?: string;
 }
 
-/**
- * Creates and signs a 30-day JWT session token
- */
+export async function hashPassword(password: string): Promise<string> {
+  const salt = await bcrypt.genSalt(10);
+  return bcrypt.hash(password, salt);
+}
+
+export async function comparePassword(password: string, hash: string): Promise<boolean> {
+  return bcrypt.compare(password, hash);
+}
+
 export async function createSessionToken(payload: UserSession): Promise<string> {
   return new SignJWT({ ...payload })
     .setProtectedHeader({ alg: 'HS256' })
@@ -26,9 +33,6 @@ export async function createSessionToken(payload: UserSession): Promise<string> 
     .sign(JWT_SECRET);
 }
 
-/**
- * Verifies and decodes a JWT session token
- */
 export async function verifySessionToken(token: string): Promise<UserSession | null> {
   try {
     const { payload } = await jwtVerify(token, JWT_SECRET);
@@ -47,9 +51,29 @@ export async function verifySessionToken(token: string): Promise<UserSession | n
   }
 }
 
-/**
- * Extracts and verifies the current session from request cookies
- */
+export async function createPasswordResetToken(email: string, userId: string): Promise<string> {
+  return new SignJWT({ sub: userId, email, purpose: 'password_reset' })
+    .setProtectedHeader({ alg: 'HS256' })
+    .setIssuedAt()
+    .setExpirationTime('1h')
+    .sign(JWT_SECRET);
+}
+
+export async function verifyPasswordResetToken(
+  token: string
+): Promise<{ email: string; sub: string } | null> {
+  try {
+    const { payload } = await jwtVerify(token, JWT_SECRET);
+    if (payload.purpose !== 'password_reset') return null;
+    return {
+      sub: payload.sub as string,
+      email: payload.email as string,
+    };
+  } catch {
+    return null;
+  }
+}
+
 export async function getSessionFromCookies(): Promise<UserSession | null> {
   try {
     const cookieStore = await cookies();
@@ -61,9 +85,6 @@ export async function getSessionFromCookies(): Promise<UserSession | null> {
   }
 }
 
-/**
- * Checks if an email is an administrator
- */
 export function isAdminEmail(email: string): boolean {
   if (!email) return false;
   const clean = email.trim().toLowerCase();
@@ -81,9 +102,6 @@ export function isAdminEmail(email: string): boolean {
   return false;
 }
 
-/**
- * Checks if an email is authorized to access the dashboard (supports single or comma-separated emails, or '*' for open access)
- */
 export function isAllowedEmail(email: string): boolean {
   if (!email) return false;
   const clean = email.trim().toLowerCase().replace(/['"]/g, '');
@@ -110,9 +128,6 @@ export function isAllowedEmail(email: string): boolean {
   return allowedList.includes(clean);
 }
 
-/**
- * Verifies email and password credentials for direct login
- */
 export function verifyCredentials(
   email: string,
   password: string

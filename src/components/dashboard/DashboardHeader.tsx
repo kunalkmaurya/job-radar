@@ -2,19 +2,14 @@
 
 import React from 'react';
 import Image from 'next/image';
-import { Sun, Moon, Bookmark, Download, Plus, RefreshCw } from 'lucide-react';
-import { ProfilePopover } from './ProfilePopover';
+import { Menu } from 'lucide-react';
+import { DashboardTab, DASHBOARD_TAB_MAP } from './DashboardNavTabs';
+import { HeaderActions, HeaderActionsProps } from './HeaderActions';
 
-interface DashboardHeaderProps {
-  theme: 'dark' | 'light';
-  onToggleTheme: () => void;
-  onOpenBookmarklet: () => void;
-  onExportCSV: () => void;
-  onOpenAddJob: () => void;
-  onOpenProfile?: () => void;
-  currentUser: { email?: string; name?: string; role?: string } | null;
-  isSyncing?: boolean;
-  onSync?: () => void;
+interface DashboardHeaderProps extends HeaderActionsProps {
+  onOpenMobileMenu?: () => void;
+  activeTab?: DashboardTab;
+  jobCount?: number;
 }
 
 export function DashboardHeader({
@@ -23,78 +18,69 @@ export function DashboardHeader({
   onOpenBookmarklet,
   onExportCSV,
   onOpenAddJob,
-  onOpenProfile,
-  currentUser,
+  onOpenPodModal,
+  podMemberCount,
   isSyncing,
   onSync,
+  onOpenMobileMenu,
+  activeTab = 'dashboard',
+  jobCount,
 }: DashboardHeaderProps) {
+  const currentTab = DASHBOARD_TAB_MAP[activeTab] || DASHBOARD_TAB_MAP.dashboard;
+  const TabIcon = currentTab.icon;
+
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-(--border-subtle) bg-(--bg-app)/85 backdrop-blur-xl px-3 sm:px-5 py-2.5 sm:py-3.5 flex items-center justify-between">
-      <div className="flex items-center gap-2 sm:gap-2.5 min-w-0">
-        <div className="w-7 h-7 sm:w-8 sm:h-8 bg-(--accent-primary-bg) border border-(--border-subtle) flex items-center justify-center p-1 shrink-0 rounded-xs">
-          <Image
-            src="/logo.png"
-            alt="Job Radar"
-            width={20}
-            height={20}
-            className="w-4 h-4 sm:w-5 sm:h-5 object-contain rounded-xs"
-          />
-        </div>
-        <span className="font-bold text-sm sm:text-base tracking-tight truncate">JOB RADAR</span>
-      </div>
-
-      <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
+    <header className="sticky top-0 z-30 h-14 w-full border-b border-(--border-subtle) bg-(--bg-app)/90 backdrop-blur-xl px-3 sm:px-5 flex items-center justify-between">
+      <div className="flex items-center gap-2.5 min-w-0">
         <button
-          onClick={onToggleTheme}
-          aria-label="Toggle theme"
-          className="h-8 w-8 flex items-center justify-center border border-(--border-subtle) bg-(--bg-surface) hover:bg-(--bg-surface-hover) text-(--text-secondary) hover:text-(--text-primary) transition-colors cursor-pointer shrink-0"
+          onClick={onOpenMobileMenu}
+          aria-label="Open navigation menu"
+          className="md:hidden p-1.5 border border-(--border-subtle) bg-(--bg-surface) text-(--text-secondary) hover:text-(--text-primary) rounded-xs cursor-pointer"
         >
-          {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+          <Menu className="w-4 h-4" />
         </button>
 
-        {onSync && (
-          <button
-            onClick={onSync}
-            disabled={isSyncing}
-            title={isSyncing ? 'Syncing...' : 'Sync pipeline (checks for Telegram updates)'}
-            aria-label="Sync jobs pipeline"
-            className="h-8 w-8 flex items-center justify-center border border-(--border-subtle) bg-(--bg-surface) hover:bg-(--bg-surface-hover) text-(--text-secondary) hover:text-(--text-primary) transition-colors cursor-pointer shrink-0 disabled:opacity-50"
-          >
-            <RefreshCw
-              className={`w-3.5 h-3.5 ${isSyncing ? 'animate-spin text-(--accent-primary)' : ''}`}
+        <div className="flex items-center gap-2 md:hidden">
+          <div className="w-6 h-6 bg-(--accent-primary-bg) border border-(--border-subtle) flex items-center justify-center p-0.5 rounded-xs">
+            <Image
+              src="/logo.png"
+              alt="Job Radar"
+              width={16}
+              height={16}
+              className="w-3.5 h-3.5 object-contain"
             />
-          </button>
-        )}
+          </div>
+          <span className="font-bold text-xs tracking-wider uppercase text-(--text-primary)">
+            JOB RADAR
+          </span>
+        </div>
 
-        <button
-          onClick={onOpenBookmarklet}
-          title="1-Click Browser Bookmarklet"
-          className="hidden md:inline-flex items-center gap-1.5 h-8 px-3 border border-(--border-subtle) bg-(--bg-surface) hover:bg-(--bg-surface-hover) text-xs text-(--text-secondary) hover:text-(--text-primary) transition-colors cursor-pointer shrink-0"
-        >
-          <Bookmark className="w-3.5 h-3.5" />
-          <span>Bookmarklet</span>
-        </button>
-
-        <button
-          onClick={onExportCSV}
-          title="Export CSV"
-          aria-label="Export CSV"
-          className="h-8 w-8 sm:w-auto p-0 sm:px-3 flex items-center justify-center gap-1.5 border border-(--border-subtle) bg-(--bg-surface) hover:bg-(--bg-surface-hover) text-xs text-(--text-secondary) hover:text-(--text-primary) transition-colors cursor-pointer shrink-0"
-        >
-          <Download className="w-3.5 h-3.5" />
-          <span className="hidden sm:inline">Export</span>
-        </button>
-
-        <button
-          onClick={onOpenAddJob}
-          className="inline-flex items-center gap-1 sm:gap-1.5 h-8 px-2.5 sm:px-3.5 bg-(--accent-primary) hover:bg-(--accent-primary-hover) text-white text-xs font-semibold shadow-sm transition-all active:scale-[0.98] cursor-pointer shrink-0"
-        >
-          <Plus className="w-3.5 h-3.5" />
-          <span className="inline">Add</span>
-        </button>
-
-        <ProfilePopover currentUser={currentUser} onOpenProfile={onOpenProfile} />
+        <div className="hidden md:flex items-center gap-2 text-xs">
+          <span className="text-(--text-muted)">Workspace</span>
+          <span className="text-(--border-strong)">/</span>
+          <div className="flex items-center gap-1.5 font-semibold text-(--text-primary)">
+            <TabIcon className="w-3.5 h-3.5 text-(--accent-primary)" />
+            <span>{currentTab.label}</span>
+          </div>
+          {activeTab === 'dashboard' && jobCount !== undefined && (
+            <span className="ml-1 px-1.5 py-0.5 text-[10px] font-mono font-medium rounded-xs bg-(--accent-primary)/10 text-(--accent-blue-bright) border border-(--accent-primary)/20">
+              {jobCount} tracked
+            </span>
+          )}
+        </div>
       </div>
+
+      <HeaderActions
+        theme={theme}
+        onToggleTheme={onToggleTheme}
+        onOpenBookmarklet={onOpenBookmarklet}
+        onExportCSV={onExportCSV}
+        onOpenAddJob={onOpenAddJob}
+        onOpenPodModal={onOpenPodModal}
+        podMemberCount={podMemberCount}
+        isSyncing={isSyncing}
+        onSync={onSync}
+      />
     </header>
   );
 }

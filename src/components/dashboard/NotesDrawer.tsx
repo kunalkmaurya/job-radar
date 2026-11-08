@@ -29,16 +29,18 @@ export function NotesDrawer({
   onSaveNotes,
   onUpdateReferral,
 }: NotesDrawerProps) {
-  const [drawerNotes, setDrawerNotes] = useState('');
-  const [drawerFollowUp, setDrawerFollowUp] = useState('');
+  const [drawerNotes, setDrawerNotes] = useState(job?.notes || '');
+  const [drawerFollowUp, setDrawerFollowUp] = useState(job?.followUpDate || '');
   const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
-    if (job) {
-      setDrawerNotes(job.notes || '');
-      setDrawerFollowUp(job.followUpDate || '');
-    }
-  }, [job]);
+    if (!job) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [job, onClose]);
 
   if (!job) return null;
 
@@ -49,53 +51,71 @@ export function NotesDrawer({
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-hidden flex justify-end">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 overflow-hidden">
       <div
-        className="fixed inset-0 bg-black/50 backdrop-blur-sm transition-opacity"
+        className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
         onClick={onClose}
+        aria-hidden="true"
       />
 
-      <div className="relative w-full max-w-md bg-(--bg-surface) border-l border-(--border-subtle) p-4 sm:p-6 shadow-2xl flex flex-col justify-between z-10 animate-in slide-in-from-right duration-200">
-        <div className="space-y-6 overflow-y-auto flex-1 pr-1">
+      <div className="relative w-full max-w-4xl max-h-[90vh] bg-(--bg-surface) border border-(--border-subtle) shadow-2xl flex flex-col z-10 animate-in zoom-in-95 duration-150">
+        <div className="p-4 sm:p-6 border-b border-(--border-subtle) shrink-0">
           <DrawerHeader
             job={job}
             onClose={onClose}
             onStatusChange={onStatusChange}
             onToggleImportant={onToggleImportant}
           />
-
-          <DrawerFollowUp
-            value={drawerFollowUp}
-            nowTime={nowTime}
-            onChange={(date) => {
-              setDrawerFollowUp(date);
-              handleSave(drawerNotes, date);
-            }}
-          />
-
-          {onUpdateReferral && (
-            <DrawerReferralSection job={job} onUpdateReferral={onUpdateReferral} />
-          )}
-
-          <DrawerNotesSection
-            job={job}
-            notes={drawerNotes}
-            isSaving={isSaving}
-            onNotesChange={setDrawerNotes}
-            onSave={() => handleSave(drawerNotes, drawerFollowUp)}
-          />
         </div>
 
-        <div className="pt-4 border-t border-(--border-subtle) flex items-center justify-between text-xs text-(--text-muted)">
+        <div className="p-4 sm:p-6 overflow-y-auto space-y-6 flex-1">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+            <div className="space-y-6">
+              <DrawerFollowUp
+                value={drawerFollowUp}
+                nowTime={nowTime}
+                onChange={(date) => {
+                  setDrawerFollowUp(date);
+                  handleSave(drawerNotes, date);
+                }}
+              />
+
+              <DrawerNotesSection
+                job={job}
+                notes={drawerNotes}
+                isSaving={isSaving}
+                onNotesChange={setDrawerNotes}
+                onSave={() => handleSave(drawerNotes, drawerFollowUp)}
+              />
+            </div>
+
+            <div className="space-y-4">
+              {onUpdateReferral && (
+                <DrawerReferralSection job={job} onUpdateReferral={onUpdateReferral} />
+              )}
+            </div>
+          </div>
+        </div>
+
+        <div className="px-4 py-3 sm:px-6 border-t border-(--border-subtle) bg-(--bg-surface) flex items-center justify-between text-xs text-(--text-muted) shrink-0">
           <span>Added via {job.source}</span>
-          <button
-            type="button"
-            onClick={() => onDeleteJob(job.id)}
-            className="flex items-center gap-1.5 text-red-400 hover:text-red-300 transition-colors cursor-pointer"
-          >
-            <Trash2 className="w-3.5 h-3.5" />
-            <span>Delete job</span>
-          </button>
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => onDeleteJob(job.id)}
+              className="flex items-center gap-1.5 text-red-400 hover:text-red-300 transition-colors cursor-pointer"
+            >
+              <Trash2 className="w-3.5 h-3.5" />
+              <span>Delete job</span>
+            </button>
+            <button
+              type="button"
+              onClick={onClose}
+              className="px-3 py-1.5 text-xs font-medium border border-(--border-subtle) bg-(--bg-app) hover:bg-(--bg-surface-hover) text-(--text-primary) transition-colors cursor-pointer"
+            >
+              Done
+            </button>
+          </div>
         </div>
       </div>
     </div>

@@ -6,6 +6,7 @@ import { NotesDrawer } from '../NotesDrawer';
 import { AddJobModal } from '../AddJobModal';
 import { BookmarkletModal } from '../BookmarkletModal';
 import { DeleteJobModal } from './DeleteJobModal';
+import { PodInviteModal, PodData } from '../pod';
 
 interface DashboardModalsProps {
   drawerJob: Job | null;
@@ -25,6 +26,13 @@ interface DashboardModalsProps {
   onRefreshJobs: () => Promise<void>;
   isBookmarkletOpen: boolean;
   onCloseBookmarklet: () => void;
+  isPodOpen?: boolean;
+  onClosePod?: () => void;
+  podData?: PodData | null;
+  onRefreshPod?: () => void;
+  isRefreshingPod?: boolean;
+  onSaveChatId?: (chatId: string) => Promise<boolean>;
+  onSendTest?: () => Promise<boolean>;
 }
 
 export function DashboardModals({
@@ -45,10 +53,18 @@ export function DashboardModals({
   onRefreshJobs,
   isBookmarkletOpen,
   onCloseBookmarklet,
+  isPodOpen = false,
+  onClosePod = () => {},
+  podData = null,
+  onRefreshPod,
+  isRefreshingPod,
+  onSaveChatId,
+  onSendTest,
 }: DashboardModalsProps) {
   return (
     <>
       <NotesDrawer
+        key={drawerJob?.id || 'empty'}
         job={drawerJob}
         nowTime={nowTime}
         onClose={onCloseDrawer}
@@ -73,6 +89,16 @@ export function DashboardModals({
         isOpen={Boolean(jobToDelete)}
         onConfirm={onConfirmDelete ?? (() => {})}
         onCancel={onCancelDelete ?? (() => {})}
+      />
+
+      <PodInviteModal
+        isOpen={isPodOpen}
+        onClose={onClosePod}
+        pod={podData}
+        onRefreshPod={onRefreshPod}
+        isRefreshing={isRefreshingPod}
+        onSaveChatId={onSaveChatId}
+        onSendTest={onSendTest}
       />
     </>
   );

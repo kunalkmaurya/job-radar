@@ -55,10 +55,10 @@ export function PodTelegramSyncCard({
   };
 
   return (
-    <div className="p-3.5 border border-(--border-subtle) bg-(--bg-app)/50 rounded-md space-y-3">
+    <div className="p-4 border border-(--border-subtle) bg-(--bg-app)/60 rounded-md space-y-3 shadow-xs">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <MessageSquare className="w-4 h-4 text-sky-400" />
+          <MessageSquare className="w-4 h-4 text-(--accent-primary)" />
           <span className="text-xs font-semibold text-(--text-primary)">Telegram Group Sync</span>
         </div>
         <div className="flex items-center gap-1.5">
@@ -67,34 +67,41 @@ export function PodTelegramSyncCard({
               onClick={onRefresh}
               disabled={isRefreshing}
               title="Refresh sync status"
-              className="p-1 border border-(--border-subtle) bg-(--bg-surface) hover:bg-(--bg-surface-hover) rounded-xs text-(--text-muted) hover:text-(--text-primary) transition-colors cursor-pointer disabled:opacity-50"
+              className="h-6 w-6 inline-flex items-center justify-center border border-(--border-subtle) bg-(--bg-surface) hover:bg-(--bg-surface-hover) rounded-sm text-(--text-muted) hover:text-(--text-primary) transition-colors cursor-pointer disabled:opacity-50"
             >
               <RefreshCw className={`w-3 h-3 ${isRefreshing ? 'animate-spin' : ''}`} />
             </button>
           )}
           <span
-            className={`text-[10px] font-medium px-2 py-0.5 rounded-xs border ${
-              isTelegramConnected
-                ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
-                : 'bg-amber-500/10 text-amber-400 border-amber-500/30'
-            }`}
+            className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-sm border"
+            style={{
+              backgroundColor: isTelegramConnected
+                ? 'var(--status-offer-bg, #DCFFF1)'
+                : 'var(--status-saved-bg, #F1F2F4)',
+              color: isTelegramConnected
+                ? 'var(--status-offer-text, #216E4E)'
+                : 'var(--status-saved-text, #44546F)',
+              borderColor: isTelegramConnected
+                ? 'var(--status-offer-border, #7EE2B8)'
+                : 'var(--status-saved-border, #DCDFE4)',
+            }}
           >
-            {isTelegramConnected ? 'Group Connected' : 'Not Connected'}
+            {isTelegramConnected ? 'Connected' : 'Disconnected'}
           </span>
         </div>
       </div>
 
-      <p className="text-[11px] text-(--text-muted) leading-relaxed">
+      <p className="text-xs text-(--text-secondary) leading-relaxed">
         Add our bot to your friends group. Any job link posted by any member will automatically
-        appear in your shared Explore Jobs feed.
+        appear in your shared Explore feed.
       </p>
 
       {statusMessage && (
         <div
-          className={`p-2 rounded-xs text-[11px] flex items-center gap-1.5 border ${
+          className={`p-2 rounded-sm text-xs flex items-center gap-1.5 border ${
             statusMessage.isError
-              ? 'bg-red-500/10 text-red-400 border-red-500/20'
-              : 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
+              ? 'bg-red-500/10 text-red-500 border-red-500/20'
+              : 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20'
           }`}
         >
           {statusMessage.isError ? (
@@ -111,19 +118,19 @@ export function PodTelegramSyncCard({
           href={telegramConnectUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex-1 py-1.5 px-3 bg-sky-600 hover:bg-sky-500 text-white font-medium text-xs rounded-xs flex items-center justify-center gap-1.5 transition-colors"
+          className="flex-1 h-8 px-4 bg-(--accent-primary) hover:bg-(--accent-primary-hover) text-(--accent-primary-text) font-semibold text-xs rounded-sm flex items-center justify-center gap-1.5 transition-colors shadow-xs"
         >
           <Send className="w-3.5 h-3.5" />
-          <span>Add Bot to Group</span>
+          <span>Connect</span>
         </a>
 
         {isTelegramConnected && onSendTest && (
           <button
             onClick={handleTest}
             disabled={isBusy}
-            className="py-1.5 px-3 bg-(--bg-surface) hover:bg-(--bg-surface-hover) border border-(--border-subtle) text-xs font-semibold text-(--text-primary) rounded-xs flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50"
+            className="h-8 px-3.5 bg-(--bg-surface) hover:bg-(--bg-surface-hover) border border-(--border-subtle) text-xs font-semibold text-(--text-primary) rounded-sm flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50 transition-colors shadow-xs"
           >
-            <span>Test Ping</span>
+            <span>Test</span>
           </button>
         )}
       </div>
@@ -132,9 +139,12 @@ export function PodTelegramSyncCard({
         <PodChatIdEditor currentChatId={telegramChatId} onSave={handleSave} disabled={isBusy} />
       )}
 
-      <p className="text-[10px] text-(--text-muted) font-mono text-center pt-1">
-        Or in your group, type: /connect {inviteCode}
-      </p>
+      <div className="text-[11px] text-(--text-muted) flex items-center justify-center gap-1.5 pt-1">
+        <span>Or in group:</span>
+        <code className="px-1.5 py-0.5 rounded-sm bg-(--bg-surface) border border-(--border-subtle) font-mono text-[11px] text-(--text-primary) select-all">
+          /connect {inviteCode}
+        </code>
+      </div>
     </div>
   );
 }

@@ -16,7 +16,7 @@ export function AnalyticsVelocityChart({ data }: VelocityChartProps) {
   const peakDay = [...data].sort((a, b) => b.count - a.count)[0];
 
   return (
-    <div className="p-5 border border-(--border-subtle) bg-(--bg-surface) space-y-4 shadow-sm">
+    <div className="p-5 border border-(--border-subtle) bg-(--bg-surface) rounded-md space-y-4 shadow-xs">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-(--border-subtle) gap-2">
         <div className="flex items-center gap-2">
           <TrendingUp className="w-4 h-4 text-(--accent-primary)" />
@@ -24,11 +24,11 @@ export function AnalyticsVelocityChart({ data }: VelocityChartProps) {
             Application Velocity (14-Day Timeline)
           </h3>
         </div>
-        <div className="flex items-center gap-3 text-[11px] text-(--text-muted)">
+        <div className="flex items-center gap-2.5 text-[11px] text-(--text-muted)">
           <span>
             Total: <strong className="text-(--text-primary)">{totalInPeriod}</strong>
           </span>
-          <span>•</span>
+          <span className="text-(--border-strong)">|</span>
           <span>
             Peak: <strong className="text-(--accent-primary)">{peakDay?.count || 0}</strong> (
             {peakDay?.label})
@@ -36,7 +36,6 @@ export function AnalyticsVelocityChart({ data }: VelocityChartProps) {
         </div>
       </div>
 
-      {/* Bar Chart Container */}
       <div className="relative pt-6 pb-2">
         <div className="flex items-end justify-between gap-1.5 sm:gap-2 h-36 border-b border-(--border-subtle) px-1">
           {data.map((d) => {
@@ -51,7 +50,6 @@ export function AnalyticsVelocityChart({ data }: VelocityChartProps) {
                 onMouseLeave={() => setActiveDay(null)}
                 className="flex-1 flex flex-col items-center justify-end h-full group cursor-pointer relative"
               >
-                {/* Count badge on hover or peak */}
                 {d.count > 0 && (
                   <span
                     className={`absolute -top-6 text-[10px] font-bold transition-opacity ${
@@ -64,10 +62,9 @@ export function AnalyticsVelocityChart({ data }: VelocityChartProps) {
                   </span>
                 )}
 
-                {/* Bar */}
                 <div
                   style={{ height: `${heightPercent}%` }}
-                  className={`w-full max-w-[28px] transition-all duration-200 ${
+                  className={`w-full max-w-[28px] rounded-t-[2px] transition-all duration-200 ${
                     d.count === 0
                       ? 'bg-(--border-subtle) opacity-40'
                       : isHovered
@@ -82,7 +79,6 @@ export function AnalyticsVelocityChart({ data }: VelocityChartProps) {
           })}
         </div>
 
-        {/* X-Axis Labels */}
         <div className="flex justify-between text-[9px] text-(--text-muted) pt-2 px-1">
           <span>{data[0]?.label}</span>
           <span>{data[Math.floor(data.length / 2)]?.label}</span>
@@ -90,8 +86,7 @@ export function AnalyticsVelocityChart({ data }: VelocityChartProps) {
         </div>
       </div>
 
-      {/* Selected Day Telemetry Box */}
-      <div className="p-2.5 border border-(--border-subtle) bg-(--bg-app) text-xs flex items-center justify-between min-h-[38px]">
+      <div className="p-2.5 border border-(--border-subtle) bg-(--bg-app) rounded-sm text-xs flex items-center justify-between min-h-[38px]">
         <div className="flex items-center gap-2">
           <Calendar className="w-3.5 h-3.5 text-(--accent-primary)" />
           <span className="text-(--text-secondary)">

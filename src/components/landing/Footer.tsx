@@ -12,13 +12,13 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
           <div className="md:col-span-2 space-y-4">
             <Link href="/" className="flex items-center gap-3">
-              <div className="w-8 h-8 border border-(--border-subtle) bg-(--accent-primary-bg) flex items-center justify-center p-1 rounded-xs">
+              <div className="w-8 h-8 border border-(--border-subtle) bg-[var(--ds-background-selected,#E9F2FF)] dark:bg-[var(--ds-background-selected,#1C2B41)] flex items-center justify-center p-1 rounded-sm">
                 <Image
                   src="/logo.png"
                   alt="Job Radar"
                   width={20}
                   height={20}
-                  className="w-5 h-5 object-contain rounded-xs"
+                  className="w-5 h-5 object-contain rounded-[2px]"
                 />
               </div>
               <div className="flex flex-col">

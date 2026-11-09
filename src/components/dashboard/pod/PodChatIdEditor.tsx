@@ -23,37 +23,42 @@ export function PodChatIdEditor({ currentChatId, onSave, disabled }: PodChatIdEd
 
   return (
     <div className="pt-2 border-t border-(--border-subtle) space-y-1.5">
-      <div className="flex items-center justify-between text-[10px] text-(--text-muted)">
-        <span>Chat ID: {currentChatId || 'Not connected yet'}</span>
+      <div className="flex items-center justify-between text-xs text-(--text-muted)">
+        <span>
+          Chat ID:{' '}
+          <strong className="text-(--text-primary) font-mono">
+            {currentChatId || 'Not connected yet'}
+          </strong>
+        </span>
         <button
           onClick={() => setIsEditing(!isEditing)}
-          className="text-(--accent-blue-bright) hover:underline flex items-center gap-1 cursor-pointer"
+          className="text-(--accent-primary) hover:underline flex items-center gap-1 cursor-pointer font-medium text-xs"
         >
-          <Edit3 className="w-2.5 h-2.5" />
-          <span>{isEditing ? 'Cancel' : 'Set manually'}</span>
+          <Edit3 className="w-3 h-3" />
+          <span>{isEditing ? 'Cancel' : 'Edit'}</span>
         </button>
       </div>
 
       {isEditing && (
-        <div className="space-y-1 pt-0.5">
-          <div className="flex items-center gap-1.5">
+        <div className="space-y-1 pt-1">
+          <div className="flex items-center gap-2">
             <input
               type="text"
               placeholder="-100... or @channelname"
               value={inputVal}
               onChange={(e) => setInputVal(e.target.value)}
-              className="flex-1 px-2.5 py-1 text-xs bg-(--bg-surface) border border-(--border-subtle) text-(--text-primary) font-mono rounded-xs focus:outline-none focus:border-(--accent-primary)"
+              className="flex-1 h-8 px-2.5 text-xs bg-(--bg-surface) border border-(--border-subtle) text-(--text-primary) font-mono rounded-sm focus:outline-none focus:border-(--border-focus) focus:ring-2 focus:ring-(--accent-primary)/20 transition-all"
             />
             <button
               onClick={handleSave}
               disabled={saving || disabled || !inputVal.trim()}
-              className="px-2.5 py-1 bg-(--accent-primary) hover:bg-(--accent-primary-hover) text-white text-xs font-semibold rounded-xs cursor-pointer disabled:opacity-50"
+              className="h-8 px-3.5 bg-(--accent-primary) hover:bg-(--accent-primary-hover) text-(--accent-primary-text) text-xs font-semibold rounded-sm cursor-pointer disabled:opacity-50 transition-colors shadow-xs"
             >
               {saving ? 'Linking...' : 'Save'}
             </button>
           </div>
-          <p className="text-[10px] text-(--text-muted)">
-            Supports negative chat IDs (-100...) or public usernames (@channel).
+          <p className="text-[11px] text-(--text-muted)">
+            Supports negative group IDs (-100...) or public usernames (@channel).
           </p>
         </div>
       )}

@@ -49,27 +49,27 @@ export function AnalyticsSourceBreakdown({ jobs }: SourceBreakdownProps) {
   ];
 
   return (
-    <div className="p-5 border border-(--border-subtle) bg-(--bg-surface) space-y-4 shadow-sm">
+    <div className="p-5 border border-(--border-subtle) bg-(--bg-surface) rounded-md space-y-4 shadow-xs">
       <div className="flex items-center justify-between pb-3 border-b border-(--border-subtle)">
         <div className="flex items-center gap-2">
-          <Radio className="w-4 h-4 text-emerald-400" />
+          <Radio className="w-4 h-4 text-[var(--ds-text-selected,#0C66E4)]" />
           <h3 className="text-xs uppercase tracking-wider font-semibold text-(--text-primary)">
             Ingestion Telemetry & Channels
           </h3>
         </div>
-        <span className="text-[11px] text-emerald-400 font-semibold flex items-center gap-1.5">
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+        <span className="text-[11px] text-[var(--ds-text-success,#22A06B)] font-semibold flex items-center gap-1.5">
+          <span className="w-1.5 h-1.5 rounded-full bg-[var(--ds-text-success,#22A06B)] animate-pulse" />
           Webhook Active
         </span>
       </div>
 
-      <div className="space-y-3 ">
+      <div className="space-y-3">
         {sources.map((src) => {
           const Icon = src.icon;
           return (
             <div
               key={src.label}
-              className="p-3 border border-(--border-subtle) bg-(--bg-app) space-y-2"
+              className="p-3 border border-(--border-subtle) bg-(--bg-app) rounded-sm space-y-2"
             >
               <div className="flex items-center justify-between text-xs">
                 <div className="flex items-center gap-2">
@@ -79,13 +79,13 @@ export function AnalyticsSourceBreakdown({ jobs }: SourceBreakdownProps) {
                 <div className="text-(--text-muted) text-[11px]">
                   <strong className="text-(--text-primary)">{src.count}</strong> jobs ({src.pct}%)
                   {src.interviews > 0 && (
-                    <span className="ml-2 text-emerald-400 font-semibold">
-                      • {src.interviews} screened
+                    <span className="ml-2 text-[var(--ds-text-success,#22A06B)] font-semibold">
+                      | {src.interviews} screened
                     </span>
                   )}
                 </div>
               </div>
-              <div className="w-full h-1.5 bg-(--border-subtle)">
+              <div className="w-full h-1.5 bg-(--border-subtle) rounded-full overflow-hidden">
                 <div className={`h-full ${src.barColor}`} style={{ width: `${src.pct}%` }} />
               </div>
             </div>
@@ -93,7 +93,7 @@ export function AnalyticsSourceBreakdown({ jobs }: SourceBreakdownProps) {
         })}
       </div>
 
-      <div className="p-2.5 border border-(--border-subtle) bg-(--bg-app) text-[11px] text-(--text-secondary) leading-relaxed">
+      <div className="p-2.5 border border-(--border-subtle) bg-(--bg-app) rounded-sm text-[11px] text-(--text-secondary) leading-relaxed">
         Telegram channel achieves lowest ingestion friction (avg 18s from share-sheet to AI
         parsing).
       </div>

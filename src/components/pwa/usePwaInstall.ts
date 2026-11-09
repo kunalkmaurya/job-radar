@@ -20,30 +20,36 @@ export function usePwaInstall() {
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
-    // Check if running in standalone mode (already installed)
-    const isStandaloneMode =
-      window.matchMedia('(display-mode: standalone)').matches ||
-      (window.navigator as unknown as { standalone?: boolean }).standalone === true;
-    setIsStandalone(isStandaloneMode);
-    if (isStandaloneMode) return;
+    let iosTimer: NodeJS.Timeout | undefined;
+    const initialTimer = setTimeout(() => {
+      const isStandaloneMode =
+        window.matchMedia('(display-mode: standalone)').matches ||
+        (window.navigator as unknown as { standalone?: boolean }).standalone === true;
+      setIsStandalone(isStandaloneMode);
+      if (isStandaloneMode) return;
 
-    // Detect iOS
-    const ua = window.navigator.userAgent.toLowerCase();
-    const isAppleDevice =
-      /iphone|ipad|ipod/.test(ua) && !(window as unknown as { MSStream?: unknown }).MSStream;
-    const isSafari = /safari/.test(ua) && !/crios|fxios|opios/.test(ua);
-    const iOSSafari = isAppleDevice && isSafari;
-    setIsIOS(iOSSafari);
+      const ua = window.navigator.userAgent.toLowerCase();
+      const isAppleDevice =
+        /iphone|ipad|ipod/.test(ua) && !(window as unknown as { MSStream?: unknown }).MSStream;
+      const isSafari = /safari/.test(ua) && !/crios|fxios|opios/.test(ua);
+      const iOSSafari = isAppleDevice && isSafari;
+      setIsIOS(iOSSafari);
 
-    // Check recent dismissal
-    const dismissedAt = localStorage.getItem(DISMISS_KEY);
-    const isDismissedRecently =
-      dismissedAt && Date.now() - Number(dismissedAt) < DISMISS_DURATION_MS;
+      const dismissedAt = localStorage.getItem(DISMISS_KEY);
+      const isDismissedRecently =
+        dismissedAt && Date.now() - Number(dismissedAt) < DISMISS_DURATION_MS;
 
-    // Handler for Chrome / Edge / Android native prompt
+      if (iOSSafari && !isDismissedRecently) {
+        iosTimer = setTimeout(() => setShowPrompt(true), 1500);
+      }
+    }, 0);
+
     const handleBeforeInstall = (e: Event) => {
       e.preventDefault();
       setDeferredPrompt(e as BeforeInstallPromptEvent);
+      const dismissedAt = localStorage.getItem(DISMISS_KEY);
+      const isDismissedRecently =
+        dismissedAt && Date.now() - Number(dismissedAt) < DISMISS_DURATION_MS;
       if (!isDismissedRecently) {
         setShowPrompt(true);
       }
@@ -51,16 +57,9 @@ export function usePwaInstall() {
 
     window.addEventListener('beforeinstallprompt', handleBeforeInstall);
 
-    // If iOS Safari and not dismissed recently, show prompt after brief delay
-    if (iOSSafari && !isDismissedRecently) {
-      const timer = setTimeout(() => setShowPrompt(true), 1500);
-      return () => {
-        clearTimeout(timer);
-        window.removeEventListener('beforeinstallprompt', handleBeforeInstall);
-      };
-    }
-
     return () => {
+      clearTimeout(initialTimer);
+      if (iosTimer) clearTimeout(iosTimer);
       window.removeEventListener('beforeinstallprompt', handleBeforeInstall);
     };
   }, []);

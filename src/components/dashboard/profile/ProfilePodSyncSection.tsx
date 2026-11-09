@@ -24,14 +24,14 @@ export function ProfilePodSyncSection({
   handleTestPing,
 }: ProfilePodSyncSectionProps) {
   return (
-    <div className="p-3.5 border border-(--border-subtle) bg-(--bg-app)/60 rounded-md space-y-2.5">
+    <div className="p-3.5 border border-(--border-subtle) bg-(--bg-app)/60 rounded-sm space-y-2.5">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <MessageSquare className="w-4 h-4 text-sky-400" />
           <span className="text-xs font-semibold text-(--text-primary)">Telegram Sync Status</span>
         </div>
         <span
-          className={`text-[10px] font-medium px-2 py-0.5 rounded-xs border ${
+          className={`text-[10px] font-medium px-2 py-0.5 rounded-sm border ${
             pod?.isTelegramConnected
               ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
               : 'bg-amber-500/10 text-amber-400 border-amber-500/30'
@@ -50,7 +50,7 @@ export function ProfilePodSyncSection({
               className="text-(--accent-blue-bright) hover:underline text-xs flex items-center gap-1 cursor-pointer"
             >
               <Send className="w-3 h-3" />
-              <span>Test Ping</span>
+              <span>Test</span>
             </button>
           )}
           <button
@@ -71,11 +71,11 @@ export function ProfilePodSyncSection({
               placeholder="-100... or @channelname"
               value={chatIdInput}
               onChange={(e) => setChatIdInput(e.target.value)}
-              className="flex-1 px-2.5 py-1 text-xs bg-(--bg-surface) border border-(--border-subtle) text-(--text-primary) font-mono rounded-xs focus:outline-none focus:border-(--accent-primary)"
+              className="flex-1 h-8 px-2.5 text-xs bg-(--bg-surface) border border-(--border-subtle) text-(--text-primary) font-mono rounded-sm focus:outline-none focus:border-(--border-focus) focus:ring-2 focus:ring-(--accent-primary)/20 transition-all"
             />
             <button
               onClick={handleSaveChatId}
-              className="px-2.5 py-1 bg-(--accent-primary) hover:bg-(--accent-primary-hover) text-white text-xs font-semibold rounded-xs cursor-pointer"
+              className="h-8 px-3 bg-(--accent-primary) hover:bg-(--accent-primary-hover) text-(--accent-primary-text) text-xs font-semibold rounded-sm cursor-pointer transition-colors"
             >
               Save
             </button>

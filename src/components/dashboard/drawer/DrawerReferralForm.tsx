@@ -27,10 +27,10 @@ export function DrawerReferralForm({
   return (
     <form
       onSubmit={onSubmit}
-      className="p-3 border border-(--border-subtle) bg-(--bg-app) space-y-2.5 text-xs"
+      className="p-3 border border-(--border-subtle) bg-(--bg-app) rounded-sm space-y-2.5 text-xs"
     >
       <div>
-        <label className="block text-[10px] uppercase text-(--text-muted) mb-1">
+        <label className="block text-[10px] uppercase font-semibold text-(--text-muted) mb-1">
           Referrer Name & Role
         </label>
         <div className="relative">
@@ -40,13 +40,13 @@ export function DrawerReferralForm({
             placeholder="e.g. Alex Chen (Staff Engineer / Alumni)"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full pl-8 pr-3 py-1.5 text-xs border border-(--border-subtle) bg-(--bg-surface) text-(--text-primary) focus:outline-none focus:border-(--border-focus)"
+            className="w-full h-8 pl-8 pr-3 text-xs border border-(--border-subtle) bg-(--bg-surface) text-(--text-primary) rounded-sm focus:outline-none focus:border-(--border-focus) focus:ring-2 focus:ring-(--accent-primary)/20 transition-all"
           />
         </div>
       </div>
 
       <div>
-        <label className="block text-[10px] uppercase text-(--text-muted) mb-1">
+        <label className="block text-[10px] uppercase font-semibold text-(--text-muted) mb-1">
           Contact / LinkedIn Profile URL
         </label>
         <div className="relative">
@@ -56,13 +56,13 @@ export function DrawerReferralForm({
             placeholder="https://linkedin.com/in/... or email"
             value={contact}
             onChange={(e) => setContact(e.target.value)}
-            className="w-full pl-8 pr-3 py-1.5 text-xs border border-(--border-subtle) bg-(--bg-surface) text-(--text-primary) focus:outline-none focus:border-(--border-focus)"
+            className="w-full h-8 pl-8 pr-3 text-xs border border-(--border-subtle) bg-(--bg-surface) text-(--text-primary) rounded-sm focus:outline-none focus:border-(--border-focus) focus:ring-2 focus:ring-(--accent-primary)/20 transition-all"
           />
         </div>
       </div>
 
       <div>
-        <label className="block text-[10px] uppercase text-(--text-muted) mb-1">
+        <label className="block text-[10px] uppercase font-semibold text-(--text-muted) mb-1">
           Outreach & Follow-Up Notes
         </label>
         <textarea
@@ -70,7 +70,7 @@ export function DrawerReferralForm({
           placeholder="e.g. Sent message on LinkedIn, waiting on confirmation..."
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
-          className="w-full p-2 text-xs border border-(--border-subtle) bg-(--bg-surface) text-(--text-primary) focus:outline-none focus:border-(--border-focus) resize-none"
+          className="w-full p-2 text-xs border border-(--border-subtle) bg-(--bg-surface) text-(--text-primary) rounded-sm focus:outline-none focus:border-(--border-focus) focus:ring-2 focus:ring-(--accent-primary)/20 resize-none transition-all"
         />
       </div>
 
@@ -78,10 +78,10 @@ export function DrawerReferralForm({
         <button
           type="submit"
           disabled={isSaving}
-          className="flex items-center gap-1.5 px-3 py-1 text-[11px] font-medium bg-(--accent-primary) hover:bg-(--accent-primary-hover) text-white shadow-sm transition-colors cursor-pointer"
+          className="inline-flex items-center gap-1.5 h-8 px-3 text-xs font-semibold bg-(--accent-primary) hover:bg-(--accent-primary-hover) text-(--accent-primary-text) rounded-sm shadow-xs transition-colors cursor-pointer"
         >
           <Send className="w-3 h-3" />
-          <span>{isSaving ? 'Saving...' : 'Update Referral'}</span>
+          <span>{isSaving ? 'Saving...' : 'Save'}</span>
         </button>
       </div>
     </form>

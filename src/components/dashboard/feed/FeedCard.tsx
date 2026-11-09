@@ -30,9 +30,9 @@ export function FeedCard({ job, isTracking, onTrack }: FeedCardProps) {
   const displayExp = !job.exp || job.exp === 'N/A' ? 'All Experience Levels' : job.exp;
 
   return (
-    <div className="group relative border border-(--border-subtle) hover:border-(--border-focus) bg-(--bg-surface) hover:bg-(--bg-surface-hover) p-4 rounded-xs transition-all duration-150 flex flex-col justify-between gap-3.5 shadow-2xs hover:shadow-xs">
+    <div className="group relative border border-(--border-subtle) hover:border-(--border-focus) bg-(--bg-surface) hover:bg-(--bg-surface-hover) p-4 rounded-md transition-colors flex flex-col justify-between gap-3.5 shadow-xs">
       <div className="flex items-start gap-3">
-        <div className="w-9 h-9 border border-(--border-subtle) bg-(--bg-app) flex items-center justify-center font-bold text-xs tracking-wider text-(--accent-blue-bright) rounded-xs shrink-0 select-none">
+        <div className="w-9 h-9 border border-(--accent-border) bg-(--accent-primary-bg) flex items-center justify-center font-bold text-xs tracking-wider text-(--accent-blue-bright) rounded-sm shrink-0 select-none">
           {initials}
         </div>
 
@@ -41,13 +41,13 @@ export function FeedCard({ job, isTracking, onTrack }: FeedCardProps) {
             <span className="text-[11px] font-bold tracking-wider uppercase text-(--accent-blue-bright) truncate">
               {job.company}
             </span>
-            <span className="text-[10px] text-(--text-muted) font-mono shrink-0">
+            <span className="text-[10px] text-(--text-muted) font-semibold shrink-0">
               {formattedDate}
             </span>
           </div>
 
           <h3
-            className="font-semibold text-sm text-(--text-primary) truncate group-hover:text-(--accent-blue-bright) transition-colors"
+            className="font-semibold text-xs text-(--text-primary) truncate group-hover:text-(--accent-blue-bright) transition-colors"
             title={job.role}
           >
             {job.role}
@@ -56,23 +56,23 @@ export function FeedCard({ job, isTracking, onTrack }: FeedCardProps) {
       </div>
 
       <div className="flex flex-wrap items-center gap-1.5 text-[11px]">
-        <span className="inline-flex items-center gap-1 px-2 py-0.5 border border-(--border-subtle) bg-(--bg-app) text-(--text-secondary) rounded-xs">
+        <span className="inline-flex items-center gap-1 px-2 py-0.5 border border-(--border-subtle) bg-(--bg-app) text-(--text-secondary) rounded-sm">
           <MapPin className="w-3 h-3 text-(--text-muted)" />
           <span className="truncate max-w-[130px]">{displayLocation}</span>
         </span>
 
-        <span className="inline-flex items-center gap-1 px-2 py-0.5 border border-(--border-subtle) bg-(--bg-app) text-(--text-secondary) rounded-xs">
+        <span className="inline-flex items-center gap-1 px-2 py-0.5 border border-(--border-subtle) bg-(--bg-app) text-(--text-secondary) rounded-sm">
           <Briefcase className="w-3 h-3 text-(--text-muted)" />
           <span className="truncate max-w-[120px]">{displayExp}</span>
         </span>
 
         {job.submittedByName ? (
-          <span className="inline-flex items-center gap-1 px-2 py-0.5 border border-blue-500/30 bg-blue-500/10 text-blue-400 rounded-xs font-medium">
+          <span className="inline-flex items-center gap-1 px-2 py-0.5 border border-blue-500/30 bg-blue-500/10 text-blue-600 dark:text-blue-400 rounded-sm font-semibold">
             <span>Shared by {job.submittedByName}</span>
           </span>
         ) : (
-          <span className="inline-flex items-center gap-1 px-2 py-0.5 border border-(--border-subtle) bg-(--bg-app) text-(--text-muted) rounded-xs">
-            <ShieldCheck className="w-3 h-3 text-(--accent-blue-bright)" />
+          <span className="inline-flex items-center gap-1 px-2 py-0.5 border border-(--border-subtle) bg-(--bg-app) text-(--text-muted) rounded-sm">
+            <ShieldCheck className="w-3 h-3 text-(--accent-primary)" />
             <span className="capitalize">{job.source} Curated</span>
           </span>
         )}
@@ -83,14 +83,14 @@ export function FeedCard({ job, isTracking, onTrack }: FeedCardProps) {
           href={job.link}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-1.5 text-xs text-(--text-secondary) hover:text-(--text-primary) border border-(--border-subtle) hover:border-(--border-strong) bg-(--bg-app) hover:bg-(--bg-surface-hover) px-2.5 py-1.5 rounded-xs transition-colors cursor-pointer"
+          className="h-8 inline-flex items-center gap-1.5 text-xs font-semibold text-(--text-secondary) hover:text-(--text-primary) border border-(--border-subtle) hover:border-(--border-strong) bg-(--bg-surface) hover:bg-(--bg-surface-hover) px-3 rounded-sm transition-colors cursor-pointer"
         >
           <span>Apply</span>
           <ExternalLink className="w-3 h-3 text-(--text-muted)" />
         </a>
 
         {job.isTracked ? (
-          <span className="inline-flex items-center gap-1.5 text-xs text-(--status-offer-text) bg-(--status-offer-bg) border border-(--status-offer-border) font-medium px-2.5 py-1.5 rounded-xs">
+          <span className="h-8 inline-flex items-center gap-1.5 text-xs text-(--status-offer-text) bg-(--status-offer-bg) border border-(--status-offer-border) font-semibold px-3 rounded-sm">
             <Check className="w-3.5 h-3.5" />
             <span>Tracked</span>
           </span>
@@ -98,7 +98,7 @@ export function FeedCard({ job, isTracking, onTrack }: FeedCardProps) {
           <button
             onClick={() => onTrack(job.id)}
             disabled={isTracking}
-            className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 bg-(--accent-primary) hover:bg-(--accent-primary-hover) text-white rounded-xs shadow-xs transition-all active:scale-[0.98] cursor-pointer disabled:opacity-50"
+            className="h-8 inline-flex items-center gap-1.5 text-xs font-semibold px-3 bg-(--accent-primary) hover:bg-(--accent-primary-hover) text-(--accent-primary-text) rounded-sm shadow-xs transition-colors cursor-pointer disabled:opacity-50"
           >
             {isTracking ? (
               <Loader2 className="w-3.5 h-3.5 animate-spin" />

@@ -69,7 +69,7 @@ export function CustomSelect<T extends string | number>({
         aria-haspopup="listbox"
         aria-expanded={isOpen}
         aria-label={ariaLabel}
-        className="inline-flex items-center justify-between gap-2 py-1 px-2.5 bg-(--bg-app) border border-(--border-subtle) hover:border-(--border-strong) text-(--text-primary) font-medium text-xs transition-colors cursor-pointer focus:outline-none focus:border-(--border-focus) select-none"
+        className="inline-flex items-center justify-between gap-2 h-8 px-2.5 bg-(--bg-surface) border border-(--border-subtle) hover:bg-(--bg-surface-hover) hover:border-(--border-strong) text-(--text-primary) font-medium text-xs rounded-sm transition-colors cursor-pointer focus:outline-none focus:border-(--border-focus) focus:ring-2 focus:ring-(--accent-primary)/20 select-none"
       >
         <span>{selectedOption?.label}</span>
         <ChevronDown
@@ -83,8 +83,8 @@ export function CustomSelect<T extends string | number>({
         <>
           <div className="fixed inset-0 z-40" onClick={() => setIsOpen(false)} />
           <div
-            className={`absolute right-0 z-50 min-w-[130px] py-1 bg-(--bg-surface) border border-(--border-subtle) backdrop-blur-xl shadow-2xl animate-in fade-in zoom-in-95 duration-100 ${
-              direction === 'up' ? 'bottom-full mb-1.5' : 'top-full mt-1'
+            className={`absolute right-0 z-50 min-w-[140px] p-1 bg-(--bg-surface) border border-(--border-subtle) rounded-md shadow-lg animate-in fade-in zoom-in-95 duration-100 ${
+              direction === 'up' ? 'bottom-full mb-1' : 'top-full mt-1'
             }`}
           >
             {options.map((opt) => {
@@ -94,13 +94,13 @@ export function CustomSelect<T extends string | number>({
                   key={String(opt.value)}
                   type="button"
                   onClick={(e) => handleSelect(opt.value, e)}
-                  className={`w-full flex items-center justify-between px-3 py-1.5 text-xs text-left transition-colors cursor-pointer ${
+                  className={`w-full h-7 px-2.5 rounded-sm flex items-center justify-between text-xs text-left transition-colors cursor-pointer select-none ${
                     isSelected
-                      ? 'bg-(--accent-primary-bg) text-(--accent-primary) font-semibold'
-                      : 'text-(--text-secondary) hover:text-(--text-primary) hover:bg-(--bg-surface-hover)'
+                      ? 'bg-(--ds-background-selected) text-(--ds-text-selected) font-semibold'
+                      : 'text-(--text-primary) hover:bg-(--ds-background-neutral-subtle-hover)'
                   }`}
                 >
-                  <span>{opt.label}</span>
+                  <span className="truncate">{opt.label}</span>
                   {isSelected && <Check className="w-3.5 h-3.5 shrink-0 ml-2" />}
                 </button>
               );

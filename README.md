@@ -66,11 +66,11 @@ Invite peers via unique invitation links (`/join?code=...`), connect private Tel
 
 ---
 
-### 6. Curated Explore Jobs Feed
+### 6. Curated Explore Feed
 
 Separate verified public opportunity feed with admin curation, 1-click pipeline import, search filtering, and responsive grid/list switcher.
 <div align="center">
-  <img src="docs/screenshots/explore-feed.png" alt="Job Radar Explore Jobs Feed" width="100%" />
+  <img src="docs/screenshots/explore-feed.png" alt="Job Radar Explore Feed" width="100%" />
 </div>
 
 ---
@@ -102,7 +102,7 @@ Slide-out drawer containing follow-up calendar reminder presets (`+3d`, `+1w`), 
   - 1-click tracking: Members can import any pod listing directly into their private pipeline.
 
 - **Public Job Feed & 1-Click Tracking**:
-  - **Explore Jobs Feed**: Curated public listings posted by administrators.
+  - **Explore Feed**: Curated public listings posted by administrators.
   - **Grid & List Switcher**: Seamless toggle between responsive cards and table view.
   - **Docked Bottom Pagination**: Anchored pagination bar ensures consistent viewport layout.
 

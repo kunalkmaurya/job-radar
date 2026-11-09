@@ -7,7 +7,6 @@ import { JobTableHeader } from './table/JobTableHeader';
 import { PaginationBar } from './pagination/PaginationBar';
 import { usePagination } from './pagination/usePagination';
 import { TableShimmer } from './shimmer/TableShimmer';
-
 import { JobMobileCard } from './table/JobMobileCard';
 
 interface JobListViewProps {
@@ -45,13 +44,13 @@ export function JobListView({
 
   const emptyMessage =
     jobs.length === 0
-      ? 'No job applications yet. Visit Explore Jobs or click + Add Job to start tracking.'
+      ? 'No job applications yet. Visit Explore or click + Add Job to start tracking.'
       : 'No job applications match your filters.';
 
   return (
-    <section className="border border-(--border-subtle) bg-(--bg-surface) shadow-sm flex flex-col">
-      {/* Mobile Card List (< md) */}
-      <div className="block md:hidden divide-y divide-(--border-subtle)">
+    <section className="border border-(--border-subtle) bg-(--bg-surface) rounded-md shadow-xs flex flex-col relative">
+      {/* Mobile Card List */}
+      <div className="block md:hidden divide-y divide-(--border-subtle) overflow-y-auto max-h-[calc(100vh-280px)] min-h-[160px]">
         {isLoading ? (
           <div className="p-8 text-center text-xs text-(--text-muted) animate-pulse">
             Loading applications...
@@ -73,8 +72,8 @@ export function JobListView({
         )}
       </div>
 
-      {/* Desktop Table (>= md) */}
-      <div className="hidden md:block overflow-x-auto flex-1">
+      {/* Desktop Table */}
+      <div className="hidden md:block overflow-auto flex-1 max-h-[calc(100vh-280px)] min-h-[160px] rounded-t-md">
         <table className="w-full min-w-[700px] text-left border-collapse text-xs">
           <JobTableHeader />
           {isLoading ? (
@@ -108,6 +107,7 @@ export function JobListView({
 
       {!isLoading && (
         <PaginationBar
+          className="sticky bottom-0 z-20 rounded-b-md shadow-xs"
           currentPage={pagination.currentPage}
           totalPages={pagination.totalPages}
           totalItems={pagination.totalItems}

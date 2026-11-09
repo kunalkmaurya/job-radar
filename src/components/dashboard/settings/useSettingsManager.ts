@@ -52,15 +52,18 @@ export function useSettingsManager(currentTheme: 'dark' | 'light', onToggleTheme
   const [apiTestResult, setApiTestResult] = useState<string | null>(null);
 
   useEffect(() => {
-    try {
-      const stored = localStorage.getItem(SETTINGS_KEY);
-      if (stored) {
-        const parsed = JSON.parse(stored);
-        setSettings((prev) => ({ ...prev, ...parsed, theme: currentTheme }));
+    const timer = setTimeout(() => {
+      try {
+        const stored = localStorage.getItem(SETTINGS_KEY);
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          setSettings((prev) => ({ ...prev, ...parsed, theme: currentTheme }));
+        }
+      } catch {
+        return;
       }
-    } catch {
-      return;
-    }
+    }, 0);
+    return () => clearTimeout(timer);
   }, [currentTheme]);
 
   const updateSetting = <K extends keyof AppSettings>(key: K, value: AppSettings[K]) => {
@@ -79,7 +82,7 @@ export function useSettingsManager(currentTheme: 'dark' | 'light', onToggleTheme
     }
 
     setSaveStatus(
-      'Changes saved • ' +
+      'Changes saved | ' +
         new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })
     );
   };

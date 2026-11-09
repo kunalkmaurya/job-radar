@@ -13,9 +13,9 @@ export function AuthCard() {
   const [mode, setMode] = useState<AuthMode>('signin');
 
   return (
-    <div className="border border-(--border-subtle) bg-(--bg-surface) p-7 shadow-2xl backdrop-blur-xl transition-all space-y-5">
+    <div className="border border-(--border-subtle) bg-(--bg-surface) p-7 rounded-[8px] shadow-2xl backdrop-blur-xl transition-all space-y-5">
       <div className="space-y-1">
-        <div className="inline-flex items-center gap-1.5 px-2 py-0.5 text-[10px] border border-(--border-subtle) bg-(--accent-primary-bg) text-(--accent-primary) mb-1">
+        <div className="inline-flex items-center gap-1.5 px-2 py-0.5 text-[10px] border border-(--accent-border) bg-(--accent-primary-bg) text-(--accent-blue-bright) font-semibold rounded-sm mb-1">
           <Sparkles className="w-3 h-3" />
           <span>Career Board & Job Tracker</span>
         </div>
@@ -33,11 +33,11 @@ export function AuthCard() {
       </div>
 
       {mode !== 'forgot' && (
-        <div className="grid grid-cols-2 p-1 border border-(--border-subtle) bg-(--bg-app) text-xs">
+        <div className="grid grid-cols-2 p-0.5 border border-(--border-subtle) bg-(--bg-app) rounded-sm text-xs">
           <button
             type="button"
             onClick={() => setMode('signin')}
-            className={`py-1.5 font-medium transition-colors cursor-pointer ${
+            className={`py-1.5 font-semibold rounded-sm transition-colors cursor-pointer ${
               mode === 'signin'
                 ? 'bg-(--bg-surface) text-(--text-primary) shadow-xs'
                 : 'text-(--text-secondary) hover:text-(--text-primary)'
@@ -48,7 +48,7 @@ export function AuthCard() {
           <button
             type="button"
             onClick={() => setMode('signup')}
-            className={`py-1.5 font-medium transition-colors cursor-pointer ${
+            className={`py-1.5 font-semibold rounded-sm transition-colors cursor-pointer ${
               mode === 'signup'
                 ? 'bg-(--bg-surface) text-(--text-primary) shadow-xs'
                 : 'text-(--text-secondary) hover:text-(--text-primary)'
@@ -69,7 +69,7 @@ export function AuthCard() {
         <>
           <div className="relative flex items-center justify-center">
             <div className="w-full border-t border-(--border-subtle)" />
-            <span className="absolute px-2 bg-(--bg-surface) text-[10px] uppercase text-(--text-muted)">
+            <span className="absolute px-2 bg-(--bg-surface) text-[10px] uppercase font-semibold text-(--text-muted)">
               or
             </span>
           </div>
@@ -77,9 +77,9 @@ export function AuthCard() {
         </>
       )}
 
-      <div className="flex items-center justify-center gap-1.5 text-[10px] text-(--text-muted) pt-2 border-t border-(--border-subtle)">
+      <div className="flex items-center justify-center gap-1.5 text-[11px] text-(--text-muted) pt-2 border-t border-(--border-subtle)">
         <Lock className="w-3 h-3 text-(--accent-primary)" />
-        <span>Secure Authentication • Instant Access</span>
+        <span>Secure Authentication | Instant Access</span>
       </div>
     </div>
   );

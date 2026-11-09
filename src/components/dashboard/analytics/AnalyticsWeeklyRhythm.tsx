@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { CalendarRange, Sparkles } from 'lucide-react';
+import { CalendarRange } from 'lucide-react';
 
 interface WeeklyRhythmProps {
   data: {
@@ -13,18 +13,15 @@ interface WeeklyRhythmProps {
 
 export function AnalyticsWeeklyRhythm({ data }: WeeklyRhythmProps) {
   return (
-    <div className="p-5 border border-(--border-subtle) bg-(--bg-surface) space-y-4 shadow-sm">
+    <div className="p-5 border border-(--border-subtle) bg-(--bg-surface) rounded-md space-y-4 shadow-xs">
       <div className="flex items-center justify-between pb-3 border-b border-(--border-subtle)">
         <div className="flex items-center gap-2">
-          <CalendarRange className="w-4 h-4 text-amber-400" />
+          <CalendarRange className="w-4 h-4 text-(--accent-primary)" />
           <h3 className="text-xs uppercase tracking-wider font-semibold text-(--text-primary)">
             Submission Rhythm by Day
           </h3>
         </div>
-        <div className="flex items-center gap-1 text-[10px] text-(--accent-primary) font-semibold">
-          <Sparkles className="w-3 h-3" />
-          <span>Prime Day: {data.primeDay}</span>
-        </div>
+        <span className="text-[11px] text-(--text-muted)">Peak: {data.primeDay}</span>
       </div>
 
       {/* 7-Day Bar Display */}
@@ -49,7 +46,7 @@ export function AnalyticsWeeklyRhythm({ data }: WeeklyRhythmProps) {
                 )}
                 <div
                   style={{ height: `${heightPercent}%` }}
-                  className={`w-full max-w-[24px] transition-all duration-300 ${
+                  className={`w-full max-w-[24px] rounded-t-[2px] transition-all duration-300 ${
                     item.count === 0
                       ? 'bg-(--border-subtle) opacity-40'
                       : isPrime
@@ -68,7 +65,7 @@ export function AnalyticsWeeklyRhythm({ data }: WeeklyRhythmProps) {
         </div>
       </div>
 
-      <div className="p-2.5 border border-(--border-subtle) bg-(--bg-app) text-[11px] text-(--text-secondary) leading-relaxed">
+      <div className="p-2.5 border border-(--border-subtle) bg-(--bg-app) rounded-sm text-[11px] text-(--text-secondary) leading-relaxed">
         Submissions sent on <strong className="text-(--text-primary)">{data.primeDay}</strong>{' '}
         yielded the quickest review responses. Avoid late Friday submissions.
       </div>

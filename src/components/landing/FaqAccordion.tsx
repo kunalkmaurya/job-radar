@@ -32,7 +32,7 @@ export function FaqAccordion() {
     >
       <div className="max-w-3xl mx-auto space-y-10">
         <div className="text-center space-y-2">
-          <div className="text-xs text-(--accent-primary) uppercase tracking-widest">
+          <div className="inline-flex items-center px-2 py-0.5 rounded-sm text-[11px] font-semibold tracking-wider uppercase bg-[var(--ds-background-selected,#E9F2FF)] dark:bg-[var(--ds-background-selected,#1C2B41)] text-[var(--ds-text-selected,#0C66E4)] border border-(--accent-border)">
             Clarity & Specifications
           </div>
           <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-(--text-primary)">
@@ -40,14 +40,14 @@ export function FaqAccordion() {
           </h2>
         </div>
 
-        <div className="divide-y divide-(--border-subtle) border border-(--border-subtle) bg-(--bg-surface)">
+        <div className="divide-y divide-(--border-subtle) border border-(--border-subtle) bg-(--bg-surface) rounded-md overflow-hidden shadow-xs">
           {FAQS.map((faq, idx) => (
             <div key={idx} className="transition-colors">
               <button
                 onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
-                className="w-full p-5 text-left flex items-center justify-between gap-4 cursor-pointer hover:bg-(--bg-surface-hover)"
+                className="w-full p-5 text-left flex items-center justify-between gap-4 cursor-pointer hover:bg-(--bg-surface-hover) transition-colors"
               >
-                <span className="font-medium text-sm text-(--text-primary)">{faq.q}</span>
+                <span className="font-semibold text-sm text-(--text-primary)">{faq.q}</span>
                 <ChevronDown
                   className={`w-4 h-4 text-(--text-muted) shrink-0 transition-transform ${
                     openFaq === idx ? 'rotate-180 text-(--accent-primary)' : ''

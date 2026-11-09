@@ -4,6 +4,7 @@ import React from 'react';
 
 export function GoogleOAuthButton() {
   const handleGoogleLogin = () => {
+    // eslint-disable-next-line @next/next/no-location-assign-relative-destination
     window.location.href = '/api/auth/google';
   };
 
@@ -11,7 +12,7 @@ export function GoogleOAuthButton() {
     <button
       type="button"
       onClick={handleGoogleLogin}
-      className="w-full flex items-center justify-center gap-3 py-2.5 px-4 border border-(--border-subtle) hover:border-(--text-secondary) bg-(--bg-app) text-(--text-primary) font-medium text-xs uppercase tracking-wider transition-colors cursor-pointer"
+      className="w-full h-10 inline-flex items-center justify-center gap-2.5 px-4 border border-(--border-subtle) hover:border-(--border-strong) bg-(--bg-surface) hover:bg-(--bg-surface-hover) text-(--text-primary) font-semibold text-xs rounded-sm transition-colors cursor-pointer"
     >
       <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
         <path
@@ -31,7 +32,7 @@ export function GoogleOAuthButton() {
           d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
         />
       </svg>
-      <span>Continue with Google</span>
+      <span>Google</span>
     </button>
   );
 }

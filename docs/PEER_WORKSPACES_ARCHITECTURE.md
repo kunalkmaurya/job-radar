@@ -71,7 +71,7 @@ Job Radar transforms from a single-player application tracker into a collaborati
 2. The webhook resolves `message.chat.id` to the matching `workspaces` record.
 3. The scraper and extraction engine parses role, company, salary, and location.
 4. The job is inserted into `public_jobs` with `workspaceId = workspace.id` and `submittedByName = senderName`.
-5. The job is immediately visible in the **Explore Jobs** feed of all Pod members.
+5. The job is immediately visible in the **Explore** feed of all Pod members.
 
 ---
 

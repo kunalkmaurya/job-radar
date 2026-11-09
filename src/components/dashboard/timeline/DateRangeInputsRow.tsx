@@ -26,7 +26,7 @@ export function DateRangeInputsRow({
           placeholder="YYYY-MM-DD"
           value={startDate}
           onChange={(e) => onStartChange(e.target.value)}
-          className="w-full px-2.5 py-1.5 text-xs border border-(--border-subtle) bg-(--bg-app) text-(--text-primary) placeholder:text-(--text-muted) focus:outline-none focus:border-(--accent-primary) rounded-xs"
+          className="w-full h-8 px-2.5 text-xs border border-(--border-subtle) bg-(--bg-app) text-(--text-primary) placeholder:text-(--text-muted) focus:outline-none focus:border-(--border-focus) focus:ring-2 focus:ring-(--accent-primary)/20 rounded-sm transition-all"
         />
       </div>
 
@@ -39,7 +39,7 @@ export function DateRangeInputsRow({
           placeholder="YYYY-MM-DD"
           value={endDate}
           onChange={(e) => onEndChange(e.target.value)}
-          className="w-full px-2.5 py-1.5 text-xs border border-(--border-subtle) bg-(--bg-app) text-(--text-primary) placeholder:text-(--text-muted) focus:outline-none focus:border-(--accent-primary) rounded-xs"
+          className="w-full h-8 px-2.5 text-xs border border-(--border-subtle) bg-(--bg-app) text-(--text-primary) placeholder:text-(--text-muted) focus:outline-none focus:border-(--border-focus) focus:ring-2 focus:ring-(--accent-primary)/20 rounded-sm transition-all"
         />
       </div>
     </div>

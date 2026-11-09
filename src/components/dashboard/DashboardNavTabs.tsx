@@ -9,9 +9,9 @@ export const DASHBOARD_TAB_MAP: Record<
   DashboardTab,
   { label: string; icon: React.ComponentType<{ className?: string }> }
 > = {
-  dashboard: { label: 'My Dashboard', icon: LayoutDashboard },
+  dashboard: { label: 'Dashboard', icon: LayoutDashboard },
   pod: { label: 'Pod Feed', icon: Users },
-  feed: { label: 'Explore Jobs', icon: Globe },
+  feed: { label: 'Explore', icon: Globe },
   analytics: { label: 'Analytics', icon: BarChart3 },
   settings: { label: 'Settings', icon: Settings2 },
   profile: { label: 'Profile', icon: User },
@@ -31,9 +31,9 @@ export function DashboardNavTabs({
   podJobCount,
 }: DashboardNavTabsProps) {
   const tabs = [
-    { id: 'dashboard' as const, label: 'My Dashboard', icon: LayoutDashboard, badge: jobCount },
+    { id: 'dashboard' as const, label: 'Dashboard', icon: LayoutDashboard, badge: jobCount },
     { id: 'pod' as const, label: 'Pod Feed', icon: Users, badge: podJobCount },
-    { id: 'feed' as const, label: 'Explore Jobs', icon: Globe },
+    { id: 'feed' as const, label: 'Explore', icon: Globe },
     { id: 'analytics' as const, label: 'Analytics', icon: BarChart3 },
     { id: 'settings' as const, label: 'Settings', icon: Settings2 },
     { id: 'profile' as const, label: 'Profile', icon: User },

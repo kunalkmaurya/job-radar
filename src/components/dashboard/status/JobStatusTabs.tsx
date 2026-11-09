@@ -28,70 +28,70 @@ const STATUS_TABS: StatusTabConfig[] = [
     label: 'All',
     textColor: 'var(--text-secondary)',
     activeTextColor: 'var(--accent-blue-bright)',
-    bgColor: 'rgba(49, 120, 198, 0.06)',
+    bgColor: 'transparent',
     activeBgColor: 'var(--accent-primary-bg)',
-    borderColor: 'rgba(49, 120, 198, 0.2)',
+    borderColor: 'var(--border-subtle)',
     activeBorderColor: 'var(--accent-primary)',
   },
   {
     id: 'Saved',
     label: 'Saved',
     textColor: 'var(--text-secondary)',
-    activeTextColor: 'var(--status-saved-text, #94A3B8)',
-    bgColor: 'rgba(100, 116, 139, 0.06)',
+    activeTextColor: 'var(--status-saved-text, #44546F)',
+    bgColor: 'transparent',
     activeBgColor: 'var(--status-saved-bg)',
-    borderColor: 'rgba(100, 116, 139, 0.18)',
-    activeBorderColor: 'rgba(100, 116, 139, 0.55)',
+    borderColor: 'var(--border-subtle)',
+    activeBorderColor: 'var(--status-saved-border)',
   },
   {
     id: 'Applied',
     label: 'Applied',
     textColor: 'var(--text-secondary)',
-    activeTextColor: 'var(--status-applied-text, #5499EB)',
-    bgColor: 'rgba(49, 120, 198, 0.06)',
+    activeTextColor: 'var(--status-applied-text, #0052CC)',
+    bgColor: 'transparent',
     activeBgColor: 'var(--status-applied-bg)',
-    borderColor: 'rgba(49, 120, 198, 0.2)',
-    activeBorderColor: 'rgba(49, 120, 198, 0.6)',
+    borderColor: 'var(--border-subtle)',
+    activeBorderColor: 'var(--status-applied-border)',
   },
   {
     id: 'Interviewing',
     label: 'Interviewing',
     textColor: 'var(--text-secondary)',
-    activeTextColor: 'var(--status-interview-text, #FACC15)',
-    bgColor: 'rgba(234, 179, 8, 0.06)',
+    activeTextColor: 'var(--status-interview-text, #944900)',
+    bgColor: 'transparent',
     activeBgColor: 'var(--status-interview-bg)',
-    borderColor: 'rgba(234, 179, 8, 0.2)',
-    activeBorderColor: 'rgba(234, 179, 8, 0.6)',
+    borderColor: 'var(--border-subtle)',
+    activeBorderColor: 'var(--status-interview-border)',
   },
   {
     id: 'Offer',
     label: 'Offer',
     textColor: 'var(--text-secondary)',
-    activeTextColor: 'var(--status-offer-text, #34D399)',
-    bgColor: 'rgba(16, 185, 129, 0.06)',
+    activeTextColor: 'var(--status-offer-text, #216E4E)',
+    bgColor: 'transparent',
     activeBgColor: 'var(--status-offer-bg)',
-    borderColor: 'rgba(16, 185, 129, 0.2)',
-    activeBorderColor: 'rgba(16, 185, 129, 0.6)',
+    borderColor: 'var(--border-subtle)',
+    activeBorderColor: 'var(--status-offer-border)',
   },
   {
     id: 'Rejected',
     label: 'Rejected',
     textColor: 'var(--text-secondary)',
-    activeTextColor: 'var(--status-rejected-text, #F87171)',
-    bgColor: 'rgba(239, 68, 68, 0.06)',
+    activeTextColor: 'var(--status-rejected-text, #AE2E24)',
+    bgColor: 'transparent',
     activeBgColor: 'var(--status-rejected-bg)',
-    borderColor: 'rgba(239, 68, 68, 0.2)',
-    activeBorderColor: 'rgba(239, 68, 68, 0.6)',
+    borderColor: 'var(--border-subtle)',
+    activeBorderColor: 'var(--status-rejected-border)',
   },
   {
     id: 'Archived',
     label: 'Archived',
     textColor: 'var(--text-secondary)',
-    activeTextColor: 'var(--status-archived-text, #94A3B8)',
-    bgColor: 'rgba(100, 116, 139, 0.06)',
+    activeTextColor: 'var(--status-archived-text, #44546F)',
+    bgColor: 'transparent',
     activeBgColor: 'var(--status-archived-bg)',
-    borderColor: 'rgba(100, 116, 139, 0.18)',
-    activeBorderColor: 'rgba(100, 116, 139, 0.55)',
+    borderColor: 'var(--border-subtle)',
+    activeBorderColor: 'var(--status-archived-border)',
   },
 ];
 
@@ -120,13 +120,13 @@ export function JobStatusTabs({ activeStatus, onSelectStatus, counts }: JobStatu
               borderColor: isActive ? tab.activeBorderColor : tab.borderColor,
               color: isActive ? tab.activeTextColor : tab.textColor,
             }}
-            className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-xs border rounded-xs whitespace-nowrap shrink-0 transition-colors cursor-pointer ${
+            className={`flex items-center gap-1.5 h-8 px-3 text-xs border rounded-sm whitespace-nowrap shrink-0 transition-colors cursor-pointer ${
               isActive ? 'font-semibold shadow-xs' : 'font-medium hover:text-(--text-primary)'
             }`}
           >
             <span>{tab.label}</span>
             <span
-              className={`text-[10px] px-1.5 py-0.2 rounded-xs transition-colors ${
+              className={`text-[10px] px-1.5 py-0.5 rounded-sm transition-colors ${
                 isActive
                   ? 'bg-current/15 font-bold'
                   : 'bg-black/5 dark:bg-white/5 text-(--text-muted)'

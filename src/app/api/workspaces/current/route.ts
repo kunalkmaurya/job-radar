@@ -75,7 +75,7 @@ export async function PATCH(request: Request) {
 
       await sendTelegramTestMessage(
         finalChatId,
-        `Job Radar: Connected to "${pod.name}"! Any job links sent in this chat will now sync to Explore Jobs.`
+        `Job Radar: Connected to "${pod.name}"! Any job links sent in this chat will now sync to Explore.`
       );
     }
 
@@ -130,7 +130,7 @@ export async function POST(request: Request) {
         );
       }
 
-      const pingMsg = `Job Radar: Connection verified for "${pod.name}"! Any job links sent in this chat will now sync to your team's Explore Jobs feed.`;
+      const pingMsg = `Job Radar: Connection verified for "${pod.name}"! Any job links sent in this chat will now sync to your team's Explore feed.`;
       const result = await sendTelegramTestMessage(chatId, pingMsg);
 
       if (!result.success) {

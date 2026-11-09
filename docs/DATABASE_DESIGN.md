@@ -94,7 +94,7 @@ Stores authenticated user accounts with role hierarchy and Telegram channel bind
 
 ### 3.2 `public_jobs` Table
 
-Stores curated opportunities visible across the global Explore Jobs feed.
+Stores curated opportunities visible across the global Explore feed.
 
 | Column       | Type           | Constraints        | Default             | Description             |
 | :----------- | :------------- | :----------------- | :------------------ | :---------------------- |

@@ -11,8 +11,8 @@ interface HeroProps {
 export function Hero({ isLoggedIn }: HeroProps) {
   return (
     <section className="relative z-10 w-full max-w-5xl mx-auto px-6 pt-20 pb-16 md:pt-28 md:pb-24 text-center">
-      <div className="inline-flex items-center gap-2 px-3 py-1 border border-(--border-subtle) bg-(--accent-primary-bg) text-(--accent-primary) text-xs uppercase tracking-widest mb-8">
-        <Sparkles className="w-3 h-3" />
+      <div className="inline-flex items-center gap-2 px-3 py-1 border border-(--accent-border) bg-(--accent-primary-bg) text-(--accent-blue-bright) text-xs font-semibold uppercase tracking-wider rounded-sm mb-8">
+        <Sparkles className="w-3.5 h-3.5" />
         <span>Single-User Career Telemetry</span>
       </div>
 
@@ -30,7 +30,7 @@ export function Hero({ isLoggedIn }: HeroProps) {
       <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3">
         <Link
           href={isLoggedIn ? '/dashboard' : '/login'}
-          className="w-full sm:w-auto px-8 py-3.5 bg-(--accent-primary) hover:bg-(--accent-primary-hover) text-white font-medium text-xs tracking-widest uppercase transition-all shadow-sm flex items-center justify-center gap-2"
+          className="w-full sm:w-auto h-11 px-8 bg-(--accent-primary) hover:bg-(--accent-primary-hover) active:bg-(--accent-primary-active) text-(--accent-primary-text) font-semibold text-xs tracking-wider uppercase rounded-sm transition-colors shadow-xs flex items-center justify-center gap-2"
         >
           <span>{isLoggedIn ? 'Return to Active Board' : 'Access Private Console'}</span>
           <ChevronRight className="w-4 h-4" />
@@ -38,7 +38,7 @@ export function Hero({ isLoggedIn }: HeroProps) {
 
         <a
           href="#interactive-showcase"
-          className="w-full sm:w-auto px-6 py-3.5 border border-(--border-subtle) bg-(--bg-surface) hover:bg-(--bg-surface-hover) text-(--text-primary) font-medium text-xs tracking-widest uppercase transition-colors flex items-center justify-center gap-2"
+          className="w-full sm:w-auto h-11 px-6 border border-(--border-subtle) hover:border-(--border-strong) bg-(--bg-surface) hover:bg-(--bg-surface-hover) text-(--text-primary) font-semibold text-xs tracking-wider uppercase rounded-sm transition-colors flex items-center justify-center gap-2"
         >
           <span>Explore Live Specimen</span>
           <ChevronRight className="w-4 h-4 text-(--text-muted)" />
@@ -47,21 +47,21 @@ export function Hero({ isLoggedIn }: HeroProps) {
 
       <div className="mt-16 pt-8 border-t border-(--border-subtle) grid grid-cols-2 md:grid-cols-4 gap-6 text-left">
         <div className="space-y-1">
-          <div className="text-[11px] text-(--text-muted) uppercase tracking-wider">
+          <div className="text-[11px] text-(--text-muted) uppercase font-semibold">
             Channel Noise
           </div>
           <div className="text-base sm:text-lg font-bold text-(--text-primary)">0 dB Decibels</div>
           <div className="text-xs text-(--text-secondary)">Silent webhook ingestion</div>
         </div>
         <div className="space-y-1">
-          <div className="text-[11px] text-(--text-muted) uppercase tracking-wider">
+          <div className="text-[11px] text-(--text-muted) uppercase font-semibold">
             Reasoning Engine
           </div>
           <div className="text-base sm:text-lg font-bold text-(--text-primary)">DeepSeek-V3</div>
           <div className="text-xs text-(--text-secondary)">Dual-tier headless parsing</div>
         </div>
         <div className="space-y-1">
-          <div className="text-[11px] text-(--text-muted) uppercase tracking-wider">
+          <div className="text-[11px] text-(--text-muted) uppercase font-semibold">
             Storage Engine
           </div>
           <div className="text-base sm:text-lg font-bold text-(--text-primary)">
@@ -70,7 +70,7 @@ export function Hero({ isLoggedIn }: HeroProps) {
           <div className="text-xs text-(--text-secondary)">PostgreSQL & Drizzle ORM</div>
         </div>
         <div className="space-y-1">
-          <div className="text-[11px] text-(--text-muted) uppercase tracking-wider">
+          <div className="text-[11px] text-(--text-muted) uppercase font-semibold">
             Privacy Guard
           </div>
           <div className="text-base sm:text-lg font-bold text-(--text-primary)">

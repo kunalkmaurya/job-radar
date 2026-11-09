@@ -19,7 +19,7 @@ export function DateRangePopoverFooter({
       <button
         type="button"
         onClick={onClear}
-        className="flex items-center gap-1.5 px-2.5 py-1.5 border border-(--border-subtle) bg-(--bg-app) text-(--text-secondary) hover:text-(--text-primary) hover:border-(--border-strong) rounded-xs cursor-pointer transition-colors font-medium"
+        className="h-8 inline-flex items-center gap-1.5 px-2.5 border border-(--border-subtle) bg-(--bg-surface) text-(--text-secondary) hover:text-(--text-primary) hover:bg-(--bg-surface-hover) rounded-sm cursor-pointer transition-colors font-medium text-xs"
       >
         <X className="w-3.5 h-3.5" />
         <span>Clear</span>
@@ -29,7 +29,7 @@ export function DateRangePopoverFooter({
         <button
           type="button"
           onClick={onCancel}
-          className="flex items-center justify-center px-2.5 py-1.5 border border-(--border-subtle) bg-(--bg-app) text-(--text-secondary) hover:text-(--text-primary) hover:border-(--border-strong) rounded-xs cursor-pointer transition-colors font-medium"
+          className="h-8 inline-flex items-center justify-center px-3 border border-(--border-subtle) bg-(--bg-surface) text-(--text-secondary) hover:text-(--text-primary) hover:bg-(--bg-surface-hover) rounded-sm cursor-pointer transition-colors font-medium text-xs"
         >
           Cancel
         </button>
@@ -37,7 +37,7 @@ export function DateRangePopoverFooter({
         <button
           type="button"
           onClick={onApply}
-          className="flex items-center gap-1.5 px-3 py-1.5 border border-(--accent-primary) bg-(--accent-primary) text-white font-semibold hover:bg-(--accent-primary-hover) rounded-xs cursor-pointer transition-colors shadow-xs font-medium"
+          className="h-8 inline-flex items-center gap-1.5 px-3.5 bg-(--accent-primary) hover:bg-(--accent-primary-hover) text-(--accent-primary-text) font-semibold rounded-sm cursor-pointer transition-colors shadow-xs text-xs"
         >
           <Check className="w-3.5 h-3.5" />
           <span>Apply</span>

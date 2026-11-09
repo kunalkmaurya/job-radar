@@ -15,7 +15,7 @@ export function ProfileEmailDigestCard({ userEmail }: ProfileEmailDigestCardProp
   return (
     <form
       onSubmit={handleSave}
-      className="border border-(--border-subtle) bg-(--bg-surface) p-5 shadow-sm space-y-4"
+      className="border border-(--border-subtle) bg-(--bg-surface) rounded-md p-5 shadow-xs space-y-4"
     >
       <div className="flex items-center justify-between border-b border-(--border-subtle) pb-3">
         <div className="flex items-center gap-2">
@@ -25,7 +25,7 @@ export function ProfileEmailDigestCard({ userEmail }: ProfileEmailDigestCardProp
           </h3>
         </div>
         {savedNotice && (
-          <span className="flex items-center gap-1 text-[11px] text-emerald-400 font-semibold">
+          <span className="flex items-center gap-1 text-[11px] text-emerald-600 dark:text-emerald-400 font-semibold">
             <Check className="w-3.5 h-3.5" /> Saved
           </span>
         )}
@@ -33,7 +33,7 @@ export function ProfileEmailDigestCard({ userEmail }: ProfileEmailDigestCardProp
 
       <p className="text-xs text-(--text-secondary) leading-relaxed">
         Choose your delivery cadence for curated opportunities sent to{' '}
-        <span className="font-medium text-(--text-primary)">{userEmail || 'your email'}</span>.
+        <span className="font-semibold text-(--text-primary)">{userEmail || 'your email'}</span>.
       </p>
 
       {initialLoading ? (
@@ -48,10 +48,10 @@ export function ProfileEmailDigestCard({ userEmail }: ProfileEmailDigestCardProp
               <label
                 key={opt.id}
                 onClick={() => setFrequency(opt.id)}
-                className={`flex items-start gap-3 p-3 border transition-colors cursor-pointer ${
+                className={`flex items-start gap-3 p-3 border rounded-sm transition-colors cursor-pointer ${
                   isSelected
                     ? 'border-(--accent-primary) bg-(--accent-primary-bg)'
-                    : 'border-(--border-subtle) bg-(--bg-app) hover:border-(--border-focus)'
+                    : 'border-(--border-subtle) bg-(--bg-app) hover:border-(--border-strong)'
                 }`}
               >
                 <input
@@ -78,7 +78,7 @@ export function ProfileEmailDigestCard({ userEmail }: ProfileEmailDigestCardProp
         <button
           type="submit"
           disabled={loading || initialLoading}
-          className="flex items-center gap-1.5 px-4 py-2 bg-(--accent-primary) hover:bg-(--accent-primary-hover) text-white text-xs font-semibold shadow-sm transition-all cursor-pointer disabled:opacity-60"
+          className="h-8 inline-flex items-center gap-1.5 px-4 bg-(--accent-primary) hover:bg-(--accent-primary-hover) text-(--accent-primary-text) text-xs font-semibold rounded-sm shadow-xs transition-colors cursor-pointer disabled:opacity-60"
         >
           {loading ? (
             <>
@@ -88,7 +88,7 @@ export function ProfileEmailDigestCard({ userEmail }: ProfileEmailDigestCardProp
           ) : (
             <>
               <Save className="w-3.5 h-3.5" />
-              <span>Save Frequency</span>
+              <span>Save</span>
             </>
           )}
         </button>

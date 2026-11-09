@@ -43,7 +43,7 @@ export function ProfileStatsCard({ metrics }: ProfileStatsCardProps) {
   ];
 
   return (
-    <div className="border border-(--border-subtle) bg-(--bg-surface) p-5 shadow-sm space-y-4">
+    <div className="border border-(--border-subtle) bg-(--bg-surface) rounded-md p-5 shadow-xs space-y-4">
       <div className="flex items-center justify-between border-b border-(--border-subtle) pb-3">
         <div className="flex items-center gap-2">
           <BarChart3 className="w-4 h-4 text-(--accent-primary)" />
@@ -51,7 +51,7 @@ export function ProfileStatsCard({ metrics }: ProfileStatsCardProps) {
             Application Pipeline Telemetry & Velocity
           </h3>
         </div>
-        <span className="text-[11px] text-(--accent-primary) font-semibold">
+        <span className="text-[11px] text-(--accent-blue-bright) font-semibold">
           {metrics.responseRate}% Response Rate
         </span>
       </div>
@@ -62,10 +62,10 @@ export function ProfileStatsCard({ metrics }: ProfileStatsCardProps) {
           return (
             <div
               key={item.label}
-              className="p-3 border border-(--border-subtle) bg-(--bg-app) space-y-1"
+              className="p-3 border border-(--border-subtle) bg-(--bg-app) rounded-sm space-y-1"
             >
               <div className="flex items-center justify-between text-(--text-muted)">
-                <span className="text-[10px] uppercase tracking-wider">{item.label}</span>
+                <span className="text-[10px] uppercase font-semibold">{item.label}</span>
                 <Icon className="w-3.5 h-3.5" style={{ color: item.color }} />
               </div>
               <div className="text-xl font-bold text-(--text-primary)">{item.value}</div>
@@ -74,7 +74,7 @@ export function ProfileStatsCard({ metrics }: ProfileStatsCardProps) {
         })}
       </div>
 
-      <div className="p-3 border border-(--border-subtle) bg-(--bg-app) space-y-2 text-xs">
+      <div className="p-3 border border-(--border-subtle) bg-(--bg-app) rounded-sm space-y-2 text-xs">
         <div className="flex items-center justify-between text-[11px] text-(--text-secondary)">
           <span>Pipeline Conversion (Offers / Applied)</span>
           <span className="font-bold text-(--text-primary)">
@@ -83,9 +83,9 @@ export function ProfileStatsCard({ metrics }: ProfileStatsCardProps) {
               : '0%'}
           </span>
         </div>
-        <div className="w-full h-1.5 bg-(--border-subtle) overflow-hidden">
+        <div className="w-full h-2 bg-(--border-subtle) rounded-full overflow-hidden">
           <div
-            className="h-full bg-(--accent-primary) transition-all duration-500"
+            className="h-full bg-(--accent-primary) rounded-full transition-all duration-500"
             style={{
               width: `${metrics.appliedCount > 0 ? Math.min(100, Math.round((metrics.offerCount / metrics.appliedCount) * 100)) : 0}%`,
             }}

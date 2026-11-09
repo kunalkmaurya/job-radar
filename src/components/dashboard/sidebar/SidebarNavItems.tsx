@@ -22,9 +22,9 @@ export function SidebarNavItems({
   onItemClick,
 }: SidebarNavItemsProps) {
   const navItems = [
-    { id: 'dashboard' as const, label: 'My Dashboard', icon: LayoutDashboard, badge: jobCount },
+    { id: 'dashboard' as const, label: 'Dashboard', icon: LayoutDashboard, badge: jobCount },
     { id: 'pod' as const, label: 'Pod Feed', icon: Users, badge: podJobCount },
-    { id: 'feed' as const, label: 'Explore Jobs', icon: Globe },
+    { id: 'feed' as const, label: 'Explore', icon: Globe },
     { id: 'analytics' as const, label: 'Analytics', icon: BarChart3 },
     { id: 'settings' as const, label: 'Settings', icon: Settings2 },
     { id: 'profile' as const, label: 'Profile', icon: User },
@@ -46,10 +46,10 @@ export function SidebarNavItems({
             key={item.id}
             onClick={() => handleSelect(item.id)}
             title={isCollapsed ? item.label : undefined}
-            className={`w-full flex items-center gap-2.5 py-2 px-2.5 text-xs font-medium transition-colors cursor-pointer border rounded-xs ${
+            className={`w-full flex items-center gap-2.5 h-8 px-2.5 text-xs font-medium transition-colors cursor-pointer rounded-sm ${
               isActive
-                ? 'border-(--accent-primary)/40 bg-(--accent-primary-bg) text-(--accent-blue-bright) font-semibold shadow-xs'
-                : 'border-transparent text-(--text-secondary) hover:text-(--text-primary) hover:bg-(--bg-surface-hover)'
+                ? 'bg-(--accent-primary-bg) text-(--accent-blue-bright) font-semibold'
+                : 'text-(--text-secondary) hover:text-(--text-primary) hover:bg-(--bg-surface-hover)'
             } ${isCollapsed ? 'justify-center px-0' : 'justify-between'}`}
           >
             <div
@@ -61,10 +61,10 @@ export function SidebarNavItems({
 
             {!isCollapsed && item.badge !== undefined && (
               <span
-                className={`text-[10px] font-mono px-1.5 py-0.5 rounded-xs shrink-0 ${
+                className={`text-[10px] px-1.5 py-0.5 rounded-sm shrink-0 ${
                   isActive
-                    ? 'bg-(--accent-primary)/20 text-(--accent-primary) font-semibold'
-                    : 'bg-(--border-subtle) text-(--text-muted)'
+                    ? 'bg-(--accent-primary)/20 text-(--accent-blue-bright) font-semibold'
+                    : 'bg-(--bg-surface-hover) text-(--text-muted)'
                 }`}
               >
                 {item.badge}

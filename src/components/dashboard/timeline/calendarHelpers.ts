@@ -1,3 +1,18 @@
+export const CALENDAR_MONTHS = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+];
+
 export function formatDateIso(d: Date): string {
   const y = d.getFullYear();
   const m = String(d.getMonth() + 1).padStart(2, '0');
@@ -102,4 +117,19 @@ export function getPresetRange(type: PresetKey): { startDate: string; endDate: s
   }
 
   return { startDate: '', endDate: '' };
+}
+
+export function calcPopoverPosition(
+  anchorEl?: HTMLElement | null,
+  fallbackRect?: DOMRect | null
+): { top: number; left: number; isUp: boolean } {
+  if (typeof window === 'undefined') return { top: 0, left: 8, isUp: false };
+  const r = anchorEl?.getBoundingClientRect() || fallbackRect;
+  if (!r) return { top: 0, left: 8, isUp: false };
+  const isUp = window.innerHeight - r.bottom < 340 && r.top > 340;
+  return {
+    top: isUp ? r.top - 6 : r.bottom + 6,
+    left: Math.max(8, Math.min(r.right - 288, window.innerWidth - 296)),
+    isUp,
+  };
 }

@@ -62,7 +62,7 @@ export function InteractiveSpecimen() {
       <div className="max-w-5xl mx-auto space-y-8">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div>
-            <div className="text-xs text-(--accent-primary) uppercase tracking-widest mb-1.5 flex items-center gap-1.5">
+            <div className="text-xs text-(--accent-primary) uppercase tracking-widest font-semibold mb-1.5 flex items-center gap-1.5">
               <Terminal className="w-3.5 h-3.5" />
               <span>Live Interactive Specimen</span>
             </div>
@@ -71,15 +71,15 @@ export function InteractiveSpecimen() {
             </h2>
           </div>
 
-          <div className="flex flex-wrap items-center gap-1.5 border border-(--border-subtle) bg-(--bg-app) p-1 text-xs rounded-xs">
+          <div className="flex flex-wrap items-center gap-1.5 border border-(--border-subtle) bg-(--bg-app) p-1 text-xs rounded-sm">
             {SHOWCASE_ITEMS.map((item) => (
               <button
                 key={item.id}
                 onClick={() => handleSelectPreset(item)}
-                className={`px-3 py-1.5 text-xs font-medium transition-colors cursor-pointer border rounded-xs ${
+                className={`h-7 px-3 text-xs font-semibold transition-colors cursor-pointer border rounded-sm ${
                   selectedItem.id === item.id
-                    ? 'border-(--accent-primary) bg-(--accent-primary-bg) text-(--accent-blue-bright) font-semibold shadow-xs'
-                    : 'border-(--border-subtle) bg-(--bg-surface) text-(--text-secondary) hover:text-(--text-primary) hover:border-(--border-strong)'
+                    ? 'border-(--accent-primary) bg-(--accent-primary-bg) text-(--accent-blue-bright) shadow-xs'
+                    : 'border-transparent bg-transparent text-(--text-secondary) hover:text-(--text-primary)'
                 }`}
               >
                 {item.company}
@@ -88,8 +88,7 @@ export function InteractiveSpecimen() {
           </div>
         </div>
 
-        {/* Window Shell Container */}
-        <div className="border border-(--border-subtle) bg-(--bg-surface) shadow-2xl overflow-hidden">
+        <div className="border border-(--border-subtle) bg-(--bg-surface) rounded-md shadow-xl overflow-hidden">
           <SpecimenHeader
             selectedItem={selectedItem}
             activeTab={activeTab}
@@ -103,7 +102,7 @@ export function InteractiveSpecimen() {
             latencyMs={selectedItem.latencyMs}
           />
 
-          <div className="p-6 md:p-8 relative min-h-[380px]">
+          <div className="p-5 md:p-6 bg-(--bg-app)/40 relative min-h-[380px]">
             {isSimulating ? (
               <div className="h-64 flex flex-col items-center justify-center gap-3 text-xs text-(--text-secondary)">
                 <Sparkles className="w-6 h-6 text-(--accent-primary) animate-spin" />

@@ -49,7 +49,7 @@ export function AnalyticsFunnelFlow({ stages }: FunnelFlowProps) {
   ];
 
   return (
-    <div className="p-5 border border-(--border-subtle) bg-(--bg-surface) space-y-4 shadow-sm">
+    <div className="p-5 border border-(--border-subtle) bg-(--bg-surface) rounded-md space-y-4 shadow-xs">
       <div className="flex items-center justify-between pb-3 border-b border-(--border-subtle)">
         <div className="flex items-center gap-2">
           <Filter className="w-4 h-4 text-(--accent-primary)" />
@@ -61,14 +61,14 @@ export function AnalyticsFunnelFlow({ stages }: FunnelFlowProps) {
       </div>
 
       {/* Stepped Conversion Flow */}
-      <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 ">
+      <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
         {steps.map((step, idx) => (
           <div
             key={step.label}
-            className="relative flex flex-col justify-between p-3.5 border border-(--border-subtle) bg-(--bg-app)"
+            className="relative flex flex-col justify-between p-3.5 border border-(--border-subtle) bg-(--bg-app) rounded-sm"
           >
             <div className="space-y-1">
-              <div className="text-[10px] uppercase tracking-wider text-(--text-muted)">
+              <div className="text-[10px] uppercase tracking-wider text-(--text-muted) font-semibold">
                 {step.label}
               </div>
               <div className="text-2xl font-bold text-(--text-primary)">{step.count}</div>
@@ -89,7 +89,7 @@ export function AnalyticsFunnelFlow({ stages }: FunnelFlowProps) {
       </div>
 
       {/* Outcome Bar */}
-      <div className="p-3 border border-(--border-subtle) bg-(--bg-app) text-xs space-y-2">
+      <div className="p-3 border border-(--border-subtle) bg-(--bg-app) rounded-sm text-xs space-y-2">
         <div className="flex justify-between items-center text-[11px]">
           <span className="text-(--text-secondary)">Pipeline Attrition & Closure:</span>
           <span className="text-(--text-muted)">
@@ -97,7 +97,7 @@ export function AnalyticsFunnelFlow({ stages }: FunnelFlowProps) {
             {Math.round((stages.rejected / stages.total) * 100)}%)
           </span>
         </div>
-        <div className="w-full h-1.5 bg-(--border-subtle) flex overflow-hidden">
+        <div className="w-full h-2 bg-(--border-subtle) flex rounded-full overflow-hidden">
           <div
             style={{ width: `${Math.round((stages.offer / stages.total) * 100)}%` }}
             className="bg-emerald-400 h-full"

@@ -44,33 +44,33 @@ export function ForgotPasswordForm({ onSwitchToSignIn }: ForgotPasswordFormProps
   if (submitted) {
     return (
       <div className="space-y-4 text-center py-2">
-        <div className="w-10 h-10 mx-auto rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
+        <div className="w-10 h-10 mx-auto rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-500">
           <CheckCircle2 className="w-5 h-5" />
         </div>
         <div className="space-y-1">
           <h3 className="text-sm font-semibold text-(--text-primary)">Check your inbox</h3>
           <p className="text-xs text-(--text-secondary) leading-relaxed">
             If an account exists for{' '}
-            <span className="text-(--text-primary) font-medium">{email}</span>, a password reset
+            <span className="text-(--text-primary) font-semibold">{email}</span>, a password reset
             link has been dispatched.
           </p>
         </div>
         <button
           type="button"
           onClick={onSwitchToSignIn}
-          className="inline-flex items-center gap-1.5 text-xs text-(--accent-primary) hover:underline cursor-pointer pt-2"
+          className="inline-flex items-center gap-1.5 text-xs text-(--accent-blue-bright) hover:underline cursor-pointer pt-2 font-medium"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
-          <span>Return to Sign In</span>
+          <span>Sign In</span>
         </button>
       </div>
     );
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-3 text-xs">
+    <form onSubmit={handleSubmit} className="space-y-3.5 text-xs">
       {error && (
-        <div className="p-2.5 border border-rose-500/30 bg-rose-500/10 text-rose-400 text-xs flex items-center gap-2">
+        <div className="p-2.5 border border-rose-500/30 bg-rose-500/10 text-rose-500 text-xs rounded-sm flex items-center gap-2">
           <AlertCircle className="w-3.5 h-3.5 shrink-0" />
           <span>{error}</span>
         </div>
@@ -81,18 +81,18 @@ export function ForgotPasswordForm({ onSwitchToSignIn }: ForgotPasswordFormProps
       </p>
 
       <div className="space-y-1">
-        <label className="text-[10px] text-(--text-muted) uppercase tracking-wider block">
+        <label className="text-[10px] text-(--text-muted) uppercase font-semibold block">
           Email Address
         </label>
         <div className="relative flex items-center">
-          <Mail className="w-3.5 h-3.5 absolute left-3 text-(--text-muted) pointer-events-none" />
+          <Mail className="w-4 h-4 absolute left-3 text-(--text-muted) pointer-events-none" />
           <input
             type="email"
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="you@domain.com"
-            className="w-full pl-9 pr-3 py-2 border border-(--border-subtle) bg-(--bg-app) text-(--text-primary) text-xs placeholder:text-(--text-muted) focus:border-(--accent-primary) focus:outline-none"
+            className="w-full h-10 pl-9 pr-3 border border-(--border-subtle) bg-(--bg-app) text-(--text-primary) text-xs rounded-sm placeholder:text-(--text-muted) focus:border-(--border-focus) focus:ring-2 focus:ring-(--accent-primary)/20 focus:outline-none transition-all"
           />
         </div>
       </div>
@@ -100,16 +100,16 @@ export function ForgotPasswordForm({ onSwitchToSignIn }: ForgotPasswordFormProps
       <button
         type="submit"
         disabled={loading}
-        className="w-full mt-2 flex items-center justify-center gap-2 py-2.5 px-4 bg-(--accent-primary) hover:bg-(--accent-primary-hover) text-white font-medium text-xs uppercase tracking-wider transition-colors cursor-pointer disabled:opacity-60"
+        className="w-full h-10 mt-2 flex items-center justify-center gap-2 px-4 bg-(--accent-primary) hover:bg-(--accent-primary-hover) text-(--accent-primary-text) font-semibold text-xs rounded-sm transition-colors cursor-pointer disabled:opacity-60 shadow-xs"
       >
         {loading ? (
           <>
             <Loader2 className="w-3.5 h-3.5 animate-spin" />
-            <span>Sending Link...</span>
+            <span>Sending...</span>
           </>
         ) : (
           <>
-            <span>Send Reset Link</span>
+            <span>Send Link</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </>
         )}
@@ -122,7 +122,7 @@ export function ForgotPasswordForm({ onSwitchToSignIn }: ForgotPasswordFormProps
           className="inline-flex items-center gap-1.5 text-[11px] text-(--text-secondary) hover:text-(--text-primary) underline cursor-pointer"
         >
           <ArrowLeft className="w-3 h-3" />
-          <span>Back to Sign In</span>
+          <span>Back</span>
         </button>
       </div>
     </form>

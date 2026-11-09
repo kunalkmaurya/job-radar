@@ -36,13 +36,13 @@ export default function LoginPage() {
 
       <header className="relative z-10 w-full max-w-5xl mx-auto flex items-center justify-between">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 bg-(--accent-primary-bg) border border-(--border-subtle) flex items-center justify-center p-1 rounded-xs">
+          <div className="w-8 h-8 bg-[var(--ds-background-selected,#E9F2FF)] dark:bg-[var(--ds-background-selected,#1C2B41)] border border-(--border-subtle) flex items-center justify-center p-1 rounded-sm">
             <Image
               src="/logo.png"
               alt="Job Radar"
               width={20}
               height={20}
-              className="w-5 h-5 object-contain rounded-xs"
+              className="w-5 h-5 object-contain rounded-[2px]"
             />
           </div>
           <span className="font-bold text-base tracking-wider uppercase">JOB RADAR</span>
@@ -51,7 +51,7 @@ export default function LoginPage() {
         <button
           onClick={toggleTheme}
           aria-label="Toggle theme"
-          className="p-2 border border-(--border-subtle) bg-(--bg-surface) hover:bg-(--bg-surface-hover) transition-colors text-(--text-secondary) hover:text-(--text-primary) cursor-pointer"
+          className="h-8 w-8 border border-(--border-subtle) bg-(--bg-surface) hover:bg-(--bg-surface-hover) rounded-sm transition-colors text-(--text-secondary) hover:text-(--text-primary) flex items-center justify-center cursor-pointer"
         >
           {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
         </button>
@@ -62,7 +62,7 @@ export default function LoginPage() {
       </main>
 
       <footer className="relative z-10 w-full text-center text-[11px] text-(--text-muted) py-2">
-        <span>JOB RADAR • CAREER SEARCH & TRACKING PLATFORM</span>
+        <span>JOB RADAR | CAREER SEARCH & TRACKING PLATFORM</span>
       </footer>
     </div>
   );

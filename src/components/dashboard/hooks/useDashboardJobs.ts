@@ -36,18 +36,20 @@ export function useDashboardJobs() {
   });
 
   useEffect(() => {
-    setNowTime(Date.now());
-    const savedTheme = localStorage.getItem('theme') as 'dark' | 'light' | null;
-    if (savedTheme) {
-      setTheme(savedTheme);
-      document.documentElement.setAttribute('data-theme', savedTheme);
-      document.documentElement.classList.remove('dark', 'light');
-      document.documentElement.classList.add(savedTheme);
-    } else {
-      document.documentElement.setAttribute('data-theme', 'dark');
-      document.documentElement.classList.remove('light');
-      document.documentElement.classList.add('dark');
-    }
+    const timer = setTimeout(() => {
+      setNowTime(Date.now());
+      const savedTheme = localStorage.getItem('theme') as 'dark' | 'light' | null;
+      if (savedTheme) {
+        setTheme(savedTheme);
+        document.documentElement.dataset.theme = savedTheme;
+        document.documentElement.classList.remove('dark', 'light');
+        document.documentElement.classList.add(savedTheme);
+      } else {
+        document.documentElement.dataset.theme = 'dark';
+        document.documentElement.classList.remove('light');
+        document.documentElement.classList.add('dark');
+      }
+    }, 0);
 
     fetch('/api/auth/me')
       .then((res) => res.json())
@@ -55,13 +57,15 @@ export function useDashboardJobs() {
         if (json.success && json.data) setCurrentUser(json.data);
       })
       .catch((err) => console.error('Failed to fetch user:', err));
+
+    return () => clearTimeout(timer);
   }, []);
 
   const toggleTheme = () => {
     const nextTheme = theme === 'dark' ? 'light' : 'dark';
     setTheme(nextTheme);
     localStorage.setItem('theme', nextTheme);
-    document.documentElement.setAttribute('data-theme', nextTheme);
+    document.documentElement.dataset.theme = nextTheme;
     document.documentElement.classList.remove('dark', 'light');
     document.documentElement.classList.add(nextTheme);
   };
@@ -126,7 +130,7 @@ export function useDashboardJobs() {
   const handleToggleImportant = async (jobId: string, e?: React.MouseEvent) => {
     if (e) e.stopPropagation();
     const currentJob = jobs.find((j) => j.id === jobId);
-    const nextVal = currentJob ? !Boolean(currentJob.isImportant) : true;
+    const nextVal = currentJob ? !currentJob.isImportant : true;
     setJobs((prev) =>
       prev.map((j) =>
         j.id === jobId ? { ...j, isImportant: nextVal, updatedAt: new Date(nowTime) } : j

@@ -46,15 +46,15 @@ export function AddJobAutoFetchTab({ onSuccess, onClose }: AddJobAutoFetchTabPro
         placeholder="https://..."
         value={fetchUrl}
         onChange={(e) => setFetchUrl(e.target.value)}
-        className="w-full px-3.5 py-2.5 text-xs border border-(--border-subtle) bg-(--bg-app) text-(--text-primary) placeholder-(--text-muted) focus:outline-none focus:border-(--border-focus)"
+        className="w-full h-8 px-3 text-xs border border-(--border-subtle) bg-(--bg-app) text-(--text-primary) placeholder-(--text-muted) rounded-sm focus:outline-none focus:border-(--border-focus) focus:ring-2 focus:ring-(--accent-primary)/20 transition-all"
       />
       <button
         onClick={handleAutoFetch}
         disabled={!fetchUrl || isScraping}
-        className="w-full flex items-center justify-center gap-2 py-2.5 bg-(--accent-primary) hover:bg-(--accent-primary-hover) disabled:opacity-50 text-white text-xs font-semibold transition-all shadow-sm cursor-pointer"
+        className="w-full h-8 flex items-center justify-center gap-2 bg-(--accent-primary) hover:bg-(--accent-primary-hover) disabled:opacity-50 text-(--accent-primary-text) text-xs font-semibold rounded-sm transition-colors shadow-xs cursor-pointer"
       >
         <Sparkles className={`w-3.5 h-3.5 ${isScraping ? 'animate-spin' : ''}`} />
-        <span>{isScraping ? 'Extracting with AI...' : 'Scrape & Extract Details'}</span>
+        <span>{isScraping ? 'Extracting...' : 'Extract'}</span>
       </button>
     </div>
   );

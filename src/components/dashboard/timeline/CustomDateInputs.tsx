@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { Calendar, ChevronRight, ChevronDown, X } from 'lucide-react';
 import { CustomDateRange } from '@/types';
 import { DatePresets } from './DatePresets';
@@ -15,35 +15,15 @@ interface CustomDateInputsProps {
 const PRESET_ITEMS: Array<{ key: PresetKey; label: string }> = [
   { key: 'all', label: 'All' },
   { key: 'today', label: 'Today' },
-  { key: '7d', label: 'Last 7 Days' },
-  { key: '14d', label: 'Last 14 Days' },
-  { key: '30d', label: 'Last 30 Days' },
+  { key: '7d', label: '7d' },
+  { key: '14d', label: '14d' },
+  { key: '30d', label: '30d' },
 ];
 
 export function CustomDateInputs({ customRange, onChange }: CustomDateInputsProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [anchorRect, setAnchorRect] = useState<DOMRect | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    function handleClickOutside(e: MouseEvent) {
-      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
-        setIsOpen(false);
-      }
-    }
-    function handleKeyDown(e: KeyboardEvent) {
-      if (e.key === 'Escape') {
-        setIsOpen(false);
-      }
-    }
-    if (isOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-      document.addEventListener('keydown', handleKeyDown);
-    }
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [isOpen]);
 
   const isPresetActive = (key: PresetKey) => {
     if (key === 'all') {
@@ -82,8 +62,13 @@ export function CustomDateInputs({ customRange, onChange }: CustomDateInputsProp
       <div ref={containerRef} className="relative">
         <button
           type="button"
-          onClick={() => setIsOpen((prev) => !prev)}
-          className={`flex items-center gap-2 px-2.5 py-1.5 border bg-(--bg-app) transition-colors cursor-pointer text-xs font-medium rounded-xs shadow-xs ${
+          onClick={() => {
+            if (!isOpen && containerRef.current) {
+              setAnchorRect(containerRef.current.getBoundingClientRect());
+            }
+            setIsOpen((prev) => !prev);
+          }}
+          className={`flex items-center gap-2 h-8 px-2.5 border bg-(--bg-surface) transition-colors cursor-pointer text-xs font-medium rounded-sm shadow-xs ${
             isOpen || isCustomRangeActive
               ? 'border-(--accent-primary) bg-(--accent-primary-bg) text-(--accent-blue-bright)'
               : 'border-(--border-subtle) hover:border-(--border-strong) text-(--text-secondary) hover:text-(--text-primary)'
@@ -120,6 +105,8 @@ export function CustomDateInputs({ customRange, onChange }: CustomDateInputsProp
 
         {isOpen && (
           <DateRangePopover
+            anchorRef={containerRef}
+            anchorRect={anchorRect}
             startDate={customRange.startDate}
             endDate={customRange.endDate}
             onApply={(newRange) => onChange(newRange)}

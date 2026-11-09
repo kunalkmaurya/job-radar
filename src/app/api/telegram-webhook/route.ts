@@ -77,7 +77,7 @@ export async function POST(request: Request) {
 
           await sendTelegramMessage(
             chatId,
-            `Connected to "${ws.name}"! Any job links dropped here will automatically sync to your group Explore Jobs feed.`
+            `Connected to "${ws.name}"! Any job links dropped here will automatically sync to your group Explore feed.`
           );
           return NextResponse.json({ ok: true });
         } else {

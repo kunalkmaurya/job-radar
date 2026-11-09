@@ -30,18 +30,18 @@ export function DashboardHeader({
   const TabIcon = currentTab.icon;
 
   return (
-    <header className="sticky top-0 z-30 h-14 w-full border-b border-(--border-subtle) bg-(--bg-app)/90 backdrop-blur-xl px-3 sm:px-5 flex items-center justify-between">
+    <header className="sticky top-0 z-30 h-12 w-full border-b border-(--border-subtle) bg-(--bg-surface) px-3 sm:px-5 flex items-center justify-between">
       <div className="flex items-center gap-2.5 min-w-0">
         <button
           onClick={onOpenMobileMenu}
           aria-label="Open navigation menu"
-          className="md:hidden p-1.5 border border-(--border-subtle) bg-(--bg-surface) text-(--text-secondary) hover:text-(--text-primary) rounded-xs cursor-pointer"
+          className="md:hidden h-8 w-8 flex items-center justify-center border border-(--border-subtle) bg-(--bg-surface) hover:bg-(--bg-surface-hover) text-(--text-secondary) hover:text-(--text-primary) rounded-sm cursor-pointer"
         >
           <Menu className="w-4 h-4" />
         </button>
 
         <div className="flex items-center gap-2 md:hidden">
-          <div className="w-6 h-6 bg-(--accent-primary-bg) border border-(--border-subtle) flex items-center justify-center p-0.5 rounded-xs">
+          <div className="w-6 h-6 bg-(--accent-primary-bg) border border-(--accent-border) flex items-center justify-center p-0.5 rounded-sm">
             <Image
               src="/logo.png"
               alt="Job Radar"
@@ -63,7 +63,7 @@ export function DashboardHeader({
             <span>{currentTab.label}</span>
           </div>
           {activeTab === 'dashboard' && jobCount !== undefined && (
-            <span className="ml-1 px-1.5 py-0.5 text-[10px] font-mono font-medium rounded-xs bg-(--accent-primary)/10 text-(--accent-blue-bright) border border-(--accent-primary)/20">
+            <span className="ml-1 px-1.5 py-0.5 text-[10px] font-semibold rounded-sm bg-(--accent-primary-bg) text-(--accent-blue-bright) border border-(--accent-border)">
               {jobCount} tracked
             </span>
           )}

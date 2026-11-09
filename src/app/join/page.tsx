@@ -65,15 +65,15 @@ function JoinContent() {
 
   return (
     <div className="min-h-screen bg-(--bg-app) flex flex-col justify-center items-center px-4">
-      <div className="w-full max-w-md bg-(--bg-surface) border border-(--border-subtle) rounded-lg p-6 shadow-xl space-y-5">
+      <div className="w-full max-w-md bg-(--bg-surface) border border-(--border-subtle) rounded-[8px] p-6 shadow-xl space-y-5">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-(--accent-primary-bg) border border-(--border-subtle) flex items-center justify-center p-1 rounded-xs">
+          <div className="w-8 h-8 bg-[var(--ds-background-selected,#E9F2FF)] dark:bg-[var(--ds-background-selected,#1C2B41)] border border-(--border-subtle) flex items-center justify-center p-1 rounded-sm">
             <Image
               src="/logo.png"
               alt="Job Radar"
               width={20}
               height={20}
-              className="w-4 h-4 object-contain"
+              className="w-4 h-4 object-contain rounded-[2px]"
             />
           </div>
           <span className="font-bold text-xs tracking-wider uppercase text-(--text-primary)">
@@ -95,19 +95,19 @@ function JoinContent() {
             <span>{checkingAuth ? 'Checking membership...' : 'Connecting to pod...'}</span>
           </div>
         ) : success ? (
-          <div className="py-6 flex flex-col items-center justify-center gap-2 text-xs text-emerald-500">
+          <div className="py-6 flex flex-col items-center justify-center gap-2 text-xs text-[var(--ds-text-success,#22A06B)]">
             <CheckCircle2 className="w-6 h-6" />
-            <span className="font-medium">Joined pod successfully. Redirecting...</span>
+            <span className="font-semibold">Joined pod successfully. Redirecting...</span>
           </div>
         ) : error ? (
           <div className="space-y-4">
-            <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-xs flex items-center gap-2 text-xs text-red-400">
+            <div className="p-3 bg-[var(--ds-background-danger,#FFEBE6)] dark:bg-[var(--ds-background-danger,#441C18)] border border-[var(--ds-border-danger,#FD9891)] rounded-sm flex items-center gap-2 text-xs text-[var(--ds-text-danger,#AE2A19)] dark:text-[var(--ds-text-danger,#FD9891)]">
               <AlertCircle className="w-4 h-4 shrink-0" />
               <span>{error}</span>
             </div>
             <Link
               href="/dashboard"
-              className="w-full py-2 bg-(--bg-app) hover:bg-(--bg-surface-hover) border border-(--border-subtle) text-xs text-(--text-primary) font-medium rounded-xs flex items-center justify-center"
+              className="w-full h-8 bg-(--bg-app) hover:bg-(--bg-surface-hover) border border-(--border-subtle) text-xs text-(--text-primary) font-semibold rounded-sm flex items-center justify-center transition-colors"
             >
               Back to Dashboard
             </Link>

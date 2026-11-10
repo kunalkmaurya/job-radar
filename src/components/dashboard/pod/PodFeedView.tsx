@@ -4,11 +4,11 @@ import React from 'react';
 import { Loader2 } from 'lucide-react';
 import { useFeedJobs } from '../feed/useFeedJobs';
 import { useFeedViewMode } from '../feed/useFeedViewMode';
+import { useFeedPagination } from '../feed/useFeedPagination';
 import { FeedCard } from '../feed/FeedCard';
 import { FeedListView } from '../feed/FeedListView';
 import { AddPublicJobModal } from '../feed/AddPublicJobModal';
 import { PaginationBar } from '../pagination/PaginationBar';
-import { usePagination } from '../pagination/usePagination';
 import { PodFeedHeader } from './PodFeedHeader';
 import { PodFeedEmptyState } from './PodFeedEmptyState';
 import { usePodManager } from './usePodManager';
@@ -24,11 +24,7 @@ export function PodFeedView({ onJobTracked, refreshTrigger, onOpenInviteModal }:
   const pod = usePodManager();
   const feed = useFeedJobs({ initialFeedType: 'pod', onJobTracked, refreshTrigger });
 
-  const pagination = usePagination({
-    totalItems: feed.feedJobs.length,
-    initialPageSize: 12,
-    pageSizeOptions: [12, 24, 48, 96],
-  });
+  const pagination = useFeedPagination(feed.feedJobs.length);
 
   const paginatedJobs = pagination.paginateItems(feed.feedJobs);
   const handleSyncAll = () => Promise.all([feed.syncTelegramJobs(), pod.fetchPod()]);

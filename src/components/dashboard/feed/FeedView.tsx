@@ -4,11 +4,11 @@ import React from 'react';
 import { Loader2 } from 'lucide-react';
 import { useFeedJobs } from './useFeedJobs';
 import { useFeedViewMode } from './useFeedViewMode';
+import { useFeedPagination } from './useFeedPagination';
 import { FeedHeader } from './FeedHeader';
 import { FeedCard } from './FeedCard';
 import { FeedListView } from './FeedListView';
 import { PaginationBar } from '../pagination/PaginationBar';
-import { usePagination } from '../pagination/usePagination';
 
 interface FeedViewProps {
   onJobTracked?: () => void;
@@ -26,11 +26,7 @@ export function FeedView({ onJobTracked, refreshTrigger, onSync, isSyncing }: Fe
       refreshTrigger,
     });
 
-  const pagination = usePagination({
-    totalItems: feedJobs.length,
-    initialPageSize: 12,
-    pageSizeOptions: [12, 24, 48, 96],
-  });
+  const pagination = useFeedPagination(feedJobs.length);
 
   const paginatedJobs = pagination.paginateItems(feedJobs);
 

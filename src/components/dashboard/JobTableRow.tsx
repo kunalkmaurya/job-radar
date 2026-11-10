@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { AlertTriangle, Star } from 'lucide-react';
+import { AlertTriangle, Star, MapPin, Briefcase } from 'lucide-react';
 import { Job, JobStatus } from '@/types';
 import { formatDate } from './data';
 import { isJobStale } from './helpers';
@@ -76,7 +76,25 @@ export function JobTableRow({
 
       <td className="py-3 px-4 text-(--text-secondary)">
         <div className="flex items-center gap-2 flex-wrap text-xs">
-          <span>{job.role}</span>
+          <span className="font-medium text-(--text-primary)">{job.role}</span>
+          {job.location &&
+            job.location !== 'N/A' &&
+            job.location !== 'Not Specified' &&
+            job.location !== 'Remote / Flexible' && (
+              <span className="inline-flex items-center gap-1 text-[11px] text-(--text-muted)">
+                <MapPin className="w-3 h-3 text-(--text-muted) shrink-0" />
+                <span>{job.location}</span>
+              </span>
+            )}
+          {job.exp &&
+            job.exp !== 'N/A' &&
+            job.exp !== 'Not Specified' &&
+            job.exp !== 'All Levels' && (
+              <span className="inline-flex items-center gap-1 text-[11px] text-(--text-muted)">
+                <Briefcase className="w-3 h-3 text-(--text-muted) shrink-0" />
+                <span>{job.exp}</span>
+              </span>
+            )}
           {job.referralStatus && job.referralStatus !== 'none' && (
             <span
               title={job.referrerName ? `Referrer: ${job.referrerName}` : 'Referral active'}

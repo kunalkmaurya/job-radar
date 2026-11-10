@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { AlertTriangle, ExternalLink, Star, Users } from 'lucide-react';
+import { AlertTriangle, ExternalLink, Star, Users, MapPin, Briefcase } from 'lucide-react';
 import { Job } from '@/types';
 import { isJobStale } from './helpers';
 import { getLinkedIn1stDegreeSearchUrl } from '@/lib/linkedin';
@@ -14,6 +14,11 @@ interface JobKanbanCardProps {
   onApplyAndAdvance?: (job: Job, e?: React.MouseEvent) => void;
 }
 
+const isCustom = (v?: string | null) =>
+  Boolean(
+    v && v !== 'N/A' && v !== 'Not Specified' && v !== 'Remote / Flexible' && v !== 'All Levels'
+  );
+
 export function JobKanbanCard({
   job,
   nowTime,
@@ -22,7 +27,8 @@ export function JobKanbanCard({
 }: JobKanbanCardProps) {
   const stale = isJobStale(job, nowTime);
   const isImportant = Boolean(job.isImportant);
-  const linkedInUrl = getLinkedIn1stDegreeSearchUrl(job.company);
+  const hasLoc = isCustom(job.location);
+  const hasExp = isCustom(job.exp);
 
   return (
     <div
@@ -34,11 +40,7 @@ export function JobKanbanCard({
       }`}
     >
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-1.5 min-w-0">
-          <span className="font-semibold text-xs text-(--text-primary) truncate">
-            {job.company}
-          </span>
-        </div>
+        <span className="font-semibold text-xs text-(--text-primary) truncate">{job.company}</span>
 
         <div className="flex items-center gap-1">
           <button
@@ -48,22 +50,15 @@ export function JobKanbanCard({
               onToggleImportant?.(job.id, e);
             }}
             title={isImportant ? 'Marked as Important' : 'Mark as Important'}
-            aria-label={
-              isImportant
-                ? `Unmark ${job.role} at ${job.company} as important`
-                : `Mark ${job.role} at ${job.company} as important`
-            }
             className="p-1 text-(--text-muted) hover:text-amber-500 transition-colors cursor-pointer rounded-sm"
           >
             <Star
-              className={`w-3.5 h-3.5 ${
-                isImportant ? 'text-amber-500 fill-amber-500' : 'text-(--text-muted)'
-              }`}
+              className={`w-3.5 h-3.5 ${isImportant ? 'text-amber-500 fill-amber-500' : 'text-(--text-muted)'}`}
             />
           </button>
 
           <a
-            href={linkedInUrl}
+            href={getLinkedIn1stDegreeSearchUrl(job.company)}
             target="_blank"
             rel="noreferrer"
             onClick={(e) => e.stopPropagation()}
@@ -87,6 +82,23 @@ export function JobKanbanCard({
       </div>
 
       <p className="text-xs text-(--text-secondary) line-clamp-1">{job.role}</p>
+
+      {(hasLoc || hasExp) && (
+        <div className="flex items-center gap-2 text-[10px] text-(--text-muted) flex-wrap">
+          {hasLoc && (
+            <span className="inline-flex items-center gap-0.5 truncate max-w-[120px]">
+              <MapPin className="w-2.5 h-2.5 shrink-0" />
+              <span className="truncate">{job.location}</span>
+            </span>
+          )}
+          {hasExp && (
+            <span className="inline-flex items-center gap-0.5 truncate max-w-[90px]">
+              <Briefcase className="w-2.5 h-2.5 shrink-0" />
+              <span className="truncate">{job.exp}</span>
+            </span>
+          )}
+        </div>
+      )}
 
       {job.referralStatus && job.referralStatus !== 'none' && (
         <div className="pt-0.5">
@@ -126,8 +138,6 @@ export function JobKanbanCard({
             e.stopPropagation();
             onSelectJob(job);
           }}
-          title="Open Notes"
-          aria-label={`Open notes for ${job.role} at ${job.company}`}
           className="text-[11px] font-medium text-(--accent-blue-bright) hover:underline cursor-pointer"
         >
           Details

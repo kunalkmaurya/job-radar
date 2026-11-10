@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { X, ArrowUpRight, Star, Users } from 'lucide-react';
+import { X, ArrowUpRight, Star, Users, MapPin, Briefcase } from 'lucide-react';
 import { Job, JobStatus } from '@/types';
 import { JobStatusDropdown } from '../common/JobStatusDropdown';
 import { getLinkedIn1stDegreeSearchUrl } from '@/lib/linkedin';
@@ -21,6 +21,16 @@ export function DrawerHeader({
 }: DrawerHeaderProps) {
   const isImportant = Boolean(job.isImportant);
   const linkedInUrl = getLinkedIn1stDegreeSearchUrl(job.company);
+  const isLocUnspecified =
+    !job.location ||
+    job.location === 'N/A' ||
+    job.location === 'Not Specified' ||
+    job.location === 'Remote / Flexible';
+  const displayLocation = isLocUnspecified ? 'Location Not Specified' : job.location;
+
+  const isExpUnspecified =
+    !job.exp || job.exp === 'N/A' || job.exp === 'Not Specified' || job.exp === 'All Levels';
+  const displayExp = isExpUnspecified ? 'Experience Not Specified' : job.exp;
 
   return (
     <div className="space-y-3.5">
@@ -30,6 +40,26 @@ export function DrawerHeader({
             {job.company}
           </h2>
           <p className="text-xs text-(--text-secondary) mt-0.5 truncate">{job.role}</p>
+          <div className="flex items-center gap-2.5 mt-1.5 flex-wrap text-xs text-(--text-muted)">
+            <span
+              className={`inline-flex items-center gap-1 ${isLocUnspecified ? 'italic' : ''}`}
+              title={
+                isLocUnspecified ? 'Location could not be determined from posting' : displayLocation
+              }
+            >
+              <MapPin className="w-3.5 h-3.5 text-(--text-muted) shrink-0" />
+              <span>{displayLocation}</span>
+            </span>
+            <span
+              className={`inline-flex items-center gap-1 ${isExpUnspecified ? 'italic' : ''}`}
+              title={
+                isExpUnspecified ? 'Experience requirements not specified in posting' : displayExp
+              }
+            >
+              <Briefcase className="w-3.5 h-3.5 text-(--text-muted) shrink-0" />
+              <span>{displayExp}</span>
+            </span>
+          </div>
         </div>
         <button
           type="button"

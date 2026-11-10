@@ -29,4 +29,3 @@ export function useFeedViewMode(): [
 
   return [viewMode, setViewMode];
 }
-

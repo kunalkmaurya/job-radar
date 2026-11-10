@@ -25,9 +25,20 @@ export function FeedCard({ job, isTracking, onTrack, onUntrack, onDelete }: Feed
       .map((w) => w[0])
       .join('') || job.company.slice(0, 2)
   ).toUpperCase();
-  const displayLocation =
-    !job.location || job.location === 'N/A' ? 'Remote / Flexible' : job.location;
-  const displayExp = !job.exp || job.exp === 'N/A' ? 'All Experience Levels' : job.exp;
+  const isLocUnspecified =
+    !job.location ||
+    job.location === 'N/A' ||
+    job.location === 'Not Specified' ||
+    job.location === 'Remote / Flexible';
+  const displayLocation = isLocUnspecified ? 'Not Specified' : job.location;
+
+  const isExpUnspecified =
+    !job.exp ||
+    job.exp === 'N/A' ||
+    job.exp === 'Not Specified' ||
+    job.exp === 'All Levels' ||
+    job.exp === 'All Experience Levels';
+  const displayExp = isExpUnspecified ? 'Not Specified' : job.exp;
 
   return (
     <div className="group relative border border-(--border-subtle) hover:border-(--border-focus) bg-(--bg-surface) hover:bg-(--bg-surface-hover) p-4 rounded-md transition-colors flex flex-col justify-between gap-3.5 shadow-xs">
@@ -56,12 +67,24 @@ export function FeedCard({ job, isTracking, onTrack, onUntrack, onDelete }: Feed
       </div>
 
       <div className="flex flex-wrap items-center gap-1.5 text-[11px]">
-        <span className="inline-flex items-center gap-1 px-2 py-0.5 border border-(--border-subtle) bg-(--bg-app) text-(--text-secondary) rounded-sm">
+        <span
+          className={`inline-flex items-center gap-1 px-2 py-0.5 border border-(--border-subtle) bg-(--bg-app) rounded-sm ${
+            isLocUnspecified ? 'text-(--text-muted) italic' : 'text-(--text-secondary)'
+          }`}
+          title={
+            isLocUnspecified ? 'Location could not be determined from posting' : displayLocation
+          }
+        >
           <MapPin className="w-3 h-3 text-(--text-muted)" />
           <span className="truncate max-w-[130px]">{displayLocation}</span>
         </span>
 
-        <span className="inline-flex items-center gap-1 px-2 py-0.5 border border-(--border-subtle) bg-(--bg-app) text-(--text-secondary) rounded-sm">
+        <span
+          className={`inline-flex items-center gap-1 px-2 py-0.5 border border-(--border-subtle) bg-(--bg-app) rounded-sm ${
+            isExpUnspecified ? 'text-(--text-muted) italic' : 'text-(--text-secondary)'
+          }`}
+          title={isExpUnspecified ? 'Experience requirements not specified in posting' : displayExp}
+        >
           <Briefcase className="w-3 h-3 text-(--text-muted)" />
           <span className="truncate max-w-[120px]">{displayExp}</span>
         </span>

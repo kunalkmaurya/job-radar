@@ -58,7 +58,26 @@ export function useDashboardJobs() {
       })
       .catch((err) => console.error('Failed to fetch user:', err));
 
-    return () => clearTimeout(timer);
+    const handleSettingsUpdate = () => {
+      try {
+        const stored = localStorage.getItem('job_radar_app_settings_v1');
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (parsed.defaultView === 'list' || parsed.defaultView === 'kanban') {
+            setViewMode(parsed.defaultView);
+          }
+        }
+      } catch {
+        // ignore
+      }
+    };
+    handleSettingsUpdate();
+    window.addEventListener('job_radar_settings_updated', handleSettingsUpdate);
+
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('job_radar_settings_updated', handleSettingsUpdate);
+    };
   }, []);
 
   const toggleTheme = () => {

@@ -1,40 +1,30 @@
 'use client';
 
 import React from 'react';
-import {
-  ExternalLink,
-  Check,
-  Plus,
-  Loader2,
-  MapPin,
-  Briefcase,
-  ShieldCheck,
-  Trash2,
-} from 'lucide-react';
+import { ExternalLink, MapPin, Briefcase, ShieldCheck, Trash2 } from 'lucide-react';
 import { FeedJobItem } from './useFeedJobs';
+import { FeedTrackButton } from './FeedTrackButton';
 
 interface FeedCardProps {
   job: FeedJobItem;
   isTracking: boolean;
   onTrack: (jobId: string) => void;
+  onUntrack?: (jobId: string) => void;
   onDelete?: (jobId: string) => void;
 }
 
-export function FeedCard({ job, isTracking, onTrack, onDelete }: FeedCardProps) {
+export function FeedCard({ job, isTracking, onTrack, onUntrack, onDelete }: FeedCardProps) {
   const formattedDate = new Date(job.createdAt).toLocaleDateString('en-US', {
     month: 'short',
     day: 'numeric',
   });
-
-  const initials =
-    job.company
-      .split(/\s+/)
-      .filter(Boolean)
+  const words = job.company.split(/\s+/).filter(Boolean);
+  const initials = (
+    words
       .slice(0, 2)
       .map((w) => w[0])
-      .join('')
-      .toUpperCase() || job.company.slice(0, 2).toUpperCase();
-
+      .join('') || job.company.slice(0, 2)
+  ).toUpperCase();
   const displayLocation =
     !job.location || job.location === 'N/A' ? 'Remote / Flexible' : job.location;
   const displayExp = !job.exp || job.exp === 'N/A' ? 'All Experience Levels' : job.exp;
@@ -111,25 +101,14 @@ export function FeedCard({ job, isTracking, onTrack, onDelete }: FeedCardProps) 
           )}
         </div>
 
-        {job.isTracked ? (
-          <span className="h-8 inline-flex items-center gap-1.5 text-xs text-(--status-offer-text) bg-(--status-offer-bg) border border-(--status-offer-border) font-semibold px-3 rounded-sm">
-            <Check className="w-3.5 h-3.5" />
-            <span>Tracked</span>
-          </span>
-        ) : (
-          <button
-            onClick={() => onTrack(job.id)}
-            disabled={isTracking}
-            className="h-8 inline-flex items-center gap-1.5 text-xs font-semibold px-3 bg-(--accent-primary) hover:bg-(--accent-primary-hover) text-(--accent-primary-text) rounded-sm shadow-xs transition-colors cursor-pointer disabled:opacity-50"
-          >
-            {isTracking ? (
-              <Loader2 className="w-3.5 h-3.5 animate-spin" />
-            ) : (
-              <Plus className="w-3.5 h-3.5" />
-            )}
-            <span>Track</span>
-          </button>
-        )}
+        <FeedTrackButton
+          jobId={job.id}
+          isTracked={Boolean(job.isTracked)}
+          isTracking={isTracking}
+          onTrack={onTrack}
+          onUntrack={onUntrack}
+          size="md"
+        />
       </div>
     </div>
   );

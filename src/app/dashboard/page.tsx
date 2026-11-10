@@ -25,18 +25,8 @@ function DashboardContent() {
   const [isFeedSyncing, setIsFeedSyncing] = useState(false);
 
   const podManager = usePodManager();
-  const dashboardState = useDashboardJobs();
-  const {
-    jobs,
-    setJobs,
-    revalidate,
-    theme,
-    toggleTheme,
-    nowTime,
-    currentUser,
-    handleExportCSV,
-    fetchJobs,
-  } = dashboardState;
+  const d = useDashboardJobs();
+  const { jobs, setJobs, revalidate, theme, toggleTheme, nowTime, currentUser } = d;
 
   const handleSync = async () => {
     setIsFeedSyncing(true);
@@ -49,9 +39,9 @@ function DashboardContent() {
     jobs,
     nowTime,
     setJobs,
-    handleStatusChange: dashboardState.handleStatusChange,
-    handleToggleImportant: dashboardState.handleToggleImportant,
-    handleDeleteJob: dashboardState.handleDeleteJob,
+    handleStatusChange: d.handleStatusChange,
+    handleToggleImportant: d.handleToggleImportant,
+    handleDeleteJob: d.handleDeleteJob,
   });
 
   const mutatePod = async (fn: () => Promise<boolean>) => {
@@ -80,10 +70,8 @@ function DashboardContent() {
           theme={theme}
           onToggleTheme={toggleTheme}
           onOpenBookmarklet={() => setIsBookmarkletOpen(true)}
-          onExportCSV={handleExportCSV}
+          onExportCSV={d.handleExportCSV}
           onOpenAddJob={() => setIsAddOpen(true)}
-          isSyncing={dashboardState.isSyncing || isFeedSyncing}
-          onSync={handleSync}
           onOpenMobileMenu={() => setIsMobileMenuOpen(true)}
           activeTab={activeNavTab}
           jobCount={jobs.length}
@@ -92,13 +80,15 @@ function DashboardContent() {
         <main className="flex-1 overflow-y-auto flex flex-col min-h-0">
           <DashboardTabContent
             activeTab={activeNavTab}
-            {...dashboardState}
+            {...d}
             setDrawerJob={drawerState.setDrawerJob}
             onJobStatusChange={drawerState.onJobStatusChange}
             onJobDelete={drawerState.onJobDelete}
             onJobTracked={revalidate}
             refreshTrigger={feedRefreshCount}
             onOpenInviteModal={() => podManager.setIsPodOpen(true)}
+            onSync={handleSync}
+            isSyncing={d.isSyncing || isFeedSyncing}
           />
         </main>
       </div>
@@ -118,7 +108,7 @@ function DashboardContent() {
         isAddOpen={isAddOpen}
         onCloseAdd={() => setIsAddOpen(false)}
         onJobAdded={(newJob) => setJobs((prev) => [newJob, ...prev])}
-        onRefreshJobs={fetchJobs}
+        onRefreshJobs={d.fetchJobs}
         isBookmarkletOpen={isBookmarkletOpen}
         onCloseBookmarklet={() => setIsBookmarkletOpen(false)}
         isPodOpen={podManager.isPodOpen}

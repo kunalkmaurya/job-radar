@@ -27,4 +27,3 @@ export function PodMembersSection({ members }: PodMembersSectionProps) {
     </div>
   );
 }
-

@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Search, Globe, LayoutGrid, List } from 'lucide-react';
+import { Search, Globe, LayoutGrid, List, RefreshCw } from 'lucide-react';
 
 interface FeedHeaderProps {
   totalJobs: number;
@@ -9,6 +9,8 @@ interface FeedHeaderProps {
   onSearchChange: (q: string) => void;
   viewMode: 'grid' | 'list';
   onViewModeChange: (m: 'grid' | 'list') => void;
+  onSync?: () => void;
+  isSyncing?: boolean;
 }
 
 export function FeedHeader({
@@ -17,6 +19,8 @@ export function FeedHeader({
   onSearchChange,
   viewMode,
   onViewModeChange,
+  onSync,
+  isSyncing = false,
 }: FeedHeaderProps) {
   return (
     <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 border-b border-(--border-subtle) pb-3.5">
@@ -45,6 +49,22 @@ export function FeedHeader({
             className="w-full h-8 bg-(--bg-surface) border border-(--border-subtle) pl-8 pr-3 text-xs text-(--text-primary) placeholder:text-(--text-muted) rounded-sm focus:outline-none focus:border-(--border-focus) focus:ring-2 focus:ring-(--accent-primary)/20 transition-all"
           />
         </div>
+
+        {onSync && (
+          <button
+            type="button"
+            onClick={onSync}
+            disabled={isSyncing}
+            title="Sync explore feed"
+            aria-label="Sync explore feed"
+            className="inline-flex items-center gap-1.5 h-8 px-2.5 border border-(--border-subtle) bg-(--bg-surface) hover:bg-(--bg-surface-hover) text-(--text-secondary) hover:text-(--text-primary) text-xs font-medium shrink-0 cursor-pointer rounded-sm disabled:opacity-50 transition-colors"
+          >
+            <RefreshCw
+              className={`w-3.5 h-3.5 ${isSyncing ? 'animate-spin text-(--accent-primary)' : ''}`}
+            />
+            <span className="hidden md:inline">Sync</span>
+          </button>
+        )}
 
         <div className="inline-flex items-center h-8 p-0.5 border border-(--border-subtle) bg-(--bg-app) rounded-sm shrink-0">
           <button

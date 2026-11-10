@@ -42,6 +42,7 @@ export interface CalendarDay {
   dayNumber: number;
   isCurrentMonth: boolean;
   isToday: boolean;
+  isFuture: boolean;
 }
 
 export function getCalendarDays(year: number, month: number, todayStr: string): CalendarDay[] {
@@ -61,6 +62,7 @@ export function getCalendarDays(year: number, month: number, todayStr: string): 
       dayNumber: prevDayNum,
       isCurrentMonth: false,
       isToday: dateStr === todayStr,
+      isFuture: dateStr > todayStr,
     });
   }
 
@@ -73,6 +75,7 @@ export function getCalendarDays(year: number, month: number, todayStr: string): 
       dayNumber: i,
       isCurrentMonth: true,
       isToday: dateStr === todayStr,
+      isFuture: dateStr > todayStr,
     });
   }
 
@@ -85,6 +88,7 @@ export function getCalendarDays(year: number, month: number, todayStr: string): 
       dayNumber: i,
       isCurrentMonth: false,
       isToday: dateStr === todayStr,
+      isFuture: dateStr > todayStr,
     });
   }
 

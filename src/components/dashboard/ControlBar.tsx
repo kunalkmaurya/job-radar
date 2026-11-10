@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect } from 'react';
-import { Search, X, AlertTriangle } from 'lucide-react';
+import { Search, X, AlertTriangle, RefreshCw } from 'lucide-react';
 
 interface ControlBarProps {
   searchQuery: string;
@@ -11,6 +11,8 @@ interface ControlBarProps {
   onToggleStaleFilter: () => void;
   viewMode: 'list' | 'kanban';
   onSelectViewMode: (mode: 'list' | 'kanban') => void;
+  onSync?: () => void;
+  isSyncing?: boolean;
 }
 
 export function ControlBar({
@@ -21,6 +23,8 @@ export function ControlBar({
   onToggleStaleFilter,
   viewMode,
   onSelectViewMode,
+  onSync,
+  isSyncing = false,
 }: ControlBarProps) {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -76,6 +80,22 @@ export function ControlBar({
       </div>
 
       <div className="flex items-center justify-end gap-2 shrink-0">
+        {onSync && (
+          <button
+            type="button"
+            onClick={onSync}
+            disabled={isSyncing}
+            title="Sync pipeline"
+            aria-label="Sync pipeline"
+            className="inline-flex items-center gap-1.5 h-8 px-2.5 border border-(--border-subtle) bg-(--bg-surface) hover:bg-(--bg-surface-hover) text-(--text-secondary) hover:text-(--text-primary) text-xs font-medium shrink-0 cursor-pointer rounded-sm disabled:opacity-50 transition-colors"
+          >
+            <RefreshCw
+              className={`w-3.5 h-3.5 ${isSyncing ? 'animate-spin text-(--accent-primary)' : ''}`}
+            />
+            <span className="hidden sm:inline">Sync</span>
+          </button>
+        )}
+
         <div className="inline-flex items-center h-8 p-0.5 border border-(--border-subtle) bg-(--bg-surface) rounded-sm">
           <button
             onClick={() => onSelectViewMode('list')}

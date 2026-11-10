@@ -18,8 +18,6 @@ export function DashboardHeader({
   onOpenBookmarklet,
   onExportCSV,
   onOpenAddJob,
-  isSyncing,
-  onSync,
   onOpenMobileMenu,
   activeTab = 'dashboard',
   jobCount,
@@ -74,8 +72,6 @@ export function DashboardHeader({
         onOpenBookmarklet={onOpenBookmarklet}
         onExportCSV={onExportCSV}
         onOpenAddJob={onOpenAddJob}
-        isSyncing={isSyncing}
-        onSync={onSync}
       />
     </header>
   );

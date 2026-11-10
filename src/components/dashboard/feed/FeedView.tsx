@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Loader2 } from 'lucide-react';
 import { useFeedJobs } from './useFeedJobs';
+import { useFeedViewMode } from './useFeedViewMode';
 import { FeedHeader } from './FeedHeader';
 import { FeedCard } from './FeedCard';
 import { FeedListView } from './FeedListView';
@@ -12,15 +13,18 @@ import { usePagination } from '../pagination/usePagination';
 interface FeedViewProps {
   onJobTracked?: () => void;
   refreshTrigger?: number;
+  onSync?: () => void;
+  isSyncing?: boolean;
 }
 
-export function FeedView({ onJobTracked, refreshTrigger }: FeedViewProps) {
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
-  const { feedJobs, isLoading, searchQuery, setSearchQuery, trackingId, trackJob } = useFeedJobs({
-    initialFeedType: 'public',
-    onJobTracked,
-    refreshTrigger,
-  });
+export function FeedView({ onJobTracked, refreshTrigger, onSync, isSyncing }: FeedViewProps) {
+  const [viewMode, setViewMode] = useFeedViewMode();
+  const { feedJobs, isLoading, searchQuery, setSearchQuery, trackingId, trackJob, untrackJob } =
+    useFeedJobs({
+      initialFeedType: 'public',
+      onJobTracked,
+      refreshTrigger,
+    });
 
   const pagination = usePagination({
     totalItems: feedJobs.length,
@@ -39,6 +43,8 @@ export function FeedView({ onJobTracked, refreshTrigger }: FeedViewProps) {
           onSearchChange={setSearchQuery}
           viewMode={viewMode}
           onViewModeChange={setViewMode}
+          onSync={onSync}
+          isSyncing={isSyncing}
         />
 
         {isLoading ? (
@@ -65,11 +71,17 @@ export function FeedView({ onJobTracked, refreshTrigger }: FeedViewProps) {
                     job={job}
                     isTracking={trackingId === job.id}
                     onTrack={trackJob}
+                    onUntrack={untrackJob}
                   />
                 ))}
               </div>
             ) : (
-              <FeedListView jobs={paginatedJobs} trackingId={trackingId} onTrack={trackJob} />
+              <FeedListView
+                jobs={paginatedJobs}
+                trackingId={trackingId}
+                onTrack={trackJob}
+                onUntrack={untrackJob}
+              />
             )}
           </div>
         )}

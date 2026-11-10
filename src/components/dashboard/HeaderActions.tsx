@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Sun, Moon, Bookmark, Download, Plus, RefreshCw } from 'lucide-react';
+import { Sun, Moon, Bookmark, Download, Plus } from 'lucide-react';
 
 export interface HeaderActionsProps {
   theme: 'dark' | 'light';
@@ -9,8 +9,6 @@ export interface HeaderActionsProps {
   onOpenBookmarklet: () => void;
   onExportCSV: () => void;
   onOpenAddJob: () => void;
-  isSyncing?: boolean;
-  onSync?: () => void;
 }
 
 export function HeaderActions({
@@ -19,25 +17,9 @@ export function HeaderActions({
   onOpenBookmarklet,
   onExportCSV,
   onOpenAddJob,
-  isSyncing,
-  onSync,
 }: HeaderActionsProps) {
   return (
     <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
-      {onSync && (
-        <button
-          onClick={onSync}
-          disabled={isSyncing}
-          title={isSyncing ? 'Syncing...' : 'Sync pipeline'}
-          aria-label="Sync jobs pipeline"
-          className="h-8 w-8 flex items-center justify-center border border-(--border-subtle) bg-(--bg-surface) hover:bg-(--bg-surface-hover) hover:border-(--border-strong) text-(--text-secondary) hover:text-(--text-primary) transition-colors cursor-pointer rounded-sm shrink-0 disabled:opacity-50"
-        >
-          <RefreshCw
-            className={`w-3.5 h-3.5 ${isSyncing ? 'animate-spin text-(--accent-primary)' : ''}`}
-          />
-        </button>
-      )}
-
       <button
         onClick={onOpenBookmarklet}
         title="1-Click Browser Bookmarklet"

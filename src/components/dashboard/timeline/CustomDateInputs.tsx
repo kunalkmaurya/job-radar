@@ -5,7 +5,7 @@ import { Calendar, ChevronRight, ChevronDown, X } from 'lucide-react';
 import { CustomDateRange } from '@/types';
 import { DatePresets } from './DatePresets';
 import { DateRangePopover } from './DateRangePopover';
-import { getPresetRange, PresetKey } from './calendarHelpers';
+import { getPresetRange, PresetKey, formatDateIso } from './calendarHelpers';
 
 interface CustomDateInputsProps {
   customRange: CustomDateRange;
@@ -24,6 +24,10 @@ export function CustomDateInputs({ customRange, onChange }: CustomDateInputsProp
   const [isOpen, setIsOpen] = useState(false);
   const [anchorRect, setAnchorRect] = useState<DOMRect | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const today = formatDateIso(new Date());
+
+  const displayStart = customRange.startDate > today ? today : customRange.startDate;
+  const displayEnd = customRange.endDate > today ? today : customRange.endDate;
 
   const isPresetActive = (key: PresetKey) => {
     if (key === 'all') {
@@ -48,6 +52,12 @@ export function CustomDateInputs({ customRange, onChange }: CustomDateInputsProp
 
   const handlePresetSelect = (preset: PresetKey) => {
     onChange(getPresetRange(preset));
+  };
+
+  const handleApply = (newRange: CustomDateRange) => {
+    const start = newRange.startDate > today ? today : newRange.startDate;
+    const end = newRange.endDate > today ? today : newRange.endDate;
+    onChange({ startDate: start, endDate: end });
   };
 
   return (
@@ -75,16 +85,12 @@ export function CustomDateInputs({ customRange, onChange }: CustomDateInputsProp
           }`}
         >
           <Calendar className="w-3.5 h-3.5 text-(--accent-primary)" />
-          <span
-            className={isCustomRangeActive && customRange.startDate ? 'text-(--text-primary)' : ''}
-          >
-            {isCustomRangeActive && customRange.startDate ? customRange.startDate : 'From'}
+          <span className={isCustomRangeActive && displayStart ? 'text-(--text-primary)' : ''}>
+            {isCustomRangeActive && displayStart ? displayStart : 'From'}
           </span>
           <ChevronRight className="w-3 h-3 text-(--text-muted)" />
-          <span
-            className={isCustomRangeActive && customRange.endDate ? 'text-(--text-primary)' : ''}
-          >
-            {isCustomRangeActive && customRange.endDate ? customRange.endDate : 'To'}
+          <span className={isCustomRangeActive && displayEnd ? 'text-(--text-primary)' : ''}>
+            {isCustomRangeActive && displayEnd ? displayEnd : 'To'}
           </span>
 
           {isCustomRangeActive ? (
@@ -107,9 +113,9 @@ export function CustomDateInputs({ customRange, onChange }: CustomDateInputsProp
           <DateRangePopover
             anchorRef={containerRef}
             anchorRect={anchorRect}
-            startDate={customRange.startDate}
-            endDate={customRange.endDate}
-            onApply={(newRange) => onChange(newRange)}
+            startDate={displayStart}
+            endDate={displayEnd}
+            onApply={handleApply}
             onClose={() => setIsOpen(false)}
           />
         )}

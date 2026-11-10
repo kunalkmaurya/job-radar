@@ -16,6 +16,7 @@ export interface AppSettings {
   accentColor: string;
   density: 'comfortable' | 'compact';
   defaultView: 'list' | 'kanban';
+  defaultFeedView: 'list' | 'grid';
   staleDaysThreshold: number;
   followUpDaysInterval: number;
   autoAdvanceOnLinkClick: boolean;
@@ -36,6 +37,7 @@ export const DEFAULT_SETTINGS: AppSettings = {
   accentColor: '#3178C6',
   density: 'comfortable',
   defaultView: 'list',
+  defaultFeedView: 'list',
   staleDaysThreshold: 14,
   followUpDaysInterval: 7,
   autoAdvanceOnLinkClick: false,
@@ -81,6 +83,10 @@ export function useSettingsManager(currentTheme: 'dark' | 'light', onToggleTheme
 
     if (key === 'theme' && value !== currentTheme) {
       onToggleTheme();
+    }
+
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new Event('job_radar_settings_updated'));
     }
 
     setSaveStatus(

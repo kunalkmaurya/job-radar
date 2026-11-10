@@ -44,10 +44,21 @@ interface DashboardTabContentProps {
   onJobTracked?: () => void;
   refreshTrigger?: number;
   onOpenInviteModal?: () => void;
+  onSync?: () => void;
+  isSyncing?: boolean;
 }
 
 export function DashboardTabContent(props: DashboardTabContentProps) {
-  const { activeTab, jobs, metrics, currentUser, handleExportCSV, onOpenInviteModal } = props;
+  const {
+    activeTab,
+    jobs,
+    metrics,
+    currentUser,
+    handleExportCSV,
+    onOpenInviteModal,
+    onSync,
+    isSyncing,
+  } = props;
 
   return (
     <div className="w-full px-3 sm:px-5 py-4 sm:py-6 flex-1 flex flex-col min-h-full">
@@ -77,6 +88,8 @@ export function DashboardTabContent(props: DashboardTabContentProps) {
           onToggleImportant={props.handleToggleImportant}
           onApplyAndAdvance={props.handleApplyAndAdvance}
           onDeleteJob={props.onJobDelete}
+          onSync={onSync}
+          isSyncing={isSyncing}
         />
       )}
 
@@ -89,7 +102,12 @@ export function DashboardTabContent(props: DashboardTabContentProps) {
       )}
 
       {activeTab === 'feed' && (
-        <FeedView onJobTracked={props.onJobTracked} refreshTrigger={props.refreshTrigger} />
+        <FeedView
+          onJobTracked={props.onJobTracked}
+          refreshTrigger={props.refreshTrigger}
+          onSync={onSync}
+          isSyncing={isSyncing}
+        />
       )}
 
       {activeTab === 'analytics' && (

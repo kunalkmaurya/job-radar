@@ -9,6 +9,7 @@ interface DateRangePopoverHeaderProps {
   viewMonth: number;
   onPrev: () => void;
   onNext: () => void;
+  nextDisabled?: boolean;
 }
 
 export function DateRangePopoverHeader({
@@ -16,6 +17,7 @@ export function DateRangePopoverHeader({
   viewMonth,
   onPrev,
   onNext,
+  nextDisabled = false,
 }: DateRangePopoverHeaderProps) {
   return (
     <div className="flex items-center justify-between pb-2 border-b border-(--border-subtle)">
@@ -33,8 +35,9 @@ export function DateRangePopoverHeader({
       <button
         type="button"
         onClick={onNext}
+        disabled={nextDisabled}
         aria-label="Next month"
-        className="h-7 w-7 inline-flex items-center justify-center border border-(--border-subtle) bg-(--bg-surface) hover:bg-(--bg-surface-hover) text-(--text-secondary) hover:text-(--text-primary) rounded-sm transition-colors cursor-pointer"
+        className="h-7 w-7 inline-flex items-center justify-center border border-(--border-subtle) bg-(--bg-surface) hover:bg-(--bg-surface-hover) text-(--text-secondary) hover:text-(--text-primary) rounded-sm transition-colors cursor-pointer disabled:opacity-25 disabled:cursor-not-allowed"
       >
         <ChevronRight className="w-3.5 h-3.5" />
       </button>

@@ -40,7 +40,9 @@ export function CalendarMonthGrid({
             day.date < effectiveEnd;
 
           let cellClass = 'hover:bg-(--bg-surface-hover) text-(--text-primary) rounded-sm';
-          if (isStart || isEnd) {
+          if (day.isFuture) {
+            cellClass = 'text-(--text-muted) opacity-25 cursor-not-allowed hover:bg-transparent';
+          } else if (isStart || isEnd) {
             cellClass =
               'bg-(--accent-primary) text-(--accent-primary-text) font-bold rounded-sm shadow-xs';
           } else if (inRange) {
@@ -53,10 +55,13 @@ export function CalendarMonthGrid({
             <button
               key={day.date}
               type="button"
+              disabled={day.isFuture}
               onClick={() => onDayClick(day.date)}
               onMouseEnter={() => onHoverDate(day.date)}
               onMouseLeave={() => onHoverDate(null)}
-              className={`h-7 flex items-center justify-center transition-colors cursor-pointer text-[11px] font-medium ${cellClass}`}
+              className={`h-7 flex items-center justify-center transition-colors text-[11px] font-medium ${
+                day.isFuture ? 'cursor-not-allowed' : 'cursor-pointer'
+              } ${cellClass}`}
             >
               {day.dayNumber}
             </button>

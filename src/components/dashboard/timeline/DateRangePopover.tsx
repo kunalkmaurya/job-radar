@@ -31,12 +31,11 @@ export function DateRangePopover({
   onClose,
 }: DateRangePopoverProps) {
   const initial = parseDateIso(startDate) || new Date();
-  const [viewYear, setViewYear] = useState(initial.getFullYear());
-  const [viewMonth, setViewMonth] = useState(initial.getMonth());
+  const [viewYear, setViewYear] = useState(() => initial.getFullYear());
+  const [viewMonth, setViewMonth] = useState(() => initial.getMonth());
   const [selectedStart, setSelectedStart] = useState(startDate);
   const [selectedEnd, setSelectedEnd] = useState(endDate);
   const [hoveredDate, setHoveredDate] = useState<string | null>(null);
-
   const [coords, setCoords] = useState(() => calcPopoverPosition(null, anchorRect));
 
   useEffect(() => {
@@ -51,27 +50,25 @@ export function DateRangePopover({
   }, [anchorRef, anchorRect]);
 
   useEffect(() => {
-    const handleKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
-    };
+    const handleKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
     document.addEventListener('keydown', handleKey);
     return () => document.removeEventListener('keydown', handleKey);
   }, [onClose]);
 
+  const todayStr = formatDateIso(new Date());
+  const now = new Date();
+  const isNextMonthFuture =
+    viewYear > now.getFullYear() || (viewYear === now.getFullYear() && viewMonth >= now.getMonth());
+
   const changeMonth = (delta: number) => {
+    if (delta > 0 && isNextMonthFuture) return;
     const next = viewMonth + delta;
-    if (next < 0) {
-      setViewYear((y) => y - 1);
-      setViewMonth(11);
-    } else if (next > 11) {
-      setViewYear((y) => y + 1);
-      setViewMonth(0);
-    } else {
-      setViewMonth(next);
-    }
+    setViewYear((y) => (next < 0 ? y - 1 : next > 11 ? y + 1 : y));
+    setViewMonth((next + 12) % 12);
   };
 
   const handleDayClick = (dateStr: string) => {
+    if (dateStr > todayStr) return;
     if (!selectedStart || (selectedStart && selectedEnd)) {
       setSelectedStart(dateStr);
       setSelectedEnd('');
@@ -81,9 +78,10 @@ export function DateRangePopover({
     }
   };
 
+  const clampedHover = hoveredDate && hoveredDate <= todayStr ? hoveredDate : '';
   const effectiveEnd =
     selectedEnd ||
-    (hoveredDate && selectedStart && hoveredDate >= selectedStart ? hoveredDate : '');
+    (clampedHover && selectedStart && clampedHover >= selectedStart ? clampedHover : '');
 
   const handleClear = () => {
     setSelectedStart('');
@@ -94,7 +92,6 @@ export function DateRangePopover({
 
   if (typeof document === 'undefined') return null;
 
-  const todayStr = formatDateIso(new Date());
   const days = getCalendarDays(viewYear, viewMonth, todayStr);
 
   return createPortal(
@@ -115,6 +112,7 @@ export function DateRangePopover({
           endDate={selectedEnd}
           onStartChange={setSelectedStart}
           onEndChange={setSelectedEnd}
+          maxDate={todayStr}
         />
 
         <DateRangePopoverHeader
@@ -122,6 +120,7 @@ export function DateRangePopover({
           viewMonth={viewMonth}
           onPrev={() => changeMonth(-1)}
           onNext={() => changeMonth(1)}
+          nextDisabled={isNextMonthFuture}
         />
 
         <CalendarMonthGrid
@@ -136,7 +135,10 @@ export function DateRangePopover({
           onClear={handleClear}
           onCancel={onClose}
           onApply={() => {
-            onApply({ startDate: selectedStart, endDate: selectedEnd || selectedStart });
+            const start = selectedStart > todayStr ? todayStr : selectedStart;
+            const rawEnd = selectedEnd || selectedStart;
+            const end = rawEnd > todayStr ? todayStr : rawEnd;
+            onApply({ startDate: start, endDate: end });
             onClose();
           }}
         />

@@ -1,16 +1,17 @@
 'use client';
 
 import React from 'react';
-import { ExternalLink, Check, Plus, Loader2, MapPin, Briefcase } from 'lucide-react';
+import { ExternalLink, Check, Plus, Loader2, MapPin, Briefcase, Trash2 } from 'lucide-react';
 import { FeedJobItem } from './useFeedJobs';
 
 interface FeedListViewProps {
   jobs: FeedJobItem[];
   trackingId: string | null;
   onTrack: (jobId: string) => void;
+  onDelete?: (jobId: string) => void;
 }
 
-export function FeedListView({ jobs, trackingId, onTrack }: FeedListViewProps) {
+export function FeedListView({ jobs, trackingId, onTrack, onDelete }: FeedListViewProps) {
   return (
     <div className="border border-(--border-subtle) bg-(--bg-surface) rounded-md overflow-x-auto shadow-xs">
       <table className="w-full min-w-[720px] text-left border-collapse text-xs">
@@ -89,6 +90,16 @@ export function FeedListView({ jobs, trackingId, onTrack }: FeedListViewProps) {
                       <span>Apply</span>
                       <ExternalLink className="w-3 h-3 text-(--text-muted)" />
                     </a>
+                    {onDelete && (
+                      <button
+                        type="button"
+                        onClick={() => onDelete(job.id)}
+                        title="Delete from pod feed"
+                        className="h-7 w-7 inline-flex items-center justify-center text-(--text-muted) hover:text-red-500 hover:bg-red-500/10 rounded-sm border border-(--border-subtle) hover:border-red-500/30 transition-colors cursor-pointer"
+                      >
+                        <Trash2 className="w-3 h-3" />
+                      </button>
+                    )}
                     {job.isTracked ? (
                       <span className="h-7 inline-flex items-center gap-1 text-xs text-(--status-offer-text) bg-(--status-offer-bg) border border-(--status-offer-border) font-semibold px-2.5 rounded-sm">
                         <Check className="w-3.5 h-3.5" />

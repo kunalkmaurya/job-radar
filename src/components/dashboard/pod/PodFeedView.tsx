@@ -20,7 +20,7 @@ interface PodFeedViewProps {
 
 export function PodFeedView({ onJobTracked, refreshTrigger, onOpenInviteModal }: PodFeedViewProps) {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
-  const { podData, fetchPod } = usePodManager();
+  const { podData, fetchPod, handleCreatePod, handleJoinPod, isMutating } = usePodManager();
   const {
     feedJobs,
     isLoading,
@@ -28,6 +28,7 @@ export function PodFeedView({ onJobTracked, refreshTrigger, onOpenInviteModal }:
     setSearchQuery,
     trackingId,
     trackJob,
+    deleteJob,
     isAddOpen,
     setIsAddOpen,
     isSyncing,
@@ -43,6 +44,17 @@ export function PodFeedView({ onJobTracked, refreshTrigger, onOpenInviteModal }:
 
   const paginatedJobs = pagination.paginateItems(feedJobs);
   const handleSyncAll = () => Promise.all([syncTelegramJobs(), fetchPod()]);
+
+  const onJoin = async (code: string) => {
+    const ok = await handleJoinPod(code);
+    if (ok) await refreshFeed();
+    return ok;
+  };
+
+  const onCreate = async () => {
+    const ok = await handleCreatePod();
+    if (ok) await refreshFeed();
+  };
 
   return (
     <div className="w-full flex-1 flex flex-col justify-between min-h-full space-y-6">
@@ -70,8 +82,12 @@ export function PodFeedView({ onJobTracked, refreshTrigger, onOpenInviteModal }:
           </div>
         ) : feedJobs.length === 0 ? (
           <PodFeedEmptyState
+            hasPod={Boolean(podData)}
             telegramConnectUrl={podData?.telegramConnectUrl}
             onOpenAddJob={() => setIsAddOpen(true)}
+            onCreatePod={onCreate}
+            onJoinPod={onJoin}
+            isMutating={isMutating}
           />
         ) : (
           <div className="flex-1">
@@ -83,11 +99,17 @@ export function PodFeedView({ onJobTracked, refreshTrigger, onOpenInviteModal }:
                     job={job}
                     isTracking={trackingId === job.id}
                     onTrack={trackJob}
+                    onDelete={deleteJob}
                   />
                 ))}
               </div>
             ) : (
-              <FeedListView jobs={paginatedJobs} trackingId={trackingId} onTrack={trackJob} />
+              <FeedListView
+                jobs={paginatedJobs}
+                trackingId={trackingId}
+                onTrack={trackJob}
+                onDelete={deleteJob}
+              />
             )}
           </div>
         )}

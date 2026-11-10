@@ -33,6 +33,12 @@ interface DashboardModalsProps {
   isRefreshingPod?: boolean;
   onSaveChatId?: (chatId: string) => Promise<boolean>;
   onSendTest?: () => Promise<boolean>;
+  onLeavePod?: () => Promise<boolean>;
+  onDeletePod?: () => Promise<boolean>;
+  onClearJobs?: () => Promise<boolean>;
+  onCreatePod?: () => Promise<boolean>;
+  onJoinPod?: (code: string) => Promise<boolean>;
+  isMutatingPod?: boolean;
 }
 
 export function DashboardModals({
@@ -60,6 +66,12 @@ export function DashboardModals({
   isRefreshingPod,
   onSaveChatId,
   onSendTest,
+  onLeavePod,
+  onDeletePod,
+  onClearJobs,
+  onCreatePod,
+  onJoinPod,
+  isMutatingPod,
 }: DashboardModalsProps) {
   return (
     <>
@@ -99,6 +111,12 @@ export function DashboardModals({
         isRefreshing={isRefreshingPod}
         onSaveChatId={onSaveChatId}
         onSendTest={onSendTest}
+        onLeavePod={onLeavePod}
+        onDeletePod={onDeletePod}
+        onClearJobs={onClearJobs}
+        onCreatePod={onCreatePod}
+        onJoinPod={onJoinPod}
+        isMutating={isMutatingPod}
       />
     </>
   );

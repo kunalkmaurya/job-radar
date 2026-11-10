@@ -18,6 +18,9 @@ interface DashboardSidebarProps {
   onToggleTheme: () => void;
   isMobileOpen: boolean;
   onCloseMobile: () => void;
+  showPodFeed?: boolean;
+  onOpenPodModal?: () => void;
+  hasPod?: boolean;
 }
 
 export function DashboardSidebar({
@@ -30,6 +33,9 @@ export function DashboardSidebar({
   onToggleTheme,
   isMobileOpen,
   onCloseMobile,
+  showPodFeed = true,
+  onOpenPodModal,
+  hasPod,
 }: DashboardSidebarProps) {
   const { width, isCollapsed, toggleCollapsed, resetWidth, startResizing } = useSidebar();
   const currentWidth = isCollapsed ? 64 : width;
@@ -111,6 +117,9 @@ export function DashboardSidebar({
               podJobCount={podJobCount}
               isCollapsed={isCollapsed}
               onItemClick={onCloseMobile}
+              showPodFeed={showPodFeed}
+              onOpenPodModal={onOpenPodModal}
+              hasPod={hasPod}
             />
           </div>
         </div>

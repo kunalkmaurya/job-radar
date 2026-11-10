@@ -19,6 +19,7 @@ export interface AppSettings {
   staleDaysThreshold: number;
   followUpDaysInterval: number;
   autoAdvanceOnLinkClick: boolean;
+  showPodFeed: boolean;
 }
 
 export const DEFAULT_SETTINGS: AppSettings = {
@@ -38,6 +39,7 @@ export const DEFAULT_SETTINGS: AppSettings = {
   staleDaysThreshold: 14,
   followUpDaysInterval: 7,
   autoAdvanceOnLinkClick: false,
+  showPodFeed: true,
 };
 
 const SETTINGS_KEY = 'job_radar_app_settings_v1';

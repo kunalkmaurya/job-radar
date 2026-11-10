@@ -22,6 +22,7 @@ interface DashboardNavTabsProps {
   onTabChange: (tab: DashboardTab) => void;
   jobCount?: number;
   podJobCount?: number;
+  showPodFeed?: boolean;
 }
 
 export function DashboardNavTabs({
@@ -29,10 +30,27 @@ export function DashboardNavTabs({
   onTabChange,
   jobCount,
   podJobCount,
+  showPodFeed = true,
 }: DashboardNavTabsProps) {
+  const [podFeedVisible] = React.useState<boolean>(() => {
+    if (typeof window === 'undefined') return showPodFeed;
+    try {
+      const stored = localStorage.getItem('job_radar_app_settings_v1');
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (parsed.showPodFeed !== undefined) return Boolean(parsed.showPodFeed);
+      }
+    } catch {
+      // ignore
+    }
+    return showPodFeed;
+  });
+
   const tabs = [
     { id: 'dashboard' as const, label: 'Dashboard', icon: LayoutDashboard, badge: jobCount },
-    { id: 'pod' as const, label: 'Pod Feed', icon: Users, badge: podJobCount },
+    ...(podFeedVisible
+      ? [{ id: 'pod' as const, label: 'Pod Feed', icon: Users, badge: podJobCount }]
+      : []),
     { id: 'feed' as const, label: 'Explore', icon: Globe },
     { id: 'analytics' as const, label: 'Analytics', icon: BarChart3 },
     { id: 'settings' as const, label: 'Settings', icon: Settings2 },

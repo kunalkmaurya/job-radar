@@ -34,6 +34,21 @@ export function ProfilePodCard({ onOpenInviteModal }: ProfilePodCardProps) {
     );
   }
 
+  if (!pod) {
+    return (
+      <div className="p-5 border border-(--border-subtle) bg-(--bg-surface) rounded-md space-y-2 shadow-xs">
+        <div className="flex items-center gap-2">
+          <Users className="w-4 h-4 text-(--accent-primary)" />
+          <h3 className="font-bold text-sm text-(--text-primary)">No Active Job Pod</h3>
+        </div>
+        <p className="text-xs text-(--text-muted)">
+          You are currently detached from all peer pods. You can create or join a pod anytime from
+          the Pod Feed.
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div className="p-5 border border-(--border-subtle) bg-(--bg-surface) rounded-md space-y-4 shadow-xs">
       <div className="flex items-center justify-between border-b border-(--border-subtle) pb-3">

@@ -101,6 +101,19 @@ export function useFeedJobs({
     }
   };
 
+  const deleteJob = async (jobId: string) => {
+    try {
+      const res = await fetch(`/api/feed/jobs?id=${jobId}`, { method: 'DELETE' });
+      if (res.ok) {
+        setFeedJobs((prev) => prev.filter((j) => j.id !== jobId));
+        return true;
+      }
+    } catch {
+      // ignore
+    }
+    return false;
+  };
+
   return {
     feedJobs,
     totalCount: feedJobs.length,
@@ -114,6 +127,7 @@ export function useFeedJobs({
     setSearchQuery,
     trackingId,
     trackJob,
+    deleteJob,
     isAddOpen,
     setIsAddOpen,
     isSyncing,

@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Sun, Moon, Bookmark, Download, Plus, RefreshCw, Users } from 'lucide-react';
+import { Sun, Moon, Bookmark, Download, Plus, RefreshCw } from 'lucide-react';
 
 export interface HeaderActionsProps {
   theme: 'dark' | 'light';
@@ -9,8 +9,6 @@ export interface HeaderActionsProps {
   onOpenBookmarklet: () => void;
   onExportCSV: () => void;
   onOpenAddJob: () => void;
-  onOpenPodModal?: () => void;
-  podMemberCount?: number;
   isSyncing?: boolean;
   onSync?: () => void;
 }
@@ -21,8 +19,6 @@ export function HeaderActions({
   onOpenBookmarklet,
   onExportCSV,
   onOpenAddJob,
-  onOpenPodModal,
-  podMemberCount,
   isSyncing,
   onSync,
 }: HeaderActionsProps) {
@@ -39,22 +35,6 @@ export function HeaderActions({
           <RefreshCw
             className={`w-3.5 h-3.5 ${isSyncing ? 'animate-spin text-(--accent-primary)' : ''}`}
           />
-        </button>
-      )}
-
-      {onOpenPodModal && (
-        <button
-          onClick={onOpenPodModal}
-          title="Peer Job Pod"
-          className="inline-flex items-center gap-1.5 h-8 px-2.5 border border-(--border-subtle) bg-(--bg-surface) hover:bg-(--bg-surface-hover) hover:border-(--border-strong) text-xs font-medium text-(--text-secondary) hover:text-(--text-primary) transition-colors cursor-pointer rounded-sm shrink-0"
-        >
-          <Users className="w-3.5 h-3.5 text-(--accent-primary)" />
-          <span className="hidden sm:inline">Pod</span>
-          {podMemberCount !== undefined && podMemberCount > 1 && (
-            <span className="px-1.5 py-0.5 text-[10px] font-semibold rounded-sm bg-(--accent-primary-bg) text-(--accent-blue-bright)">
-              {podMemberCount}
-            </span>
-          )}
         </button>
       )}
 

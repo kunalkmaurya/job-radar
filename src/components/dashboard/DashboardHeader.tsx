@@ -18,8 +18,6 @@ export function DashboardHeader({
   onOpenBookmarklet,
   onExportCSV,
   onOpenAddJob,
-  onOpenPodModal,
-  podMemberCount,
   isSyncing,
   onSync,
   onOpenMobileMenu,
@@ -76,8 +74,6 @@ export function DashboardHeader({
         onOpenBookmarklet={onOpenBookmarklet}
         onExportCSV={onExportCSV}
         onOpenAddJob={onOpenAddJob}
-        onOpenPodModal={onOpenPodModal}
-        podMemberCount={podMemberCount}
         isSyncing={isSyncing}
         onSync={onSync}
       />

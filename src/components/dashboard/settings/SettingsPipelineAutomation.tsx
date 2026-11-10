@@ -112,6 +112,25 @@ export function SettingsPipelineAutomation({ settings, updateSetting }: Settings
           />
         </button>
       </div>
+
+      <div className="flex items-center justify-between pt-2 border-t border-(--border-subtle) text-xs">
+        <span className="text-[11px] text-(--text-secondary)">
+          Display Pod Feed in navigation tabs and sidebar
+        </span>
+        <button
+          type="button"
+          onClick={() => updateSetting('showPodFeed', !settings.showPodFeed)}
+          className={`w-9 h-5 flex items-center p-0.5 rounded-full transition-colors cursor-pointer border ${
+            settings.showPodFeed !== false
+              ? 'bg-(--accent-primary) border-(--accent-primary)'
+              : 'bg-(--bg-app) border-(--border-subtle)'
+          }`}
+        >
+          <div
+            className={`w-4 h-4 bg-white rounded-full transition-transform ${settings.showPodFeed !== false ? 'translate-x-4' : 'translate-x-0'}`}
+          />
+        </button>
+      </div>
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import { db } from '@/db';
 import { workspaces, workspaceMembers, users, publicJobs } from '@/db/schema';
-import { eq, count, and, isNull } from 'drizzle-orm';
+import { eq, count, and, isNull, ne } from 'drizzle-orm';
 import crypto from 'crypto';
 
 export function generateInviteCode(): string {
@@ -15,11 +15,8 @@ export function getTelegramConnectUrl(inviteCode: string): string {
   return `https://t.me/${botUsername}?startgroup=${inviteCode}`;
 }
 
-export async function getOrCreateUserPod(userId: string, userName?: string) {
-  if (!process.env.DATABASE_URL) {
-    return null;
-  }
-
+export async function getUserPod(userId: string) {
+  if (!process.env.DATABASE_URL) return null;
   const existingMembership = await db
     .select({
       workspaceId: workspaceMembers.workspaceId,
@@ -29,39 +26,121 @@ export async function getOrCreateUserPod(userId: string, userName?: string) {
     .where(eq(workspaceMembers.userId, userId))
     .limit(1);
 
-  if (existingMembership.length > 0) {
-    const ws = await db
-      .select()
-      .from(workspaces)
-      .where(eq(workspaces.id, existingMembership[0].workspaceId))
-      .limit(1);
-    if (ws.length > 0) {
-      return ws[0];
-    }
-  }
+  if (existingMembership.length === 0) return null;
+
+  const [ws] = await db
+    .select()
+    .from(workspaces)
+    .where(eq(workspaces.id, existingMembership[0].workspaceId))
+    .limit(1);
+
+  return ws || null;
+}
+
+export async function getOrCreateUserPod(userId: string, userName?: string) {
+  const existing = await getUserPod(userId);
+  if (existing) return existing;
 
   const podName = `${userName || 'My'} Pod`;
   const inviteCode = generateInviteCode();
-
   const [newPod] = await db
     .insert(workspaces)
-    .values({
-      name: podName,
-      ownerId: userId,
-      inviteCode,
-      memberLimit: 6,
-    })
+    .values({ name: podName, ownerId: userId, inviteCode, memberLimit: 6 })
     .returning();
 
   if (newPod) {
-    await db.insert(workspaceMembers).values({
-      workspaceId: newPod.id,
-      userId,
-      role: 'owner',
-    });
+    await db.insert(workspaceMembers).values({ workspaceId: newPod.id, userId, role: 'owner' });
+  }
+  return newPod;
+}
+
+export async function leavePod(userId: string) {
+  if (!process.env.DATABASE_URL) return { success: false, error: 'Database unavailable' };
+  const [membership] = await db
+    .select()
+    .from(workspaceMembers)
+    .where(eq(workspaceMembers.userId, userId))
+    .limit(1);
+
+  if (!membership) return { success: false, error: 'Not part of any pod.' };
+  const workspaceId = membership.workspaceId;
+
+  if (membership.role === 'owner') {
+    const otherMembers = await db
+      .select()
+      .from(workspaceMembers)
+      .where(
+        and(eq(workspaceMembers.workspaceId, workspaceId), ne(workspaceMembers.userId, userId))
+      )
+      .limit(1);
+
+    if (otherMembers.length > 0) {
+      const nextOwner = otherMembers[0];
+      await db
+        .update(workspaces)
+        .set({ ownerId: nextOwner.userId, updatedAt: new Date() })
+        .where(eq(workspaces.id, workspaceId));
+      await db
+        .update(workspaceMembers)
+        .set({ role: 'owner' })
+        .where(eq(workspaceMembers.id, nextOwner.id));
+      await db.delete(workspaceMembers).where(eq(workspaceMembers.id, membership.id));
+    } else {
+      await db.delete(publicJobs).where(eq(publicJobs.workspaceId, workspaceId));
+      await db.delete(workspaceMembers).where(eq(workspaceMembers.workspaceId, workspaceId));
+      await db.delete(workspaces).where(eq(workspaces.id, workspaceId));
+    }
+  } else {
+    await db.delete(workspaceMembers).where(eq(workspaceMembers.id, membership.id));
+  }
+  return { success: true };
+}
+
+export async function deletePod(userId: string) {
+  if (!process.env.DATABASE_URL) return { success: false, error: 'Database unavailable' };
+  const [membership] = await db
+    .select()
+    .from(workspaceMembers)
+    .where(eq(workspaceMembers.userId, userId))
+    .limit(1);
+
+  if (!membership || membership.role !== 'owner') {
+    return { success: false, error: 'Only pod owner can delete the pod.' };
   }
 
-  return newPod;
+  const workspaceId = membership.workspaceId;
+  await db.delete(publicJobs).where(eq(publicJobs.workspaceId, workspaceId));
+  await db.delete(workspaceMembers).where(eq(workspaceMembers.workspaceId, workspaceId));
+  await db.delete(workspaces).where(eq(workspaces.id, workspaceId));
+  return { success: true };
+}
+
+export async function clearPodJobs(userId: string) {
+  if (!process.env.DATABASE_URL) return { success: false, error: 'Database unavailable' };
+  const [membership] = await db
+    .select()
+    .from(workspaceMembers)
+    .where(eq(workspaceMembers.userId, userId))
+    .limit(1);
+
+  if (!membership) return { success: false, error: 'You are not in a pod.' };
+  await db.delete(publicJobs).where(eq(publicJobs.workspaceId, membership.workspaceId));
+  return { success: true };
+}
+
+export async function deletePodJob(jobId: string, userId: string) {
+  if (!process.env.DATABASE_URL) return { success: false, error: 'Database unavailable' };
+  const [membership] = await db
+    .select()
+    .from(workspaceMembers)
+    .where(eq(workspaceMembers.userId, userId))
+    .limit(1);
+
+  if (!membership) return { success: false, error: 'Unauthorized' };
+  await db
+    .delete(publicJobs)
+    .where(and(eq(publicJobs.id, jobId), eq(publicJobs.workspaceId, membership.workspaceId)));
+  return { success: true };
 }
 
 export async function getPodDetails(workspaceId: string) {

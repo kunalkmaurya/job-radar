@@ -4,7 +4,7 @@ import { publicJobs, jobs, workspaceMembers, workspaces } from '@/db/schema';
 import { desc, eq, ilike, or, isNull, and, count } from 'drizzle-orm';
 import { getSessionFromCookies } from '@/lib/auth';
 import { processJobLink } from '@/lib/ingestion';
-import { getOrCreateUserPod } from '@/lib/workspace';
+import { getOrCreateUserPod, deletePodJob } from '@/lib/workspace';
 
 export async function GET(request: Request) {
   try {
@@ -212,5 +212,26 @@ export async function POST(request: Request) {
       { success: false, error: { message: 'Failed to share feed job' } },
       { status: 500 }
     );
+  }
+}
+
+export async function DELETE(request: Request) {
+  try {
+    const session = await getSessionFromCookies();
+    if (!session?.sub) {
+      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const { searchParams } = new URL(request.url);
+    const jobId = searchParams.get('id');
+    if (!jobId) {
+      return NextResponse.json({ success: false, error: 'Missing job id' }, { status: 400 });
+    }
+
+    const res = await deletePodJob(jobId, session.sub);
+    return NextResponse.json(res);
+  } catch (error: unknown) {
+    console.error('[API /api/feed/jobs DELETE Error]:', error);
+    return NextResponse.json({ success: false, error: 'Failed to delete job' }, { status: 500 });
   }
 }

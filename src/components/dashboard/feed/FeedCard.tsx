@@ -1,16 +1,26 @@
 'use client';
 
 import React from 'react';
-import { ExternalLink, Check, Plus, Loader2, MapPin, Briefcase, ShieldCheck } from 'lucide-react';
+import {
+  ExternalLink,
+  Check,
+  Plus,
+  Loader2,
+  MapPin,
+  Briefcase,
+  ShieldCheck,
+  Trash2,
+} from 'lucide-react';
 import { FeedJobItem } from './useFeedJobs';
 
 interface FeedCardProps {
   job: FeedJobItem;
   isTracking: boolean;
   onTrack: (jobId: string) => void;
+  onDelete?: (jobId: string) => void;
 }
 
-export function FeedCard({ job, isTracking, onTrack }: FeedCardProps) {
+export function FeedCard({ job, isTracking, onTrack, onDelete }: FeedCardProps) {
   const formattedDate = new Date(job.createdAt).toLocaleDateString('en-US', {
     month: 'short',
     day: 'numeric',
@@ -79,15 +89,27 @@ export function FeedCard({ job, isTracking, onTrack }: FeedCardProps) {
       </div>
 
       <div className="pt-2.5 border-t border-(--border-subtle) flex items-center justify-between gap-2">
-        <a
-          href={job.link}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="h-8 inline-flex items-center gap-1.5 text-xs font-semibold text-(--text-secondary) hover:text-(--text-primary) border border-(--border-subtle) hover:border-(--border-strong) bg-(--bg-surface) hover:bg-(--bg-surface-hover) px-3 rounded-sm transition-colors cursor-pointer"
-        >
-          <span>Apply</span>
-          <ExternalLink className="w-3 h-3 text-(--text-muted)" />
-        </a>
+        <div className="flex items-center gap-1.5">
+          <a
+            href={job.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="h-8 inline-flex items-center gap-1.5 text-xs font-semibold text-(--text-secondary) hover:text-(--text-primary) border border-(--border-subtle) hover:border-(--border-strong) bg-(--bg-surface) hover:bg-(--bg-surface-hover) px-3 rounded-sm transition-colors cursor-pointer"
+          >
+            <span>Apply</span>
+            <ExternalLink className="w-3 h-3 text-(--text-muted)" />
+          </a>
+          {onDelete && (
+            <button
+              type="button"
+              onClick={() => onDelete(job.id)}
+              title="Delete from pod feed"
+              className="h-8 w-8 inline-flex items-center justify-center text-(--text-muted) hover:text-red-500 hover:bg-red-500/10 rounded-sm border border-(--border-subtle) hover:border-red-500/30 transition-colors cursor-pointer"
+            >
+              <Trash2 className="w-3.5 h-3.5" />
+            </button>
+          )}
+        </div>
 
         {job.isTracked ? (
           <span className="h-8 inline-flex items-center gap-1.5 text-xs text-(--status-offer-text) bg-(--status-offer-bg) border border-(--status-offer-border) font-semibold px-3 rounded-sm">

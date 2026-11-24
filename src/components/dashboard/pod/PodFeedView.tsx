@@ -1,13 +1,14 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Loader2 } from 'lucide-react';
 import { useFeedJobs } from '../feed/useFeedJobs';
+import { useFeedViewMode } from '../feed/useFeedViewMode';
+import { useFeedPagination } from '../feed/useFeedPagination';
 import { FeedCard } from '../feed/FeedCard';
 import { FeedListView } from '../feed/FeedListView';
 import { AddPublicJobModal } from '../feed/AddPublicJobModal';
 import { PaginationBar } from '../pagination/PaginationBar';
-import { usePagination } from '../pagination/usePagination';
 import { PodFeedHeader } from './PodFeedHeader';
 import { PodFeedEmptyState } from './PodFeedEmptyState';
 import { usePodManager } from './usePodManager';
@@ -19,59 +20,57 @@ interface PodFeedViewProps {
 }
 
 export function PodFeedView({ onJobTracked, refreshTrigger, onOpenInviteModal }: PodFeedViewProps) {
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
-  const { podData, fetchPod } = usePodManager();
-  const {
-    feedJobs,
-    isLoading,
-    searchQuery,
-    setSearchQuery,
-    trackingId,
-    trackJob,
-    isAddOpen,
-    setIsAddOpen,
-    isSyncing,
-    syncTelegramJobs,
-    refreshFeed,
-  } = useFeedJobs({ initialFeedType: 'pod', onJobTracked, refreshTrigger });
+  const [viewMode, setViewMode] = useFeedViewMode();
+  const pod = usePodManager();
+  const feed = useFeedJobs({ initialFeedType: 'pod', onJobTracked, refreshTrigger });
 
-  const pagination = usePagination({
-    totalItems: feedJobs.length,
-    initialPageSize: 12,
-    pageSizeOptions: [12, 24, 48, 96],
-  });
+  const pagination = useFeedPagination(feed.feedJobs.length);
 
-  const paginatedJobs = pagination.paginateItems(feedJobs);
-  const handleSyncAll = () => Promise.all([syncTelegramJobs(), fetchPod()]);
+  const paginatedJobs = pagination.paginateItems(feed.feedJobs);
+  const handleSyncAll = () => Promise.all([feed.syncTelegramJobs(), pod.fetchPod()]);
+
+  const onJoin = async (code: string) => {
+    const ok = await pod.handleJoinPod(code);
+    if (ok) await feed.refreshFeed();
+    return ok;
+  };
+
+  const onCreate = async () => {
+    if (await pod.handleCreatePod()) await feed.refreshFeed();
+  };
 
   return (
     <div className="w-full flex-1 flex flex-col justify-between min-h-full space-y-6">
       <div className="space-y-6 flex-1 flex flex-col">
         <PodFeedHeader
-          podName={podData?.name || 'Peer Pod Feed'}
-          totalJobs={feedJobs.length}
-          memberCount={podData?.memberCount || 1}
-          memberLimit={podData?.memberLimit || 6}
-          isTelegramConnected={Boolean(podData?.isTelegramConnected)}
-          searchQuery={searchQuery}
-          onSearchChange={setSearchQuery}
+          podName={pod.podData?.name || 'Peer Pod Feed'}
+          totalJobs={feed.feedJobs.length}
+          memberCount={pod.podData?.memberCount || 1}
+          memberLimit={pod.podData?.memberLimit || 6}
+          isTelegramConnected={Boolean(pod.podData?.isTelegramConnected)}
+          searchQuery={feed.searchQuery}
+          onSearchChange={feed.setSearchQuery}
           viewMode={viewMode}
           onViewModeChange={setViewMode}
-          onOpenAddJob={() => setIsAddOpen(true)}
+          onOpenAddJob={() => feed.setIsAddOpen(true)}
           onOpenManagePod={onOpenInviteModal}
           onSyncTelegram={handleSyncAll}
-          isSyncing={isSyncing}
+          isSyncing={feed.isSyncing}
         />
 
-        {isLoading ? (
+        {feed.isLoading ? (
           <div className="flex-1 flex flex-col items-center justify-center py-16 text-(--text-muted) gap-2">
             <Loader2 className="w-6 h-6 animate-spin text-(--accent-primary)" />
             <span className="text-xs">Loading pod opportunities...</span>
           </div>
-        ) : feedJobs.length === 0 ? (
+        ) : feed.feedJobs.length === 0 ? (
           <PodFeedEmptyState
-            telegramConnectUrl={podData?.telegramConnectUrl}
-            onOpenAddJob={() => setIsAddOpen(true)}
+            hasPod={Boolean(pod.podData)}
+            telegramConnectUrl={pod.podData?.telegramConnectUrl}
+            onOpenAddJob={() => feed.setIsAddOpen(true)}
+            onCreatePod={onCreate}
+            onJoinPod={onJoin}
+            isMutating={pod.isMutating}
           />
         ) : (
           <div className="flex-1">
@@ -81,13 +80,21 @@ export function PodFeedView({ onJobTracked, refreshTrigger, onOpenInviteModal }:
                   <FeedCard
                     key={job.id}
                     job={job}
-                    isTracking={trackingId === job.id}
-                    onTrack={trackJob}
+                    isTracking={feed.trackingId === job.id}
+                    onTrack={feed.trackJob}
+                    onUntrack={feed.untrackJob}
+                    onDelete={feed.deleteJob}
                   />
                 ))}
               </div>
             ) : (
-              <FeedListView jobs={paginatedJobs} trackingId={trackingId} onTrack={trackJob} />
+              <FeedListView
+                jobs={paginatedJobs}
+                trackingId={feed.trackingId}
+                onTrack={feed.trackJob}
+                onUntrack={feed.untrackJob}
+                onDelete={feed.deleteJob}
+              />
             )}
           </div>
         )}
@@ -117,9 +124,9 @@ export function PodFeedView({ onJobTracked, refreshTrigger, onOpenInviteModal }:
       </div>
 
       <AddPublicJobModal
-        isOpen={isAddOpen}
-        onClose={() => setIsAddOpen(false)}
-        onSuccess={refreshFeed}
+        isOpen={feed.isAddOpen}
+        onClose={() => feed.setIsAddOpen(false)}
+        onSuccess={feed.refreshFeed}
       />
     </div>
   );

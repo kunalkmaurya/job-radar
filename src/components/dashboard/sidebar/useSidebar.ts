@@ -20,21 +20,24 @@ export function useSidebar() {
   }, [width]);
 
   useEffect(() => {
-    try {
-      const savedWidth = localStorage.getItem(STORAGE_WIDTH_KEY);
-      if (savedWidth) {
-        const parsed = parseInt(savedWidth, 10);
-        if (!isNaN(parsed) && parsed >= MIN_WIDTH && parsed <= MAX_WIDTH) {
-          setWidth(parsed);
+    const timer = setTimeout(() => {
+      try {
+        const savedWidth = localStorage.getItem(STORAGE_WIDTH_KEY);
+        if (savedWidth) {
+          const parsed = parseInt(savedWidth, 10);
+          if (!isNaN(parsed) && parsed >= MIN_WIDTH && parsed <= MAX_WIDTH) {
+            setWidth(parsed);
+          }
         }
+        const savedCollapsed = localStorage.getItem(STORAGE_COLLAPSED_KEY);
+        if (savedCollapsed !== null) {
+          setIsCollapsed(savedCollapsed === 'true');
+        }
+      } catch {
+        // LocalStorage access fallback
       }
-      const savedCollapsed = localStorage.getItem(STORAGE_COLLAPSED_KEY);
-      if (savedCollapsed !== null) {
-        setIsCollapsed(savedCollapsed === 'true');
-      }
-    } catch {
-      // LocalStorage access fallback
-    }
+    }, 0);
+    return () => clearTimeout(timer);
   }, []);
 
   const toggleCollapsed = useCallback(() => {

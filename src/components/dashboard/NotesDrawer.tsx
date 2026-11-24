@@ -53,12 +53,12 @@ export function NotesDrawer({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 overflow-hidden">
       <div
-        className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
+        className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity"
         onClick={onClose}
         aria-hidden="true"
       />
 
-      <div className="relative w-full max-w-4xl max-h-[90vh] bg-(--bg-surface) border border-(--border-subtle) shadow-2xl flex flex-col z-10 animate-in zoom-in-95 duration-150">
+      <div className="relative w-full max-w-4xl max-h-[90vh] bg-(--bg-surface) border border-(--border-subtle) rounded-[8px] shadow-2xl flex flex-col z-10 animate-in zoom-in-95 duration-150">
         <div className="p-4 sm:p-6 border-b border-(--border-subtle) shrink-0">
           <DrawerHeader
             job={job}
@@ -97,21 +97,27 @@ export function NotesDrawer({
           </div>
         </div>
 
-        <div className="px-4 py-3 sm:px-6 border-t border-(--border-subtle) bg-(--bg-surface) flex items-center justify-between text-xs text-(--text-muted) shrink-0">
-          <span>Added via {job.source}</span>
+        <div className="px-4 py-3 sm:px-6 border-t border-(--border-subtle) bg-(--bg-surface) flex items-center justify-between text-xs text-(--text-muted) shrink-0 rounded-b-[8px]">
+          <span className="text-[11px] text-(--text-muted)">
+            Press{' '}
+            <kbd className="px-1.5 py-0.5 border border-(--border-subtle) rounded-xs bg-(--bg-app) text-[10px] font-mono">
+              Esc
+            </kbd>{' '}
+            to close
+          </span>
           <div className="flex items-center gap-3">
             <button
               type="button"
               onClick={() => onDeleteJob(job.id)}
-              className="flex items-center gap-1.5 text-red-400 hover:text-red-300 transition-colors cursor-pointer"
+              className="h-8 inline-flex items-center gap-1.5 px-2.5 text-rose-500 hover:text-rose-600 hover:bg-rose-500/10 rounded-sm transition-colors cursor-pointer"
             >
               <Trash2 className="w-3.5 h-3.5" />
-              <span>Delete job</span>
+              <span>Delete</span>
             </button>
             <button
               type="button"
               onClick={onClose}
-              className="px-3 py-1.5 text-xs font-medium border border-(--border-subtle) bg-(--bg-app) hover:bg-(--bg-surface-hover) text-(--text-primary) transition-colors cursor-pointer"
+              className="h-8 px-5 text-xs font-semibold bg-(--accent-primary) hover:bg-(--accent-primary-hover) text-(--accent-primary-text) rounded-sm shadow-xs transition-colors cursor-pointer"
             >
               Done
             </button>

@@ -16,9 +16,11 @@ export interface AppSettings {
   accentColor: string;
   density: 'comfortable' | 'compact';
   defaultView: 'list' | 'kanban';
+  defaultFeedView: 'list' | 'grid';
   staleDaysThreshold: number;
   followUpDaysInterval: number;
   autoAdvanceOnLinkClick: boolean;
+  showPodFeed: boolean;
 }
 
 export const DEFAULT_SETTINGS: AppSettings = {
@@ -35,9 +37,11 @@ export const DEFAULT_SETTINGS: AppSettings = {
   accentColor: '#3178C6',
   density: 'comfortable',
   defaultView: 'list',
+  defaultFeedView: 'list',
   staleDaysThreshold: 14,
   followUpDaysInterval: 7,
   autoAdvanceOnLinkClick: false,
+  showPodFeed: true,
 };
 
 const SETTINGS_KEY = 'job_radar_app_settings_v1';
@@ -52,15 +56,18 @@ export function useSettingsManager(currentTheme: 'dark' | 'light', onToggleTheme
   const [apiTestResult, setApiTestResult] = useState<string | null>(null);
 
   useEffect(() => {
-    try {
-      const stored = localStorage.getItem(SETTINGS_KEY);
-      if (stored) {
-        const parsed = JSON.parse(stored);
-        setSettings((prev) => ({ ...prev, ...parsed, theme: currentTheme }));
+    const timer = setTimeout(() => {
+      try {
+        const stored = localStorage.getItem(SETTINGS_KEY);
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          setSettings((prev) => ({ ...prev, ...parsed, theme: currentTheme }));
+        }
+      } catch {
+        return;
       }
-    } catch {
-      return;
-    }
+    }, 0);
+    return () => clearTimeout(timer);
   }, [currentTheme]);
 
   const updateSetting = <K extends keyof AppSettings>(key: K, value: AppSettings[K]) => {
@@ -78,8 +85,12 @@ export function useSettingsManager(currentTheme: 'dark' | 'light', onToggleTheme
       onToggleTheme();
     }
 
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new Event('job_radar_settings_updated'));
+    }
+
     setSaveStatus(
-      'Changes saved • ' +
+      'Changes saved | ' +
         new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })
     );
   };

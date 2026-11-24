@@ -7,7 +7,7 @@ export function ArchitecturalPillars() {
     <section id="architecture" className="w-full px-6 py-28 border-t border-(--border-subtle)">
       <div className="max-w-5xl mx-auto space-y-16">
         <div className="max-w-2xl">
-          <div className="text-xs text-(--accent-primary) uppercase tracking-widest mb-2">
+          <div className="inline-flex items-center px-2 py-0.5 rounded-sm text-[11px] font-semibold tracking-wider uppercase bg-[var(--ds-background-selected,#E9F2FF)] dark:bg-[var(--ds-background-selected,#1C2B41)] text-[var(--ds-text-selected,#0C66E4)] border border-(--accent-border) mb-2">
             Architectural Intent
           </div>
           <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-(--text-primary)">
@@ -16,8 +16,8 @@ export function ArchitecturalPillars() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="border border-(--border-subtle) bg-(--bg-surface) p-8 space-y-4">
-            <div className="w-8 h-8 border border-(--border-subtle) bg-(--accent-primary-bg) text-(--accent-primary) flex items-center justify-center font-bold text-xs">
+          <div className="border border-(--border-subtle) hover:border-(--border-strong) bg-(--bg-surface) p-8 space-y-4 rounded-md shadow-xs transition-all">
+            <div className="w-8 h-8 rounded-sm border border-(--accent-border) bg-[var(--ds-background-selected,#E9F2FF)] dark:bg-[var(--ds-background-selected,#1C2B41)] text-[var(--ds-text-selected,#0C66E4)] flex items-center justify-center font-bold text-xs">
               01
             </div>
             <h3 className="text-base font-semibold tracking-tight text-(--text-primary)">
@@ -30,8 +30,8 @@ export function ArchitecturalPillars() {
             </p>
           </div>
 
-          <div className="border border-(--border-subtle) bg-(--bg-surface) p-8 space-y-4">
-            <div className="w-8 h-8 border border-(--border-subtle) bg-(--accent-primary-bg) text-(--accent-primary) flex items-center justify-center font-bold text-xs">
+          <div className="border border-(--border-subtle) hover:border-(--border-strong) bg-(--bg-surface) p-8 space-y-4 rounded-md shadow-xs transition-all">
+            <div className="w-8 h-8 rounded-sm border border-(--accent-border) bg-[var(--ds-background-selected,#E9F2FF)] dark:bg-[var(--ds-background-selected,#1C2B41)] text-[var(--ds-text-selected,#0C66E4)] flex items-center justify-center font-bold text-xs">
               02
             </div>
             <h3 className="text-base font-semibold tracking-tight text-(--text-primary)">
@@ -44,8 +44,8 @@ export function ArchitecturalPillars() {
             </p>
           </div>
 
-          <div className="border border-(--border-subtle) bg-(--bg-surface) p-8 space-y-4">
-            <div className="w-8 h-8 border border-(--border-subtle) bg-(--accent-primary-bg) text-(--accent-primary) flex items-center justify-center font-bold text-xs">
+          <div className="border border-(--border-subtle) hover:border-(--border-strong) bg-(--bg-surface) p-8 space-y-4 rounded-md shadow-xs transition-all">
+            <div className="w-8 h-8 rounded-sm border border-(--accent-border) bg-[var(--ds-background-selected,#E9F2FF)] dark:bg-[var(--ds-background-selected,#1C2B41)] text-[var(--ds-text-selected,#0C66E4)] flex items-center justify-center font-bold text-xs">
               03
             </div>
             <h3 className="text-base font-semibold tracking-tight text-(--text-primary)">

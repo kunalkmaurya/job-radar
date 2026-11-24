@@ -12,7 +12,7 @@ export function CtaSection({ isLoggedIn }: CtaSectionProps) {
   return (
     <section className="w-full px-6 py-28 border-t border-(--border-subtle) text-center relative overflow-hidden">
       <div className="max-w-3xl mx-auto space-y-8">
-        <div className="inline-flex items-center gap-2 px-3 py-1 border border-(--border-subtle) bg-(--accent-primary-bg) text-(--accent-primary) text-xs uppercase tracking-widest">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-sm border border-(--accent-border) bg-[var(--ds-background-selected,#E9F2FF)] dark:bg-[var(--ds-background-selected,#1C2B41)] text-[var(--ds-text-selected,#0C66E4)] text-xs font-semibold uppercase tracking-wider">
           <Lock className="w-3.5 h-3.5" />
           <span>Strict Owner Whitelist Guard</span>
         </div>
@@ -29,7 +29,7 @@ export function CtaSection({ isLoggedIn }: CtaSectionProps) {
         <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3">
           <Link
             href={isLoggedIn ? '/dashboard' : '/login'}
-            className="w-full sm:w-auto px-8 py-3.5 bg-(--accent-primary) hover:bg-(--accent-primary-hover) text-white font-medium text-xs tracking-widest uppercase transition-all shadow-sm flex items-center justify-center gap-2"
+            className="w-full sm:w-auto h-11 px-8 bg-(--accent-primary) hover:bg-(--accent-primary-hover) active:bg-(--accent-primary-active) text-(--accent-primary-text) font-semibold text-xs tracking-wider uppercase rounded-sm transition-colors shadow-xs flex items-center justify-center gap-2"
           >
             <span>{isLoggedIn ? 'Go to Active Board' : 'Sign In with Google'}</span>
             <ArrowRight className="w-4 h-4" />
@@ -37,7 +37,7 @@ export function CtaSection({ isLoggedIn }: CtaSectionProps) {
 
           <Link
             href="/dashboard"
-            className="w-full sm:w-auto px-6 py-3.5 border border-(--border-subtle) bg-(--bg-surface) hover:bg-(--bg-surface-hover) text-(--text-primary) text-xs font-medium tracking-widest uppercase transition-colors"
+            className="w-full sm:w-auto h-11 px-6 border border-(--border-subtle) hover:border-(--border-strong) bg-(--bg-surface) hover:bg-(--bg-surface-hover) text-(--text-primary) text-xs font-semibold tracking-wider uppercase rounded-sm transition-colors flex items-center justify-center"
           >
             Direct Console URL
           </Link>

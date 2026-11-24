@@ -59,6 +59,75 @@ export function extractCompanyFromUrl(url: string): string {
 }
 
 /**
+ * Extracts structured metadata hints (location, workplace type) from raw text or markdown
+ */
+export function extractMetadataHints(rawText: string): string[] {
+  const hints: string[] = [];
+
+  const locMatch = rawText.match(
+    /(?:Locations?\(s\)?|Primary Location|Job Location|Work Location)\s*[:\-]\s*([^\n\r|]{2,100})/i
+  );
+  if (locMatch && locMatch[1]) {
+    const loc = locMatch[1].replace(/<\/?[^>]+(>|$)/g, '').trim();
+    if (loc.length > 1 && !/^(req|job|id|apply|save|cookie|share|overview)/i.test(loc)) {
+      hints.push(`Location Hint: ${loc}`);
+    }
+  }
+
+  const workTypeMatch = rawText.match(
+    /(?:Remote status|Workplace Type|Job Type|Work Arrangement)\s*[:\-]\s*([^\n\r|]{2,50})/i
+  );
+  if (workTypeMatch && workTypeMatch[1]) {
+    const wt = workTypeMatch[1].replace(/<\/?[^>]+(>|$)/g, '').trim();
+    if (wt.length > 1 && !/^(full-time|part-time|contract|permanent)/i.test(wt)) {
+      hints.push(`Workplace Type Hint: ${wt}`);
+    }
+  }
+
+  return hints;
+}
+
+/**
+ * Extracts schema.org/JobPosting JSON-LD from HTML
+ */
+function extractJsonLdHints(html: string): string[] {
+  const hints: string[] = [];
+  try {
+    const scriptRegex =
+      /<script\b[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi;
+    let match;
+    while ((match = scriptRegex.exec(html)) !== null) {
+      const content = match[1].trim();
+      if (content.includes('JobPosting')) {
+        const json = JSON.parse(content);
+        const data = Array.isArray(json)
+          ? json.find((item) => item['@type'] === 'JobPosting')
+          : json;
+        if (data) {
+          if (data.title) hints.push(`Job Title Hint: ${data.title}`);
+          if (data.hiringOrganization?.name)
+            hints.push(`Company Hint: ${data.hiringOrganization.name}`);
+          if (data.jobLocation) {
+            const loc = Array.isArray(data.jobLocation) ? data.jobLocation[0] : data.jobLocation;
+            if (loc?.address) {
+              const addr = loc.address;
+              const formatted = [addr.addressLocality, addr.addressRegion, addr.addressCountry]
+                .filter(Boolean)
+                .join(', ');
+              if (formatted) hints.push(`Location Hint: ${formatted}`);
+            }
+          }
+          if (data.jobLocationType === 'TELECOMMUTE') hints.push('Workplace Type Hint: Remote');
+        }
+      }
+    }
+  } catch {
+    // Non-fatal JSON-LD parsing failure
+  }
+  return hints;
+}
+
+/**
  * Scrapes job posting content using Tier 1 (Jina Reader) with Tier 2 (Direct fetch) fallback
  */
 export async function scrapeJobPage(url: string): Promise<ScrapedContent> {
@@ -66,7 +135,7 @@ export async function scrapeJobPage(url: string): Promise<ScrapedContent> {
   try {
     const jinaUrl = `https://r.jina.ai/${encodeURI(url)}`;
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 8000); // 8s timeout
+    const timeoutId = setTimeout(() => controller.abort(), 8000);
 
     const res = await fetch(jinaUrl, {
       signal: controller.signal,
@@ -79,10 +148,11 @@ export async function scrapeJobPage(url: string): Promise<ScrapedContent> {
 
     if (res.ok) {
       const text = await res.text();
-      // Ensure we actually got meaningful job content
       if (text && text.trim().length > 100) {
+        const hints = extractMetadataHints(text);
+        const preamble = hints.length > 0 ? `[EXTRACTED PAGE HINTS]:\n${hints.join('\n')}\n\n` : '';
         return {
-          text: text.slice(0, 15000), // Cap tokens for the LLM
+          text: (preamble + text).slice(0, 20000),
           sourceUrl: url,
         };
       }
@@ -110,7 +180,10 @@ export async function scrapeJobPage(url: string): Promise<ScrapedContent> {
 
     if (res.ok) {
       const html = await res.text();
-      // Clean HTML tags into plain text
+      const jsonLdHints = extractJsonLdHints(html);
+      const textHints = extractMetadataHints(html);
+      const combinedHints = Array.from(new Set([...jsonLdHints, ...textHints]));
+
       const cleanText = html
         .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
         .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '')
@@ -119,8 +192,12 @@ export async function scrapeJobPage(url: string): Promise<ScrapedContent> {
         .trim();
 
       if (cleanText.length > 100) {
+        const preamble =
+          combinedHints.length > 0
+            ? `[EXTRACTED PAGE HINTS]:\n${combinedHints.join('\n')}\n\n`
+            : '';
         return {
-          text: cleanText.slice(0, 15000),
+          text: (preamble + cleanText).slice(0, 20000),
           sourceUrl: url,
         };
       }

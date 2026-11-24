@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Users, Check, Sparkles } from 'lucide-react';
+import { Users, Check, Wand2 } from 'lucide-react';
 import { Job, ReferralStatus, REFERRAL_STATUSES, UpdateReferralData } from '@/types';
 import { DrawerReferralForm } from './DrawerReferralForm';
 import { LinkedInFinderCard } from './LinkedInFinderCard';
@@ -13,23 +13,11 @@ interface DrawerReferralSectionProps {
   onUpdateReferral: (jobId: string, data: UpdateReferralData) => Promise<void>;
 }
 
-const STATUS_LABELS: Record<ReferralStatus, { label: string; activeClass: string }> = {
-  none: {
-    label: 'No Referral',
-    activeClass: 'bg-(--border-subtle) text-(--text-secondary) font-bold',
-  },
-  asked: {
-    label: 'Asked',
-    activeClass: 'bg-amber-500/20 text-amber-300 border-amber-500/40 font-bold',
-  },
-  received: {
-    label: 'Got Referral',
-    activeClass: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40 font-bold',
-  },
-  declined: {
-    label: 'Declined',
-    activeClass: 'bg-red-500/20 text-red-300 border-red-500/40 font-bold',
-  },
+const STATUS_LABELS: Record<ReferralStatus, string> = {
+  none: 'No Referral',
+  asked: 'Asked',
+  received: 'Got Referral',
+  declined: 'Declined',
 };
 
 export function DrawerReferralSection({ job, onUpdateReferral }: DrawerReferralSectionProps) {
@@ -51,55 +39,51 @@ export function DrawerReferralSection({ job, onUpdateReferral }: DrawerReferralS
   } = useDrawerReferral(job, onUpdateReferral);
 
   return (
-    <div className="space-y-3 p-4 border border-(--border-subtle) bg-(--bg-app)/30">
+    <div className="space-y-3.5 p-4 border border-(--border-subtle) bg-(--bg-surface) rounded-md shadow-xs">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Users className="w-3.5 h-3.5 text-(--accent-primary)" />
-          <h4 className="text-xs font-semibold uppercase tracking-wider text-(--text-muted)">
-            Referral & Network Outreach
-          </h4>
+          <h4 className="text-xs font-bold text-(--text-primary)">Referral & Network Outreach</h4>
         </div>
         {savedNotice && (
-          <span className="flex items-center gap-1 text-[10px] text-emerald-400">
+          <span className="flex items-center gap-1 text-[11px] text-emerald-600 dark:text-emerald-400 font-semibold">
             <Check className="w-3 h-3" /> Saved
           </span>
         )}
       </div>
 
-      {/* 1. LinkedIn 1st-Degree & 2nd-Degree Deep-Link Finder */}
       <LinkedInFinderCard company={job.company} />
 
-      {/* 2. Referral Status Chips */}
-      <div className="grid grid-cols-4 gap-1.5">
+      <div className="p-1 bg-(--bg-app) border border-(--border-subtle) rounded-sm grid grid-cols-4 gap-1">
         {REFERRAL_STATUSES.map((s) => {
           const isSelected = status === s;
-          const conf = STATUS_LABELS[s];
           return (
             <button
               key={s}
               type="button"
               onClick={() => handleStatusChange(s)}
-              className={`py-1.5 px-2 text-[10px] uppercase tracking-wider border transition-colors cursor-pointer text-center ${
+              className={`h-7 px-1 text-xs rounded-xs transition-all cursor-pointer text-center flex items-center justify-center ${
                 isSelected
-                  ? conf.activeClass
-                  : 'border-(--border-subtle) text-(--text-muted) hover:text-(--text-primary) hover:border-(--border-focus)'
+                  ? 'bg-(--bg-surface) text-(--text-primary) font-semibold shadow-xs border border-(--border-subtle)'
+                  : 'text-(--text-secondary) hover:text-(--text-primary) hover:bg-(--bg-surface)/60 border border-transparent'
               }`}
             >
-              {conf.label}
+              <span className="truncate">{STATUS_LABELS[s]}</span>
             </button>
           );
         })}
       </div>
 
-      {/* 3. AI Referral Pitch Drafter Toggle */}
-      <div className="flex justify-between items-center text-xs">
+      <div className="flex justify-between items-center text-xs pt-0.5">
         <button
           type="button"
           onClick={() => setShowPitchDrafter(!showPitchDrafter)}
-          className="inline-flex items-center gap-1.5 text-[11px] text-(--accent-primary) hover:underline cursor-pointer"
+          className="inline-flex items-center gap-1.5 text-xs font-medium text-(--accent-blue-bright) hover:underline cursor-pointer"
         >
-          <Sparkles className="w-3 h-3" />
-          <span>{showPitchDrafter ? 'Hide Outreach Drafter' : 'Draft Referral Pitch with AI'}</span>
+          <Wand2 className="w-3.5 h-3.5 text-(--accent-primary)" />
+          <span>
+            {showPitchDrafter ? 'Hide message drafter' : 'Draft referral outreach message'}
+          </span>
         </button>
       </div>
 
@@ -113,7 +97,6 @@ export function DrawerReferralSection({ job, onUpdateReferral }: DrawerReferralS
         />
       )}
 
-      {/* 4. Contact & Notes Form when referral is active */}
       {status !== 'none' && (
         <DrawerReferralForm
           name={name}

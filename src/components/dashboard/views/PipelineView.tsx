@@ -35,6 +35,8 @@ export function PipelineView({
   onToggleImportant,
   onApplyAndAdvance,
   onDeleteJob,
+  onSync,
+  isSyncing,
 }: PipelineViewProps) {
   const { activeStatus, setActiveStatus, counts, displayedJobs } = useStatusFilter(
     filteredJobs,
@@ -64,6 +66,8 @@ export function PipelineView({
         onToggleStaleFilter={onToggleStaleFilter}
         viewMode={viewMode}
         onSelectViewMode={onSelectViewMode}
+        onSync={onSync}
+        isSyncing={isSyncing}
       />
 
       {viewMode === 'list' ? (

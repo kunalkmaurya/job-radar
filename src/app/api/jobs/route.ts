@@ -108,6 +108,8 @@ export async function POST(request: Request) {
           company,
           role,
           link,
+          location: body.location || 'Remote / Flexible',
+          exp: body.exp || 'All Levels',
           status,
           notes,
           referralStatus,

@@ -18,6 +18,9 @@ interface DashboardSidebarProps {
   onToggleTheme: () => void;
   isMobileOpen: boolean;
   onCloseMobile: () => void;
+  showPodFeed?: boolean;
+  onOpenPodModal?: () => void;
+  hasPod?: boolean;
 }
 
 export function DashboardSidebar({
@@ -30,13 +33,15 @@ export function DashboardSidebar({
   onToggleTheme,
   isMobileOpen,
   onCloseMobile,
+  showPodFeed = true,
+  onOpenPodModal,
+  hasPod,
 }: DashboardSidebarProps) {
   const { width, isCollapsed, toggleCollapsed, resetWidth, startResizing } = useSidebar();
   const currentWidth = isCollapsed ? 64 : width;
 
   return (
     <>
-      {/* Mobile Drawer Backdrop */}
       {isMobileOpen && (
         <div
           onClick={onCloseMobile}
@@ -44,7 +49,6 @@ export function DashboardSidebar({
         />
       )}
 
-      {/* Sidebar Container */}
       <aside
         style={{ width: `${currentWidth}px` }}
         className={`fixed md:sticky top-0 left-0 h-screen z-50 md:z-30 bg-(--bg-surface) border-r border-(--border-subtle) flex flex-col justify-between transition-[width] duration-150 select-none ${
@@ -52,21 +56,20 @@ export function DashboardSidebar({
         }`}
       >
         <div className="flex flex-col flex-1 min-h-0">
-          {/* Header */}
-          <div className="h-14 px-3 flex items-center justify-between border-b border-(--border-subtle) shrink-0">
+          <div className="h-12 px-3 flex items-center justify-between border-b border-(--border-subtle) shrink-0">
             {isCollapsed ? (
               <button
                 onClick={toggleCollapsed}
                 title="Expand sidebar (Cmd+B)"
-                className="w-full flex items-center justify-center p-1 text-(--text-muted) hover:text-(--text-primary) rounded-xs cursor-pointer transition-colors group"
+                className="w-full flex items-center justify-center p-1 text-(--text-muted) hover:text-(--text-primary) rounded-sm cursor-pointer transition-colors group"
               >
-                <div className="w-7 h-7 bg-(--accent-primary-bg) border border-(--border-subtle) flex items-center justify-center p-1 shrink-0 rounded-xs group-hover:hidden">
+                <div className="w-7 h-7 bg-(--accent-primary-bg) border border-(--accent-border) flex items-center justify-center p-1 shrink-0 rounded-sm group-hover:hidden">
                   <Image
                     src="/logo.png"
                     alt="Job Radar"
                     width={18}
                     height={18}
-                    className="w-4 h-4 object-contain rounded-xs"
+                    className="w-4 h-4 object-contain rounded-sm"
                   />
                 </div>
                 <PanelLeft className="w-4 h-4 hidden group-hover:block text-(--accent-blue-bright)" />
@@ -74,13 +77,13 @@ export function DashboardSidebar({
             ) : (
               <>
                 <div className="flex items-center gap-2.5 min-w-0">
-                  <div className="w-7 h-7 bg-(--accent-primary-bg) border border-(--border-subtle) flex items-center justify-center p-1 shrink-0 rounded-xs">
+                  <div className="w-7 h-7 bg-(--accent-primary-bg) border border-(--accent-border) flex items-center justify-center p-1 shrink-0 rounded-sm">
                     <Image
                       src="/logo.png"
                       alt="Job Radar"
                       width={18}
                       height={18}
-                      className="w-4 h-4 object-contain rounded-xs"
+                      className="w-4 h-4 object-contain rounded-sm"
                     />
                   </div>
                   <span className="font-bold text-xs tracking-wider uppercase text-(--text-primary) truncate">
@@ -91,7 +94,7 @@ export function DashboardSidebar({
                 <button
                   onClick={toggleCollapsed}
                   title="Collapse sidebar (Cmd+B)"
-                  className="hidden md:flex p-1.5 text-(--text-muted) hover:text-(--text-primary) hover:bg-(--bg-app) rounded-xs cursor-pointer transition-colors"
+                  className="hidden md:flex p-1.5 text-(--text-muted) hover:text-(--text-primary) hover:bg-(--bg-surface-hover) rounded-sm cursor-pointer transition-colors"
                 >
                   <PanelLeftClose className="w-3.5 h-3.5" />
                 </button>
@@ -106,7 +109,6 @@ export function DashboardSidebar({
             )}
           </div>
 
-          {/* Nav Items */}
           <div className="flex-1 overflow-y-auto py-2">
             <SidebarNavItems
               activeTab={activeTab}
@@ -115,11 +117,13 @@ export function DashboardSidebar({
               podJobCount={podJobCount}
               isCollapsed={isCollapsed}
               onItemClick={onCloseMobile}
+              showPodFeed={showPodFeed}
+              onOpenPodModal={onOpenPodModal}
+              hasPod={hasPod}
             />
           </div>
         </div>
 
-        {/* User Footer */}
         <SidebarUserFooter
           currentUser={currentUser}
           theme={theme}
@@ -131,7 +135,6 @@ export function DashboardSidebar({
           }}
         />
 
-        {/* Resizer Handle (Desktop only when expanded) */}
         {!isCollapsed && (
           <div
             onMouseDown={startResizing}

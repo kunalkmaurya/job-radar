@@ -42,10 +42,10 @@ export function PodFeedHeader({
           <h2 className="font-bold text-base sm:text-lg text-(--text-primary)">
             {podName || 'Peer Pod Feed'}
           </h2>
-          <span className="text-[10px] font-mono px-2 py-0.5 border border-(--accent-primary)/30 bg-(--accent-primary-bg) text-(--accent-blue-bright) rounded-xs">
+          <span className="text-[10px] font-semibold px-2 py-0.5 border border-(--accent-border) bg-(--accent-primary-bg) text-(--accent-blue-bright) rounded-sm">
             {memberCount} / {memberLimit} Peers
           </span>
-          <span className="text-[10px] font-mono px-2 py-0.5 border border-(--border-subtle) bg-(--bg-surface) text-(--text-secondary) rounded-xs">
+          <span className="text-[10px] font-semibold px-2 py-0.5 border border-(--border-subtle) bg-(--bg-surface) text-(--text-secondary) rounded-sm">
             {totalJobs} Pooled
           </span>
         </div>
@@ -56,23 +56,23 @@ export function PodFeedHeader({
 
       <div className="flex items-center gap-2">
         <div className="relative flex-1 sm:w-52">
-          <Search className="w-3.5 h-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-(--text-muted)" />
+          <Search className="w-3.5 h-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-(--text-muted) pointer-events-none" />
           <input
             type="text"
             placeholder="Search roles, companies..."
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
-            className="w-full bg-(--bg-surface) border border-(--border-subtle) pl-8 pr-3 py-1.5 text-xs text-(--text-primary) placeholder:text-(--text-muted) focus:border-(--accent-primary) outline-hidden rounded-xs"
+            className="w-full h-8 bg-(--bg-surface) border border-(--border-subtle) pl-8 pr-3 text-xs text-(--text-primary) placeholder:text-(--text-muted) rounded-sm focus:outline-none focus:border-(--border-focus) focus:ring-2 focus:ring-(--accent-primary)/20 transition-all"
           />
         </div>
 
-        <div className="flex items-center p-0.5 border border-(--border-subtle) bg-(--bg-app) rounded-xs shrink-0">
+        <div className="inline-flex items-center h-8 p-0.5 border border-(--border-subtle) bg-(--bg-app) rounded-sm shrink-0">
           <button
             type="button"
             onClick={() => onViewModeChange('grid')}
-            className={`p-1.5 rounded-xs transition-colors cursor-pointer ${
+            className={`h-full px-2 rounded-sm transition-colors cursor-pointer ${
               viewMode === 'grid'
-                ? 'bg-(--bg-surface) text-(--accent-blue-bright) shadow-2xs font-semibold'
+                ? 'bg-(--bg-surface) text-(--accent-blue-bright) shadow-xs font-semibold'
                 : 'text-(--text-muted) hover:text-(--text-primary)'
             }`}
             title="Card view"
@@ -83,9 +83,9 @@ export function PodFeedHeader({
           <button
             type="button"
             onClick={() => onViewModeChange('list')}
-            className={`p-1.5 rounded-xs transition-colors cursor-pointer ${
+            className={`h-full px-2 rounded-sm transition-colors cursor-pointer ${
               viewMode === 'list'
-                ? 'bg-(--bg-surface) text-(--accent-blue-bright) shadow-2xs font-semibold'
+                ? 'bg-(--bg-surface) text-(--accent-blue-bright) shadow-xs font-semibold'
                 : 'text-(--text-muted) hover:text-(--text-primary)'
             }`}
             title="List view"
@@ -100,7 +100,7 @@ export function PodFeedHeader({
             onClick={onSyncTelegram}
             disabled={isSyncing}
             title="Sync Telegram Group"
-            className="inline-flex items-center gap-1 h-8 px-2.5 border border-(--border-subtle) bg-(--bg-surface) hover:bg-(--bg-surface-hover) text-(--text-secondary) hover:text-(--text-primary) text-xs font-medium shrink-0 cursor-pointer rounded-xs"
+            className="inline-flex items-center gap-1.5 h-8 px-2.5 border border-(--border-subtle) bg-(--bg-surface) hover:bg-(--bg-surface-hover) text-(--text-secondary) hover:text-(--text-primary) text-xs font-medium shrink-0 cursor-pointer rounded-sm"
           >
             <RefreshCw
               className={`w-3.5 h-3.5 ${isSyncing ? 'animate-spin text-(--accent-primary)' : ''}`}
@@ -113,7 +113,7 @@ export function PodFeedHeader({
           <button
             onClick={onOpenManagePod}
             title="Manage Pod Peers & Telegram"
-            className="inline-flex items-center gap-1 h-8 px-2.5 border border-(--border-subtle) bg-(--bg-surface) hover:bg-(--bg-surface-hover) text-(--text-secondary) hover:text-(--text-primary) text-xs font-medium shrink-0 cursor-pointer rounded-xs"
+            className="inline-flex items-center gap-1.5 h-8 px-2.5 border border-(--border-subtle) bg-(--bg-surface) hover:bg-(--bg-surface-hover) text-(--text-secondary) hover:text-(--text-primary) text-xs font-medium shrink-0 cursor-pointer rounded-sm"
           >
             <Settings className="w-3.5 h-3.5" />
             <span className="hidden md:inline">Manage</span>
@@ -122,10 +122,10 @@ export function PodFeedHeader({
 
         <button
           onClick={onOpenAddJob}
-          className="inline-flex items-center gap-1.5 h-8 px-3 bg-(--accent-primary) hover:bg-(--accent-primary-hover) text-white text-xs font-semibold shrink-0 cursor-pointer rounded-xs shadow-xs"
+          className="inline-flex items-center gap-1.5 h-8 px-3 bg-(--accent-primary) hover:bg-(--accent-primary-hover) text-(--accent-primary-text) text-xs font-semibold shrink-0 cursor-pointer rounded-sm shadow-xs transition-colors"
         >
           <Plus className="w-3.5 h-3.5" />
-          <span>Share Job</span>
+          <span>Share</span>
         </button>
       </div>
     </div>

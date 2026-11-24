@@ -37,4 +37,6 @@ export interface PipelineViewProps {
   onToggleImportant?: (jobId: string, e?: React.MouseEvent) => void;
   onApplyAndAdvance: (job: Job, e?: React.MouseEvent) => void;
   onDeleteJob: (jobId: string) => void;
+  onSync?: () => void;
+  isSyncing?: boolean;
 }

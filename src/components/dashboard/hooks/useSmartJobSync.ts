@@ -60,7 +60,9 @@ export function useSmartJobSync({ setJobs, setIsLoading }: UseSmartJobSyncProps)
 
   useEffect(() => {
     // 1. Initial fetch on mount
-    fetchJobs();
+    const initialTimer = setTimeout(() => {
+      fetchJobs();
+    }, 0);
 
     // 2. Revalidate on window focus (throttled to at most once per 15s)
     const handleFocus = () => {
@@ -89,6 +91,7 @@ export function useSmartJobSync({ setJobs, setIsLoading }: UseSmartJobSyncProps)
     window.addEventListener('online', handleOnline);
 
     return () => {
+      clearTimeout(initialTimer);
       clearInterval(interval);
       window.removeEventListener('focus', handleFocus);
       window.removeEventListener('online', handleOnline);

@@ -39,23 +39,29 @@ export function CalendarMonthGrid({
             day.date > selectedStart &&
             day.date < effectiveEnd;
 
-          let cellClass = 'hover:bg-(--bg-surface-hover) text-(--text-primary)';
-          if (isStart || isEnd) {
-            cellClass = 'bg-(--accent-primary) text-white font-bold';
+          let cellClass = 'hover:bg-(--bg-surface-hover) text-(--text-primary) rounded-sm';
+          if (day.isFuture) {
+            cellClass = 'text-(--text-muted) opacity-25 cursor-not-allowed hover:bg-transparent';
+          } else if (isStart || isEnd) {
+            cellClass =
+              'bg-(--accent-primary) text-(--accent-primary-text) font-bold rounded-sm shadow-xs';
           } else if (inRange) {
-            cellClass = 'bg-(--accent-primary-bg) text-(--accent-blue-bright)';
+            cellClass = 'bg-(--accent-primary-bg) text-(--accent-blue-bright) rounded-none';
           } else if (!day.isCurrentMonth) {
-            cellClass = 'text-(--text-muted) opacity-40 hover:opacity-80';
+            cellClass = 'text-(--text-muted) opacity-40 hover:opacity-80 rounded-sm';
           }
 
           return (
             <button
               key={day.date}
               type="button"
+              disabled={day.isFuture}
               onClick={() => onDayClick(day.date)}
               onMouseEnter={() => onHoverDate(day.date)}
               onMouseLeave={() => onHoverDate(null)}
-              className={`h-7 flex items-center justify-center transition-colors cursor-pointer text-[11px] rounded-xs ${cellClass}`}
+              className={`h-7 flex items-center justify-center transition-colors text-[11px] font-medium ${
+                day.isFuture ? 'cursor-not-allowed' : 'cursor-pointer'
+              } ${cellClass}`}
             >
               {day.dayNumber}
             </button>

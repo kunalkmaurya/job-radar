@@ -15,6 +15,7 @@ export interface PaginationBarProps {
   onLastPage: () => void;
   onPrevPage: () => void;
   onNextPage: () => void;
+  className?: string;
 }
 
 export interface UsePaginationOptions {

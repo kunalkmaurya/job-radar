@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getSessionFromCookies } from '@/lib/auth';
 import {
+  getUserPod,
   getOrCreateUserPod,
   getPodDetails,
   getTelegramConnectUrl,
@@ -8,6 +9,9 @@ import {
   sendTelegramTestMessage,
   resolveTelegramChat,
   syncPodTelegramJobs,
+  leavePod,
+  deletePod,
+  clearPodJobs,
 } from '@/lib/workspace';
 
 export async function GET(request: Request) {
@@ -17,9 +21,9 @@ export async function GET(request: Request) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
     }
 
-    const pod = await getOrCreateUserPod(session.sub, session.name);
+    const pod = await getUserPod(session.sub);
     if (!pod) {
-      return NextResponse.json({ success: false, error: 'Pod unavailable' }, { status: 500 });
+      return NextResponse.json({ success: true, pod: null });
     }
 
     const details = await getPodDetails(pod.id);
@@ -75,7 +79,7 @@ export async function PATCH(request: Request) {
 
       await sendTelegramTestMessage(
         finalChatId,
-        `Job Radar: Connected to "${pod.name}"! Any job links sent in this chat will now sync to Explore Jobs.`
+        `Job Radar: Connected to "${pod.name}"! Any job links sent in this chat will now sync to Explore.`
       );
     }
 
@@ -103,12 +107,32 @@ export async function POST(request: Request) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
     }
 
-    const pod = await getOrCreateUserPod(session.sub, session.name);
-    if (!pod) {
-      return NextResponse.json({ success: false, error: 'Pod unavailable' }, { status: 500 });
+    const body = await request.json().catch(() => ({}));
+    if (body.action === 'create') {
+      const createdPod = await getOrCreateUserPod(session.sub, session.name);
+      return NextResponse.json({ success: true, pod: createdPod });
     }
 
-    const body = await request.json().catch(() => ({}));
+    if (body.action === 'leave') {
+      const res = await leavePod(session.sub);
+      return NextResponse.json(res);
+    }
+
+    if (body.action === 'delete_pod') {
+      const res = await deletePod(session.sub);
+      return NextResponse.json(res);
+    }
+
+    if (body.action === 'clear_jobs') {
+      const res = await clearPodJobs(session.sub);
+      return NextResponse.json(res);
+    }
+
+    const pod = await getUserPod(session.sub);
+    if (!pod) {
+      return NextResponse.json({ success: false, error: 'Pod unavailable' }, { status: 404 });
+    }
+
     if (body.action === 'sync_jobs') {
       const syncResult = await syncPodTelegramJobs(pod.id);
       if (!syncResult.success) {
@@ -130,7 +154,7 @@ export async function POST(request: Request) {
         );
       }
 
-      const pingMsg = `Job Radar: Connection verified for "${pod.name}"! Any job links sent in this chat will now sync to your team's Explore Jobs feed.`;
+      const pingMsg = `Job Radar: Connection verified for "${pod.name}"! Any job links sent in this chat will now sync to your team's Explore feed.`;
       const result = await sendTelegramTestMessage(chatId, pingMsg);
 
       if (!result.success) {
@@ -143,6 +167,33 @@ export async function POST(request: Request) {
     return NextResponse.json({ success: false, error: 'Unknown action' }, { status: 400 });
   } catch (err) {
     console.error('[API /api/workspaces/current POST Error]:', err);
-    return NextResponse.json({ success: false, error: 'Test ping failed' }, { status: 500 });
+    return NextResponse.json({ success: false, error: 'Operation failed' }, { status: 500 });
+  }
+}
+
+export async function DELETE(request: Request) {
+  try {
+    const session = await getSessionFromCookies();
+    if (!session?.sub) {
+      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const { searchParams } = new URL(request.url);
+    const action = searchParams.get('action') || 'leave';
+
+    if (action === 'delete_pod') {
+      const res = await deletePod(session.sub);
+      return NextResponse.json(res);
+    }
+    if (action === 'clear_jobs') {
+      const res = await clearPodJobs(session.sub);
+      return NextResponse.json(res);
+    }
+
+    const res = await leavePod(session.sub);
+    return NextResponse.json(res);
+  } catch (err) {
+    console.error('[API /api/workspaces/current DELETE Error]:', err);
+    return NextResponse.json({ success: false, error: 'Failed to leave pod' }, { status: 500 });
   }
 }

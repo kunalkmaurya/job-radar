@@ -14,9 +14,9 @@ interface DatePresetsProps {
 const DEFAULT_PRESETS: Array<{ key: PresetKey; label: string }> = [
   { key: 'all', label: 'All' },
   { key: 'today', label: 'Today' },
-  { key: '7d', label: 'Last 7 Days' },
-  { key: '14d', label: 'Last 14 Days' },
-  { key: '30d', label: 'Last 30 Days' },
+  { key: '7d', label: '7d' },
+  { key: '14d', label: '14d' },
+  { key: '30d', label: '30d' },
 ];
 
 export function DatePresets({
@@ -54,10 +54,10 @@ export function DatePresets({
             key={p.key}
             type="button"
             onClick={() => handlePresetClick(p.key)}
-            className={`px-2.5 py-1.5 text-xs font-medium border rounded-xs transition-colors cursor-pointer ${
+            className={`h-8 px-2.5 text-xs font-medium border rounded-sm transition-colors cursor-pointer ${
               active
                 ? 'border-(--accent-primary) bg-(--accent-primary-bg) text-(--accent-blue-bright) font-semibold shadow-xs'
-                : 'border-(--border-subtle) bg-(--bg-app) text-(--text-secondary) hover:text-(--text-primary) hover:border-(--border-strong)'
+                : 'border-(--border-subtle) bg-(--bg-surface) text-(--text-secondary) hover:text-(--text-primary) hover:border-(--border-strong)'
             }`}
           >
             {p.label}

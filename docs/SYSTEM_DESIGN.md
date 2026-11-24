@@ -43,7 +43,7 @@ graph TD
 
     subgraph Web_Client["Next.js App Router Client"]
         DASH["Personal Pipeline (Board & Table)"]
-        FEED["Explore Jobs Feed (Grid & List Views)"]
+        FEED["Explore Feed (Grid & List Views)"]
     end
 
     TG -->|POST update| WH

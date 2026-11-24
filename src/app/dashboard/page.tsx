@@ -15,8 +15,9 @@ import {
 
 function DashboardContent() {
   const searchParams = useSearchParams();
-  const initialTab = (searchParams.get('tab') as DashboardTab) || 'dashboard';
-  const [activeNavTab, setActiveNavTab] = useState<DashboardTab>(initialTab);
+  const [activeNavTab, setActiveNavTab] = useState<DashboardTab>(
+    () => (searchParams.get('tab') as DashboardTab) || 'dashboard'
+  );
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [isBookmarkletOpen, setIsBookmarkletOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -24,18 +25,8 @@ function DashboardContent() {
   const [isFeedSyncing, setIsFeedSyncing] = useState(false);
 
   const podManager = usePodManager();
-  const dashboardState = useDashboardJobs();
-  const {
-    jobs,
-    setJobs,
-    revalidate,
-    theme,
-    toggleTheme,
-    nowTime,
-    currentUser,
-    handleExportCSV,
-    fetchJobs,
-  } = dashboardState;
+  const d = useDashboardJobs();
+  const { jobs, setJobs, revalidate, theme, toggleTheme, nowTime, currentUser } = d;
 
   const handleSync = async () => {
     setIsFeedSyncing(true);
@@ -48,10 +39,16 @@ function DashboardContent() {
     jobs,
     nowTime,
     setJobs,
-    handleStatusChange: dashboardState.handleStatusChange,
-    handleToggleImportant: dashboardState.handleToggleImportant,
-    handleDeleteJob: dashboardState.handleDeleteJob,
+    handleStatusChange: d.handleStatusChange,
+    handleToggleImportant: d.handleToggleImportant,
+    handleDeleteJob: d.handleDeleteJob,
   });
+
+  const mutatePod = async (fn: () => Promise<boolean>) => {
+    const ok = await fn();
+    if (ok) setFeedRefreshCount((c) => c + 1);
+    return ok;
+  };
 
   return (
     <div className="h-screen flex bg-(--bg-app) text-(--text-primary) overflow-hidden">
@@ -64,6 +61,8 @@ function DashboardContent() {
         onToggleTheme={toggleTheme}
         isMobileOpen={isMobileMenuOpen}
         onCloseMobile={() => setIsMobileMenuOpen(false)}
+        onOpenPodModal={() => podManager.setIsPodOpen(true)}
+        hasPod={Boolean(podManager.podData)}
       />
 
       <div className="flex-1 flex flex-col min-w-0 h-full overflow-hidden">
@@ -71,12 +70,8 @@ function DashboardContent() {
           theme={theme}
           onToggleTheme={toggleTheme}
           onOpenBookmarklet={() => setIsBookmarkletOpen(true)}
-          onExportCSV={handleExportCSV}
+          onExportCSV={d.handleExportCSV}
           onOpenAddJob={() => setIsAddOpen(true)}
-          onOpenPodModal={() => podManager.setIsPodOpen(true)}
-          podMemberCount={podManager.podData?.memberCount}
-          isSyncing={dashboardState.isSyncing || isFeedSyncing}
-          onSync={handleSync}
           onOpenMobileMenu={() => setIsMobileMenuOpen(true)}
           activeTab={activeNavTab}
           jobCount={jobs.length}
@@ -85,13 +80,15 @@ function DashboardContent() {
         <main className="flex-1 overflow-y-auto flex flex-col min-h-0">
           <DashboardTabContent
             activeTab={activeNavTab}
-            {...dashboardState}
+            {...d}
             setDrawerJob={drawerState.setDrawerJob}
             onJobStatusChange={drawerState.onJobStatusChange}
             onJobDelete={drawerState.onJobDelete}
             onJobTracked={revalidate}
             refreshTrigger={feedRefreshCount}
             onOpenInviteModal={() => podManager.setIsPodOpen(true)}
+            onSync={handleSync}
+            isSyncing={d.isSyncing || isFeedSyncing}
           />
         </main>
       </div>
@@ -111,7 +108,7 @@ function DashboardContent() {
         isAddOpen={isAddOpen}
         onCloseAdd={() => setIsAddOpen(false)}
         onJobAdded={(newJob) => setJobs((prev) => [newJob, ...prev])}
-        onRefreshJobs={fetchJobs}
+        onRefreshJobs={d.fetchJobs}
         isBookmarkletOpen={isBookmarkletOpen}
         onCloseBookmarklet={() => setIsBookmarkletOpen(false)}
         isPodOpen={podManager.isPodOpen}
@@ -121,6 +118,12 @@ function DashboardContent() {
         isRefreshingPod={podManager.isRefreshing}
         onSaveChatId={podManager.handleSaveChatId}
         onSendTest={podManager.handleSendTest}
+        onLeavePod={() => mutatePod(podManager.handleLeavePod)}
+        onDeletePod={() => mutatePod(podManager.handleDeletePod)}
+        onClearJobs={() => mutatePod(podManager.handleClearJobs)}
+        onCreatePod={() => mutatePod(podManager.handleCreatePod)}
+        onJoinPod={(code) => mutatePod(() => podManager.handleJoinPod(code))}
+        isMutatingPod={podManager.isMutating}
       />
     </div>
   );

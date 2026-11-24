@@ -13,15 +13,18 @@ export function BookmarkletModal({ isOpen, onClose }: BookmarkletModalProps) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
+      <div className="fixed inset-0 bg-black/60 backdrop-blur-xs" onClick={onClose} />
 
-      <div className="relative w-full max-w-md border border-(--border-subtle) bg-(--bg-surface) p-6 shadow-2xl z-10 space-y-4 text-xs">
+      <div className="relative w-full max-w-md border border-(--border-subtle) bg-(--bg-surface) p-6 rounded-[8px] shadow-2xl z-10 space-y-4 text-xs">
         <div className="flex items-center justify-between">
-          <h3 className="font-bold text-base flex items-center gap-2">
+          <h3 className="font-bold text-sm uppercase tracking-wider flex items-center gap-2 text-(--text-primary)">
             <Bookmark className="w-4 h-4 text-(--accent-primary)" />
-            <span>1-Click Browser Bookmarklet</span>
+            <span>Bookmarklet</span>
           </h3>
-          <button onClick={onClose} className="text-(--text-muted) hover:text-white cursor-pointer">
+          <button
+            onClick={onClose}
+            className="h-8 w-8 inline-flex items-center justify-center text-(--text-muted) hover:text-(--text-primary) hover:bg-(--bg-surface-hover) rounded-sm cursor-pointer"
+          >
             <X className="w-4 h-4" />
           </button>
         </div>
@@ -31,13 +34,13 @@ export function BookmarkletModal({ isOpen, onClose }: BookmarkletModalProps) {
           Workday, click it to save instantly:
         </p>
 
-        <div className="p-4 border border-dashed border-(--accent-primary)/40 bg-(--accent-primary-bg) text-center">
+        <div className="p-4 border border-dashed border-(--accent-border) bg-(--accent-primary-bg) rounded-sm text-center">
           <a
             href="javascript:(function(){const url=encodeURIComponent(window.location.href);alert('Job link captured for Job Radar: ' + window.location.href);})();"
             onClick={(e) => e.preventDefault()}
-            className="inline-block px-4 py-2 bg-(--accent-primary) hover:bg-(--accent-primary-hover) text-white font-semibold shadow-sm cursor-grab active:cursor-grabbing"
+            className="inline-block h-8 px-4 leading-8 bg-(--accent-primary) hover:bg-(--accent-primary-hover) text-(--accent-primary-text) font-semibold rounded-sm shadow-xs cursor-grab active:cursor-grabbing"
           >
-            + Add
+            + Job Radar
           </a>
           <span className="block text-xs text-(--text-muted) mt-2">
             (Drag and drop into your Bookmarks Bar)

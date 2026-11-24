@@ -20,6 +20,8 @@ export function useProfilePod() {
         if (data.pod) {
           setPod(data.pod);
           setChatIdInput(data.pod.telegramChatId || '');
+        } else {
+          setPod(null);
         }
       }
     } catch {
@@ -40,6 +42,8 @@ export function useProfilePod() {
           if (data?.pod) {
             setPod(data.pod);
             setChatIdInput(data.pod.telegramChatId || '');
+          } else {
+            setPod(null);
           }
         }
       } catch {

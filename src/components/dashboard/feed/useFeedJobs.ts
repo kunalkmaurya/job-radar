@@ -84,14 +84,12 @@ export function useFeedJobs({
     setFeedJobs((prev) => prev.map((j) => (j.id === jobId ? { ...j, isTracked: true } : j)));
 
     try {
-      const res = await fetch(`/api/feed/jobs/${jobId}/track`, {
-        method: 'POST',
-      });
+      const res = await fetch(`/api/feed/jobs/${jobId}/track`, { method: 'POST' });
       const json = await res.json();
       if (!res.ok && json.error?.code !== 'DUPLICATE') {
         setFeedJobs((prev) => prev.map((j) => (j.id === jobId ? { ...j, isTracked: false } : j)));
-      } else {
-        if (onJobTracked) onJobTracked();
+      } else if (onJobTracked) {
+        onJobTracked();
       }
     } catch (err) {
       console.error('[Feed] Failed to track job:', err);
@@ -99,6 +97,38 @@ export function useFeedJobs({
     } finally {
       setTrackingId(null);
     }
+  };
+
+  const untrackJob = async (jobId: string) => {
+    setTrackingId(jobId);
+    setFeedJobs((prev) => prev.map((j) => (j.id === jobId ? { ...j, isTracked: false } : j)));
+
+    try {
+      const res = await fetch(`/api/feed/jobs/${jobId}/track`, { method: 'DELETE' });
+      if (!res.ok) {
+        setFeedJobs((prev) => prev.map((j) => (j.id === jobId ? { ...j, isTracked: true } : j)));
+      } else if (onJobTracked) {
+        onJobTracked();
+      }
+    } catch (err) {
+      console.error('[Feed] Failed to untrack job:', err);
+      setFeedJobs((prev) => prev.map((j) => (j.id === jobId ? { ...j, isTracked: true } : j)));
+    } finally {
+      setTrackingId(null);
+    }
+  };
+
+  const deleteJob = async (jobId: string) => {
+    try {
+      const res = await fetch(`/api/feed/jobs?id=${jobId}`, { method: 'DELETE' });
+      if (res.ok) {
+        setFeedJobs((prev) => prev.filter((j) => j.id !== jobId));
+        return true;
+      }
+    } catch {
+      // ignore
+    }
+    return false;
   };
 
   return {
@@ -114,6 +144,8 @@ export function useFeedJobs({
     setSearchQuery,
     trackingId,
     trackJob,
+    untrackJob,
+    deleteJob,
     isAddOpen,
     setIsAddOpen,
     isSyncing,

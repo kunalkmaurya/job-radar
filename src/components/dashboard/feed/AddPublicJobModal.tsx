@@ -13,8 +13,6 @@ export function AddPublicJobModal({ isOpen, onClose, onSuccess }: AddPublicJobMo
   const [link, setLink] = useState('');
   const [company, setCompany] = useState('');
   const [role, setRole] = useState('');
-  const [location, setLocation] = useState('');
-  const [exp, setExp] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -31,8 +29,6 @@ export function AddPublicJobModal({ isOpen, onClose, onSuccess }: AddPublicJobMo
       const payload: Record<string, string> = { link: link.trim() };
       if (company.trim()) payload.company = company.trim();
       if (role.trim()) payload.role = role.trim();
-      if (location.trim()) payload.location = location.trim();
-      if (exp.trim()) payload.exp = exp.trim();
 
       const res = await fetch('/api/feed/jobs', {
         method: 'POST',
@@ -56,7 +52,7 @@ export function AddPublicJobModal({ isOpen, onClose, onSuccess }: AddPublicJobMo
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4">
-      <div className="w-full max-w-md border border-(--border-subtle) bg-(--bg-surface) p-5 shadow-xl flex flex-col gap-4">
+      <div className="w-full max-w-md border border-(--border-subtle) bg-(--bg-surface) p-5 rounded-[8px] shadow-xl flex flex-col gap-4">
         <div className="flex items-center justify-between border-b border-(--border-subtle) pb-3">
           <div className="flex items-center gap-1.5 font-bold text-sm text-(--text-primary)">
             <Sparkles className="w-4 h-4 text-(--accent-blue-bright)" />
@@ -64,21 +60,21 @@ export function AddPublicJobModal({ isOpen, onClose, onSuccess }: AddPublicJobMo
           </div>
           <button
             onClick={onClose}
-            className="text-(--text-secondary) hover:text-(--text-primary) p-1"
+            className="h-8 w-8 inline-flex items-center justify-center text-(--text-secondary) hover:text-(--text-primary) hover:bg-(--bg-surface-hover) rounded-sm cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
         {error && (
-          <div className="text-xs text-rose-400 bg-rose-950/40 border border-rose-800/60 p-2.5">
+          <div className="text-xs text-rose-500 bg-rose-500/10 border border-rose-500/20 p-2.5 rounded-sm">
             {error}
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-3">
           <div>
-            <label className="block text-xs font-medium text-(--text-secondary) mb-1">
+            <label className="block text-xs font-semibold text-(--text-secondary) mb-1">
               Job URL *
             </label>
             <input
@@ -87,13 +83,13 @@ export function AddPublicJobModal({ isOpen, onClose, onSuccess }: AddPublicJobMo
               placeholder="https://company.wd5.myworkdayjobs.com/..."
               value={link}
               onChange={(e) => setLink(e.target.value)}
-              className="w-full bg-(--bg-app) border border-(--border-subtle) px-3 py-1.5 text-xs text-(--text-primary) focus:border-(--accent-primary) outline-hidden"
+              className="w-full h-8 bg-(--bg-app) border border-(--border-subtle) px-3 text-xs text-(--text-primary) rounded-sm focus:border-(--border-focus) focus:ring-2 focus:ring-(--accent-primary)/20 focus:outline-none transition-all"
             />
           </div>
 
           <div className="grid grid-cols-2 gap-2">
             <div>
-              <label className="block text-xs font-medium text-(--text-secondary) mb-1">
+              <label className="block text-xs font-semibold text-(--text-secondary) mb-1">
                 Company (Optional)
               </label>
               <input
@@ -101,11 +97,11 @@ export function AddPublicJobModal({ isOpen, onClose, onSuccess }: AddPublicJobMo
                 placeholder="Google"
                 value={company}
                 onChange={(e) => setCompany(e.target.value)}
-                className="w-full bg-(--bg-app) border border-(--border-subtle) px-3 py-1.5 text-xs text-(--text-primary) focus:border-(--accent-primary) outline-hidden"
+                className="w-full h-8 bg-(--bg-app) border border-(--border-subtle) px-3 text-xs text-(--text-primary) rounded-sm focus:border-(--border-focus) focus:ring-2 focus:ring-(--accent-primary)/20 focus:outline-none transition-all"
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-(--text-secondary) mb-1">
+              <label className="block text-xs font-semibold text-(--text-secondary) mb-1">
                 Role (Optional)
               </label>
               <input
@@ -113,7 +109,7 @@ export function AddPublicJobModal({ isOpen, onClose, onSuccess }: AddPublicJobMo
                 placeholder="Staff Engineer"
                 value={role}
                 onChange={(e) => setRole(e.target.value)}
-                className="w-full bg-(--bg-app) border border-(--border-subtle) px-3 py-1.5 text-xs text-(--text-primary) focus:border-(--accent-primary) outline-hidden"
+                className="w-full h-8 bg-(--bg-app) border border-(--border-subtle) px-3 text-xs text-(--text-primary) rounded-sm focus:border-(--border-focus) focus:ring-2 focus:ring-(--accent-primary)/20 focus:outline-none transition-all"
               />
             </div>
           </div>
@@ -122,21 +118,21 @@ export function AddPublicJobModal({ isOpen, onClose, onSuccess }: AddPublicJobMo
             <button
               type="button"
               onClick={onClose}
-              className="px-3 py-1.5 text-xs border border-(--border-subtle) hover:bg-(--bg-surface-hover) text-(--text-secondary)"
+              className="h-8 px-3 text-xs border border-(--border-subtle) hover:bg-(--bg-surface-hover) text-(--text-secondary) rounded-sm font-semibold cursor-pointer transition-colors"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isLoading}
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs bg-(--accent-primary) hover:bg-(--accent-primary-hover) text-white font-medium disabled:opacity-50"
+              className="h-8 inline-flex items-center gap-1.5 px-3.5 text-xs bg-(--accent-primary) hover:bg-(--accent-primary-hover) text-(--accent-primary-text) font-semibold rounded-sm shadow-xs cursor-pointer disabled:opacity-50 transition-colors"
             >
               {isLoading ? (
                 <Loader2 className="w-3.5 h-3.5 animate-spin" />
               ) : (
                 <Plus className="w-3.5 h-3.5" />
               )}
-              <span>{company && role ? 'Post Job' : 'Auto-Scrape & Post'}</span>
+              <span>Post</span>
             </button>
           </div>
         </form>

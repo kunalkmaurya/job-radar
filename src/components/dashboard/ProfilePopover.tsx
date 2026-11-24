@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { LogOut, Shield, User, ChevronRight, Download } from 'lucide-react';
 import { usePwaInstall, InstallIOSModal } from '@/components/pwa';
 
@@ -10,6 +11,7 @@ interface ProfilePopoverProps {
 }
 
 export function ProfilePopover({ currentUser, onOpenProfile }: ProfilePopoverProps) {
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const { isStandalone, triggerInstall, showIOSGuide, setShowIOSGuide } = usePwaInstall();
 
@@ -19,7 +21,7 @@ export function ProfilePopover({ currentUser, onOpenProfile }: ProfilePopoverPro
     } catch (err) {
       console.error('Logout failed:', err);
     } finally {
-      window.location.href = '/login';
+      router.push('/login');
     }
   };
 

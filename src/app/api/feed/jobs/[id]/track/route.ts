@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { db } from '@/db';
 import { publicJobs, jobs } from '@/db/schema';
-import { eq } from 'drizzle-orm';
+import { eq, and, or } from 'drizzle-orm';
 import { getSessionFromCookies } from '@/lib/auth';
 
 export async function POST(request: Request, { params }: { params: Promise<{ id: string }> }) {
@@ -61,6 +61,46 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
     }
     return NextResponse.json(
       { success: false, error: { message: 'Failed to track job' } },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(request: Request, { params }: { params: Promise<{ id: string }> }) {
+  try {
+    const session = await getSessionFromCookies();
+    if (!session?.sub) {
+      return NextResponse.json(
+        { success: false, error: { message: 'Authentication required to untrack jobs' } },
+        { status: 401 }
+      );
+    }
+
+    const { id } = await params;
+
+    const [publicJob] = await db.select().from(publicJobs).where(eq(publicJobs.id, id)).limit(1);
+
+    if (publicJob) {
+      await db
+        .delete(jobs)
+        .where(
+          and(
+            eq(jobs.userId, session.sub),
+            or(eq(jobs.publicJobId, id), eq(jobs.link, publicJob.link))
+          )
+        );
+    } else {
+      await db.delete(jobs).where(and(eq(jobs.userId, session.sub), eq(jobs.publicJobId, id)));
+    }
+
+    return NextResponse.json({
+      success: true,
+      message: 'Job untracked successfully',
+    });
+  } catch (error: unknown) {
+    console.error('[API /api/feed/jobs/[id]/track DELETE Error]:', error);
+    return NextResponse.json(
+      { success: false, error: { message: 'Failed to untrack job' } },
       { status: 500 }
     );
   }

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import { UsePaginationOptions } from './types';
 
 export type { UsePaginationOptions };
@@ -14,13 +14,7 @@ export function usePagination({
   const [currentPage, setCurrentPage] = useState<number>(1);
 
   const totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
-
-  // Automatically keep current page within valid bounds when totalItems changes
-  useEffect(() => {
-    if (currentPage > totalPages) {
-      setCurrentPage(totalPages);
-    }
-  }, [currentPage, totalPages]);
+  const safeCurrentPage = Math.min(currentPage, totalPages);
 
   const setPage = (page: number) => {
     const validPage = Math.max(1, Math.min(page, totalPages));
@@ -32,12 +26,12 @@ export function usePagination({
     setCurrentPage(1);
   };
 
-  const nextPage = () => setPage(currentPage + 1);
-  const prevPage = () => setPage(currentPage - 1);
+  const nextPage = () => setPage(safeCurrentPage + 1);
+  const prevPage = () => setPage(safeCurrentPage - 1);
   const firstPage = () => setPage(1);
   const lastPage = () => setPage(totalPages);
 
-  const startIndex = (currentPage - 1) * pageSize;
+  const startIndex = (safeCurrentPage - 1) * pageSize;
   const endIndex = Math.min(startIndex + pageSize, totalItems);
   const fromItem = totalItems === 0 ? 0 : startIndex + 1;
   const toItem = endIndex;
@@ -47,11 +41,11 @@ export function usePagination({
       return Array.from({ length: totalPages }, (_, i) => i + 1);
     }
 
-    if (currentPage <= 4) {
+    if (safeCurrentPage <= 4) {
       return [1, 2, 3, 4, 5, 'ellipsis', totalPages];
     }
 
-    if (currentPage >= totalPages - 3) {
+    if (safeCurrentPage >= totalPages - 3) {
       return [
         1,
         'ellipsis',
@@ -63,23 +57,31 @@ export function usePagination({
       ];
     }
 
-    return [1, 'ellipsis', currentPage - 1, currentPage, currentPage + 1, 'ellipsis', totalPages];
-  }, [currentPage, totalPages]);
+    return [
+      1,
+      'ellipsis',
+      safeCurrentPage - 1,
+      safeCurrentPage,
+      safeCurrentPage + 1,
+      'ellipsis',
+      totalPages,
+    ];
+  }, [safeCurrentPage, totalPages]);
 
   const paginateItems = <T>(items: T[]): T[] => {
     return items.slice(startIndex, startIndex + pageSize);
   };
 
   return {
-    currentPage,
+    currentPage: safeCurrentPage,
     pageSize,
     pageSizeOptions,
     totalPages,
     totalItems,
     fromItem,
     toItem,
-    canPrevPage: currentPage > 1,
-    canNextPage: currentPage < totalPages,
+    canPrevPage: safeCurrentPage > 1,
+    canNextPage: safeCurrentPage < totalPages,
     setPage,
     setPageSize,
     nextPage,

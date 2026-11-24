@@ -18,14 +18,14 @@ export function LinkedInFinderCard({ company }: LinkedInFinderCardProps) {
   const secondDegreeUrl = getLinkedIn2ndDegreeSearchUrl(company);
 
   return (
-    <div className="border border-(--border-subtle) bg-(--bg-app) p-3 space-y-2.5">
+    <div className="border border-(--border-subtle) bg-(--bg-app) rounded-sm p-3 space-y-2.5">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-1.5 text-(--text-primary) font-semibold text-xs">
           <Users className="w-3.5 h-3.5 text-[#0A66C2]" />
           <span>LinkedIn Network at {cleanName}</span>
         </div>
-        <span className="text-[10px] text-(--text-muted) uppercase tracking-wider font-mono">
-          Deep Link
+        <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded-xs bg-(--border-subtle)/50 text-(--text-muted) uppercase tracking-wider">
+          Search
         </span>
       </div>
 
@@ -39,7 +39,7 @@ export function LinkedInFinderCard({ company }: LinkedInFinderCardProps) {
           href={firstDegreeUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center justify-center gap-1.5 py-1.5 px-2.5 border border-(--border-subtle) hover:border-[#0A66C2]/60 bg-(--bg-surface) hover:bg-(--bg-surface-hover) text-[#0A66C2] text-[11px] font-medium transition-colors"
+          className="h-8 inline-flex items-center justify-center gap-1.5 px-2.5 border border-(--border-subtle) hover:border-[#0A66C2]/60 bg-(--bg-surface) hover:bg-(--bg-surface-hover) text-[#0A66C2] text-xs font-medium rounded-sm transition-colors"
         >
           <Search className="w-3 h-3 shrink-0" />
           <span>1st-Degree</span>
@@ -50,9 +50,9 @@ export function LinkedInFinderCard({ company }: LinkedInFinderCardProps) {
           href={secondDegreeUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center justify-center gap-1.5 py-1.5 px-2.5 border border-(--border-subtle) hover:border-(--border-focus) bg-(--bg-surface) hover:bg-(--bg-surface-hover) text-(--text-secondary) hover:text-(--text-primary) text-[11px] font-medium transition-colors"
+          className="h-8 inline-flex items-center justify-center gap-1.5 px-2.5 border border-(--border-subtle) hover:border-(--border-strong) bg-(--bg-surface) hover:bg-(--bg-surface-hover) text-(--text-secondary) hover:text-(--text-primary) text-xs font-medium rounded-sm transition-colors"
         >
-          <span>2nd-Degree & Alumni</span>
+          <span>2nd-Degree</span>
           <ExternalLink className="w-2.5 h-2.5 shrink-0 opacity-60" />
         </a>
       </div>

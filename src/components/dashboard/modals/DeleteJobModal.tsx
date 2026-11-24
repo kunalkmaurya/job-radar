@@ -36,35 +36,34 @@ export function DeleteJobModal({
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
       <div
-        className="fixed inset-0 bg-black/60 backdrop-blur-sm"
+        className="fixed inset-0 bg-black/60 backdrop-blur-xs"
         onClick={onCancel}
         aria-hidden="true"
       />
 
-      <div className="relative w-full max-w-md border border-(--border-subtle) bg-(--bg-surface) p-6 shadow-2xl z-10 space-y-4 text-xs animate-in zoom-in-95 duration-150">
+      <div className="relative w-full max-w-md border border-(--border-subtle) bg-(--bg-surface) p-6 rounded-[8px] shadow-2xl z-10 space-y-4 text-xs animate-in zoom-in-95 duration-150">
         <div className="flex items-start justify-between gap-3">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-full bg-red-500/10 border border-red-500/20 text-red-400 flex items-center justify-center shrink-0">
+            <div className="w-9 h-9 rounded-full bg-red-500/10 border border-red-500/20 text-red-500 flex items-center justify-center shrink-0">
               <Trash2 className="w-4 h-4" />
             </div>
             <div>
-              <h3 className="font-bold text-sm text-(--text-primary)">Delete Job Application</h3>
+              <h3 className="font-bold text-sm text-(--text-primary)">Delete Job</h3>
               <p className="text-[11px] text-(--text-muted)">This action cannot be undone</p>
             </div>
           </div>
           <button
             onClick={onCancel}
             title="Close dialog"
-            className="text-(--text-muted) hover:text-(--text-primary) cursor-pointer p-1"
+            className="h-8 w-8 inline-flex items-center justify-center text-(--text-muted) hover:text-(--text-primary) hover:bg-(--bg-surface-hover) rounded-sm cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
-        {/* Job preview card */}
-        <div className="p-3 border border-(--border-subtle) bg-(--bg-app) flex items-center justify-between gap-3">
+        <div className="p-3 border border-(--border-subtle) bg-(--bg-app) rounded-sm flex items-center justify-between gap-3">
           <div className="flex items-center gap-2.5 min-w-0">
-            <div className="w-7 h-7 bg-(--accent-primary-bg) border border-(--border-subtle) text-(--accent-primary) font-bold text-xs flex items-center justify-center shrink-0">
+            <div className="w-7 h-7 bg-(--accent-primary-bg) border border-(--accent-border) text-(--accent-blue-bright) font-bold text-xs flex items-center justify-center shrink-0 rounded-sm">
               {job.company.charAt(0)}
             </div>
             <div className="min-w-0">
@@ -76,7 +75,7 @@ export function DeleteJobModal({
           </div>
 
           <span
-            className="text-[10px] px-2 py-0.5 uppercase tracking-wider font-semibold shrink-0 border"
+            className="text-[10px] px-2 py-0.5 uppercase tracking-wider font-semibold shrink-0 border rounded-sm"
             style={{
               backgroundColor: statusStyle.bg,
               color: statusStyle.text,
@@ -97,7 +96,7 @@ export function DeleteJobModal({
             type="button"
             onClick={onCancel}
             disabled={isDeleting}
-            className="px-3.5 py-1.5 border border-(--border-subtle) bg-(--bg-app) hover:bg-(--bg-surface-hover) text-(--text-secondary) hover:text-(--text-primary) transition-colors cursor-pointer text-xs font-medium disabled:opacity-50"
+            className="h-8 px-3.5 border border-(--border-subtle) bg-(--bg-surface) hover:bg-(--bg-surface-hover) text-(--text-secondary) hover:text-(--text-primary) rounded-sm transition-colors cursor-pointer text-xs font-semibold disabled:opacity-50"
           >
             Cancel
           </button>
@@ -105,10 +104,10 @@ export function DeleteJobModal({
             type="button"
             onClick={onConfirm}
             disabled={isDeleting}
-            className="px-3.5 py-1.5 bg-red-600 hover:bg-red-500 text-white font-medium transition-colors cursor-pointer text-xs flex items-center gap-1.5 shadow-sm disabled:opacity-50"
+            className="h-8 px-3.5 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-sm transition-colors cursor-pointer text-xs flex items-center gap-1.5 shadow-xs disabled:opacity-50"
           >
             <Trash2 className="w-3.5 h-3.5" />
-            <span>{isDeleting ? 'Deleting...' : 'Delete Job'}</span>
+            <span>{isDeleting ? 'Deleting...' : 'Delete'}</span>
           </button>
         </div>
       </div>

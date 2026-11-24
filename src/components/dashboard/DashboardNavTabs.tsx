@@ -9,9 +9,9 @@ export const DASHBOARD_TAB_MAP: Record<
   DashboardTab,
   { label: string; icon: React.ComponentType<{ className?: string }> }
 > = {
-  dashboard: { label: 'My Dashboard', icon: LayoutDashboard },
+  dashboard: { label: 'Dashboard', icon: LayoutDashboard },
   pod: { label: 'Pod Feed', icon: Users },
-  feed: { label: 'Explore Jobs', icon: Globe },
+  feed: { label: 'Explore', icon: Globe },
   analytics: { label: 'Analytics', icon: BarChart3 },
   settings: { label: 'Settings', icon: Settings2 },
   profile: { label: 'Profile', icon: User },
@@ -22,6 +22,7 @@ interface DashboardNavTabsProps {
   onTabChange: (tab: DashboardTab) => void;
   jobCount?: number;
   podJobCount?: number;
+  showPodFeed?: boolean;
 }
 
 export function DashboardNavTabs({
@@ -29,11 +30,28 @@ export function DashboardNavTabs({
   onTabChange,
   jobCount,
   podJobCount,
+  showPodFeed = true,
 }: DashboardNavTabsProps) {
+  const [podFeedVisible] = React.useState<boolean>(() => {
+    if (typeof window === 'undefined') return showPodFeed;
+    try {
+      const stored = localStorage.getItem('job_radar_app_settings_v1');
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (parsed.showPodFeed !== undefined) return Boolean(parsed.showPodFeed);
+      }
+    } catch {
+      // ignore
+    }
+    return showPodFeed;
+  });
+
   const tabs = [
-    { id: 'dashboard' as const, label: 'My Dashboard', icon: LayoutDashboard, badge: jobCount },
-    { id: 'pod' as const, label: 'Pod Feed', icon: Users, badge: podJobCount },
-    { id: 'feed' as const, label: 'Explore Jobs', icon: Globe },
+    { id: 'dashboard' as const, label: 'Dashboard', icon: LayoutDashboard, badge: jobCount },
+    ...(podFeedVisible
+      ? [{ id: 'pod' as const, label: 'Pod Feed', icon: Users, badge: podJobCount }]
+      : []),
+    { id: 'feed' as const, label: 'Explore', icon: Globe },
     { id: 'analytics' as const, label: 'Analytics', icon: BarChart3 },
     { id: 'settings' as const, label: 'Settings', icon: Settings2 },
     { id: 'profile' as const, label: 'Profile', icon: User },

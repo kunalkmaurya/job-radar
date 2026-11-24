@@ -20,8 +20,6 @@ export function TimelineBar({
   onSelectTimeline,
   customRange,
   onCustomRangeChange,
-  scopedCount = 0,
-  totalCount = 0,
   isLoading = false,
 }: TimelineBarProps) {
   if (isLoading) {
@@ -45,21 +43,20 @@ export function TimelineBar({
   };
 
   return (
-    <section className="p-3 border border-(--border-subtle) bg-(--bg-surface)/60 shadow-sm relative z-10 overflow-visible">
+    <section className="p-3 border border-(--border-subtle) bg-(--bg-surface) rounded-md shadow-xs relative z-10 overflow-visible">
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
         <div className="flex items-center gap-2.5">
-          <div className="w-7 h-7 bg-(--accent-primary-bg) border border-(--border-subtle) text-(--accent-primary) flex items-center justify-center shrink-0 rounded-xs">
-            <Calendar className="w-3.5 h-3.5" />
+          <div className="w-8 h-8 bg-(--accent-primary-bg) border border-(--accent-border) text-(--accent-primary) flex items-center justify-center shrink-0 rounded-sm">
+            <Calendar className="w-4 h-4" />
           </div>
           <div className="flex flex-col">
             <div className="flex items-center gap-2">
-              <span className="text-[11px] uppercase tracking-wider text-(--accent-primary) font-semibold">
+              <span className="text-[11px] uppercase tracking-wider text-(--accent-primary) font-bold">
                 Workspace Scope
               </span>
-              <span className="text-[11px] px-1.5 py-0.5 text-(--text-secondary) rounded-xs">
-                <span className="">{scopedCount}</span> of <span className="">{totalCount}</span>{' '}
-                records
-              </span>
+              {/* <span className="text-[11px] px-1.5 py-0.5 text-(--text-secondary) bg-(--bg-surface-hover) rounded-sm">
+                <span>{scopedCount}</span> of <span>{totalCount}</span> records
+              </span> */}
             </div>
             <span className="text-xs text-(--text-secondary)">Filtering pipeline & analytics.</span>
           </div>

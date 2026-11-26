@@ -34,9 +34,9 @@ export const metadata: Metadata = {
     'Greenhouse Scraper',
     'Lever Scraper',
   ],
-  authors: [{ name: 'Kunal Maurya', url: 'https://job.kunalmaurya.com' }],
+  authors: [{ name: 'Kunal Maurya', url: 'https://jobradar.kunalmaurya.com' }],
   creator: 'Kunal Maurya',
-  metadataBase: new URL('https://job.kunalmaurya.com'),
+  metadataBase: new URL('https://jobradar.kunalmaurya.com'),
   manifest: '/manifest.webmanifest',
   appleWebApp: {
     capable: true,
@@ -57,7 +57,7 @@ export const metadata: Metadata = {
     title: 'Job Radar — High-Speed Application Pipeline & Tracker',
     description:
       'Silently ingest job links from Telegram, extract structured company details with AI, and track your career application pipeline.',
-    url: 'https://job.kunalmaurya.com',
+    url: 'https://jobradar.kunalmaurya.com',
     siteName: 'Job Radar',
     images: [
       {

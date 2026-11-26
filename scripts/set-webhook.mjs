@@ -3,7 +3,7 @@ const webhookSecret = process.env.TELEGRAM_WEBHOOK_SECRET || '';
 const baseUrl = (
   process.argv[2] ||
   process.env.NEXT_PUBLIC_APP_URL ||
-  'https://job.kunalmaurya.com'
+  'https://jobradar.kunalmaurya.com'
 ).replace(/\/$/, '');
 const webhookUrl = `${baseUrl}/api/telegram-webhook`;
 

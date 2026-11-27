@@ -168,6 +168,79 @@ body {
   clip-path: polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%);
 }
 
+.landing-page {
+  isolation: isolate;
+}
+
+.landing-grid {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  opacity: 0.28;
+  background-image:
+    linear-gradient(var(--border-subtle) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border-subtle) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: linear-gradient(to bottom, black, transparent 55%);
+}
+
+.landing-orb {
+  position: fixed;
+  z-index: -1;
+  pointer-events: none;
+  border-radius: 9999px;
+  filter: blur(90px);
+}
+
+.landing-orb-one {
+  width: 34rem;
+  height: 26rem;
+  top: 2rem;
+  left: calc(50% - 17rem);
+  background: color-mix(in srgb, var(--accent-primary) 23%, transparent);
+}
+
+.landing-orb-two {
+  width: 20rem;
+  height: 20rem;
+  top: 40rem;
+  right: -8rem;
+  background: color-mix(in srgb, var(--accent-primary) 12%, transparent);
+}
+
+.landing-product-backdrop {
+  position: absolute;
+  top: 6rem;
+  left: 50%;
+  width: min(118rem, 150vw);
+  z-index: -1;
+  opacity: 0.18;
+  pointer-events: none;
+  transform: translateX(-50%);
+  mask-image: linear-gradient(to bottom, transparent, black 15%, black 55%, transparent 95%);
+}
+
+.landing-product-backdrop-frame {
+  overflow: hidden;
+  border: 1px solid var(--border-strong);
+  border-radius: 1.2rem;
+  box-shadow: 0 40px 120px color-mix(in srgb, var(--accent-primary) 22%, transparent);
+  animation: background-drift 18s ease-in-out infinite;
+  transform: perspective(1800px) rotateX(10deg) rotateZ(-1deg);
+  transform-origin: center top;
+}
+
+@keyframes background-drift {
+  0%,
+  100% {
+    transform: perspective(1800px) rotateX(10deg) rotateZ(-1deg) translate3d(0, 0, 0);
+  }
+  50% {
+    transform: perspective(1800px) rotateX(10deg) rotateZ(1deg) translate3d(0, 1.25rem, 0);
+  }
+}
+
 @keyframes shimmer-sweep {
   0% {
     background-position: -200% 0;
@@ -186,6 +259,28 @@ body {
   );
   background-size: 200% 100%;
   animation: shimmer-sweep 1.8s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .landing-page *,
+  .landing-page *::before,
+  .landing-page *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+
+  .landing-product-backdrop-frame {
+    transform: none;
+    animation: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .landing-product-backdrop {
+    display: none;
+  }
 }
 
 [data-theme='light'] .shimmer-block,

@@ -4,9 +4,8 @@ import React, { useState, useEffect } from 'react';
 import {
   Navbar,
   Hero,
-  InteractiveSpecimen,
-  ArchitecturalPillars,
-  ComparisonMatrix,
+  LandingPreview,
+  HowItWorks,
   FeatureGrid,
   FaqAccordion,
   CtaSection,
@@ -51,20 +50,15 @@ export default function LandingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-(--bg-app) text-(--text-primary) font-sans antialiased selection:bg-(--accent-primary) selection:text-white transition-colors duration-300">
-      <div
-        className="fixed top-0 left-1/2 -translate-x-1/2 w-275 h-150 pointer-events-none opacity-25 blur-[180px] z-0"
-        style={{
-          background:
-            'radial-gradient(circle, #3178C6 0%, rgba(49, 120, 198, 0.25) 45%, transparent 75%)',
-        }}
-      />
+    <div className="landing-page min-h-screen bg-(--bg-app) text-(--text-primary) font-sans antialiased selection:bg-(--accent-primary) selection:text-white transition-colors duration-300 overflow-hidden">
+      <div className="landing-grid" aria-hidden="true" />
+      <div className="landing-orb landing-orb-one" aria-hidden="true" />
+      <div className="landing-orb landing-orb-two" aria-hidden="true" />
 
       <Navbar theme={theme} onToggleTheme={toggleTheme} isLoggedIn={isLoggedIn} />
+      <LandingPreview />
       <Hero isLoggedIn={isLoggedIn} />
-      <InteractiveSpecimen />
-      <ArchitecturalPillars />
-      <ComparisonMatrix />
+      <HowItWorks />
       <FeatureGrid isLoggedIn={isLoggedIn} />
       <FaqAccordion />
       <CtaSection isLoggedIn={isLoggedIn} />

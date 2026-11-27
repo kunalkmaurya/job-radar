@@ -30,35 +30,29 @@ export function Navbar({ theme, onToggleTheme, isLoggedIn }: NavbarProps) {
               JOB RADAR
             </span>
             <span className="text-[10px] text-(--text-muted) tracking-widest font-semibold">
-              AUTONOMOUS PIPELINE
+              YOUR JOB SEARCH, ORGANIZED
             </span>
           </div>
         </Link>
 
         <nav className="hidden md:flex items-center gap-7 text-xs font-semibold tracking-wider uppercase">
           <a
-            href="#interactive-showcase"
+            href="#how-it-works"
             className="text-(--text-secondary) hover:text-(--accent-primary) transition-colors"
           >
-            Specimen
+            Workflow
           </a>
           <a
-            href="#architecture"
+            href="#how-it-works"
             className="text-(--text-secondary) hover:text-(--accent-primary) transition-colors"
           >
-            Architecture
-          </a>
-          <a
-            href="#comparison"
-            className="text-(--text-secondary) hover:text-(--accent-primary) transition-colors"
-          >
-            Comparison
+            How it works
           </a>
           <a
             href="#features"
             className="text-(--text-secondary) hover:text-(--accent-primary) transition-colors"
           >
-            Ecosystem
+            Features
           </a>
           <a
             href="#faq"
@@ -81,7 +75,7 @@ export function Navbar({ theme, onToggleTheme, isLoggedIn }: NavbarProps) {
             href={isLoggedIn ? '/dashboard' : '/login'}
             className="h-8 inline-flex items-center gap-2 px-3.5 bg-(--accent-primary) hover:bg-(--accent-primary-hover) active:bg-(--accent-primary-active) text-(--accent-primary-text) font-semibold text-xs tracking-wider uppercase rounded-sm transition-colors shadow-xs"
           >
-            <span>{isLoggedIn ? 'Open Board' : 'Launch Console'}</span>
+            <span>{isLoggedIn ? 'Open dashboard' : 'Get started'}</span>
             <ChevronRight className="w-3.5 h-3.5" />
           </Link>
         </div>

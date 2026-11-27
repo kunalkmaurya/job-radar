@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { PRODUCT_LINKS, WORKSPACE_LINKS, ARCHITECTURE_ITEMS } from './footerData';
+import { PRODUCT_LINKS, WORKSPACE_LINKS } from './footerData';
 
 export function Footer() {
   return (
@@ -24,13 +24,12 @@ export function Footer() {
               <div className="flex flex-col">
                 <span className="font-bold text-sm tracking-wider uppercase">JOB RADAR</span>
                 <span className="text-[10px] text-(--text-muted) tracking-widest">
-                  AUTONOMOUS PIPELINE
+                  YOUR JOB SEARCH, ORGANIZED
                 </span>
               </div>
             </Link>
             <p className="text-xs text-(--text-secondary) max-w-sm leading-relaxed">
-              Quietly capture job opportunities from Telegram channels, parse complex SPAs with
-              headless AI, and curate your private pipeline.
+              A focused workspace for finding, tracking, and following through on your next role.
             </p>
           </div>
 
@@ -56,36 +55,12 @@ export function Footer() {
             <ul className="space-y-2 text-xs text-(--text-secondary)">
               {WORKSPACE_LINKS.map((link) => (
                 <li key={link.label}>
-                  {link.external ? (
-                    <a
-                      href={link.href}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="hover:text-(--accent-primary) transition-colors"
-                    >
-                      {link.label}
-                    </a>
-                  ) : (
-                    <Link
-                      href={link.href}
-                      className="hover:text-(--accent-primary) transition-colors"
-                    >
-                      {link.label}
-                    </Link>
-                  )}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="space-y-3">
-            <div className="text-[11px] text-(--text-primary) uppercase tracking-wider font-semibold">
-              Architecture
-            </div>
-            <ul className="space-y-2 text-xs text-(--text-secondary)">
-              {ARCHITECTURE_ITEMS.map((item) => (
-                <li key={item.label}>
-                  <span>{item.label}</span>
+                  <Link
+                    href={link.href}
+                    className="hover:text-(--accent-primary) transition-colors"
+                  >
+                    {link.label}
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -100,7 +75,7 @@ export function Footer() {
           </div>
 
           <div className="flex items-center gap-2 text-[11px]">
-            <span>CRAFTED BY JOB RADAR TEAM</span>
+            <span>MADE FOR FOCUSED JOB SEEKERS</span>
             <span className="hidden md:inline"> | </span>
             <span className="text-(--accent-primary)">PRODUCTION</span>
           </div>

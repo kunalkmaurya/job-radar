@@ -15,17 +15,17 @@ export function FeatureGrid({ isLoggedIn }: FeatureGridProps) {
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
           <div>
             <div className="inline-flex items-center px-2 py-0.5 rounded-sm text-[11px] font-semibold tracking-wider uppercase bg-[var(--ds-background-selected,#E9F2FF)] dark:bg-[var(--ds-background-selected,#1C2B41)] text-[var(--ds-text-selected,#0C66E4)] border border-(--accent-border) mb-2">
-              Ecosystem
+              Built for momentum
             </div>
             <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-(--text-primary)">
-              Every detail engineered for momentum.
+              A clearer way to run your search.
             </h2>
           </div>
           <Link
             href={isLoggedIn ? '/dashboard' : '/login'}
             className="text-xs font-semibold text-(--accent-primary) hover:underline flex items-center gap-1.5"
           >
-            <span>Launch workspace console</span>
+            <span>Open your workspace</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
@@ -35,10 +35,9 @@ export function FeatureGrid({ isLoggedIn }: FeatureGridProps) {
             <div className="w-8 h-8 rounded-sm bg-[var(--ds-background-selected,#E9F2FF)] dark:bg-[var(--ds-background-selected,#1C2B41)] text-[var(--ds-text-selected,#0C66E4)] flex items-center justify-center">
               <Clock className="w-4 h-4" />
             </div>
-            <div className="font-semibold text-sm text-(--text-primary)">Stale Alerts</div>
+            <div className="font-semibold text-sm text-(--text-primary)">Gentle reminders</div>
             <p className="text-xs text-(--text-secondary) leading-relaxed">
-              Applications inactive for more than 7 days automatically surface with follow-up
-              nudges.
+              Bring applications that need attention back to the top before they go cold.
             </p>
           </div>
 
@@ -46,10 +45,11 @@ export function FeatureGrid({ isLoggedIn }: FeatureGridProps) {
             <div className="w-8 h-8 rounded-sm bg-[var(--ds-background-selected,#E9F2FF)] dark:bg-[var(--ds-background-selected,#1C2B41)] text-[var(--ds-text-selected,#0C66E4)] flex items-center justify-center">
               <FileText className="w-4 h-4" />
             </div>
-            <div className="font-semibold text-sm text-(--text-primary)">Slide-Over Scratchpad</div>
+            <div className="font-semibold text-sm text-(--text-primary)">
+              Notes that stay useful
+            </div>
             <p className="text-xs text-(--text-secondary) leading-relaxed">
-              Jot recruiter contacts, interview talking points, and target compensation right inside
-              the drawer.
+              Keep recruiter details, interview prep, and context beside each opportunity.
             </p>
           </div>
 
@@ -57,10 +57,9 @@ export function FeatureGrid({ isLoggedIn }: FeatureGridProps) {
             <div className="w-8 h-8 rounded-sm bg-[var(--ds-background-selected,#E9F2FF)] dark:bg-[var(--ds-background-selected,#1C2B41)] text-[var(--ds-text-selected,#0C66E4)] flex items-center justify-center">
               <Layers className="w-4 h-4" />
             </div>
-            <div className="font-semibold text-sm text-(--text-primary)">Dual View Modes</div>
+            <div className="font-semibold text-sm text-(--text-primary)">Your preferred view</div>
             <p className="text-xs text-(--text-secondary) leading-relaxed">
-              Toggle seamlessly between an ultra-dense enterprise list and an intuitive Kanban
-              board.
+              Scan a focused list or move opportunities through a visual pipeline.
             </p>
           </div>
 
@@ -68,10 +67,11 @@ export function FeatureGrid({ isLoggedIn }: FeatureGridProps) {
             <div className="w-8 h-8 rounded-sm bg-[var(--ds-background-selected,#E9F2FF)] dark:bg-[var(--ds-background-selected,#1C2B41)] text-[var(--ds-text-selected,#0C66E4)] flex items-center justify-center">
               <Compass className="w-4 h-4" />
             </div>
-            <div className="font-semibold text-sm text-(--text-primary)">1-Click Bookmarklet</div>
+            <div className="font-semibold text-sm text-(--text-primary)">
+              Save opportunities fast
+            </div>
             <p className="text-xs text-(--text-secondary) leading-relaxed">
-              Browse on desktop? Drag our bookmarklet to your browser bar to save jobs directly from
-              LinkedIn.
+              Add a role from a link or save it while browsing, without breaking your flow.
             </p>
           </div>
         </div>
